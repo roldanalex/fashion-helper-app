@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { AppShell } from "@/components/shared/app-shell";
 import { createClient } from "@/lib/supabase/server";
+import { getAccess } from "@/lib/access";
 
 export default async function AppLayout({
   children,
@@ -8,11 +9,10 @@ export default async function AppLayout({
   children: React.ReactNode;
 }) {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { user, approved, isAdmin } = await getAccess(supabase);
 
   if (!user) redirect("/");
+  if (!approved) redirect("/pending");
 
   const { data: profile } = await supabase
     .from("profiles")
@@ -22,5 +22,5 @@ export default async function AppLayout({
 
   if (!profile?.onboarded_at) redirect("/onboarding");
 
-  return <AppShell>{children}</AppShell>;
+  return <AppShell isAdmin={isAdmin}>{children}</AppShell>;
 }

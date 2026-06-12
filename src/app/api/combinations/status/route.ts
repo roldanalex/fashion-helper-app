@@ -1,17 +1,11 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { requireApproved } from "@/lib/access";
 
 export async function GET() {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) {
-    return NextResponse.json(
-      { error: { code: "unauthorized", message: "Not signed in" } },
-      { status: 401 },
-    );
-  }
+  const { deny } = await requireApproved(supabase);
+  if (deny) return deny;
 
   const [{ data: items }, { count }] = await Promise.all([
     supabase

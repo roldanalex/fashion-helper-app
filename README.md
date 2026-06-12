@@ -112,6 +112,10 @@ photo upload ──► gpt-4o vision tags ──► you confirm ──► candid
 - 🚫 **No secrets in this repo.** All credentials live in environment
   variables; `.env*` files are git-ignored (only the placeholder
   `.env.example` is tracked).
+- 🎟️ **Invitation-only usage.** Anyone can sign in with Google, but only
+  emails on the `access_grants` allowlist can use the app — every AI endpoint
+  verifies approval **server-side** before spending API credits. Admins grant
+  or revoke access from the in-app `/admin` page or the Supabase dashboard.
 - 🛡️ Every database table enforces Supabase **row-level security** — users can
   only ever read or write their own rows.
 - 🖼️ Wardrobe photos live in a **private** storage bucket, served through

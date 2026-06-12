@@ -6,13 +6,14 @@ import {
   CalendarDays,
   Layers,
   Settings,
+  ShieldCheck,
   Shirt,
   ShoppingBag,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { APP_CREDIT, APP_VERSION } from "@/lib/constants";
 
-const navItems = [
+const baseNavItems = [
   { href: "/today", label: "Today", icon: CalendarDays },
   { href: "/wardrobe", label: "Wardrobe", icon: Shirt },
   { href: "/combinations", label: "Outfits", icon: Layers },
@@ -20,8 +21,17 @@ const navItems = [
   { href: "/settings", label: "Settings", icon: Settings },
 ];
 
-export function AppShell({ children }: { children: React.ReactNode }) {
+const adminNavItem = { href: "/admin", label: "Admin", icon: ShieldCheck };
+
+export function AppShell({
+  children,
+  isAdmin = false,
+}: {
+  children: React.ReactNode;
+  isAdmin?: boolean;
+}) {
   const pathname = usePathname();
+  const navItems = isAdmin ? [...baseNavItems, adminNavItem] : baseNavItems;
 
   return (
     <div className="flex min-h-dvh">
@@ -70,7 +80,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         aria-label="Main"
         className="fixed inset-x-0 bottom-0 z-40 border-t bg-background/90 backdrop-blur md:hidden"
       >
-        <div className="grid grid-cols-5 pb-[env(safe-area-inset-bottom)]">
+        <div
+          className={cn(
+            "grid pb-[env(safe-area-inset-bottom)]",
+            isAdmin ? "grid-cols-6" : "grid-cols-5",
+          )}
+        >
           {navItems.map(({ href, label, icon: Icon }) => {
             const active = pathname.startsWith(href);
             return (

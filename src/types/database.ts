@@ -6,8 +6,16 @@ export type AiStatus = "pending" | "tagged" | "confirmed" | "failed";
 export type ComboStatus = "none" | "queued" | "generating" | "done" | "failed";
 export type SuggestionStatus = "suggested" | "saved" | "dismissed" | "purchased";
 
+export interface AccessGrant {
+  email: string;
+  role: "member" | "admin";
+  granted_by: string | null;
+  created_at: string;
+}
+
 export interface Profile {
   id: string;
+  email: string | null;
   gender: string | null;
   age_range: string | null;
   height_cm: number | null;

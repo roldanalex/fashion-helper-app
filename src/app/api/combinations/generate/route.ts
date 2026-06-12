@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { requireApproved } from "@/lib/access";
 import { generateCombinationsForItem } from "@/lib/combinations/generate";
 
 // Batched LLM scoring can take a few minutes on a big wardrobe.
@@ -7,15 +8,8 @@ export const maxDuration = 300;
 
 export async function POST(request: Request) {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) {
-    return NextResponse.json(
-      { error: { code: "unauthorized", message: "Not signed in" } },
-      { status: 401 },
-    );
-  }
+  const { user, deny } = await requireApproved(supabase);
+  if (deny) return deny;
 
   const { itemId } = await request.json().catch(() => ({}));
   if (!itemId) {

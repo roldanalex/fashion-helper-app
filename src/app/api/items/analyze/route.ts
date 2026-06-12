@@ -1,20 +1,14 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { requireApproved } from "@/lib/access";
 import { analyzeItemImage } from "@/lib/ai/tagging";
 
 export const maxDuration = 60;
 
 export async function POST(request: Request) {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) {
-    return NextResponse.json(
-      { error: { code: "unauthorized", message: "Not signed in" } },
-      { status: 401 },
-    );
-  }
+  const { user, deny } = await requireApproved(supabase);
+  if (deny) return deny;
 
   const { itemId } = await request.json().catch(() => ({}));
   if (!itemId) {

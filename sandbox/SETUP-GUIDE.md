@@ -60,15 +60,25 @@ The instructions for building them are already written — you just run them.
 
 1. In the Supabase sidebar, click **SQL Editor**.
 2. On your computer, open the project folder, then the folder
-   `supabase/migrations/`. You'll see six files, numbered `0001` to `0006`.
+   `supabase/migrations/`. You'll see seven files, numbered `0001` to `0007`.
 3. Open `0001_profiles.sql` in any text editor, copy ALL of it, paste it into
    the SQL Editor, and click **Run**. You should see "Success".
-4. Repeat for `0002`, `0003`, `0004`, `0005`, `0006` — **in that exact order**.
+4. Repeat for `0002`, `0003`, `0004`, `0005`, `0006`, `0007` — **in that exact
+   order**.
+5. **Make yourself the admin** (one line — use YOUR email, the one you'll sign
+   in with):
+
+   ```sql
+   insert into public.access_grants (email, role) values ('you@gmail.com', 'admin');
+   ```
+
+   Without this, even you would be locked out — the app is invitation-only by
+   design (see Part 8).
 
 ✅ **Check it worked:** click **Table Editor** in the sidebar. You should see
-five tables: `profiles`, `clothing_items`, `combinations`, `daily_plans`,
-`shopping_suggestions`. Under **Storage**, you should see a bucket called
-`wardrobe`.
+six tables: `profiles`, `clothing_items`, `combinations`, `daily_plans`,
+`shopping_suggestions`, `access_grants`. Under **Storage**, you should see a
+bucket called `wardrobe`.
 
 ---
 
@@ -265,10 +275,53 @@ it behaves like an app.
 
 ---
 
+## Part 8 — Control who can use your app
+
+Anyone with a Google account can *sign in* (Google doesn't let us prevent
+that), but **only people you approve can actually use the app** — and only
+their usage spends your OpenAI credits. Everyone else sees a polite
+"awaiting your invitation" page.
+
+You can grant access three ways:
+
+### 🅰️ From the app (easiest)
+
+1. Sign in — as the admin, you'll see an **Admin** item in the menu.
+2. When someone new signs in, they appear under **"Waiting for access"** —
+   tap **Approve**.
+3. Or invite ahead of time: type their email under **"Invite by email"** and
+   they'll get straight in the first time they sign in.
+4. **Revoke** removes someone's access instantly (their data stays; they just
+   can't get in or spend credits).
+
+### 🅱️ From the Supabase console
+
+**Table Editor → access_grants → Insert row**: put their email (lowercase) in
+`email`, leave `role` as `member`. Delete the row to revoke.
+
+### 🅲 Manually with SQL
+
+In the SQL Editor:
+
+```sql
+-- grant
+insert into public.access_grants (email) values ('friend@gmail.com');
+-- revoke
+delete from public.access_grants where email = 'friend@gmail.com';
+```
+
+> 🔒 **How it's enforced:** every AI endpoint checks the allowlist on the
+> server before doing any paid work, and database rules block unapproved
+> accounts from uploading photos. A blocked user can't bypass it from the
+> browser.
+
+---
+
 ## 🛟 Troubleshooting
 
 | Problem | Likely cause & fix |
 | --- | --- |
+| I signed in but see "Awaiting your invitation" — and I'm the owner! | The admin bootstrap row is missing or the email doesn't match. Re-run Part 1.3 step 5 with the exact (lowercase) email you sign in with. |
 | Google sign-in bounces back to the landing page | The callback URL is missing somewhere. Re-check Part 2.2 step 4 (Google) and Part 7.3 (Supabase redirect URLs). |
 | "Could not start Google sign-in" | Google provider not enabled in Supabase, or wrong Client ID/secret. Redo Part 2.3. |
 | Photos upload but tagging says "Needs retry" | OpenAI key wrong, or no billing credit. Check Part 3, then open the item and press **Re-analyze**. |

@@ -8,6 +8,8 @@ const PROTECTED_PREFIXES = [
   "/shop",
   "/settings",
   "/onboarding",
+  "/admin",
+  "/pending",
 ];
 
 export async function updateSession(request: NextRequest) {

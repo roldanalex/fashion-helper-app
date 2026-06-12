@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { requireApproved } from "@/lib/access";
 import { analyzeGaps } from "@/lib/gap-analysis";
 import { suggestPurchases } from "@/lib/ai/shopping";
 import { CATEGORIES } from "@/lib/constants";
@@ -9,15 +10,8 @@ export const maxDuration = 60;
 
 export async function POST(request: Request) {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) {
-    return NextResponse.json(
-      { error: { code: "unauthorized", message: "Not signed in" } },
-      { status: 401 },
-    );
-  }
+  const { user, deny } = await requireApproved(supabase);
+  if (deny) return deny;
 
   const body = await request.json().catch(() => ({}));
   const selected: string[] = Array.isArray(body.categories)

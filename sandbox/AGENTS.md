@@ -58,6 +58,11 @@ Data flow:
   `src/lib/ai/describe.ts`) — never send images to scoring/re-ranking.
 - Every table has owner-only RLS; queries run with the user's session — never
   use a service-role key.
+- **Access is allowlist-gated** (`access_grants` table, migration 0007).
+  `requireApproved()` from `src/lib/access.ts` must guard EVERY API route that
+  costs money — if you add a new AI route, add the guard first. UI gating
+  happens in `src/app/(app)/layout.tsx` (→ `/pending`); admins manage grants
+  at `/admin`.
 - Wardrobe images are private; display them via `signImageUrls()`
   (`src/lib/supabase/storage.ts`), never public URLs.
 - Theme is dark-only "old money": tokens live in `src/app/globals.css`

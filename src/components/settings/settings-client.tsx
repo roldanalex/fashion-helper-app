@@ -1,17 +1,16 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Loader2, LogOut, MapPin } from "lucide-react";
+import { Loader2, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Separator } from "@/components/ui/separator";
 import { ChipGroup } from "@/components/onboarding/chip-group";
+import { SignOutButton } from "@/components/shared/sign-out-button";
 import { STYLE_PREFERENCES } from "@/lib/constants";
-import { createClient } from "@/lib/supabase/client";
 import { updateSettings } from "@/app/(app)/settings/actions";
 import type { Profile } from "@/types/database";
 
@@ -22,7 +21,6 @@ export function SettingsClient({
   profile: Profile;
   email: string;
 }) {
-  const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [styles, setStyles] = useState<string[]>(profile.style_preferences);
   const [formality, setFormality] = useState(profile.preferred_formality ?? 5);
@@ -38,13 +36,6 @@ export function SettingsClient({
       if (res?.error) toast.error(res.error);
       else toast.success("Settings saved");
     });
-  }
-
-  async function signOut() {
-    const supabase = createClient();
-    await supabase.auth.signOut();
-    router.push("/");
-    router.refresh();
   }
 
   return (
@@ -102,13 +93,7 @@ export function SettingsClient({
 
       <Separator />
 
-      <Button
-        variant="outline"
-        onClick={signOut}
-        className="gap-2 text-muted-foreground"
-      >
-        <LogOut className="size-4" aria-hidden /> Sign out
-      </Button>
+      <SignOutButton />
     </div>
   );
 }
