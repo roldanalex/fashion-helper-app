@@ -1,12 +1,26 @@
+import { redirect } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
+import { OnboardingWizard } from "@/components/onboarding/wizard";
+
 export const metadata = { title: "Welcome" };
 
-export default function OnboardingPage() {
+export default async function OnboardingPage() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/");
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("onboarded_at")
+    .eq("id", user.id)
+    .single();
+  if (profile?.onboarded_at) redirect("/today");
+
   return (
-    <main className="mx-auto flex min-h-dvh max-w-xl flex-col justify-center px-6 py-12">
-      <h1 className="text-4xl">Welcome to Aether Wardrobe</h1>
-      <p className="mt-3 text-muted-foreground">
-        The onboarding wizard arrives in milestone M2.
-      </p>
+    <main className="flex min-h-dvh items-center">
+      <OnboardingWizard />
     </main>
   );
 }
