@@ -159,20 +159,20 @@ Now we put the four values you collected into one private file.
    (If not, duplicate `.env.example` and rename the copy to `.env.local`.)
 3. Fill it in so it looks like this — with YOUR values:
 
-```bash
-# From Supabase → Project Settings → API
-NEXT_PUBLIC_SUPABASE_URL=https://abcdefgh.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOi...the-very-long-one
+   ```bash
+   # From Supabase → Project Settings → API
+   NEXT_PUBLIC_SUPABASE_URL=https://abcdefgh.supabase.co
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOi...the-very-long-one
 
-# From OpenAI → API keys
-OPENAI_API_KEY=sk-...your-key
+   # From OpenAI → API keys
+   OPENAI_API_KEY=sk-...your-key
 
-# From OpenWeatherMap → My API Keys
-OPENWEATHER_API_KEY=your-key
+   # From OpenWeatherMap → My API Keys
+   OPENWEATHER_API_KEY=your-key
 
-# Leave this as-is for now
-NEXT_PUBLIC_SITE_URL=http://localhost:3000
-```
+   # Leave this as-is for now
+   NEXT_PUBLIC_SITE_URL=http://localhost:3000
+   ```
 
 4. Save the file. That's it — this file never leaves your computer (git is
    told to ignore it).
