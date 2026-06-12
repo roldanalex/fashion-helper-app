@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { toast } from "sonner";
-import { ImagePlus, Loader2, Plus } from "lucide-react";
+import { Camera, ImagePlus, Loader2, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -24,6 +24,7 @@ import { createClient } from "@/lib/supabase/client";
 export function UploadSheet() {
   const router = useRouter();
   const fileRef = useRef<HTMLInputElement>(null);
+  const cameraRef = useRef<HTMLInputElement>(null);
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
@@ -115,6 +116,7 @@ export function UploadSheet() {
         </SheetHeader>
 
         <div className="space-y-6 overflow-y-auto px-4 pb-6">
+          {/* Gallery picker */}
           <input
             ref={fileRef}
             type="file"
@@ -122,6 +124,16 @@ export function UploadSheet() {
             className="sr-only"
             onChange={(e) => pickFile(e.target.files?.[0] ?? null)}
           />
+          {/* Camera capture — `capture` makes phones open the camera directly */}
+          <input
+            ref={cameraRef}
+            type="file"
+            accept="image/*"
+            capture="environment"
+            className="sr-only"
+            onChange={(e) => pickFile(e.target.files?.[0] ?? null)}
+          />
+
           <button
             type="button"
             onClick={() => fileRef.current?.click()}
@@ -142,6 +154,25 @@ export function UploadSheet() {
               </span>
             )}
           </button>
+
+          <div className="flex gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              className="flex-1 gap-2"
+              onClick={() => cameraRef.current?.click()}
+            >
+              <Camera className="size-4" aria-hidden /> Take photo
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              className="flex-1 gap-2"
+              onClick={() => fileRef.current?.click()}
+            >
+              <ImagePlus className="size-4" aria-hidden /> From gallery
+            </Button>
+          </div>
 
           <ChipGroup
             label="What kind of piece is it?"
