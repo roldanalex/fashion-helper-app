@@ -2,6 +2,7 @@ import { Camera, CloudSun, Shirt, Sparkles } from "lucide-react";
 import { GoogleSignIn } from "@/components/shared/google-sign-in";
 import { HeroVisual } from "@/components/three/HeroSection";
 import { TiltCard } from "@/components/shared/tilt-card";
+import { APP_CREDIT, APP_VERSION } from "@/lib/constants";
 
 const features = [
   {
@@ -77,7 +78,10 @@ export default function LandingPage() {
       </section>
 
       <footer className="relative z-10 border-t px-6 py-6 text-center text-xs text-muted-foreground md:px-12">
-        Aether Wardrobe — woven with care.
+        <p>Aether Wardrobe — woven with care.</p>
+        <p className="mt-1">
+          v{APP_VERSION} · {APP_CREDIT}
+        </p>
       </footer>
     </main>
   );

@@ -1,68 +1,80 @@
 # Aether Wardrobe
 
-Your personal AI stylist. Photograph your wardrobe, plan your day, and dress
-impeccably — whatever the weather.
+**Your personal AI stylist.** Photograph your wardrobe once, tell it your plans
+each morning, and it lays out the outfit — matched to your style, the occasion,
+and the weather at your destination.
 
-- **Wardrobe cataloguing** — upload a photo per piece; GPT-4o vision reads the
-  cut, color, pattern and material (your notes like "pique" or "merino" win).
-- **Combination table** — every confirmed piece is paired against your whole
-  wardrobe by a deterministic candidate engine, then scored in batches by
-  gpt-4o-mini. Only outfits scoring ≥ 7.0 are kept.
-- **Today** — pick the occasion (work, mall, park, dinner…), optionally a
-  destination and notes. The app pulls the weather there, filters the table,
-  and one AI call ranks the top picks with a "why this outfit" explanation.
-- **Outfits browser** — filter by occasion/season/score, boost favorites,
-  hide misses.
-- **Shop** — gap analysis counts how many new outfits one good piece per
-  category would unlock, and a personal-shopper AI suggests specific items.
+**Version:** v1.0.0 · **Created by Alexis Roldan · 2026**
 
-## Stack
+---
 
-Next.js 16 (App Router) · TypeScript · Tailwind v4 + shadcn/ui ·
+## What it does
+
+| Feature | How it works |
+| --- | --- |
+| **Wardrobe cataloguing** | Upload one photo per piece. GPT-4o vision reads the cut, color, pattern and material — and your own notes ("pique", "merino") always win over what it sees. |
+| **Combination table** | A deterministic engine pairs each confirmed piece against your whole wardrobe (formality, season and color-clash filters), then gpt-4o-mini scores candidates in batches. Only outfits scoring ≥ 7.0 are kept. |
+| **Daily recommendations** | Pick the occasion (work, mall, park, dinner…), optionally a destination and notes. The app pulls the forecast there, filters the table, and one AI call ranks the top picks with a "why this outfit" explanation. |
+| **Outfits browser** | Filter by occasion, season or score. Boost favorites, hide misses, see which looks are "resting". |
+| **Shopping gap analysis** | Tick the categories you're shopping for. The app counts how many new outfits one good piece would unlock — against your actual wardrobe — and suggests specific items to buy. |
+
+**Design principle:** the combination table is the single source of truth. The
+AI never invents outfits at recommendation time — it only ranks and explains
+what the table already vetted. That keeps results consistent and API costs
+low (~$0.01–0.03 per uploaded item; fractions of a cent per daily request).
+
+## Tech stack
+
+Next.js 16 (App Router) · TypeScript · Tailwind CSS v4 + shadcn/ui ·
 Supabase (Postgres, Google Auth, Storage) · Vercel AI SDK + OpenAI ·
 OpenWeatherMap · React Three Fiber · TanStack Query · Zustand · Zod
 
-## Setup
+## Getting started
 
-### 1. Supabase
+### Prerequisites
 
-1. Create a project at [supabase.com](https://supabase.com).
-2. Run every file in `supabase/migrations/` (in order) in the SQL Editor —
-   or `supabase link && supabase db push` with the CLI.
-3. **Auth → Providers → Google**: enable it (see step 2 below for credentials).
-4. Storage: the `wardrobe` bucket is created by migration `0006`.
+You'll need free-tier accounts for four services:
 
-### 2. Google OAuth
+| Service | Used for | Where |
+| --- | --- | --- |
+| Supabase | Database, Google sign-in, image storage | [supabase.com](https://supabase.com) |
+| Google Cloud | OAuth credentials for sign-in | [console.cloud.google.com](https://console.cloud.google.com/apis/credentials) |
+| OpenAI | Vision tagging and outfit scoring | [platform.openai.com](https://platform.openai.com) |
+| OpenWeatherMap | Destination weather | [openweathermap.org/api](https://openweathermap.org/api) |
 
-1. In [Google Cloud Console](https://console.cloud.google.com/apis/credentials),
-   create an OAuth client ID (Web application).
-2. Authorized redirect URI: `https://<your-project>.supabase.co/auth/v1/callback`.
-3. Paste the client ID and secret into Supabase → Auth → Providers → Google.
+### 1. Set up Supabase
 
-### 3. API keys
+1. Create a project, then run every file in `supabase/migrations/` **in order**
+   in the SQL Editor (or `supabase link && supabase db push` with the CLI).
+2. The private `wardrobe` storage bucket is created by migration `0006`.
 
-- **OpenAI**: create a key at [platform.openai.com](https://platform.openai.com)
-  — set a monthly budget cap. Typical cost: ~$0.01–0.03 per uploaded item,
-  fractions of a cent per daily recommendation.
-- **OpenWeatherMap**: free key at [openweathermap.org/api](https://openweathermap.org/api).
+### 2. Enable Google sign-in
 
-### 4. Environment
+1. In Google Cloud Console, create an **OAuth client ID** (Web application).
+2. Set the authorized redirect URI to
+   `https://<your-project>.supabase.co/auth/v1/callback`.
+3. Paste the client ID and secret into **Supabase → Auth → Providers → Google**.
+
+### 3. Configure and run
 
 ```bash
-cp .env.example .env.local   # then fill in the values
+cp .env.example .env.local   # fill in your keys
 pnpm install
 pnpm dev
 ```
 
-### 5. Deploy to Vercel
+> **Tip:** set a monthly budget cap on your OpenAI key. The app is designed to
+> stay cheap, but a cap costs nothing and removes all surprise.
 
-1. Push this repo to GitHub and import it at [vercel.com/new](https://vercel.com/new).
-2. Add the env vars from `.env.example` (set `NEXT_PUBLIC_SITE_URL` to your
-   Vercel domain).
-3. In Supabase → Auth → URL Configuration, set the Site URL to your Vercel
+### 4. Deploy to Vercel
+
+1. Push to GitHub and import the repo at [vercel.com/new](https://vercel.com/new).
+2. Add the environment variables from `.env.example`, with
+   `NEXT_PUBLIC_SITE_URL` set to your Vercel domain.
+3. In **Supabase → Auth → URL Configuration**, set the Site URL to your Vercel
    domain and add `https://<your-domain>/auth/callback` to the redirect list.
 
-## How it works
+## Architecture
 
 ```
 photo upload ──► gpt-4o vision tags ──► you confirm ──► candidate engine (pure TS)
@@ -77,6 +89,26 @@ photo upload ──► gpt-4o vision tags ──► you confirm ──► candid
                                                        re-rank + "why this outfit"
 ```
 
-The combination table is the single source of truth — the AI never invents
-outfits at recommendation time, it only ranks and explains what the table
-already vetted.
+Key paths:
+
+- `src/lib/combinations/candidates.ts` — deterministic outfit candidate engine
+  (also powers the shopping gap analysis)
+- `src/lib/ai/` — the four AI call sites: tagging, scoring, re-ranking, shopping
+- `src/lib/gap-analysis.ts` — counts outfits a hypothetical purchase would unlock
+- `supabase/migrations/` — schema with row-level security on every table
+
+## Security & privacy
+
+- **No secrets in this repo.** All credentials live in environment variables;
+  `.env*` files are git-ignored (only the placeholder `.env.example` is tracked).
+- Every database table enforces Supabase **row-level security** — users can
+  only ever read or write their own rows.
+- Wardrobe photos live in a **private** storage bucket, served through
+  short-lived signed URLs. Storage policies scope every operation to the
+  owner's folder.
+- Weather and OpenAI calls run **server-side only**; API keys never reach the
+  browser.
+
+---
+
+**Aether Wardrobe v1.0.0** · Created by Alexis Roldan · 2026

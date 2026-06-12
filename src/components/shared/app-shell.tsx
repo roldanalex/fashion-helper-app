@@ -10,6 +10,7 @@ import {
   ShoppingBag,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { APP_CREDIT, APP_VERSION } from "@/lib/constants";
 
 const navItems = [
   { href: "/today", label: "Today", icon: CalendarDays },
@@ -49,11 +50,19 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             );
           })}
         </nav>
+        <p className="mt-auto px-3 text-[11px] leading-relaxed text-muted-foreground">
+          v{APP_VERSION}
+          <br />
+          {APP_CREDIT}
+        </p>
       </aside>
 
       {/* Content */}
       <div className="flex min-w-0 flex-1 flex-col pb-20 md:pb-0">
         {children}
+        <footer className="mt-auto px-6 pb-4 pt-10 text-center text-[11px] text-muted-foreground md:hidden">
+          v{APP_VERSION} · {APP_CREDIT}
+        </footer>
       </div>
 
       {/* Mobile bottom tab bar */}
