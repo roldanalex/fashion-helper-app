@@ -2,6 +2,7 @@ import { Shirt } from "lucide-react";
 import { PageHeader } from "@/components/shared/page-header";
 import { ItemCard } from "@/components/wardrobe/item-card";
 import { UploadSheet } from "@/components/wardrobe/upload-sheet";
+import { GenerationWatcher } from "@/components/wardrobe/generation-watcher";
 import { createClient } from "@/lib/supabase/server";
 import { signImageUrls } from "@/lib/supabase/storage";
 import type { ClothingItem } from "@/types/database";
@@ -24,6 +25,7 @@ export default async function WardrobePage() {
 
   return (
     <main>
+      <GenerationWatcher />
       <PageHeader
         title="Wardrobe"
         subtitle={
