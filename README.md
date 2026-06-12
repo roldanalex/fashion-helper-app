@@ -86,7 +86,7 @@ pnpm dev
 
 ## 🏛️ Architecture
 
-```
+```text
 photo upload ──► gpt-4o vision tags ──► you confirm ──► candidate engine (pure TS)
                                                             │  formality / season / color filters
                                                             ▼
