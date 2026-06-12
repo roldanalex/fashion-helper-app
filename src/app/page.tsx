@@ -1,6 +1,7 @@
 import { Camera, CloudSun, Shirt, Sparkles } from "lucide-react";
 import { GoogleSignIn } from "@/components/shared/google-sign-in";
 import { HeroVisual } from "@/components/three/HeroSection";
+import { TiltCard } from "@/components/shared/tilt-card";
 
 const features = [
   {
@@ -59,18 +60,18 @@ export default function LandingPage() {
       </section>
 
       <section className="relative z-10 px-6 pb-20 md:px-12">
-        <div className="grid gap-px overflow-hidden rounded-xl border bg-border/50 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {features.map(({ icon: Icon, title, body }) => (
-            <div
+            <TiltCard
               key={title}
-              className="bg-card/80 p-6 backdrop-blur transition-colors duration-200 hover:bg-accent/60"
+              className="rounded-xl border bg-card/80 p-6 backdrop-blur transition-colors duration-200 hover:bg-accent/60"
             >
               <Icon className="size-5 text-primary" aria-hidden />
               <h3 className="mt-4 font-serif text-xl">{title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                 {body}
               </p>
-            </div>
+            </TiltCard>
           ))}
         </div>
       </section>
