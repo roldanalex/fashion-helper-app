@@ -1,6 +1,5 @@
-import Link from "next/link";
 import { Camera, CloudSun, Shirt, Sparkles } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { GoogleSignIn } from "@/components/shared/google-sign-in";
 import { HeroVisual } from "@/components/three/HeroSection";
 
 const features = [
@@ -35,9 +34,7 @@ export default function LandingPage() {
         <span className="font-serif text-xl tracking-wide">
           Aether <span className="text-primary">Wardrobe</span>
         </span>
-        <Button asChild variant="outline" size="sm">
-          <Link href="/today">Sign in</Link>
-        </Button>
+        <GoogleSignIn size="sm" variant="outline" label="Sign in" />
       </header>
 
       <section className="relative z-10 flex flex-1 flex-col justify-center px-6 py-16 md:px-12">
@@ -53,17 +50,7 @@ export default function LandingPage() {
             then lays out the outfit. Quiet luxury, zero guesswork.
           </p>
           <div className="mt-10 flex flex-wrap items-center gap-4">
-            <Button asChild size="lg" className="gap-2">
-              <Link href="/today">
-                <svg viewBox="0 0 24 24" className="size-4" aria-hidden>
-                  <path
-                    fill="currentColor"
-                    d="M21.35 11.1h-9.17v2.73h6.51c-.33 3.81-3.5 5.44-6.5 5.44C8.36 19.27 5 16.25 5 12c0-4.1 3.2-7.27 7.2-7.27 3.09 0 4.9 1.97 4.9 1.97L19 4.72S16.56 2 12.1 2C6.42 2 2.03 6.8 2.03 12c0 5.05 4.13 10 10.22 10 5.35 0 9.25-3.67 9.25-9.09 0-1.15-.15-1.81-.15-1.81"
-                  />
-                </svg>
-                Continue with Google
-              </Link>
-            </Button>
+            <GoogleSignIn />
             <span className="text-sm text-muted-foreground">
               Free while in beta
             </span>
