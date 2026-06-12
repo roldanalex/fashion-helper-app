@@ -13,6 +13,17 @@ const PROTECTED_PREFIXES = [
 ];
 
 export async function updateSession(request: NextRequest) {
+  // If Supabase falls back to the Site URL (root) instead of our callback
+  // route, the OAuth code lands on "/" — forward it so login still completes.
+  if (
+    request.nextUrl.pathname === "/" &&
+    request.nextUrl.searchParams.has("code")
+  ) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/auth/callback";
+    return NextResponse.redirect(url);
+  }
+
   let response = NextResponse.next({ request });
 
   const supabase = createServerClient(
