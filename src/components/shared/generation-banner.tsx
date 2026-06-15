@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { Sparkles } from "lucide-react";
 
 interface StatusResponse {
   items: { id: string; name: string; combo_status: string }[];
@@ -12,10 +13,12 @@ interface StatusResponse {
 }
 
 /**
- * Polls generation status while any item is queued/generating and
- * announces newly created outfits.
+ * App-wide, persistent status strip. Mounted once in AppShell (which survives
+ * page navigation), so the "AI is working" state follows the user across tabs
+ * even if they leave the page where generation started. Polls every 3s while
+ * outfits are being woven; idle otherwise.
  */
-export function GenerationWatcher() {
+export function GenerationBanner() {
   const router = useRouter();
   const prevTotal = useRef<number | null>(null);
   const wasGenerating = useRef(false);
@@ -46,7 +49,7 @@ export function GenerationWatcher() {
       const failed = data.items.filter((i) => i.combo_status === "failed");
       if (failed.length > 0) {
         toast.error(
-          `Outfit generation failed for ${failed[0].name} — retry from its page`,
+          `Some outfits couldn't be built — open Wardrobe and tap "Build outfits" to retry`,
         );
       }
       router.refresh();
@@ -59,5 +62,23 @@ export function GenerationWatcher() {
     wasGenerating.current = data.generating;
   }, [data, router]);
 
-  return null;
+  if (!data?.generating) return null;
+
+  return (
+    <div
+      role="status"
+      aria-live="polite"
+      className="sticky top-0 z-30 flex items-center justify-center gap-2.5 overflow-hidden border-b border-primary/20 bg-primary/10 px-4 py-2.5 text-sm text-primary backdrop-blur"
+    >
+      {/* sliding shimmer */}
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -translate-x-full animate-[shimmer_1.8s_ease-in-out_infinite] bg-gradient-to-r from-transparent via-primary/15 to-transparent"
+      />
+      <Sparkles className="size-4 animate-pulse" aria-hidden />
+      <span className="relative font-medium">
+        Aether is styling your wardrobe — weaving outfit combinations…
+      </span>
+    </div>
+  );
 }

@@ -1,17 +1,21 @@
 "use client";
 
 import Link from "next/link";
+import { useLinkStatus } from "next/link";
 import { usePathname } from "next/navigation";
 import {
   CalendarDays,
   Layers,
+  Loader2,
   Settings,
   ShieldCheck,
   Shirt,
   ShoppingBag,
+  type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { APP_CREDIT, APP_VERSION } from "@/lib/constants";
+import { GenerationBanner } from "@/components/shared/generation-banner";
 
 const baseNavItems = [
   { href: "/today", label: "Today", icon: CalendarDays },
@@ -22,6 +26,16 @@ const baseNavItems = [
 ];
 
 const adminNavItem = { href: "/admin", label: "Admin", icon: ShieldCheck };
+
+/** Shows a spinner in place of the icon while this link's navigation is pending. */
+function NavIcon({ icon: Icon, className }: { icon: LucideIcon; className?: string }) {
+  const { pending } = useLinkStatus();
+  return pending ? (
+    <Loader2 className={cn(className, "animate-spin")} aria-hidden />
+  ) : (
+    <Icon className={className} aria-hidden />
+  );
+}
 
 export function AppShell({
   children,
@@ -41,7 +55,7 @@ export function AppShell({
           Aether <span className="text-primary">Wardrobe</span>
         </Link>
         <nav className="mt-8 flex flex-col gap-1" aria-label="Main">
-          {navItems.map(({ href, label, icon: Icon }) => {
+          {navItems.map(({ href, label, icon }) => {
             const active = pathname.startsWith(href);
             return (
               <Link
@@ -54,7 +68,7 @@ export function AppShell({
                     : "text-muted-foreground hover:bg-sidebar-accent hover:text-foreground",
                 )}
               >
-                <Icon className="size-4" aria-hidden />
+                <NavIcon icon={icon} className="size-4" />
                 {label}
               </Link>
             );
@@ -69,6 +83,7 @@ export function AppShell({
 
       {/* Content */}
       <div className="flex min-w-0 flex-1 flex-col pb-20 md:pb-0">
+        <GenerationBanner />
         {children}
         <footer className="mt-auto px-6 pb-4 pt-10 text-center text-[11px] text-muted-foreground md:hidden">
           v{APP_VERSION} · {APP_CREDIT}
@@ -86,7 +101,7 @@ export function AppShell({
             isAdmin ? "grid-cols-6" : "grid-cols-5",
           )}
         >
-          {navItems.map(({ href, label, icon: Icon }) => {
+          {navItems.map(({ href, label, icon }) => {
             const active = pathname.startsWith(href);
             return (
               <Link
@@ -97,7 +112,7 @@ export function AppShell({
                   active ? "text-primary" : "text-muted-foreground",
                 )}
               >
-                <Icon className="size-5" aria-hidden />
+                <NavIcon icon={icon} className="size-5" />
                 {label}
               </Link>
             );

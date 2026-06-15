@@ -143,6 +143,15 @@
   }
 }
 
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
 /* Subtle grain so large dark surfaces don't band */
 .grain::before {
   content: "";

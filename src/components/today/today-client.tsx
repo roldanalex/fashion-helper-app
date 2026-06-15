@@ -20,8 +20,10 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ChipGroup } from "@/components/onboarding/chip-group";
 import { OutfitCard, type Outfit } from "@/components/today/outfit-card";
+import { ReadinessBanner } from "@/components/wardrobe/readiness-banner";
 import { OCCASIONS } from "@/lib/constants";
 import { markWorn } from "@/app/(app)/today/actions";
+import type { WardrobeReadiness } from "@/lib/combinations/readiness";
 import type { DailyPlan, WeatherSnapshot } from "@/types/database";
 
 interface RecommendationResponse {
@@ -53,7 +55,13 @@ function WeatherChip({ weather }: { weather: WeatherSnapshot }) {
   );
 }
 
-export function TodayClient({ hasCombinations }: { hasCombinations: boolean }) {
+export function TodayClient({
+  hasCombinations,
+  readiness,
+}: {
+  hasCombinations: boolean;
+  readiness: WardrobeReadiness;
+}) {
   const [occasion, setOccasion] = useState<string>("work");
   const [destination, setDestination] = useState("");
   const [notes, setNotes] = useState("");
@@ -91,16 +99,20 @@ export function TodayClient({ hasCombinations }: { hasCombinations: boolean }) {
 
   if (!hasCombinations) {
     return (
-      <div className="flex flex-col items-center rounded-xl border border-dashed py-20 text-center">
-        <CloudSun className="size-8 text-muted-foreground" aria-hidden />
-        <h2 className="mt-4 font-serif text-2xl">No outfits yet</h2>
-        <p className="mt-2 max-w-sm text-sm text-muted-foreground">
-          Add six to eight pieces to your wardrobe and the stylist will start
-          weaving combinations to recommend.
-        </p>
-        <Button asChild className="mt-6">
-          <Link href="/wardrobe">Build your wardrobe</Link>
-        </Button>
+      <div className="space-y-6">
+        <div className="flex flex-col items-center rounded-xl border border-dashed py-12 text-center">
+          <CloudSun className="size-8 text-muted-foreground" aria-hidden />
+          <h2 className="mt-4 font-serif text-2xl">No outfits yet</h2>
+          <p className="mt-2 max-w-sm text-sm text-muted-foreground">
+            {readiness.ready
+              ? "Your pieces are in — the stylist just needs to weave them into outfits."
+              : "The stylist builds outfits automatically once your wardrobe has the essentials below."}
+          </p>
+          <Button asChild className="mt-6" variant="outline">
+            <Link href="/wardrobe">Go to wardrobe</Link>
+          </Button>
+        </div>
+        <ReadinessBanner readiness={readiness} />
       </div>
     );
   }

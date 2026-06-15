@@ -2,7 +2,8 @@ import { Shirt } from "lucide-react";
 import { PageHeader } from "@/components/shared/page-header";
 import { ItemCard } from "@/components/wardrobe/item-card";
 import { UploadSheet } from "@/components/wardrobe/upload-sheet";
-import { GenerationWatcher } from "@/components/wardrobe/generation-watcher";
+import { ReadinessBanner } from "@/components/wardrobe/readiness-banner";
+import { getWardrobeReadiness } from "@/lib/combinations/readiness";
 import { createClient } from "@/lib/supabase/server";
 import { signImageUrls } from "@/lib/supabase/storage";
 import type { ClothingItem } from "@/types/database";
@@ -23,9 +24,10 @@ export default async function WardrobePage() {
     items.map((i) => i.image_url),
   );
 
+  const readiness = getWardrobeReadiness(items);
+
   return (
     <main>
-      <GenerationWatcher />
       <PageHeader
         title="Wardrobe"
         subtitle={
@@ -38,6 +40,11 @@ export default async function WardrobePage() {
       </PageHeader>
 
       <div className="px-6 pb-10 md:px-10">
+        {items.length > 0 && (
+          <div className="mb-6">
+            <ReadinessBanner readiness={readiness} />
+          </div>
+        )}
         {items.length === 0 ? (
           <div className="flex flex-col items-center rounded-xl border border-dashed py-20 text-center">
             <Shirt className="size-8 text-muted-foreground" aria-hidden />
