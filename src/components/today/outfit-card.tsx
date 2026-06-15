@@ -41,8 +41,8 @@ export function OutfitCard({
       </div>
 
       <div className="flex gap-2 overflow-x-auto px-5 py-4">
-        {slots.map(({ slot, item, imageUrl }) => (
-          <figure key={item.id} className="w-20 shrink-0 sm:w-24">
+        {slots.map(({ item, imageUrl }) => (
+          <figure key={item.id} className="w-20 shrink-0 sm:w-24" title={item.name}>
             <div className="relative aspect-square overflow-hidden rounded-lg border bg-secondary">
               {imageUrl && (
                 <Image
@@ -54,8 +54,8 @@ export function OutfitCard({
                 />
               )}
             </div>
-            <figcaption className="mt-1 truncate text-center text-[11px] capitalize text-muted-foreground">
-              {slot === "accessory" ? item.subcategory ?? "accessory" : slot}
+            <figcaption className="mt-1 line-clamp-2 text-center text-[11px] leading-tight text-muted-foreground">
+              {item.name}
             </figcaption>
           </figure>
         ))}

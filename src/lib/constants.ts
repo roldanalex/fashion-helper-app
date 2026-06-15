@@ -10,6 +10,15 @@ export const CATEGORIES = [
 ] as const;
 export type Category = (typeof CATEGORIES)[number];
 
+/** Section headings for the wardrobe grouped view. */
+export const CATEGORY_PLURAL_LABELS: Record<Category, string> = {
+  top: "Tops",
+  bottom: "Bottoms",
+  outerwear: "Outerwear",
+  shoes: "Shoes",
+  accessory: "Accessories",
+};
+
 export const SUBCATEGORIES: Record<Category, string[]> = {
   top: [
     "t-shirt",
@@ -42,6 +51,7 @@ export const SUBCATEGORIES: Record<Category, string[]> = {
   ],
   shoes: [
     "loafers",
+    "drivers",
     "oxfords",
     "derbies",
     "boots",

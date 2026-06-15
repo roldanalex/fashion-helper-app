@@ -49,23 +49,27 @@ export function ComboCard({
         pending && "opacity-70",
       )}
     >
-      <div className="flex gap-1.5 p-3">
+      <div className="flex items-start gap-1.5 p-3">
         {slots.map(({ item, imageUrl }) => (
-          <div
-            key={item.id}
-            className="relative aspect-square w-full overflow-hidden rounded-md border bg-secondary"
-            title={item.name}
-          >
-            {imageUrl && (
-              <Image
-                src={imageUrl}
-                alt={item.name}
-                fill
-                sizes="120px"
-                className="object-cover"
-              />
-            )}
-          </div>
+          <figure key={item.id} className="w-full min-w-0">
+            <div
+              className="relative aspect-square overflow-hidden rounded-md border bg-secondary"
+              title={item.name}
+            >
+              {imageUrl && (
+                <Image
+                  src={imageUrl}
+                  alt={item.name}
+                  fill
+                  sizes="120px"
+                  className="object-cover"
+                />
+              )}
+            </div>
+            <figcaption className="mt-1 line-clamp-2 text-center text-[11px] leading-tight text-muted-foreground">
+              {item.name}
+            </figcaption>
+          </figure>
         ))}
       </div>
 

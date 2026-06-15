@@ -1,6 +1,6 @@
 import { Shirt } from "lucide-react";
 import { PageHeader } from "@/components/shared/page-header";
-import { ItemCard } from "@/components/wardrobe/item-card";
+import { WardrobeGrid } from "@/components/wardrobe/wardrobe-grid";
 import { UploadSheet } from "@/components/wardrobe/upload-sheet";
 import { ReadinessBanner } from "@/components/wardrobe/readiness-banner";
 import { getWardrobeReadiness } from "@/lib/combinations/readiness";
@@ -55,11 +55,7 @@ export default async function WardrobePage() {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-            {items.map((item) => (
-              <ItemCard key={item.id} item={item} imageUrl={urls[item.image_url]} />
-            ))}
-          </div>
+          <WardrobeGrid items={items} imageUrls={urls} />
         )}
       </div>
     </main>
