@@ -12,7 +12,20 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { OCCASIONS, SEASONS } from "@/lib/constants";
 
-export function FilterBar() {
+export interface ItemOption {
+  id: string;
+  name: string;
+}
+
+export function FilterBar({
+  tops = [],
+  bottoms = [],
+  shoes = [],
+}: {
+  tops?: ItemOption[];
+  bottoms?: ItemOption[];
+  shoes?: ItemOption[];
+}) {
   const router = useRouter();
   const params = useSearchParams();
 
@@ -23,8 +36,41 @@ export function FilterBar() {
     router.replace(`/combinations?${next.toString()}`);
   }
 
+  const itemFilters: { key: string; label: string; options: ItemOption[] }[] = [
+    { key: "top", label: "top", options: tops },
+    { key: "bottom", label: "bottom", options: bottoms },
+    { key: "shoes", label: "pair of shoes", options: shoes },
+  ];
+
   return (
     <div className="flex flex-wrap items-center gap-4">
+      {/* Build-around-a-piece filters */}
+      {itemFilters.map(
+        ({ key, label, options }) =>
+          options.length > 0 && (
+            <Select
+              key={key}
+              value={params.get(key) ?? "all"}
+              onValueChange={(v) => setParam(key, v)}
+            >
+              <SelectTrigger
+                className="w-44"
+                aria-label={`Filter by ${label}`}
+              >
+                <SelectValue placeholder={`Any ${label}`} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Any {label}</SelectItem>
+                {options.map((o) => (
+                  <SelectItem key={o.id} value={o.id}>
+                    {o.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          ),
+      )}
+
       <Select
         value={params.get("occasion") ?? "all"}
         onValueChange={(v) => setParam("occasion", v)}

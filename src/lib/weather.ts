@@ -26,6 +26,22 @@ export async function geocode(query: string): Promise<GeoResult | null> {
   return results[0] ?? null;
 }
 
+/** Typeahead search — multiple matching places for an autocomplete. */
+export async function searchLocations(
+  query: string,
+  limit = 5,
+): Promise<GeoResult[]> {
+  const url = `${GEO_URL}?q=${encodeURIComponent(query)}&limit=${limit}&appid=${apiKey()}`;
+  const res = await fetch(url, { next: { revalidate: 86400 } });
+  if (!res.ok) throw new Error(`Location search failed (${res.status})`);
+  return (await res.json()) as GeoResult[];
+}
+
+/** Human-readable "City, State, Country" label for a geocoding match. */
+export function locationLabel(g: GeoResult): string {
+  return [g.name, g.state, g.country].filter(Boolean).join(", ");
+}
+
 interface ForecastSlice {
   dt: number;
   main: { temp: number; feels_like: number; temp_min: number; temp_max: number; humidity: number };

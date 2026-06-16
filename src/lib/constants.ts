@@ -22,8 +22,10 @@ export const CATEGORY_PLURAL_LABELS: Record<Category, string> = {
 export const SUBCATEGORIES: Record<Category, string[]> = {
   top: [
     "t-shirt",
+    "v-neck",
     "polo",
     "oxford shirt",
+    "button-down shirt",
     "dress shirt",
     "henley",
     "sweater",

@@ -46,6 +46,11 @@ export async function POST(request: Request) {
   const destination: string | undefined = body.destination?.trim() || undefined;
   const notes: string | undefined = body.notes?.trim() || undefined;
   const force: boolean = !!body.force;
+  // Verified coordinates from the autocomplete — used directly, no re-geocode.
+  const destLat: number | undefined =
+    typeof body.destLat === "number" ? body.destLat : undefined;
+  const destLon: number | undefined =
+    typeof body.destLon === "number" ? body.destLon : undefined;
 
   if (!occasion || !(occasion in OCCASION_WEIGHTS)) {
     return NextResponse.json(
@@ -94,12 +99,19 @@ export async function POST(request: Request) {
   let lon = profile?.home_lon;
   let locationName = profile?.home_location ?? "your area";
   try {
-    if (destination) {
+    if (destination && destLat != null && destLon != null) {
+      // User picked a verified place from the autocomplete.
+      lat = destLat;
+      lon = destLon;
+      locationName = destination;
+    } else if (destination) {
       const geo = await geocode(destination);
       if (geo) {
         lat = geo.lat;
         lon = geo.lon;
-        locationName = [geo.name, geo.country].filter(Boolean).join(", ");
+        locationName = [geo.name, geo.state, geo.country]
+          .filter(Boolean)
+          .join(", ");
       }
     } else if ((lat == null || lon == null) && profile?.home_location) {
       const geo = await geocode(profile.home_location);

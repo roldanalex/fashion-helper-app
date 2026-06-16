@@ -9,17 +9,16 @@ import {
   CloudRain,
   CloudSun,
   Loader2,
-  MapPin,
   RefreshCw,
   Snowflake,
   Sun,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ChipGroup } from "@/components/onboarding/chip-group";
 import { OutfitCard, type Outfit } from "@/components/today/outfit-card";
+import { LocationAutocomplete } from "@/components/today/location-autocomplete";
 import { ReadinessBanner } from "@/components/wardrobe/readiness-banner";
 import { OCCASIONS } from "@/lib/constants";
 import { markWorn } from "@/app/(app)/today/actions";
@@ -64,6 +63,9 @@ export function TodayClient({
 }) {
   const [occasion, setOccasion] = useState<string>("work");
   const [destination, setDestination] = useState("");
+  const [destCoords, setDestCoords] = useState<{ lat: number; lon: number } | null>(
+    null,
+  );
   const [notes, setNotes] = useState("");
   const [result, setResult] = useState<RecommendationResponse | null>(null);
   const [wornId, setWornId] = useState<string | null>(null);
@@ -73,7 +75,14 @@ export function TodayClient({
       const res = await fetch("/api/recommendations", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ occasion, destination, notes, force }),
+        body: JSON.stringify({
+          occasion,
+          destination,
+          notes,
+          force,
+          destLat: destCoords?.lat,
+          destLon: destCoords?.lon,
+        }),
       });
       const json: RecommendationResponse = await res.json();
       if (!res.ok) throw new Error(json.error?.message ?? "Something went wrong");
@@ -130,19 +139,19 @@ export function TodayClient({
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
           <div className="space-y-2">
             <Label htmlFor="destination">Where? (optional)</Label>
-            <div className="relative">
-              <MapPin
-                className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
-                aria-hidden
-              />
-              <Input
-                id="destination"
-                className="pl-9"
-                placeholder="Home, or e.g. Rome"
-                value={destination}
-                onChange={(e) => setDestination(e.target.value)}
-              />
-            </div>
+            <LocationAutocomplete
+              id="destination"
+              placeholder="Home, or start typing a city"
+              value={destination}
+              onChange={(text) => {
+                setDestination(text);
+                setDestCoords(null);
+              }}
+              onSelect={(r) => {
+                setDestination(r.label);
+                setDestCoords({ lat: r.lat, lon: r.lon });
+              }}
+            />
           </div>
           <div className="space-y-2">
             <Label htmlFor="notes">Anything else? (optional)</Label>

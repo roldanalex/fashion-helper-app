@@ -28,6 +28,19 @@ export default async function CombinationsPage({
   const params = await searchParams;
   const supabase = await createClient();
 
+  // Confirmed pieces, to populate the "build around this item" filters.
+  const { data: itemRows } = await supabase
+    .from("clothing_items")
+    .select("id, name, category")
+    .eq("archived", false)
+    .eq("ai_status", "confirmed")
+    .in("category", ["top", "bottom", "shoes"])
+    .order("name");
+  const items = itemRows ?? [];
+  const tops = items.filter((i) => i.category === "top");
+  const bottoms = items.filter((i) => i.category === "bottom");
+  const shoes = items.filter((i) => i.category === "shoes");
+
   let query = supabase
     .from("combinations")
     .select("*")
@@ -38,6 +51,9 @@ export default async function CombinationsPage({
 
   if (params.hidden !== "1") query = query.eq("hidden", false);
   if (params.season) query = query.contains("season_suitability", [params.season]);
+  if (params.top) query = query.eq("top_id", params.top);
+  if (params.bottom) query = query.eq("bottom_id", params.bottom);
+  if (params.shoes) query = query.eq("shoes_id", params.shoes);
 
   const { data } = await query;
   let combos = (data ?? []) as Combination[];
@@ -64,7 +80,7 @@ export default async function CombinationsPage({
 
       <div className="space-y-6 px-6 pb-10 md:px-10">
         <Suspense>
-          <FilterBar />
+          <FilterBar tops={tops} bottoms={bottoms} shoes={shoes} />
         </Suspense>
 
         {enriched.length === 0 ? (
