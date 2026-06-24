@@ -12,8 +12,9 @@ and the weather at your destination.
 ![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4o-412991?logo=openai&logoColor=white)
 ![React Three Fiber](https://img.shields.io/badge/React_Three_Fiber-3D-000000?logo=threedotjs&logoColor=white)
 ![Vercel](https://img.shields.io/badge/Deploy-Vercel-000000?logo=vercel&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-c9a45c)
 
-> Created by **Alexis Roldan** · 2026
+> Created by **Alexis Roldan** · 2026 · [alexis.m.roldan.ds@gmail.com](mailto:alexis.m.roldan.ds@gmail.com)
 
 ---
 
@@ -21,11 +22,13 @@ and the weather at your destination.
 
 | Feature | How it works |
 | --- | --- |
-| 📸 **Wardrobe cataloguing** | Upload one photo per piece. GPT-4o vision reads the cut, color, pattern and material — and your own notes ("pique", "merino") always win over what it sees. |
-| 🧩 **Combination table** | A deterministic engine pairs each confirmed piece against your whole wardrobe (formality, season and color-clash filters), then gpt-4o-mini scores candidates in batches. Only outfits scoring ≥ 7.0 are kept. |
-| 🌦️ **Daily recommendations** | Pick the occasion (work, mall, park, dinner…), optionally a destination and notes. The app pulls the forecast there, filters the table, and one AI call ranks the top picks with a "why this outfit" explanation. |
+| 📸 **Wardrobe cataloguing** | Upload one photo per piece — from your gallery or straight from the **phone camera**. GPT-4o vision reads the cut, color, pattern and material — and your own notes ("pique", "merino") always win over what it sees. Items group into collapsible **category sections**, with granular types down to footwear (loafers, drivers, sneakers…). |
+| 🧩 **Combination table** | A deterministic engine pairs each confirmed piece against your whole wardrobe (formality, season and color-clash filters), then gpt-4o-mini scores candidates in batches. Only outfits scoring ≥ 7.0 are kept. **Build around a piece** by filtering the table to a single item, plus occasion, season or score. |
+| 🌦️ **Daily recommendations** | Pick the occasion (work, mall, park, dinner…), optionally a destination and notes. **City autocomplete** resolves the exact location, the app pulls the forecast there, filters the table, and one AI call ranks the top picks with a "why this outfit" explanation — each look labeled with its actual item names. |
 | 🗂️ **Outfits browser** | Filter by occasion, season or score. Boost favorites, hide misses, see which looks are "resting". |
 | 🛍️ **Shopping gap analysis** | Tick the categories you're shopping for. The app counts how many new outfits one good piece would unlock — against your actual wardrobe — and suggests specific items to buy. |
+| ⚡ **Live status & readiness** | An app-wide banner tracks outfit generation in the background and tells you when your wardrobe is ready, so you always know whether the table is up to date. Every route has its own loading state for snappy navigation. |
+| 🔑 **Admin allowlist** | An in-app `/admin` page grants or revokes access by email — no dashboard trips required. |
 
 💡 **Design principle:** the combination table is the single source of truth.
 The AI never invents outfits at recommendation time — it only ranks and
@@ -123,6 +126,12 @@ photo upload ──► gpt-4o vision tags ──► you confirm ──► candid
   owner's folder.
 - 🔑 Weather and OpenAI calls run **server-side only**; API keys never reach
   the browser.
+
+## 📜 License
+
+Released under the [MIT License](LICENSE) — free to use, modify and distribute.
+
+© 2026 **Alexis Roldan** · [alexis.m.roldan.ds@gmail.com](mailto:alexis.m.roldan.ds@gmail.com)
 
 ---
 
