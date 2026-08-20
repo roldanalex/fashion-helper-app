@@ -22,7 +22,7 @@ and the weather at your destination.
 
 <!-- TODO: drop 3–5 PNGs into docs/screenshots/ and uncomment. Suggested shots:
      landing hero · wardrobe grid · today's recommendation · combinations table · shop analysis -->
-<!-- <img src="docs/screenshots/01-landing.png" alt="Landing page with 3D hero" width="720"> -->
+<img src="docs/screenshots/01-landing.png" alt="Landing page with 3D hero" width="720">
 <!-- <img src="docs/screenshots/02-wardrobe.png" alt="Wardrobe grid grouped by category" width="720"> -->
 <!-- <img src="docs/screenshots/03-today.png" alt="Daily outfit recommendation with weather" width="720"> -->
 <!-- <img src="docs/screenshots/04-combinations.png" alt="Combinations browser with filters" width="720"> -->
