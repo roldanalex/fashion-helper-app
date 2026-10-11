@@ -23,8 +23,10 @@
 # misc
 .DS_Store
 *.pem
-AG*.md
-CL*.md
+
+# agent instruction files are kept out of this repo
+AGENTS.md
+CLAUDE.md
 
 # debug
 npm-debug.log*

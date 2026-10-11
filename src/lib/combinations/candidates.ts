@@ -110,6 +110,51 @@ function heuristicScore(c: Candidate): number {
   return neutrals * 2 - spread + (c.outerwear ? 0.5 : 0);
 }
 
+/* ---------- accessory selection ---------- */
+
+function formalityGap(a: ClothingItem, target: number): number {
+  return Math.abs((a.formality_level ?? 5) - target);
+}
+
+/**
+ * Greedy accessory pick for one base outfit: closest formality first, at
+ * most one per type (never two watches), and once the first metal piece is
+ * chosen, later picks prefer the same hardware tone (silver watch → silver
+ * buckle). `anchor`, when given, is always included first.
+ */
+export function pickAccessories(
+  pool: ClothingItem[],
+  target: number,
+  anchor: ClothingItem | null,
+  max: number = MAX_ACCESSORIES,
+): ClothingItem[] {
+  const picked: ClothingItem[] = anchor ? [anchor] : [];
+  const usedTypes = new Set(picked.map((a) => a.subcategory));
+  let tone: string | null = anchor?.attributes?.hardware_tone ?? null;
+
+  const candidates = pool
+    .filter(
+      (a) =>
+        !picked.some((p) => p.id === a.id) &&
+        formalityGap(a, target) <= MAX_FORMALITY_DELTA,
+    )
+    .sort((a, b) => formalityGap(a, target) - formalityGap(b, target));
+
+  while (picked.length < max) {
+    const next = candidates.find((a) => {
+      if (usedTypes.has(a.subcategory)) return false;
+      const t = a.attributes?.hardware_tone ?? null;
+      // Mismatched metals are skipped on this pass; see fallback below.
+      return !(tone && t && t !== tone);
+    }) ?? candidates.find((a) => !usedTypes.has(a.subcategory));
+    if (!next) break;
+    picked.push(next);
+    usedTypes.add(next.subcategory);
+    tone = tone ?? next.attributes?.hardware_tone ?? null;
+  }
+  return picked;
+}
+
 /* ---------- candidate generation ---------- */
 
 /**
@@ -149,40 +194,14 @@ export function generateCandidatesForItem(
           if (seasons.length === 0) continue;
           if (!colorsWork(required)) continue;
 
-          // Accessories: the new accessory is mandatory; otherwise greedy by formality fit.
+          // Accessories: the new accessory is mandatory; otherwise greedy by
+          // formality fit, one per type, preferring matching hardware tones.
           const target = avgFormality(required);
-          let accs: ClothingItem[];
-          if (newItem.category === "accessory") {
-            const others = accessories
-              .filter(
-                (a) =>
-                  a.subcategory !== newItem.subcategory &&
-                  Math.abs((a.formality_level ?? 5) - target) <= MAX_FORMALITY_DELTA,
-              )
-              .sort(
-                (a, b) =>
-                  Math.abs((a.formality_level ?? 5) - target) -
-                  Math.abs((b.formality_level ?? 5) - target),
-              );
-            accs = [newItem, ...others.slice(0, MAX_ACCESSORIES - 1)];
-          } else {
-            accs = accessories
-              .filter(
-                (a) =>
-                  Math.abs((a.formality_level ?? 5) - target) <= MAX_FORMALITY_DELTA,
-              )
-              .sort(
-                (a, b) =>
-                  Math.abs((a.formality_level ?? 5) - target) -
-                  Math.abs((b.formality_level ?? 5) - target),
-              )
-              // Avoid two of the same kind (two watches, two belts).
-              .filter(
-                (a, idx, arr) =>
-                  arr.findIndex((x) => x.subcategory === a.subcategory) === idx,
-              )
-              .slice(0, MAX_ACCESSORIES);
-          }
+          const accs = pickAccessories(
+            accessories,
+            target,
+            newItem.category === "accessory" ? newItem : null,
+          );
 
           candidates.push({ top, bottom, shoes: shoe, outerwear: outer, accessories: accs });
         }

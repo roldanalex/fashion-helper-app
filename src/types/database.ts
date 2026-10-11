@@ -6,6 +6,13 @@ export type AiStatus = "pending" | "tagged" | "confirmed" | "failed";
 export type ComboStatus = "none" | "queued" | "generating" | "done" | "failed";
 export type SuggestionStatus = "suggested" | "saved" | "dismissed" | "purchased";
 
+/** Type-specific accessory details (see ACCESSORY_DETAILS in constants). */
+export interface ItemAttributes {
+  watch_style?: string | null;
+  band?: string | null;
+  hardware_tone?: string | null;
+}
+
 export interface AccessGrant {
   email: string;
   role: "member" | "admin";
@@ -51,6 +58,7 @@ export interface ClothingItem {
   season: string[];
   formality_level: number | null;
   old_money_score: number | null;
+  attributes: ItemAttributes;
   image_url: string;
   ai_status: AiStatus;
   combo_status: ComboStatus;
@@ -100,6 +108,8 @@ export interface RankedRecommendation {
   combination_id: string;
   rank: number;
   explanation: string;
+  /** Accessories chosen for the day; falls back to the combination's own when absent. */
+  accessory_ids?: string[];
 }
 
 export interface DailyPlan {

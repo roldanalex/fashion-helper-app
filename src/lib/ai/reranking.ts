@@ -4,6 +4,13 @@ import { openai } from "@ai-sdk/openai";
 import { rerankSchema, type RerankResult } from "@/lib/schemas";
 import { describeItem } from "@/lib/ai/describe";
 import { withRetry } from "@/lib/ai/retry";
+import {
+  MAX_DAILY_ACCESSORIES,
+  OCCASION_HINTS,
+  RECO_MAX_PICKS,
+  RECO_MIN_PICKS,
+  type Occasion,
+} from "@/lib/constants";
 import type {
   ClothingItem,
   Combination,
@@ -13,6 +20,7 @@ import type {
 export async function rerankAndExplain({
   candidates,
   itemsById,
+  accessoryPool,
   weather,
   occasion,
   notes,
@@ -20,8 +28,10 @@ export async function rerankAndExplain({
 }: {
   candidates: Combination[];
   itemsById: Map<string, ClothingItem>;
+  /** Every confirmed accessory the client owns; the stylist picks today's. */
+  accessoryPool: ClothingItem[];
   weather: WeatherSnapshot;
-  occasion: string;
+  occasion: Occasion;
   notes?: string | null;
   stylePreferences: string[];
 }): Promise<RerankResult> {
@@ -38,17 +48,22 @@ export async function rerankAndExplain({
         const item = itemsById.get(id!);
         return `  ${slot}: ${item ? describeItem(item) : "unknown"}`;
       });
-    for (const accId of c.accessory_ids) {
-      const item = itemsById.get(accId);
-      if (item) lines.push(`  accessory: ${describeItem(item)}`);
-    }
+    const defaults = c.accessory_ids
+      .map((id) => itemsById.get(id)?.name)
+      .filter(Boolean)
+      .join(", ");
     return [
       `id: ${c.id}`,
       ...lines,
+      `  default accessories: ${defaults || "none"}`,
       `  stylist note: ${c.notes ?? "—"}`,
       `  scores: overall ${c.overall_score}, work ${c.work_score}, daily ${c.daily_score}, old-money ${c.old_money_score}`,
     ].join("\n");
   };
+
+  const accessoryLines = accessoryPool
+    .map((a) => `  ${a.id} — ${a.subcategory ?? "accessory"}: ${describeItem(a)}`)
+    .join("\n");
 
   const { object } = await withRetry(() =>
     generateObject({
@@ -58,7 +73,7 @@ export async function rerankAndExplain({
         {
           role: "system",
           content: `You are the client's trusted personal stylist choosing today's outfit.
-Pick the best 3-5 combinations for the day, ranked 1 (best) first.
+Pick the best ${RECO_MIN_PICKS}-${RECO_MAX_PICKS} combinations for the day, ranked 1 (best) first.
 
 Consider:
 - The weather: dress for comfort first (layers when cold, breathable when hot,
@@ -67,14 +82,25 @@ Consider:
 - Their preferred styles: ${stylePreferences.join(", ") || "smart casual"}.
 - Variety is a virtue, but never at the cost of appropriateness.
 
+Accessories: for each pick, choose today's accessories from the accessory pool
+(up to ${MAX_DAILY_ACCESSORIES}, at most one per type, ids verbatim). You may
+keep the outfit's defaults or swap them. Match the watch to the day: a GMT or
+sports watch for travel and active days, a dressier watch for work, dinner and
+events; keep metals consistent (silver watch with a silver buckle); sunglasses
+only when the day is bright and outdoors. If the pool is empty, return [].
+
 For each pick, write exactly two warm, concrete sentences explaining WHY —
-mention the weather and their plans naturally, like a stylist laying clothes
-on the bed. Use the combination ids verbatim.`,
+mention the weather, their plans and the watch or key accessory naturally, like
+a stylist laying clothes on the bed. Use the combination ids verbatim.`,
         },
         {
           role: "user",
           content: `Today: ${occasion}${notes ? ` — "${notes}"` : ""}
+Occasion notes: ${OCCASION_HINTS[occasion]}
 Weather at destination (${weather.locationName}): ${weather.summary}, feels like ${weather.feelsLikeC}°C, humidity ${weather.humidity}%.
+
+Accessory pool:
+${accessoryLines || "  (none)"}
 
 Candidate combinations:
 

@@ -5,9 +5,11 @@ import { geocode, getTodayWeather, weatherFlags } from "@/lib/weather";
 import { rerankAndExplain } from "@/lib/ai/reranking";
 import { enrichCombinations } from "@/lib/combinations/enrich";
 import {
+  MAX_DAILY_ACCESSORIES,
   OCCASION_WEIGHTS,
   RECO_CANDIDATE_POOL,
   RECO_MIN_OCCASION_SCORE,
+  RECO_MIN_PICKS,
   RECO_RELAXED_SCORE,
   FRESHNESS_DAYS,
   type Occasion,
@@ -15,6 +17,7 @@ import {
 import type {
   ClothingItem,
   Combination,
+  RankedRecommendation,
   WeatherSnapshot,
 } from "@/types/database";
 
@@ -71,17 +74,19 @@ export async function POST(request: Request) {
       .eq("occasion", occasion)
       .maybeSingle();
     if (existing?.recommendations?.length) {
+      const picks = existing.recommendations as RankedRecommendation[];
       const combos = await fetchCombosByIds(
         supabase,
-        existing.recommendations.map(
-          (r: { combination_id: string }) => r.combination_id,
-        ),
+        picks.map((r) => r.combination_id),
       );
-      const enriched = await enrichCombinations(supabase, combos);
+      const enriched = await enrichCombinations(
+        supabase,
+        withDailyAccessories(combos, picks),
+      );
       return NextResponse.json({
         plan: existing,
         weather: existing.weather,
-        outfits: attachExplanations(enriched, existing.recommendations),
+        outfits: attachExplanations(enriched, picks),
         cached: true,
       });
     }
@@ -209,41 +214,62 @@ export async function POST(request: Request) {
     });
   }
 
-  // LLM stage: one gpt-4o-mini call to rank and explain.
+  // Accessory pool: every confirmed accessory, so the stylist can pick the
+  // right watch or belt for the day rather than the table's default.
+  const { data: accessoryData } = await supabase
+    .from("clothing_items")
+    .select("*")
+    .eq("user_id", user.id)
+    .eq("category", "accessory")
+    .eq("archived", false)
+    .eq("ai_status", "confirmed");
+  const accessoryPool = (accessoryData ?? []) as ClothingItem[];
+  const accessoryById = new Map(accessoryPool.map((a) => [a.id, a]));
+
+  // LLM stage: one gpt-4o-mini call to rank, accessorize and explain.
   const enrichedAll = await enrichCombinations(supabase, candidates);
   const itemsById = new Map<string, ClothingItem>();
   for (const e of enrichedAll)
     for (const s of e.slots) itemsById.set(s.item.id, s.item);
 
-  let picks;
+  const fallbackPicks = (): RankedRecommendation[] =>
+    candidates.slice(0, RECO_MIN_PICKS).map((c, i) => ({
+      combination_id: c.id,
+      rank: i + 1,
+      accessory_ids: c.accessory_ids,
+      explanation: c.notes ?? "A reliably strong combination from your table.",
+    }));
+
+  let picks: RankedRecommendation[];
   try {
     const result = await rerankAndExplain({
       candidates,
       itemsById,
+      accessoryPool,
       weather,
       occasion,
       notes,
       stylePreferences: profile?.style_preferences ?? [],
     });
-    const valid = new Set(candidates.map((c) => c.id));
+    const valid = new Map(candidates.map((c) => [c.id, c]));
     picks = result.picks
       .filter((p) => valid.has(p.combination_id))
-      .sort((a, b) => a.rank - b.rank);
+      .sort((a, b) => a.rank - b.rank)
+      .map((p) => ({
+        combination_id: p.combination_id,
+        rank: p.rank,
+        explanation: p.explanation,
+        accessory_ids: sanitizeAccessories(
+          p.accessory_ids,
+          accessoryById,
+          valid.get(p.combination_id)!.accessory_ids,
+        ),
+      }));
   } catch (err) {
     console.error("Re-ranking failed, falling back to top scores:", err);
-    picks = candidates.slice(0, 3).map((c, i) => ({
-      combination_id: c.id,
-      rank: i + 1,
-      explanation: c.notes ?? "A reliably strong combination from your table.",
-    }));
+    picks = fallbackPicks();
   }
-  if (picks.length === 0) {
-    picks = candidates.slice(0, 3).map((c, i) => ({
-      combination_id: c.id,
-      rank: i + 1,
-      explanation: c.notes ?? "A reliably strong combination from your table.",
-    }));
-  }
+  if (picks.length === 0) picks = fallbackPicks();
 
   // Persist the plan; mark combos as recommended for freshness tracking.
   const { data: plan } = await supabase
@@ -274,8 +300,12 @@ export async function POST(request: Request) {
     );
 
   const pickedSet = new Set(picks.map((p) => p.combination_id));
-  const enrichedPicked = enrichedAll.filter((e) =>
-    pickedSet.has(e.combination.id),
+  const enrichedPicked = await enrichCombinations(
+    supabase,
+    withDailyAccessories(
+      candidates.filter((c) => pickedSet.has(c.id)),
+      picks,
+    ),
   );
 
   return NextResponse.json({
@@ -283,6 +313,42 @@ export async function POST(request: Request) {
     weather,
     outfits: attachExplanations(enrichedPicked, picks),
     cached: false,
+  });
+}
+
+/**
+ * Keep only ids the client actually owns, one per accessory type, capped.
+ * Falls back to the combination's stored accessories when the model returns
+ * nothing usable.
+ */
+function sanitizeAccessories(
+  ids: string[] | undefined,
+  pool: Map<string, ClothingItem>,
+  fallback: string[],
+): string[] {
+  const seenTypes = new Set<string | null>();
+  const out: string[] = [];
+  for (const id of ids ?? []) {
+    const item = pool.get(id);
+    if (!item || seenTypes.has(item.subcategory)) continue;
+    seenTypes.add(item.subcategory);
+    out.push(id);
+    if (out.length >= MAX_DAILY_ACCESSORIES) break;
+  }
+  return out.length > 0 ? out : fallback;
+}
+
+/** Swap each combination's accessories for the ones chosen for the day. */
+function withDailyAccessories(
+  combos: Combination[],
+  picks: RankedRecommendation[],
+): Combination[] {
+  const byId = new Map(picks.map((p) => [p.combination_id, p]));
+  return combos.map((c) => {
+    const pick = byId.get(c.id);
+    return pick?.accessory_ids?.length
+      ? { ...c, accessory_ids: pick.accessory_ids }
+      : c;
   });
 }
 
@@ -297,7 +363,7 @@ async function fetchCombosByIds(
 
 function attachExplanations(
   enriched: Awaited<ReturnType<typeof enrichCombinations>>,
-  picks: { combination_id: string; rank: number; explanation: string }[],
+  picks: RankedRecommendation[],
 ) {
   const byId = new Map(enriched.map((e) => [e.combination.id, e]));
   return picks

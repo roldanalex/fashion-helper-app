@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import type { RankedRecommendation } from "@/types/database";
 
 /** Record what was actually worn: plan link, freshness, per-item wear stats. */
 export async function markWorn(planId: string, combinationId: string) {
@@ -18,11 +19,19 @@ export async function markWorn(planId: string, combinationId: string) {
     .single();
   if (!combo) return { error: "Combination not found" };
 
-  await supabase
+  const { data: plan } = await supabase
     .from("daily_plans")
     .update({ worn_combination_id: combinationId })
     .eq("id", planId)
-    .eq("user_id", user.id);
+    .eq("user_id", user.id)
+    .select("recommendations")
+    .single();
+
+  // The accessories actually worn are the day's picks, not the table defaults.
+  const picks = (plan?.recommendations ?? []) as RankedRecommendation[];
+  const dailyAccessories = picks.find(
+    (p) => p.combination_id === combinationId,
+  )?.accessory_ids;
 
   await supabase
     .from("combinations")
@@ -34,7 +43,7 @@ export async function markWorn(planId: string, combinationId: string) {
     combo.bottom_id,
     combo.shoes_id,
     combo.outerwear_id,
-    ...combo.accessory_ids,
+    ...(dailyAccessories?.length ? dailyAccessories : combo.accessory_ids),
   ].filter(Boolean) as string[];
 
   const today = new Date().toISOString().slice(0, 10);

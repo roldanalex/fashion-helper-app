@@ -9,6 +9,36 @@ import { scoreCandidateBatch } from "@/lib/ai/scoring";
 import { MIN_OVERALL_SCORE, SCORING_BATCH_SIZE } from "@/lib/constants";
 import type { ClothingItem } from "@/types/database";
 
+type ComboRow = Record<string, unknown>;
+
+/**
+ * Insert a batch; if the batch trips the unique index (an identical outfit
+ * already exists), retry row by row so one duplicate never discards the
+ * rest of the batch.
+ */
+async function insertTolerant(
+  supabase: SupabaseClient,
+  rows: ComboRow[],
+): Promise<number> {
+  if (rows.length === 0) return 0;
+  const { error, count } = await supabase
+    .from("combinations")
+    .insert(rows, { count: "exact" });
+  if (!error) return count ?? rows.length;
+  if (error.code !== "23505") {
+    console.error("Combination insert failed:", error);
+    return 0;
+  }
+  let ok = 0;
+  for (const row of rows) {
+    const { error: rowError } = await supabase.from("combinations").insert(row);
+    if (!rowError) ok += 1;
+    else if (rowError.code !== "23505")
+      console.error("Combination insert failed:", rowError);
+  }
+  return ok;
+}
+
 /**
  * Incrementally extend the combination table with outfits containing
  * `itemId`. Idempotent: existing combinations containing the item are
@@ -78,7 +108,8 @@ export async function generateCombinationsForItem(
             bottom_id: c.bottom.id,
             shoes_id: c.shoes.id,
             outerwear_id: c.outerwear?.id ?? null,
-            accessory_ids: c.accessories.map((a) => a.id),
+            // Sorted so the same accessory set never produces two rows.
+            accessory_ids: c.accessories.map((a) => a.id).sort(),
             color_harmony_score: s.color_harmony_score,
             old_money_score: s.old_money_score,
             formality_score: s.formality_score,
@@ -93,16 +124,7 @@ export async function generateCombinationsForItem(
         })
         .filter((r): r is NonNullable<typeof r> => r !== null);
 
-      if (rows.length > 0) {
-        const { error: insertError, count } = await supabase
-          .from("combinations")
-          .insert(rows, { count: "exact" });
-        if (insertError) {
-          console.error("Combination insert failed:", insertError);
-        } else {
-          inserted += count ?? rows.length;
-        }
-      }
+      inserted += await insertTolerant(supabase, rows);
     }
 
     await supabase

@@ -42,6 +42,11 @@ Scoring guide (decimals encouraged):
 - season_suitability: the seasons the full outfit suits.
 - notes: ONE short stylist sentence (used later to explain the outfit).
 
+Accessories count. A watch should sit at the outfit's formality (a diver with a
+suit, or a dress watch with shorts, costs points); metals should agree (silver
+watch with a silver buckle); a watch or belt with the right hardware tone and
+formality is a small bonus to old_money_score and overall_score.
+
 Score EVERY candidate, echoing its [index].`,
         },
         { role: "user", content: descriptors },

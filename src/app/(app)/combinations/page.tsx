@@ -10,6 +10,11 @@ import type { Combination } from "@/types/database";
 
 export const metadata = { title: "Outfits" };
 
+/** Pieces in the outfit: 3 required + outerwear + each accessory. */
+function completeness(c: Combination): number {
+  return 3 + (c.outerwear_id ? 1 : 0) + c.accessory_ids.length;
+}
+
 function occasionScore(c: Combination, occasion: Occasion): number {
   const w = OCCASION_WEIGHTS[occasion];
   return (
@@ -34,12 +39,14 @@ export default async function CombinationsPage({
     .select("id, name, category")
     .eq("archived", false)
     .eq("ai_status", "confirmed")
-    .in("category", ["top", "bottom", "shoes"])
+    .in("category", ["top", "bottom", "shoes", "outerwear", "accessory"])
     .order("name");
   const items = itemRows ?? [];
   const tops = items.filter((i) => i.category === "top");
   const bottoms = items.filter((i) => i.category === "bottom");
   const shoes = items.filter((i) => i.category === "shoes");
+  const outerwear = items.filter((i) => i.category === "outerwear");
+  const accessories = items.filter((i) => i.category === "accessory");
 
   let query = supabase
     .from("combinations")
@@ -54,20 +61,28 @@ export default async function CombinationsPage({
   if (params.top) query = query.eq("top_id", params.top);
   if (params.bottom) query = query.eq("bottom_id", params.bottom);
   if (params.shoes) query = query.eq("shoes_id", params.shoes);
+  if (params.outerwear) query = query.eq("outerwear_id", params.outerwear);
+  if (params.accessory)
+    query = query.contains("accessory_ids", [params.accessory]);
 
   const { data } = await query;
   let combos = (data ?? []) as Combination[];
 
+  // Boosted first, then the most complete outfits (all five slots filled),
+  // then by the occasion blend or overall score.
   const occasion = params.occasion as Occasion | undefined;
-  if (occasion && occasion in OCCASION_WEIGHTS) {
-    combos = combos
-      .filter((c) => occasionScore(c, occasion) >= 6.5)
-      .sort(
-        (a, b) =>
-          Number(b.boosted) - Number(a.boosted) ||
-          occasionScore(b, occasion) - occasionScore(a, occasion),
-      );
+  const hasOccasion = !!occasion && occasion in OCCASION_WEIGHTS;
+  if (hasOccasion) {
+    combos = combos.filter((c) => occasionScore(c, occasion!) >= 6.5);
   }
+  const rank = (c: Combination) =>
+    hasOccasion ? occasionScore(c, occasion!) : c.overall_score;
+  combos.sort(
+    (a, b) =>
+      Number(b.boosted) - Number(a.boosted) ||
+      completeness(b) - completeness(a) ||
+      rank(b) - rank(a),
+  );
 
   const enriched = await enrichCombinations(supabase, combos);
 
@@ -80,7 +95,13 @@ export default async function CombinationsPage({
 
       <div className="space-y-6 px-6 pb-10 md:px-10">
         <Suspense>
-          <FilterBar tops={tops} bottoms={bottoms} shoes={shoes} />
+          <FilterBar
+            tops={tops}
+            bottoms={bottoms}
+            shoes={shoes}
+            outerwear={outerwear}
+            accessories={accessories}
+          />
         </Suspense>
 
         {enriched.length === 0 ? (

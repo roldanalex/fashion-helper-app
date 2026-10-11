@@ -1,0 +1,508 @@
+{
+  "meta": {
+    "app": "Aether Wardrobe",
+    "what": "Your personal AI stylist · photograph once, dress well every day",
+    "storage_key": "aether-wardrobe-onboarding",
+    "favicon_emoji": "🧵",
+    "theme": {
+      "accent": "#C9A45C",
+      "accent_soft": "#E2C27E",
+      "secondary": "#5B7C99",
+      "bg": "#16140F",
+      "motif": "rings",
+      "motif_opacity": 0.07,
+      "glow_strength": 0.5,
+      "radius": "14px",
+      "font_family": "DM Sans"
+    },
+    "tagline": ["Photograph once.", "Confirm the tags.", "Get dressed in a minute."],
+    "tagline_colors": ["text", "accent_soft", "secondary_tint"],
+    "subtitle": "Aether Wardrobe catalogues the clothes you already own, builds every outfit that genuinely works from them, and each morning picks the ones that suit your plans and the weather where you are going. It never invents clothes you do not have, and it explains every choice like a stylist laying pieces on the bed.",
+    "app_url": "/",
+    "owner": "Alexis Roldan · Aether Wardrobe",
+    "last_reviewed": "2026-10-11",
+    "authoritative_sources": ["Aether Wardrobe user guide (docs/USER-GUIDE.md)", "Release notes (CHANGELOG.md)"],
+    "disclaimer": "Aether Wardrobe is a styling assistant. Suggestions are based on the tags you confirm and a weather forecast; use your own judgement for dress codes, safety and comfort. Your photos stay private to your account.",
+    "est_minutes_guide": 15
+  },
+
+  "why": {
+    "scroll_hint": "See why",
+    "chapters": [
+      {
+        "id": "problem",
+        "kicker": "THE PROBLEM",
+        "nav_label": "The problem",
+        "headline": "A full closet and nothing to wear is a sorting problem, not a shopping problem.",
+        "intro": "Most people wear a fifth of what they own. The rest is not wrong, it is unpaired: the shirt that would work with the tan chinos never meets them, because nobody has time to try every combination before a 9 a.m. meeting.",
+        "blocks": [
+          {
+            "type": "principles",
+            "items": [
+              { "title": "The daily question is really three questions", "text": "What fits the occasion, what fits the weather at the destination, and what have I not worn in a while?" },
+              { "title": "Generic advice does not know your closet", "text": "Articles and chat assistants suggest clothes you do not own. The useful answer is built from your actual pieces." }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "value",
+        "kicker": "WHAT YOU GET",
+        "nav_label": "What you get",
+        "headline": "Every outfit that works, scored once, ready every morning.",
+        "intro": "You photograph each piece one time. From then on, the app does the pairing, the scoring and the daily choice, and you only confirm.",
+        "blocks": [
+          {
+            "type": "stats",
+            "items": [
+              { "label": "TABLE QUALITY", "value": "7.0+", "unit": "minimum score", "text": "Only outfits a stylist rates 7 or better out of 10 are ever kept. Weak pairings are discarded before you see them.", "source": "Combination table design, enforced by a database check; README, Oct 2026" },
+              { "label": "DAILY PICKS", "value": "5–7", "unit": "ranked outfits", "text": "Each request returns five to seven outfits, each with two sentences on why it suits the day.", "source": "Release 1.1.0 notes, Oct 2026" },
+              { "label": "PER REQUEST", "value": "1", "unit": "AI call", "text": "The daily recommendation uses one small model call; the heavy work was done when the piece was added.", "source": "Architecture notes, README, Oct 2026" },
+              { "label": "PER PIECE", "value": "~1–3¢", "unit": "to catalogue", "text": "Estimated model cost to tag a piece and score its outfits, fractions of a cent per daily request afterwards.", "source": "Engineering estimate in README, Oct 2026" }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "how",
+        "kicker": "HOW IT WORKS",
+        "nav_label": "How it works",
+        "headline": "Six steps from a photo to today's outfit.",
+        "intro": "One model, start to finish. The first three steps happen once per piece; the last three happen every day.",
+        "blocks": [
+          {
+            "type": "lifecycle",
+            "items": [
+              { "title": "Profile", "text": "A four-step wizard: build, colouring, style preferences and home city." },
+              { "title": "Photograph", "text": "One photo per piece, from your gallery or the phone camera." },
+              { "title": "Confirm tags", "text": "The AI reads cut, colour, material and formality. You correct anything it got wrong." },
+              { "title": "Table builds", "text": "The engine pairs the piece with everything you own and keeps only the outfits that score 7 or better." },
+              { "title": "Style my day", "text": "Pick the occasion and where you are going. The forecast there filters the table and one call ranks the picks." },
+              { "title": "Wear and track", "text": "Mark what you wore. Recently worn looks rest for a week so suggestions stay fresh." }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "features",
+        "kicker": "THE TABS",
+        "nav_label": "The tabs",
+        "headline": "Four places to go, each with one job.",
+        "intro": "The app shell shows the same four tabs on desktop and phone.",
+        "blocks": [
+          {
+            "type": "capabilities",
+            "items": [
+              { "category": "WARDROBE", "badge": "catalogue", "title": "Everything you own, tagged", "text": "Grouped by category, with type, material, pattern, seasons, formality and old-money fit on every piece. Watches carry style, band and hardware tone." },
+              { "category": "OUTFITS", "badge": "the table", "title": "Every combination worth wearing", "text": "Filter by a single top, bottom, shoes or accessory, by occasion, season or minimum score. Boost favourites, hide misses." },
+              { "category": "TODAY", "badge": "daily", "title": "Style my day", "text": "Ten occasions, an optional destination with city autocomplete, free-text notes. Five to seven ranked outfits with the right watch for the day." },
+              { "category": "SHOP", "badge": "gap analysis", "title": "What to buy next", "text": "Counts how many new outfits one good piece would unlock in each category, then names specific items that pair with what you own." },
+              { "category": "SETTINGS", "badge": "profile", "title": "Your profile and units", "text": "Update build, colouring, styles and home city; everything feeds the prompts." },
+              { "category": "ACCESS", "badge": "invite only", "title": "Allowlisted accounts", "text": "Sign in with Google. An administrator grants access by email, so no paid AI call runs for an unknown account." }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "trust",
+        "kicker": "TRUST",
+        "nav_label": "Trust",
+        "headline": "Deterministic first, one small AI call last.",
+        "intro": "The combination table is the single source of truth. The AI never invents an outfit at recommendation time; it tags, scores and explains what the engine already vetted.",
+        "blocks": [
+          {
+            "type": "layers",
+            "summary": ["You confirm every tag.", "Code builds every pairing.", "AI only scores and explains."],
+            "items": [
+              { "kicker": "01 · YOU", "title": "Own the facts", "text": "Your notes beat the model's guess.", "bullets": ["Tags are editable before anything is built", "Your description overrides what the vision model sees", "Archive a piece and it leaves every outfit"] },
+              { "kicker": "02 · ENGINE", "title": "Builds the candidates", "text": "Pure code, no model, no cost.", "bullets": ["Formality within three points", "Seasons must overlap", "Clashing colours rejected", "One watch, one belt, matching metals"] },
+              { "kicker": "03 · AI", "title": "Scores and explains", "text": "Small batched calls, structured output.", "bullets": ["Scores twelve candidates per call", "Keeps only 7.0 and above", "Ranks the day's picks and writes two sentences each"] }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "who",
+        "kicker": "WHO IT IS FOR",
+        "nav_label": "Who it is for",
+        "headline": "What it means for you.",
+        "intro": "The app was built for a quiet-luxury, old-money wardrobe, but every style preference in the profile changes how outfits are scored.",
+        "blocks": [
+          {
+            "type": "roles",
+            "items": [
+              { "role": "Busy professional", "text": "Pick 'Work' or 'Indoors / Conferences', tap once, wear the first pick. Under a minute." },
+              { "role": "Frequent traveller", "text": "Type the city you are flying to. The forecast there drives the outfit, and the GMT watch comes along." },
+              { "role": "Collector", "text": "Each watch, belt and pair of sunglasses is tagged with style and hardware tone, so metals match and the dress watch goes to dinner." },
+              { "role": "Deliberate shopper", "text": "Shop shows which category is the bottleneck and what specific piece would unlock the most new outfits." }
+            ]
+          }
+        ]
+      }
+    ],
+    "cta": {
+      "kicker": "BEFORE YOU BEGIN",
+      "headline": "Now put your wardrobe to work.",
+      "intro": "The guide walks you from first sign-in to your first styled day: profile, adding pieces, reviewing tags, the Outfits table, Today, and what to buy next.",
+      "button": "Start the guide"
+    }
+  },
+
+  "guide": {
+    "title": "Aether Wardrobe Guide",
+    "tree": [
+      { "section": "welcome", "label": "Start here" },
+      { "section": "signin", "label": "Sign in and set up your profile" },
+      {
+        "label": "Build your wardrobe",
+        "children": [
+          { "section": "add-piece", "label": "Add a piece" },
+          { "section": "review-tags", "label": "Review the tags" },
+          { "section": "accessories", "label": "Watches and accessories" }
+        ]
+      },
+      { "section": "outfits", "label": "The Outfits table" },
+      {
+        "label": "Today",
+        "children": [
+          { "section": "today", "label": "Style my day" },
+          { "section": "occasions", "label": "Choosing the occasion" },
+          { "section": "wear", "label": "Wear it and keep it fresh" }
+        ]
+      },
+      { "section": "shop", "label": "Shop: what to buy next", "optional": true }
+    ],
+    "practical_guides": [
+      { "section": "photos", "label": "Taking photos that tag well" },
+      { "section": "faq", "label": "When something looks off" }
+    ],
+    "sections": {
+      "welcome": {
+        "kicker": "START HERE",
+        "title": "Fifteen minutes to your first styled day",
+        "intro": "This guide follows the order you will actually use the app: sign in, tell it about you, add a handful of pieces, let the table build, then ask for today's outfit. Tick the checkpoint at the end of each section; your progress is saved in this browser only.",
+        "minutes": 1,
+        "chips": ["Invite only", "Phone or desktop", "Your photos stay private"],
+        "blocks": [
+          {
+            "type": "glance",
+            "title": "At a glance",
+            "items": [
+              { "label": "What you need", "text": "A Google account that has been granted access, and your phone or a folder of photos." },
+              { "label": "Minimum wardrobe", "text": "Outfits appear once you have confirmed at least one top, one bottom and one pair of shoes. Outerwear and accessories are optional but make looks complete. Five to ten pieces make it interesting." },
+              { "label": "What runs in the background", "text": "After you confirm a piece, the engine scores its outfits for a minute or two. A banner shows progress; you can keep adding." },
+              { "label": "Where to get help", "html": "The <b>user guide</b> in the repository and the <b>release notes</b>. In the app, every empty state tells you what to do next." }
+            ]
+          },
+          {
+            "type": "required",
+            "title": "Confirm tags before you expect outfits.",
+            "text": "A piece that is still 'Review tags' is not in any outfit. The table only ever uses pieces you have confirmed."
+          }
+        ],
+        "checkpoint": "I understand that outfits are built only from pieces whose tags I have confirmed."
+      },
+
+      "signin": {
+        "kicker": "GETTING IN",
+        "title": "Sign in and set up your profile",
+        "intro": "Access is by invitation. Once your email is on the allowlist, Google sign-in takes you straight to a four-step profile wizard that personalises every later suggestion.",
+        "minutes": 3,
+        "blocks": [
+          {
+            "type": "steps",
+            "items": [
+              { "title": "Open the app and choose Continue with Google", "text": "Use the Google account whose email was invited. If you land on a 'pending' page, your email is not on the allowlist yet; ask the person who invited you." },
+              { "title": "Step 1 of the wizard: your build", "text": "Gender, age range, height, weight and body shape. These shape what cuts and proportions the stylist favours." },
+              { "title": "Step 2: your colouring", "text": "Skin tone and undertone, hair and eye colour. They tell the stylist which palettes flatter you." },
+              { "title": "Step 3: your style", "text": "Pick one or more styles (Old Money, Classic, Smart Casual, Minimalist, Sporty, Streetwear) and your usual formality on a 1 to 10 scale. These appear in every scoring prompt." },
+              { "title": "Step 4: your home city", "text": "Start typing and pick from the list. This is the weather fallback whenever you do not name a destination on the Today tab." }
+            ]
+          },
+          {
+            "type": "note",
+            "html": "You can change all of this later under <b>Settings</b>. Outfits already scored keep their scores; new pieces are scored against the updated profile."
+          }
+        ],
+        "checkpoint": "I have completed the profile wizard and can see the Wardrobe tab."
+      },
+
+      "add-piece": {
+        "kicker": "WARDROBE",
+        "title": "Add a piece",
+        "intro": "One photo per piece. The app compresses it in your browser, stores it privately, and sends it to the vision model, which fills in the tags for you to review.",
+        "minutes": 2,
+        "blocks": [
+          {
+            "type": "steps",
+            "items": [
+              { "title": "Tap Add piece", "text": "On the Wardrobe tab. On a phone you can take the photo directly with the camera; on desktop, choose a file." },
+              { "title": "Pick the category", "text": "Top, bottom, outerwear, shoes or accessory. This is the one tag the AI will not override, so get it right here." },
+              { "title": "Describe what the photo cannot show", "text": "Optional, but valuable: 'pique cotton', 'merino', 'Tudor Black Bay GMT on steel bracelet'. Your words are treated as ground truth, especially for material." },
+              { "title": "Submit and wait a few seconds", "text": "The piece is uploaded and analysed, then you are taken to its page to review the tags." }
+            ]
+          },
+          {
+            "type": "glance",
+            "title": "What the AI reads from the photo",
+            "items": [
+              { "label": "Identity", "text": "A short name, the type (polo, chinos, loafers, watch), the primary colour and its hex value." },
+              { "label": "Fabric", "text": "Material and pattern. Hard to see in photos, so your description wins." },
+              { "label": "Fit for purpose", "text": "Seasons it suits, formality 1 to 10, and an old-money fit score 1 to 10." },
+              { "label": "Accessory details", "text": "For watches: style, band and hardware tone. For belts, sunglasses and bags: hardware tone." }
+            ]
+          }
+        ],
+        "checkpoint": "I have added at least one piece and reached its tag review page."
+      },
+
+      "review-tags": {
+        "kicker": "WARDROBE",
+        "title": "Review the tags",
+        "intro": "Every piece lands in 'Review tags' first. Correct anything the model got wrong, then confirm. Confirmation is what triggers outfit generation.",
+        "minutes": 2,
+        "blocks": [
+          {
+            "type": "steps",
+            "items": [
+              { "title": "Check name and colour", "text": "The colour swatch should match the dominant colour. For a watch it is the dial colour." },
+              { "title": "Check type and material", "text": "Type chips depend on the category. Material now includes steel, gold, titanium, rubber, nylon and acetate for accessories." },
+              { "title": "Set seasons, formality and old-money fit", "text": "Formality: 1 is gym wear, 5 smart casual, 8 business, 10 black tie. Old money: timeless cuts, natural fabrics, muted colours, no loud logos." },
+              { "title": "Confirm tags", "text": "The button at the bottom. A toast confirms that outfit generation has started; the app-wide banner shows progress." }
+            ]
+          },
+          {
+            "type": "note",
+            "html": "<b>Re-analyze</b> asks the vision model again, useful after you add a description. <b>Archive</b> removes the piece from every outfit without deleting the photo."
+          }
+        ],
+        "checkpoint": "I have confirmed the tags on a piece and seen the generation banner."
+      },
+
+      "accessories": {
+        "kicker": "WARDROBE",
+        "title": "Watches and accessories",
+        "intro": "Accessories are where the app matches metals and formality. A watch carries three extra tags; belts, sunglasses and bags carry one. The daily stylist uses them to pick the right watch for the day.",
+        "minutes": 2,
+        "chips": ["Watch style", "Band", "Hardware tone"],
+        "blocks": [
+          {
+            "type": "glance",
+            "title": "The extra chips on a watch",
+            "items": [
+              { "label": "Watch style", "text": "Dress, sports, diver, GMT / travel, chronograph, field or pilot. GMT and sports watches go to travel and active days; dress watches to work, dinner and events." },
+              { "label": "Band", "text": "Metal bracelet, leather strap, rubber strap or fabric / NATO." },
+              { "label": "Hardware tone", "text": "Silver (steel), gold, rose gold or two-tone. The engine prefers a belt buckle that matches the watch." },
+              { "label": "Formality and old money", "text": "A dress watch on leather rates 8 to 9 formality and 9 to 10 old money; a classic steel sports watch 6 to 7 and 7 to 8; a coloured bezel or rubber strap takes a point off." }
+            ]
+          },
+          {
+            "type": "text",
+            "html": "<b>Example.</b> A Tudor Black Bay GMT on a steel bracelet tags as <i>watch · steel · solid · GMT · bracelet · silver</i>, formality 6, old money 7. A TAG Heuer Carrera with a blue dial tags as <i>watch · steel · solid · sports · bracelet · silver</i>, formality 7, old money 8. On a travel day the stylist reaches for the GMT; on a dinner, the Carrera."
+          },
+          {
+            "type": "note",
+            "html": "Each new accessory creates its own variants of the outfits it suits, so the Outfits table can show the same shirt and chinos once with each watch. Filter by accessory to see everything that works with one of them."
+          }
+        ],
+        "checkpoint": "I have tagged a watch with its style, band and hardware tone."
+      },
+
+      "outfits": {
+        "kicker": "OUTFITS",
+        "title": "The Outfits table",
+        "intro": "Every combination that scored 7.0 or better: boosted looks first, then the most complete outfits (all five slots filled), then by score. Think of it as the pool the Today tab draws from; curating it here improves every morning.",
+        "minutes": 2,
+        "aside": {
+          "kicker": "GOOD HABIT",
+          "title": "Boost three, hide three",
+          "text": "Boosted outfits rise to the top of every daily request. Hidden ones never come back. Ten minutes of curating pays off for weeks."
+        },
+        "blocks": [
+          {
+            "type": "steps",
+            "items": [
+              { "title": "Build around a piece", "text": "The first dropdowns filter to one top, one bottom, one pair of shoes, one piece of outerwear or one accessory. 'Any accessory → Tudor GMT' shows every outfit that works with that watch." },
+              { "title": "Filter by occasion, season and score", "text": "Occasion re-sorts by a blend of work, daily, formality and old-money scores. Score 7+, 8+ or 9+ sets the floor." },
+              { "title": "Boost or hide", "text": "The star boosts; the eye hides. Show hidden reveals what you have put away." },
+              { "title": "Read the stylist note", "text": "One sentence per outfit from the scoring pass, later used to explain the pick on the Today tab." }
+            ]
+          },
+          {
+            "type": "note",
+            "html": "A <b>Resting</b> badge means the outfit was recommended or worn in the last seven days. It is still in the table; it just waits its turn."
+          }
+        ],
+        "checkpoint": "I can filter the Outfits table by one piece and have boosted or hidden at least one outfit."
+      },
+
+      "today": {
+        "kicker": "TODAY",
+        "title": "Style my day",
+        "intro": "The daily request. Choose the occasion, optionally where you are going and a note about your plans, and tap Style my day. One AI call ranks the best five to seven outfits and chooses the day's accessories.",
+        "minutes": 2,
+        "blocks": [
+          {
+            "type": "steps",
+            "items": [
+              { "title": "What does today hold?", "text": "Pick one occasion chip. Work is the default." },
+              { "title": "Where? (optional)", "text": "Start typing a city and pick it from the list; the forecast there is used. Leave it blank and your home city fills in." },
+              { "title": "Anything else? (optional)", "text": "Free text the stylist reads: 'client meeting, then lunch with the kids', 'all-day conference, long walk after'." },
+              { "title": "Read the picks", "text": "Each card shows the pieces, including the watch and belt chosen for today, a score, and two sentences on why. 'Fresh suggestions' asks again." }
+            ]
+          },
+          {
+            "type": "glance",
+            "title": "What happens behind the button",
+            "items": [
+              { "label": "Weather", "text": "Today's forecast at the destination: temperature, feel, rain chance. Suede and canvas shoes are dropped on rainy days." },
+              { "label": "Filter", "text": "The table is filtered by season band and sorted by the occasion blend, boosted and fresh outfits first." },
+              { "label": "Rank", "text": "One small model call ranks five to seven picks and selects accessories from everything you own." },
+              { "label": "Remember", "text": "The plan is saved for the day and occasion, so reloading costs nothing." }
+            ]
+          }
+        ],
+        "checkpoint": "I have asked for today's outfit and received a ranked list."
+      },
+
+      "occasions": {
+        "kicker": "TODAY",
+        "title": "Choosing the occasion",
+        "intro": "The occasion decides how the table is sorted and what the stylist is told about the day. Pick the closest one and put the nuance in the notes.",
+        "minutes": 1,
+        "blocks": [
+          {
+            "type": "tabs",
+            "label": "Browse occasions",
+            "items": [
+              {
+                "label": "Work and indoors",
+                "blocks": [
+                  { "type": "text", "html": "<b>Work</b> leans on the work score with a touch of formality: polished, business casual or above.<br><br><b>Indoors / Conferences</b> is for climate-controlled days. The weather only matters for the commute, so the stylist favours layers that come off indoors and comfort for long hours of sitting and standing." }
+                ]
+              },
+              {
+                "label": "Meals and evenings",
+                "blocks": [
+                  { "type": "text", "html": "<b>Lunch</b> is daytime and relaxed but put-together, with a nod to old-money fit.<br><br><b>Dinner</b> is elevated and considered; <b>Going Out</b> adds presence and polish for the evening." }
+                ]
+              },
+              {
+                "label": "Out and about",
+                "blocks": [
+                  { "type": "text", "html": "<b>Mall / Shopping</b>, <b>Park / Outdoors</b> and <b>Errands</b> all lean on the daily score: comfortable shoes, easy layers, weather first.<br><br><b>At Home</b> is comfort with a little intention." }
+                ]
+              },
+              {
+                "label": "Travel",
+                "blocks": [
+                  { "type": "text", "html": "<b>Travel</b> balances work and daily: comfortable in transit, presentable on arrival. A GMT or travel watch and easy-to-remove layers are natural picks. Type the destination city so the forecast is the one you will land in." }
+                ]
+              }
+            ]
+          }
+        ],
+        "checkpoint": "I know which occasion to pick for a conference day and for a lunch."
+      },
+
+      "wear": {
+        "kicker": "TODAY",
+        "title": "Wear it and keep it fresh",
+        "intro": "Telling the app what you wore is the one habit that keeps suggestions from repeating.",
+        "minutes": 1,
+        "blocks": [
+          {
+            "type": "steps",
+            "items": [
+              { "title": "Tap I'll wear this", "text": "On the card you chose. Every piece in it, including the day's watch and belt, updates its wear count and last-worn date." },
+              { "title": "Let it rest", "text": "That outfit is marked recommended and rests for seven days. Other outfits rise in the meantime." },
+              { "title": "Ask again when plans change", "text": "Each occasion has its own plan for the day. Switching from Work to Dinner asks fresh; Fresh suggestions re-asks the same occasion." }
+            ]
+          }
+        ],
+        "checkpoint": "I have marked an outfit as worn."
+      },
+
+      "shop": {
+        "kicker": "SHOP",
+        "title": "What to buy next",
+        "intro": "Instead of generic shopping advice, the app measures your actual wardrobe: for each category it counts how many new outfits one good neutral piece would unlock, then suggests specific items that pair with what you already own.",
+        "minutes": 2,
+        "blocks": [
+          {
+            "type": "steps",
+            "items": [
+              { "title": "Tick the categories you are shopping for", "text": "One or several. The bottleneck category is the one whose single new piece unlocks the most outfits." },
+              { "title": "Read the suggestions", "text": "Each names a concrete piece ('Navy hopsack blazer'), what it looks like, and which of your pieces it would pair with." },
+              { "title": "Save, dismiss or mark purchased", "text": "Purchased items are a reminder to photograph and add the real piece; the suggestion itself never enters an outfit." }
+            ]
+          },
+          {
+            "type": "note",
+            "html": "Shop needs at least three confirmed pieces to have something to build on."
+          }
+        ],
+        "checkpoint": "I have run a shopping analysis for at least one category."
+      },
+
+      "photos": {
+        "kicker": "PRACTICAL GUIDE",
+        "title": "Taking photos that tag well",
+        "intro": "The vision model is good, but a clean photo and one line of description get the tags right the first time.",
+        "minutes": 1,
+        "blocks": [
+          {
+            "type": "principles",
+            "items": [
+              { "title": "One piece, flat, filling the frame", "text": "On a bed, floor or hanger, in daylight. No people, no other clothes in shot." },
+              { "title": "True colour over pretty light", "text": "Warm lamps turn navy into black. Shoot near a window." },
+              { "title": "Say what the camera cannot see", "text": "Material (pique, merino, suede), brand and model for watches, and anything unusual about the cut." },
+              { "title": "Watches: dial facing up, bracelet straight", "text": "The model reads the bezel, dial colour and band type from this angle." }
+            ]
+          }
+        ],
+        "checkpoint": "I know what to put in the description box for a watch or a knit."
+      },
+
+      "faq": {
+        "kicker": "PRACTICAL GUIDE",
+        "title": "When something looks off",
+        "intro": "The most common questions and what to do.",
+        "minutes": 2,
+        "blocks": [
+          {
+            "type": "tabs",
+            "label": "Pick a symptom",
+            "items": [
+              {
+                "label": "No outfits yet",
+                "blocks": [
+                  { "type": "text", "html": "You need at least one confirmed top, bottom and pair of shoes. The readiness banner on the Today tab lists what is missing. If pieces are confirmed but the table is empty, the generation may have been interrupted: use <b>Rebuild outfits</b> on the Wardrobe tab; it fills in only what is missing." }
+                ]
+              },
+              {
+                "label": "Nothing fits today",
+                "blocks": [
+                  { "type": "text", "html": "The table had nothing for this season and occasion at a score of 6.5 or better. Try a different occasion, relax the Score filter on the Outfits tab to see what is close, or let the Shop tab tell you which single piece would unlock the most." }
+                ]
+              },
+              {
+                "label": "Wrong tags",
+                "blocks": [
+                  { "type": "text", "html": "Open the piece, fix the chips and <b>Save changes</b>. Its outfits are rebuilt. For a stubborn material or watch style, add a description and tap <b>Re-analyze</b>." }
+                ]
+              },
+              {
+                "label": "It feels slow",
+                "blocks": [
+                  { "type": "text", "html": "Confirming a piece scores up to 120 candidate outfits in batches, which can take a minute or two on a large wardrobe; the banner shows progress and you can keep working. The Today request waits on the weather service and one model call, usually a few seconds." }
+                ]
+              }
+            ]
+          }
+        ],
+        "checkpoint": "I know where the readiness banner and Rebuild outfits are."
+      }
+    }
+  }
+}

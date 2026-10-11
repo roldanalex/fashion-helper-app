@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Camera, CloudSun, Shirt, Sparkles } from "lucide-react";
 import { GoogleSignIn } from "@/components/shared/google-sign-in";
 import { HeroVisual } from "@/components/three/HeroSection";
@@ -36,7 +37,15 @@ export default function LandingPage() {
         <span className="font-serif text-xl tracking-wide">
           Aether <span className="text-primary">Wardrobe</span>
         </span>
-        <GoogleSignIn size="sm" variant="outline" label="Sign in" />
+        <div className="flex items-center gap-4">
+          <Link
+            href="/welcome"
+            className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+          >
+            How it works
+          </Link>
+          <GoogleSignIn size="sm" variant="outline" label="Sign in" />
+        </div>
       </header>
 
       <section className="relative z-10 flex flex-1 flex-col justify-center px-6 py-16 md:px-12">
@@ -53,9 +62,12 @@ export default function LandingPage() {
           </p>
           <div className="mt-10 flex flex-wrap items-center gap-4">
             <GoogleSignIn />
-            <span className="text-sm text-muted-foreground">
-              Free while in beta
-            </span>
+            <Link
+              href="/welcome"
+              className="text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
+            >
+              See how it works
+            </Link>
           </div>
         </div>
       </section>

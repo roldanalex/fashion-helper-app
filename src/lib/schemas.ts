@@ -1,10 +1,15 @@
 import { z } from "zod";
 import {
   CATEGORIES,
+  HARDWARE_TONES,
   MATERIALS,
+  MAX_DAILY_ACCESSORIES,
   PATTERNS,
+  RECO_MAX_PICKS,
   SEASONS,
   STYLE_PREFERENCES,
+  WATCH_BANDS,
+  WATCH_STYLES,
 } from "@/lib/constants";
 
 /* ---------- Profile / onboarding ---------- */
@@ -40,6 +45,35 @@ export type ProfileInput = z.infer<typeof profileSchema>;
 
 /* ---------- AI: vision tagging output ---------- */
 
+/**
+ * Type-specific details. Every field is nullable (not optional) so the
+ * object stays compatible with OpenAI strict structured outputs.
+ */
+export const accessoryAttributesSchema = z.object({
+  watch_style: z
+    .enum(WATCH_STYLES)
+    .nullable()
+    .describe("Watches only: dress, sports, diver, gmt, chronograph, field, pilot"),
+  band: z
+    .enum(WATCH_BANDS)
+    .nullable()
+    .describe("Watches only: bracelet (metal), leather, rubber, fabric (NATO)"),
+  hardware_tone: z
+    .enum(HARDWARE_TONES)
+    .nullable()
+    .describe(
+      "Metal tone of case, buckle or frame: silver (steel), gold, rose gold, two-tone",
+    ),
+});
+
+export type AccessoryAttributes = z.infer<typeof accessoryAttributesSchema>;
+
+export const EMPTY_ATTRIBUTES: AccessoryAttributes = {
+  watch_style: null,
+  band: null,
+  hardware_tone: null,
+};
+
 export const itemTagsSchema = z.object({
   name: z.string().describe("Short human name, e.g. 'Navy pique polo'"),
   category: z.enum(CATEGORIES),
@@ -54,6 +88,9 @@ export const itemTagsSchema = z.object({
   season: z.array(z.enum(SEASONS)).min(1),
   formality_level: z.number().int().min(1).max(10),
   old_money_score: z.number().int().min(1).max(10),
+  attributes: accessoryAttributesSchema.describe(
+    "Type-specific details; all null for anything that is not a watch, belt, sunglasses or bag",
+  ),
 });
 
 export type ItemTags = z.infer<typeof itemTagsSchema>;
@@ -87,6 +124,12 @@ export const rerankSchema = z.object({
       z.object({
         combination_id: z.string(),
         rank: z.number().int().min(1),
+        accessory_ids: z
+          .array(z.string())
+          .max(MAX_DAILY_ACCESSORIES)
+          .describe(
+            "Accessory ids to wear with this outfit today, chosen from the accessory pool (at most one per type)",
+          ),
         explanation: z
           .string()
           .describe(
@@ -95,7 +138,7 @@ export const rerankSchema = z.object({
       }),
     )
     .min(1)
-    .max(5),
+    .max(RECO_MAX_PICKS),
 });
 
 export type RerankResult = z.infer<typeof rerankSchema>;

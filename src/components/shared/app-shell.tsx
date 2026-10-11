@@ -74,11 +74,19 @@ export function AppShell({
             );
           })}
         </nav>
-        <p className="mt-auto px-3 text-[11px] leading-relaxed text-muted-foreground">
-          v{APP_VERSION}
-          <br />
-          {APP_CREDIT}
-        </p>
+        <div className="mt-auto px-3">
+          <Link
+            href="/welcome"
+            className="text-xs text-muted-foreground transition-colors hover:text-foreground"
+          >
+            How it works
+          </Link>
+          <p className="mt-3 text-[11px] leading-relaxed text-muted-foreground">
+            v{APP_VERSION}
+            <br />
+            {APP_CREDIT}
+          </p>
+        </div>
       </aside>
 
       {/* Content */}

@@ -4,6 +4,9 @@ export interface WardrobeReadiness {
   hasTop: boolean;
   hasBottom: boolean;
   hasShoes: boolean;
+  /** Optional layers — not required, but shown so the wardrobe feels complete. */
+  hasOuterwear: boolean;
+  hasAccessory: boolean;
   /** True once the minimum (top + bottom + shoes) is confirmed. */
   ready: boolean;
   /** Confirmed pieces whose outfit generation hasn't finished. */
@@ -31,6 +34,8 @@ export function getWardrobeReadiness(
   const hasTop = has("top");
   const hasBottom = has("bottom");
   const hasShoes = has("shoes");
+  const hasOuterwear = has("outerwear");
+  const hasAccessory = has("accessory");
   const pendingCount = confirmed.filter(
     (i) => i.combo_status !== "done",
   ).length;
@@ -39,6 +44,8 @@ export function getWardrobeReadiness(
     hasTop,
     hasBottom,
     hasShoes,
+    hasOuterwear,
+    hasAccessory,
     ready: hasTop && hasBottom && hasShoes,
     pendingCount,
   };

@@ -26,6 +26,7 @@ function makeProbe(category: Category, formality: number): ClothingItem {
     season: [...SEASONS],
     formality_level: formality,
     old_money_score: 8,
+    attributes: {},
     image_url: "",
     ai_status: "confirmed",
     combo_status: "none",

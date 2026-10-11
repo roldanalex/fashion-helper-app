@@ -21,10 +21,14 @@ export function FilterBar({
   tops = [],
   bottoms = [],
   shoes = [],
+  outerwear = [],
+  accessories = [],
 }: {
   tops?: ItemOption[];
   bottoms?: ItemOption[];
   shoes?: ItemOption[];
+  outerwear?: ItemOption[];
+  accessories?: ItemOption[];
 }) {
   const router = useRouter();
   const params = useSearchParams();
@@ -40,6 +44,8 @@ export function FilterBar({
     { key: "top", label: "top", options: tops },
     { key: "bottom", label: "bottom", options: bottoms },
     { key: "shoes", label: "pair of shoes", options: shoes },
+    { key: "outerwear", label: "outerwear", options: outerwear },
+    { key: "accessory", label: "accessory", options: accessories },
   ];
 
   return (

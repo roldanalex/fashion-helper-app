@@ -10,13 +10,16 @@ import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { ChipGroup } from "@/components/onboarding/chip-group";
 import {
+  ACCESSORY_DETAILS,
+  ATTRIBUTE_VALUE_LABELS,
   CATEGORIES,
   MATERIALS,
   PATTERNS,
   SEASONS,
   SUBCATEGORIES,
+  type AccessoryAttributeKey,
 } from "@/lib/constants";
-import { itemTagsSchema } from "@/lib/schemas";
+import { EMPTY_ATTRIBUTES, itemTagsSchema } from "@/lib/schemas";
 import { archiveItem, confirmItemTags } from "@/app/(app)/wardrobe/actions";
 import type { ClothingItem } from "@/types/database";
 import type { Category } from "@/lib/constants";
@@ -37,14 +40,32 @@ export function TagEditor({ item }: { item: ClothingItem }) {
     season: item.season ?? [],
     formality_level: item.formality_level ?? 5,
     old_money_score: item.old_money_score ?? 5,
+    attributes: {
+      ...EMPTY_ATTRIBUTES,
+      ...(item.attributes ?? {}),
+    } as Record<AccessoryAttributeKey, string | null>,
   });
 
   function set<K extends keyof typeof tags>(key: K, value: (typeof tags)[K]) {
     setTags((t) => ({ ...t, [key]: value }));
   }
 
+  function setAttribute(key: AccessoryAttributeKey, value: string | null) {
+    setTags((t) => ({ ...t, attributes: { ...t.attributes, [key]: value } }));
+  }
+
+  // Extra chip rows for accessories that carry type-specific details.
+  const detailFields =
+    tags.category === "accessory" ? (ACCESSORY_DETAILS[tags.subcategory] ?? []) : [];
+
   function save() {
-    const parsed = itemTagsSchema.safeParse(tags);
+    // Details only make sense for the current type; clear stale ones.
+    const allowed = new Set(detailFields.map((f) => f.key));
+    const attributes: Record<AccessoryAttributeKey, string | null> = {
+      ...EMPTY_ATTRIBUTES,
+    };
+    for (const key of allowed) attributes[key] = tags.attributes[key] ?? null;
+    const parsed = itemTagsSchema.safeParse({ ...tags, attributes });
     if (!parsed.success) {
       toast.error(parsed.error.issues[0]?.message ?? "Check the tags");
       return;
@@ -145,6 +166,24 @@ export function TagEditor({ item }: { item: ClothingItem }) {
         value={tags.subcategory}
         onChange={(v) => set("subcategory", v as string)}
       />
+
+      {detailFields.map((field) => (
+        <ChipGroup
+          key={field.key}
+          label={field.label}
+          options={field.options.map((o) => ({
+            value: o,
+            label: ATTRIBUTE_VALUE_LABELS[o] ?? o,
+          }))}
+          value={tags.attributes[field.key] ?? undefined}
+          onChange={(v) =>
+            setAttribute(
+              field.key,
+              tags.attributes[field.key] === v ? null : (v as string),
+            )
+          }
+        />
+      ))}
 
       <ChipGroup
         label="Material"

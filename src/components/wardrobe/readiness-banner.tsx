@@ -1,20 +1,33 @@
-import { Check, X } from "lucide-react";
+import { Check, Plus, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { RebuildOutfitsButton } from "@/components/wardrobe/rebuild-outfits-button";
 import type { WardrobeReadiness } from "@/lib/combinations/readiness";
 
-function Requirement({ label, met }: { label: string; met: boolean }) {
+function Requirement({
+  label,
+  met,
+  optional = false,
+}: {
+  label: string;
+  met: boolean;
+  optional?: boolean;
+}) {
   return (
     <span
       className={cn(
         "inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-sm",
         met
           ? "border-primary/40 bg-primary/10 text-primary"
-          : "border-border text-muted-foreground",
+          : optional
+            ? "border-dashed border-border text-muted-foreground"
+            : "border-border text-muted-foreground",
       )}
+      title={optional ? "Optional — adds layers and accessories to outfits" : undefined}
     >
       {met ? (
         <Check className="size-3.5" aria-hidden />
+      ) : optional ? (
+        <Plus className="size-3.5" aria-hidden />
       ) : (
         <X className="size-3.5" aria-hidden />
       )}
@@ -28,7 +41,15 @@ function Requirement({ label, met }: { label: string; met: boolean }) {
  * met, whether any confirmed pieces still need their outfits built.
  */
 export function ReadinessBanner({ readiness }: { readiness: WardrobeReadiness }) {
-  const { hasTop, hasBottom, hasShoes, ready, pendingCount } = readiness;
+  const {
+    hasTop,
+    hasBottom,
+    hasShoes,
+    hasOuterwear,
+    hasAccessory,
+    ready,
+    pendingCount,
+  } = readiness;
 
   return (
     <div className="rounded-xl border bg-card p-5">
@@ -36,6 +57,9 @@ export function ReadinessBanner({ readiness }: { readiness: WardrobeReadiness })
         <Requirement label="Top" met={hasTop} />
         <Requirement label="Bottom" met={hasBottom} />
         <Requirement label="Shoes" met={hasShoes} />
+        <span className="mx-1 hidden h-4 w-px bg-border sm:inline-block" aria-hidden />
+        <Requirement label="Outerwear" met={hasOuterwear} optional />
+        <Requirement label="Accessories" met={hasAccessory} optional />
       </div>
 
       {!ready ? (

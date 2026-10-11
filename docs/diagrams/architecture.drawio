@@ -1,0 +1,152 @@
+<mxfile host="drawio" modified="2026-10-11T00:00:00.000Z" agent="Aether Wardrobe docs" version="24.0.0" type="device">
+  <diagram id="aether-architecture" name="System architecture">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1200" pageHeight="760" background="none" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Title and metadata -->
+        <mxCell id="title" value="Aether Wardrobe · System architecture" style="text;html=1;align=left;verticalAlign=middle;fontSize=26;fontStyle=1;fontColor=#C9A45C;" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="700" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="meta" value="v1.1.0 · Last updated 2026-10-11 · Alexis Roldan · Deployment view: who talks to whom, and what never leaves the server" style="text;html=1;align=left;verticalAlign=middle;fontSize=14;fontColor=#8A8378;" vertex="1" parent="1">
+          <mxGeometry x="40" y="58" width="900" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Arrows (back layer) -->
+        <mxCell id="e-browser-vercel" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=2;strokeColor=#5B7C99;endArrow=block;endFill=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="browser" target="vercel-pages">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-browser-vercel-label" value="HTTPS" style="text;html=1;align=center;verticalAlign=middle;fontSize=12;fontColor=#5B7C99;" vertex="1" parent="1">
+          <mxGeometry x="250" y="170" width="80" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e-vercel-supabase" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=2;strokeColor=#5B7C99;endArrow=block;endFill=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="vercel-api" target="supabase-db">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="740" y="297" />
+              <mxPoint x="740" y="255" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e-vercel-supabase-label" value="session · RLS queries&lt;br&gt;signed image URLs" style="text;html=1;align=center;verticalAlign=middle;fontSize=11;fontColor=#5B7C99;" vertex="1" parent="1">
+          <mxGeometry x="675" y="205" width="130" height="34" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e-vercel-openai" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=2;strokeColor=#C9A45C;endArrow=block;endFill=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="vercel-api" target="openai">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="720" y="314" />
+              <mxPoint x="720" y="395" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e-vercel-openai-label" value="server-only,&lt;br&gt;after allowlist check" style="text;html=1;align=center;verticalAlign=middle;fontSize=11;fontColor=#C9A45C;" vertex="1" parent="1">
+          <mxGeometry x="560" y="440" width="150" height="34" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e-vercel-weather" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=2;strokeColor=#C9A45C;endArrow=block;endFill=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="vercel-api" target="weather">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="720" y="314" />
+              <mxPoint x="720" y="520" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="e-google-auth" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=2;strokeColor=#8A8378;endArrow=block;endFill=1;dashed=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="google" target="supabase-auth">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="140" y="110" />
+              <mxPoint x="1000" y="110" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e-google-auth-label" value="Google OAuth code exchange (PKCE)" style="text;html=1;align=center;verticalAlign=middle;fontSize=12;fontColor=#8A8378;" vertex="1" parent="1">
+          <mxGeometry x="400" y="86" width="300" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e-github-actions" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=2;strokeColor=#8A8378;endArrow=block;endFill=1;" edge="1" parent="1" source="github" target="actions">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-github-actions-label" value="push / PR" style="text;html=1;align=center;verticalAlign=middle;fontSize=12;fontColor=#8A8378;" vertex="1" parent="1">
+          <mxGeometry x="250" y="553" width="80" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="e-github-vercel" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeWidth=2;strokeColor=#8A8378;endArrow=block;endFill=1;dashed=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="github" target="vercel">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="140" y="480" />
+              <mxPoint x="505" y="480" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e-github-vercel-label" value="Vercel Git integration deploys main" style="text;html=1;align=center;verticalAlign=middle;fontSize=12;fontColor=#8A8378;" vertex="1" parent="1">
+          <mxGeometry x="180" y="455" width="260" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- Client -->
+        <mxCell id="browser" value="&lt;b&gt;Browser&lt;/b&gt;&lt;br&gt;Phone or desktop&lt;br&gt;&lt;font color=&quot;#8A8378&quot;&gt;Photos compressed to WebP before upload&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;strokeColor=#5B7C99;strokeWidth=2;fillColor=#EEF3F7;fontColor=#1E1C18;" vertex="1" parent="1">
+          <mxGeometry x="40" y="150" width="200" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="google" value="&lt;b&gt;Google&lt;/b&gt;&lt;br&gt;Sign-in provider" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;strokeColor=#8A8378;strokeWidth=2;fillColor=#F3F1EC;fontColor=#1E1C18;" vertex="1" parent="1">
+          <mxGeometry x="40" y="300" width="200" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- Vercel frame -->
+        <mxCell id="vercel" value="" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#C9A45C;strokeWidth=3;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="340" y="130" width="330" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="vercel-title" value="Vercel · Next.js 16 app" style="text;html=1;align=left;verticalAlign=middle;fontSize=16;fontStyle=1;fontColor=#C9A45C;" vertex="1" parent="1">
+          <mxGeometry x="370" y="150" width="280" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="vercel-pages" value="&lt;b&gt;App Router pages&lt;/b&gt;&lt;br&gt;Today · Wardrobe · Outfits · Shop · Settings · Admin · /welcome" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeColor=#C9A45C;strokeWidth=1;fillColor=#FBF6EA;fontColor=#1E1C18;" vertex="1" parent="1">
+          <mxGeometry x="370" y="190" width="270" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="vercel-api" value="&lt;b&gt;API routes&lt;/b&gt;&lt;br&gt;tag · generate · recommend · shop&lt;br&gt;Every route checks the allowlist first" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeColor=#C9A45C;strokeWidth=1;fillColor=#FBF6EA;fontColor=#1E1C18;" vertex="1" parent="1">
+          <mxGeometry x="370" y="265" width="270" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="vercel-proxy" value="&lt;b&gt;proxy.ts middleware&lt;/b&gt;&lt;br&gt;Refreshes the Supabase session, guards routes" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeColor=#C9A45C;strokeWidth=1;fillColor=#FBF6EA;fontColor=#1E1C18;" vertex="1" parent="1">
+          <mxGeometry x="370" y="345" width="270" height="55" as="geometry" />
+        </mxCell>
+
+        <!-- Supabase frame -->
+        <mxCell id="supabase" value="" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#5B7C99;strokeWidth=3;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="820" y="130" width="360" height="210" as="geometry" />
+        </mxCell>
+        <mxCell id="supabase-title" value="Supabase" style="text;html=1;align=left;verticalAlign=middle;fontSize=16;fontStyle=1;fontColor=#5B7C99;" vertex="1" parent="1">
+          <mxGeometry x="850" y="150" width="110" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="supabase-auth" value="&lt;b&gt;Auth&lt;/b&gt; · Google OAuth, access allowlist" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeColor=#5B7C99;strokeWidth=1;fillColor=#EEF3F7;fontColor=#1E1C18;" vertex="1" parent="1">
+          <mxGeometry x="850" y="185" width="300" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="supabase-db" value="&lt;b&gt;Postgres&lt;/b&gt; · 6 tables, row-level security, combinations table" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeColor=#5B7C99;strokeWidth=1;fillColor=#EEF3F7;fontColor=#1E1C18;" vertex="1" parent="1">
+          <mxGeometry x="850" y="235" width="300" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="supabase-storage" value="&lt;b&gt;Storage&lt;/b&gt; · private wardrobe bucket, short-lived signed URLs" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeColor=#5B7C99;strokeWidth=1;fillColor=#EEF3F7;fontColor=#1E1C18;" vertex="1" parent="1">
+          <mxGeometry x="850" y="285" width="300" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- External AI and weather -->
+        <mxCell id="openai" value="&lt;b&gt;OpenAI&lt;/b&gt;&lt;br&gt;gpt-4o vision: tagging&lt;br&gt;gpt-4o-mini: scoring, ranking, shopping" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeColor=#C9A45C;strokeWidth=2;fillColor=#FBF6EA;fontColor=#1E1C18;" vertex="1" parent="1">
+          <mxGeometry x="820" y="360" width="360" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="weather" value="&lt;b&gt;OpenWeatherMap&lt;/b&gt;&lt;br&gt;Forecast at the destination · city autocomplete" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeColor=#C9A45C;strokeWidth=2;fillColor=#FBF6EA;fontColor=#1E1C18;" vertex="1" parent="1">
+          <mxGeometry x="820" y="495" width="360" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- CI/CD -->
+        <mxCell id="github" value="&lt;b&gt;GitHub&lt;/b&gt;&lt;br&gt;Public repository · no secrets committed" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeColor=#8A8378;strokeWidth=2;fillColor=#F3F1EC;fontColor=#1E1C18;" vertex="1" parent="1">
+          <mxGeometry x="40" y="540" width="200" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="actions" value="&lt;b&gt;GitHub Actions CI&lt;/b&gt;&lt;br&gt;Type-check · unit tests (Vitest) · production build · gitleaks secret scan" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeColor=#8A8378;strokeWidth=2;fillColor=#F3F1EC;fontColor=#1E1C18;" vertex="1" parent="1">
+          <mxGeometry x="340" y="540" width="330" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- Legend -->
+        <mxCell id="legend" value="&lt;font color=&quot;#5B7C99&quot;&gt;━ data and session&lt;/font&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;font color=&quot;#C9A45C&quot;&gt;━ paid external calls, server-only&lt;/font&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;font color=&quot;#8A8378&quot;&gt;╌ sign-in and delivery&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="740" y="570" width="440" height="40" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
