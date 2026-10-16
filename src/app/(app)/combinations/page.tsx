@@ -10,9 +10,11 @@ import type { Combination } from "@/types/database";
 
 export const metadata = { title: "Outfits" };
 
-/** Pieces in the outfit: 3 required + outerwear + each accessory. */
+/** Pieces in the outfit: 3 required + outerwear + watch + each accessory. */
 function completeness(c: Combination): number {
-  return 3 + (c.outerwear_id ? 1 : 0) + c.accessory_ids.length;
+  return (
+    3 + (c.outerwear_id ? 1 : 0) + (c.watch_id ? 1 : 0) + c.accessory_ids.length
+  );
 }
 
 function occasionScore(c: Combination, occasion: Occasion): number {
@@ -39,13 +41,14 @@ export default async function CombinationsPage({
     .select("id, name, category")
     .eq("archived", false)
     .eq("ai_status", "confirmed")
-    .in("category", ["top", "bottom", "shoes", "outerwear", "accessory"])
+    .in("category", ["top", "bottom", "shoes", "outerwear", "watch", "accessory"])
     .order("name");
   const items = itemRows ?? [];
   const tops = items.filter((i) => i.category === "top");
   const bottoms = items.filter((i) => i.category === "bottom");
   const shoes = items.filter((i) => i.category === "shoes");
   const outerwear = items.filter((i) => i.category === "outerwear");
+  const watches = items.filter((i) => i.category === "watch");
   const accessories = items.filter((i) => i.category === "accessory");
 
   let query = supabase
@@ -62,6 +65,7 @@ export default async function CombinationsPage({
   if (params.bottom) query = query.eq("bottom_id", params.bottom);
   if (params.shoes) query = query.eq("shoes_id", params.shoes);
   if (params.outerwear) query = query.eq("outerwear_id", params.outerwear);
+  if (params.watch) query = query.eq("watch_id", params.watch);
   if (params.accessory)
     query = query.contains("accessory_ids", [params.accessory]);
 
@@ -100,6 +104,7 @@ export default async function CombinationsPage({
             bottoms={bottoms}
             shoes={shoes}
             outerwear={outerwear}
+            watches={watches}
             accessories={accessories}
           />
         </Suspense>

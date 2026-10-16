@@ -20,6 +20,7 @@ import type {
 export async function rerankAndExplain({
   candidates,
   itemsById,
+  watchPool,
   accessoryPool,
   weather,
   occasion,
@@ -28,6 +29,8 @@ export async function rerankAndExplain({
 }: {
   candidates: Combination[];
   itemsById: Map<string, ClothingItem>;
+  /** Every confirmed watch the client owns; the stylist picks today's. */
+  watchPool: ClothingItem[];
   /** Every confirmed accessory the client owns; the stylist picks today's. */
   accessoryPool: ClothingItem[];
   weather: WeatherSnapshot;
@@ -52,14 +55,20 @@ export async function rerankAndExplain({
       .map((id) => itemsById.get(id)?.name)
       .filter(Boolean)
       .join(", ");
+    const defaultWatch = c.watch_id ? itemsById.get(c.watch_id)?.name : null;
     return [
       `id: ${c.id}`,
       ...lines,
+      `  default watch: ${defaultWatch ?? "none"}`,
       `  default accessories: ${defaults || "none"}`,
       `  stylist note: ${c.notes ?? "—"}`,
       `  scores: overall ${c.overall_score}, work ${c.work_score}, daily ${c.daily_score}, old-money ${c.old_money_score}`,
     ].join("\n");
   };
+
+  const watchLines = watchPool
+    .map((w) => `  ${w.id} — ${describeItem(w)}`)
+    .join("\n");
 
   const accessoryLines = accessoryPool
     .map((a) => `  ${a.id} — ${a.subcategory ?? "accessory"}: ${describeItem(a)}`)
@@ -82,12 +91,15 @@ Consider:
 - Their preferred styles: ${stylePreferences.join(", ") || "smart casual"}.
 - Variety is a virtue, but never at the cost of appropriateness.
 
-Accessories: for each pick, choose today's accessories from the accessory pool
-(up to ${MAX_DAILY_ACCESSORIES}, at most one per type, ids verbatim). You may
-keep the outfit's defaults or swap them. Match the watch to the day: a GMT or
-sports watch for travel and active days, a dressier watch for work, dinner and
-events; keep metals consistent (silver watch with a silver buckle); sunglasses
-only when the day is bright and outdoors. If the pool is empty, return [].
+Watch: for each pick, choose today's watch from the watch pool (watch_id
+verbatim, or null if the pool is empty). You may keep the outfit's default or
+swap it. Match the watch to the day: a GMT or sports watch for travel and
+active days, a dressier watch for work, dinner and events.
+
+Accessories: choose today's accessories from the accessory pool (up to
+${MAX_DAILY_ACCESSORIES}, at most one per type, ids verbatim). Keep metals
+consistent with the watch (silver watch with a silver buckle); sunglasses only
+when the day is bright and outdoors. If the pool is empty, return [].
 
 For each pick, write exactly two warm, concrete sentences explaining WHY —
 mention the weather, their plans and the watch or key accessory naturally, like
@@ -98,6 +110,9 @@ a stylist laying clothes on the bed. Use the combination ids verbatim.`,
           content: `Today: ${occasion}${notes ? ` — "${notes}"` : ""}
 Occasion notes: ${OCCASION_HINTS[occasion]}
 Weather at destination (${weather.locationName}): ${weather.summary}, feels like ${weather.feelsLikeC}°C, humidity ${weather.humidity}%.
+
+Watch pool:
+${watchLines || "  (none)"}
 
 Accessory pool:
 ${accessoryLines || "  (none)"}

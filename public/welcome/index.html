@@ -481,8 +481,8 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
           {
             "type": "capabilities",
             "items": [
-              { "category": "WARDROBE", "badge": "catalogue", "title": "Everything you own, tagged", "text": "Grouped by category, with type, material, pattern, seasons, formality and old-money fit on every piece. Watches carry style, band and hardware tone." },
-              { "category": "OUTFITS", "badge": "the table", "title": "Every combination worth wearing", "text": "Filter by a single top, bottom, shoes or accessory, by occasion, season or minimum score. Boost favourites, hide misses." },
+              { "category": "WARDROBE", "badge": "catalogue", "title": "Everything you own, tagged", "text": "Grouped by category, with type, material, pattern, seasons, formality and old-money fit on every piece. Watches have their own category, typed by style, with band and hardware tone." },
+              { "category": "OUTFITS", "badge": "the table", "title": "Every combination worth wearing", "text": "Filter by a single top, bottom, shoes, outerwear, watch or accessory, by occasion, season or minimum score. Boost favourites, hide misses." },
               { "category": "TODAY", "badge": "daily", "title": "Style my day", "text": "Ten occasions, an optional destination with city autocomplete, free-text notes. Five to seven ranked outfits with the right watch for the day." },
               { "category": "SHOP", "badge": "gap analysis", "title": "What to buy next", "text": "Counts how many new outfits one good piece would unlock in each category, then names specific items that pair with what you own." },
               { "category": "SETTINGS", "badge": "profile", "title": "Your profile and units", "text": "Update build, colouring, styles and home city; everything feeds the prompts." },
@@ -521,7 +521,7 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
             "items": [
               { "role": "Busy professional", "text": "Pick 'Work' or 'Indoors / Conferences', tap once, wear the first pick. Under a minute." },
               { "role": "Frequent traveller", "text": "Type the city you are flying to. The forecast there drives the outfit, and the GMT watch comes along." },
-              { "role": "Collector", "text": "Each watch, belt and pair of sunglasses is tagged with style and hardware tone, so metals match and the dress watch goes to dinner." },
+              { "role": "Collector", "text": "Watches have their own category and outfit slot. Each is tagged with style, band and hardware tone, so metals match and the dress watch goes to dinner." },
               { "role": "Deliberate shopper", "text": "Shop shows which category is the bottleneck and what specific piece would unlock the most new outfits." }
             ]
           }
@@ -634,10 +634,10 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
             "type": "glance",
             "title": "What the AI reads from the photo",
             "items": [
-              { "label": "Identity", "text": "A short name, the type (polo, chinos, loafers, watch), the primary colour and its hex value." },
+              { "label": "Identity", "text": "A short name, the type (polo, chinos, loafers, GMT watch), the primary colour and its hex value." },
               { "label": "Fabric", "text": "Material and pattern. Hard to see in photos, so your description wins." },
               { "label": "Fit for purpose", "text": "Seasons it suits, formality 1 to 10, and an old-money fit score 1 to 10." },
-              { "label": "Accessory details", "text": "For watches: style, band and hardware tone. For belts, sunglasses and bags: hardware tone." }
+              { "label": "Accessory details", "text": "For watches: style (as the type), band and hardware tone. For belts, sunglasses and bags: hardware tone." }
             ]
           }
         ],
@@ -670,7 +670,7 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
       "accessories": {
         "kicker": "WARDROBE",
         "title": "Watches and accessories",
-        "intro": "Accessories are where the app matches metals and formality. A watch carries three extra tags; belts, sunglasses and bags carry one. The daily stylist uses them to pick the right watch for the day.",
+        "intro": "Watches are their own category with their own slot in every outfit. A watch's type is its style, plus band and hardware tone. Belts, sunglasses and bags carry a hardware tone that the engine matches to the watch. The daily stylist picks the right watch for the day.",
         "minutes": 2,
         "chips": ["Watch style", "Band", "Hardware tone"],
         "blocks": [
@@ -678,7 +678,7 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
             "type": "glance",
             "title": "The extra chips on a watch",
             "items": [
-              { "label": "Watch style", "text": "Dress, sports, diver, GMT / travel, chronograph, field or pilot. GMT and sports watches go to travel and active days; dress watches to work, dinner and events." },
+              { "label": "Watch style", "text": "The Type row for a watch: dress, sports, diver, GMT / travel, chronograph, field or pilot. GMT and sports watches go to travel and active days; dress watches to work, dinner and events." },
               { "label": "Band", "text": "Metal bracelet, leather strap, rubber strap or fabric / NATO." },
               { "label": "Hardware tone", "text": "Silver (steel), gold, rose gold or two-tone. The engine prefers a belt buckle that matches the watch." },
               { "label": "Formality and old money", "text": "A dress watch on leather rates 8 to 9 formality and 9 to 10 old money; a classic steel sports watch 6 to 7 and 7 to 8; a coloured bezel or rubber strap takes a point off." }
@@ -686,11 +686,11 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
           },
           {
             "type": "text",
-            "html": "<b>Example.</b> A Tudor Black Bay GMT on a steel bracelet tags as <i>watch · steel · solid · GMT · bracelet · silver</i>, formality 6, old money 7. A TAG Heuer Carrera with a blue dial tags as <i>watch · steel · solid · sports · bracelet · silver</i>, formality 7, old money 8. On a travel day the stylist reaches for the GMT; on a dinner, the Carrera."
+            "html": "<b>Example.</b> A Tudor Black Bay GMT on a steel bracelet tags as <i>Watch · GMT · steel · bracelet · silver</i>, formality 6, old money 7. A TAG Heuer Carrera with a blue dial tags as <i>Watch · sports · steel · bracelet · silver</i>, formality 7, old money 8. On a travel day the stylist reaches for the GMT; on a dinner, the Carrera."
           },
           {
             "type": "note",
-            "html": "Each new accessory creates its own variants of the outfits it suits, so the Outfits table can show the same shirt and chinos once with each watch. Filter by accessory to see everything that works with one of them."
+            "html": "A new watch goes into every outfit it suits; other new pieces get the best-fitting watch you own. Filter by watch on the Outfits tab to see everything that works with one of them."
           }
         ],
         "checkpoint": "I have tagged a watch with its style, band and hardware tone."
@@ -710,7 +710,7 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
           {
             "type": "steps",
             "items": [
-              { "title": "Build around a piece", "text": "The first dropdowns filter to one top, one bottom, one pair of shoes, one piece of outerwear or one accessory. 'Any accessory → Tudor GMT' shows every outfit that works with that watch." },
+              { "title": "Build around a piece", "text": "The first dropdowns filter to one top, one bottom, one pair of shoes, one piece of outerwear, one watch or one accessory. 'Any watch → Tudor GMT' shows every outfit that works with that watch." },
               { "title": "Filter by occasion, season and score", "text": "Occasion re-sorts by a blend of work, daily, formality and old-money scores. Score 7+, 8+ or 9+ sets the floor." },
               { "title": "Boost or hide", "text": "The star boosts; the eye hides. Show hidden reveals what you have put away." },
               { "title": "Read the stylist note", "text": "One sentence per outfit from the scoring pass, later used to explain the pick on the Today tab." }

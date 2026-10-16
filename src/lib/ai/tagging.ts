@@ -39,19 +39,24 @@ Rules:
 - Choose subcategory from this guide when possible:
 ${subcategoryGuide}
 
-Accessories — fill \`attributes\` (leave every field null for non-accessories):
-- material for metal accessories is the case/bracelet metal: steel, gold, titanium.
-- Watches: watch_style (dress = thin case, plain dial, usually leather;
-  sports = steel bracelet, everyday; diver = rotating bezel, lume; gmt = 24-hour
-  bezel or hand for a second time zone; chronograph = sub-dials/pushers; field;
-  pilot), band (bracelet, leather, rubber, fabric) and hardware_tone (silver for
-  steel, gold, rose gold, two-tone). Name the brand and model if legible.
-- Belts, sunglasses, bags: hardware_tone of the buckle, frame or fittings.
-- Watch formality: dress watch 8-9, classic steel sports watch 6-7, diver or
+Watches (category "watch") — the subcategory IS the watch style: dress (thin
+case, plain dial, usually leather), sports (steel bracelet, everyday), diver
+(rotating bezel, lume), gmt (24-hour bezel or hand for a second time zone),
+chronograph (sub-dials and pushers), field, pilot.
+- material is the case metal: steel, gold, titanium. color is the dial color.
+- attributes.band: bracelet (metal), leather, rubber, fabric (NATO).
+- attributes.hardware_tone: silver for steel, gold, rose gold, two-tone.
+- Name the brand and model if legible.
+- Formality: dress watch 8-9, classic steel sports watch 6-7, diver or
   rubber-strap 5-6, digital or smartwatch 3-4.
-- Watch old_money_score: dress watch on leather (Cartier Tank, Calatrava) 9-10;
+- old_money_score: dress watch on leather (Cartier Tank, Calatrava) 9-10;
   classic steel sports (Datejust, Carrera, Black Bay, Aqua Terra) 7-8; coloured
-  bezels or rubber take a point off; loud, oversized or digital 2-4.`,
+  bezels or rubber take a point off; loud, oversized or digital 2-4.
+
+Accessories (category "accessory"): attributes.hardware_tone for the buckle,
+frame or fittings of belts, sunglasses and bags; band stays null.
+
+Everything else: every attributes field is null.`,
         },
         {
           role: "user",

@@ -10,6 +10,7 @@ export interface Candidate {
   bottom: ClothingItem;
   shoes: ClothingItem;
   outerwear: ClothingItem | null;
+  watch: ClothingItem | null;
   accessories: ClothingItem[];
 }
 
@@ -107,30 +108,53 @@ function heuristicScore(c: Candidate): number {
     .filter((f): f is number => f != null);
   const spread =
     levels.length > 1 ? Math.max(...levels) - Math.min(...levels) : 0;
-  return neutrals * 2 - spread + (c.outerwear ? 0.5 : 0);
+  return neutrals * 2 - spread + (c.outerwear ? 0.5 : 0) + (c.watch ? 0.25 : 0);
 }
 
-/* ---------- accessory selection ---------- */
+/* ---------- watch and accessory selection ---------- */
 
 function formalityGap(a: ClothingItem, target: number): number {
   return Math.abs((a.formality_level ?? 5) - target);
 }
 
 /**
+ * The watch that best suits a base outfit: closest formality within the
+ * allowed spread, higher old-money fit breaking ties. Null when no watch
+ * suits it (or none is owned) — the watch slot is optional, like outerwear.
+ */
+export function pickWatch(
+  watches: ClothingItem[],
+  target: number,
+): ClothingItem | null {
+  return (
+    watches
+      .filter((w) => formalityGap(w, target) <= MAX_FORMALITY_DELTA)
+      .sort(
+        (a, b) =>
+          formalityGap(a, target) - formalityGap(b, target) ||
+          (b.old_money_score ?? 0) - (a.old_money_score ?? 0),
+      )[0] ?? null
+  );
+}
+
+/**
  * Greedy accessory pick for one base outfit: closest formality first, at
  * most one per type (never two watches), and once the first metal piece is
  * chosen, later picks prefer the same hardware tone (silver watch → silver
- * buckle). `anchor`, when given, is always included first.
+ * buckle). `anchor`, when given, is always included first. `initialTone`
+ * is the outfit watch's hardware tone, so the belt follows the watch.
  */
 export function pickAccessories(
   pool: ClothingItem[],
   target: number,
   anchor: ClothingItem | null,
   max: number = MAX_ACCESSORIES,
+  initialTone: string | null = null,
 ): ClothingItem[] {
   const picked: ClothingItem[] = anchor ? [anchor] : [];
   const usedTypes = new Set(picked.map((a) => a.subcategory));
-  let tone: string | null = anchor?.attributes?.hardware_tone ?? null;
+  let tone: string | null =
+    anchor?.attributes?.hardware_tone ?? initialTone ?? null;
 
   const candidates = pool
     .filter(
@@ -176,6 +200,7 @@ export function generateCandidatesForItem(
   const shoes = newItem.category === "shoes" ? [newItem] : byCat("shoes");
   const outerwear =
     newItem.category === "outerwear" ? [newItem] : byCat("outerwear");
+  const watches = byCat("watch");
   const accessories = byCat("accessory");
 
   const candidates: Candidate[] = [];
@@ -194,16 +219,28 @@ export function generateCandidatesForItem(
           if (seasons.length === 0) continue;
           if (!colorsWork(required)) continue;
 
+          // Watch: the new watch is mandatory; otherwise the best-fitting one.
           // Accessories: the new accessory is mandatory; otherwise greedy by
-          // formality fit, one per type, preferring matching hardware tones.
+          // formality fit, one per type, matching the watch's metal.
           const target = avgFormality(required);
+          const watch =
+            newItem.category === "watch" ? newItem : pickWatch(watches, target);
           const accs = pickAccessories(
             accessories,
             target,
             newItem.category === "accessory" ? newItem : null,
+            MAX_ACCESSORIES,
+            watch?.attributes?.hardware_tone ?? null,
           );
 
-          candidates.push({ top, bottom, shoes: shoe, outerwear: outer, accessories: accs });
+          candidates.push({
+            top,
+            bottom,
+            shoes: shoe,
+            outerwear: outer,
+            watch,
+            accessories: accs,
+          });
         }
       }
     }

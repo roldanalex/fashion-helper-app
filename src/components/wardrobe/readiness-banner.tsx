@@ -46,6 +46,7 @@ export function ReadinessBanner({ readiness }: { readiness: WardrobeReadiness })
     hasBottom,
     hasShoes,
     hasOuterwear,
+    hasWatch,
     hasAccessory,
     ready,
     pendingCount,
@@ -59,6 +60,7 @@ export function ReadinessBanner({ readiness }: { readiness: WardrobeReadiness })
         <Requirement label="Shoes" met={hasShoes} />
         <span className="mx-1 hidden h-4 w-px bg-border sm:inline-block" aria-hidden />
         <Requirement label="Outerwear" met={hasOuterwear} optional />
+        <Requirement label="Watch" met={hasWatch} optional />
         <Requirement label="Accessories" met={hasAccessory} optional />
       </div>
 

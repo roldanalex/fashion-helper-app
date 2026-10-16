@@ -4,7 +4,7 @@ import { signImageUrls } from "@/lib/supabase/storage";
 import type { ClothingItem, Combination } from "@/types/database";
 
 export interface EnrichedSlot {
-  slot: "top" | "bottom" | "shoes" | "outerwear" | "accessory";
+  slot: "top" | "bottom" | "shoes" | "outerwear" | "watch" | "accessory";
   item: ClothingItem;
   imageUrl?: string;
 }
@@ -25,6 +25,7 @@ export async function enrichCombinations(
     ids.add(c.bottom_id);
     ids.add(c.shoes_id);
     if (c.outerwear_id) ids.add(c.outerwear_id);
+    if (c.watch_id) ids.add(c.watch_id);
     c.accessory_ids.forEach((a) => ids.add(a));
   }
   if (ids.size === 0) return [];
@@ -50,6 +51,7 @@ export async function enrichCombinations(
     push("bottom", combination.bottom_id);
     push("outerwear", combination.outerwear_id);
     push("shoes", combination.shoes_id);
+    push("watch", combination.watch_id);
     combination.accessory_ids.forEach((a) => push("accessory", a));
     return { combination, slots };
   });

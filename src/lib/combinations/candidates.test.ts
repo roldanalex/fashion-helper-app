@@ -4,6 +4,7 @@ import {
   generateCandidatesForItem,
   isNeutral,
   pickAccessories,
+  pickWatch,
 } from "@/lib/combinations/candidates";
 import { MAX_ACCESSORIES, MAX_FORMALITY_DELTA } from "@/lib/constants";
 import { baseWardrobe, makeItem } from "@/test/fixtures";
@@ -94,25 +95,54 @@ describe("generateCandidatesForItem", () => {
 
   it("always includes a new accessory and never two of the same type", () => {
     const wardrobe = baseWardrobe();
-    const carrera = makeItem({
-      id: "watch-1",
+    const brownBelt = makeItem({
+      id: "belt-1",
       category: "accessory",
-      subcategory: "watch",
-      name: "Carrera",
-      attributes: { hardware_tone: "silver" },
+      subcategory: "belt",
+      name: "Brown belt",
     });
-    const tudor = makeItem({
-      id: "watch-2",
+    const navyBelt = makeItem({
+      id: "belt-2",
       category: "accessory",
-      subcategory: "watch",
-      name: "Black Bay GMT",
-      attributes: { hardware_tone: "silver" },
+      subcategory: "belt",
+      name: "Navy belt",
     });
-    const candidates = generateCandidatesForItem(tudor, [...wardrobe, carrera, tudor]);
+    const candidates = generateCandidatesForItem(navyBelt, [...wardrobe, brownBelt, navyBelt]);
     expect(candidates).toHaveLength(1);
     const ids = candidates[0].accessories.map((a) => a.id);
-    expect(ids).toContain("watch-2");
-    expect(ids).not.toContain("watch-1");
+    expect(ids).toContain("belt-2");
+    expect(ids).not.toContain("belt-1");
+  });
+
+  it("puts a new watch in the watch slot of every outfit it suits", () => {
+    const wardrobe = baseWardrobe();
+    const carrera = makeItem({ id: "watch-1", category: "watch", subcategory: "sports" });
+    const tudor = makeItem({ id: "watch-2", category: "watch", subcategory: "gmt" });
+    const candidates = generateCandidatesForItem(tudor, [...wardrobe, carrera, tudor]);
+    expect(candidates).toHaveLength(1);
+    expect(candidates[0].watch?.id).toBe("watch-2");
+    expect(candidates[0].accessories).toEqual([]);
+  });
+
+  it("gives other new pieces the best-fitting watch, never a watch as an accessory", () => {
+    const wardrobe = baseWardrobe(); // formality 6 throughout
+    const diver = makeItem({ id: "diver", category: "watch", subcategory: "diver", formality_level: 5 });
+    const sports = makeItem({ id: "sports", category: "watch", subcategory: "sports", formality_level: 6 });
+    const candidates = generateCandidatesForItem(wardrobe[0], [...wardrobe, diver, sports]);
+    expect(candidates[0].watch?.id).toBe("sports");
+    expect(candidates[0].accessories.some((a) => a.category === "watch")).toBe(false);
+  });
+
+  it("leaves the watch slot empty when no watch suits the outfit", () => {
+    const wardrobe = baseWardrobe();
+    const dressWatch = makeItem({
+      id: "dress",
+      category: "watch",
+      subcategory: "dress",
+      formality_level: 6 + MAX_FORMALITY_DELTA + 1,
+    });
+    const candidates = generateCandidatesForItem(wardrobe[0], [...wardrobe, dressWatch]);
+    expect(candidates[0].watch).toBeNull();
   });
 
   it("caps the number of candidates", () => {
@@ -136,7 +166,7 @@ describe("pickAccessories", () => {
     const pool = [
       makeItem({ id: "belt-far", category: "accessory", subcategory: "belt", formality_level: 8 }),
       makeItem({ id: "belt-near", category: "accessory", subcategory: "belt", formality_level: 6 }),
-      makeItem({ id: "watch", category: "accessory", subcategory: "watch", formality_level: 7 }),
+      makeItem({ id: "shades", category: "accessory", subcategory: "sunglasses", formality_level: 7 }),
       makeItem({ id: "hat", category: "accessory", subcategory: "hat", formality_level: 6 }),
     ];
     const picked = pickAccessories(pool, target, null);
@@ -146,13 +176,7 @@ describe("pickAccessories", () => {
     expect(picked.map((a) => a.id)).not.toContain("belt-far");
   });
 
-  it("prefers a buckle that matches the anchor watch's hardware tone", () => {
-    const tudor = makeItem({
-      id: "watch",
-      category: "accessory",
-      subcategory: "watch",
-      attributes: { hardware_tone: "silver" },
-    });
+  it("prefers a buckle that matches the outfit watch's hardware tone", () => {
     const pool = [
       makeItem({
         id: "belt-gold",
@@ -169,17 +193,11 @@ describe("pickAccessories", () => {
         attributes: { hardware_tone: "silver" },
       }),
     ];
-    const picked = pickAccessories(pool, target, tudor);
-    expect(picked.map((a) => a.id)).toEqual(["watch", "belt-silver"]);
+    const picked = pickAccessories(pool, target, null, MAX_ACCESSORIES, "silver");
+    expect(picked.map((a) => a.id)).toEqual(["belt-silver"]);
   });
 
   it("falls back to a mismatched tone rather than leaving the slot empty", () => {
-    const tudor = makeItem({
-      id: "watch",
-      category: "accessory",
-      subcategory: "watch",
-      attributes: { hardware_tone: "silver" },
-    });
     const pool = [
       makeItem({
         id: "belt-gold",
@@ -188,8 +206,8 @@ describe("pickAccessories", () => {
         attributes: { hardware_tone: "gold" },
       }),
     ];
-    const picked = pickAccessories(pool, target, tudor);
-    expect(picked.map((a) => a.id)).toEqual(["watch", "belt-gold"]);
+    const picked = pickAccessories(pool, target, null, MAX_ACCESSORIES, "silver");
+    expect(picked.map((a) => a.id)).toEqual(["belt-gold"]);
   });
 
   it("skips accessories too far from the outfit's formality", () => {
@@ -211,7 +229,20 @@ describe("candidateSeasons", () => {
     top.season = ["spring", "summer"];
     bottom.season = ["summer", "fall"];
     expect(
-      candidateSeasons({ top, bottom, shoes, outerwear: null, accessories: [] }),
+      candidateSeasons({ top, bottom, shoes, outerwear: null, watch: null, accessories: [] }),
     ).toEqual(["summer"]);
+  });
+});
+
+describe("pickWatch", () => {
+  it("prefers the closest formality, then the higher old-money fit", () => {
+    const a = makeItem({ id: "a", category: "watch", formality_level: 7, old_money_score: 7 });
+    const b = makeItem({ id: "b", category: "watch", formality_level: 7, old_money_score: 9 });
+    const c = makeItem({ id: "c", category: "watch", formality_level: 9, old_money_score: 10 });
+    expect(pickWatch([a, b, c], 7)?.id).toBe("b");
+  });
+
+  it("returns null for an empty pool", () => {
+    expect(pickWatch([], 6)).toBeNull();
   });
 });

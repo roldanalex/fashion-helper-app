@@ -43,6 +43,7 @@ export function makeCombination(
     bottom_id: "bottom-1",
     outerwear_id: null,
     shoes_id: "shoes-1",
+    watch_id: null,
     accessory_ids: [],
     color_harmony_score: 8,
     old_money_score: 8,

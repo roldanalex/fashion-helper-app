@@ -6,6 +6,7 @@ export interface WardrobeReadiness {
   hasShoes: boolean;
   /** Optional layers — not required, but shown so the wardrobe feels complete. */
   hasOuterwear: boolean;
+  hasWatch: boolean;
   hasAccessory: boolean;
   /** True once the minimum (top + bottom + shoes) is confirmed. */
   ready: boolean;
@@ -35,6 +36,7 @@ export function getWardrobeReadiness(
   const hasBottom = has("bottom");
   const hasShoes = has("shoes");
   const hasOuterwear = has("outerwear");
+  const hasWatch = has("watch");
   const hasAccessory = has("accessory");
   const pendingCount = confirmed.filter(
     (i) => i.combo_status !== "done",
@@ -45,6 +47,7 @@ export function getWardrobeReadiness(
     hasBottom,
     hasShoes,
     hasOuterwear,
+    hasWatch,
     hasAccessory,
     ready: hasTop && hasBottom && hasShoes,
     pendingCount,

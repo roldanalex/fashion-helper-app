@@ -27,11 +27,11 @@ export async function markWorn(planId: string, combinationId: string) {
     .select("recommendations")
     .single();
 
-  // The accessories actually worn are the day's picks, not the table defaults.
+  // The watch and accessories actually worn are the day's picks, not the
+  // table defaults.
   const picks = (plan?.recommendations ?? []) as RankedRecommendation[];
-  const dailyAccessories = picks.find(
-    (p) => p.combination_id === combinationId,
-  )?.accessory_ids;
+  const pick = picks.find((p) => p.combination_id === combinationId);
+  const dailyAccessories = pick?.accessory_ids;
 
   await supabase
     .from("combinations")
@@ -43,6 +43,7 @@ export async function markWorn(planId: string, combinationId: string) {
     combo.bottom_id,
     combo.shoes_id,
     combo.outerwear_id,
+    pick?.watch_id ?? combo.watch_id,
     ...(dailyAccessories?.length ? dailyAccessories : combo.accessory_ids),
   ].filter(Boolean) as string[];
 

@@ -10,6 +10,8 @@ import {
   RECO_MIN_PICKS,
   RECO_CANDIDATE_POOL,
   SUBCATEGORIES,
+  WATCH_STYLES,
+  detailFieldsFor,
 } from "@/lib/constants";
 
 describe("occasions", () => {
@@ -45,6 +47,17 @@ describe("wardrobe taxonomy", () => {
     for (const type of Object.keys(ACCESSORY_DETAILS)) {
       expect(SUBCATEGORIES.accessory).toContain(type);
     }
+  });
+
+  it("makes watches their own category, typed by watch style", () => {
+    expect(CATEGORIES).toContain("watch");
+    expect(SUBCATEGORIES.accessory).not.toContain("watch");
+    expect(SUBCATEGORIES.watch).toEqual([...WATCH_STYLES]);
+    expect(detailFieldsFor("watch", "gmt").map((f) => f.key)).toEqual([
+      "band",
+      "hardware_tone",
+    ]);
+    expect(detailFieldsFor("top", "polo")).toEqual([]);
   });
 
   it("includes metals for watches", () => {

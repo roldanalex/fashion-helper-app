@@ -25,6 +25,7 @@ const CATEGORY_LABELS: Record<string, string> = {
   bottom: "Pants & shorts",
   outerwear: "Blazers & jackets",
   shoes: "Shoes",
+  watch: "Watches",
   accessory: "Accessories",
 };
 

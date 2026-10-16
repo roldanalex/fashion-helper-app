@@ -6,10 +6,10 @@ describe("describeItem", () => {
   it("includes watch details so text-only prompts can see them", () => {
     const tudor = makeItem({
       name: "Black Bay GMT",
-      category: "accessory",
-      subcategory: "watch",
+      category: "watch",
+      subcategory: "gmt",
       material: "steel",
-      attributes: { watch_style: "gmt", band: "bracelet", hardware_tone: "silver" },
+      attributes: { band: "bracelet", hardware_tone: "silver" },
     });
     const text = describeItem(tudor);
     expect(text).toContain("Black Bay GMT");

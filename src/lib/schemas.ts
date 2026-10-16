@@ -9,7 +9,6 @@ import {
   SEASONS,
   STYLE_PREFERENCES,
   WATCH_BANDS,
-  WATCH_STYLES,
 } from "@/lib/constants";
 
 /* ---------- Profile / onboarding ---------- */
@@ -50,10 +49,6 @@ export type ProfileInput = z.infer<typeof profileSchema>;
  * object stays compatible with OpenAI strict structured outputs.
  */
 export const accessoryAttributesSchema = z.object({
-  watch_style: z
-    .enum(WATCH_STYLES)
-    .nullable()
-    .describe("Watches only: dress, sports, diver, gmt, chronograph, field, pilot"),
   band: z
     .enum(WATCH_BANDS)
     .nullable()
@@ -69,7 +64,6 @@ export const accessoryAttributesSchema = z.object({
 export type AccessoryAttributes = z.infer<typeof accessoryAttributesSchema>;
 
 export const EMPTY_ATTRIBUTES: AccessoryAttributes = {
-  watch_style: null,
   band: null,
   hardware_tone: null,
 };
@@ -124,6 +118,10 @@ export const rerankSchema = z.object({
       z.object({
         combination_id: z.string(),
         rank: z.number().int().min(1),
+        watch_id: z
+          .string()
+          .nullable()
+          .describe("Watch id from the watch pool to wear today, or null for no watch"),
         accessory_ids: z
           .array(z.string())
           .max(MAX_DAILY_ACCESSORIES)

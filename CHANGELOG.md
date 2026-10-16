@@ -2,6 +2,44 @@
 
 All notable changes to Aether Wardrobe. Dates are release dates.
 
+## 1.2.0 — 2026-10-16
+
+### Added
+
+- **Watches are their own wardrobe category.** Add a watch under **Watch**
+  instead of **Accessory**. Its type is the watch style (dress, sports, diver,
+  GMT / travel, chronograph, field, pilot), and it keeps the band and hardware
+  tone chips.
+- **A watch slot in every outfit.** Combinations gain an optional watch,
+  next to the optional outerwear. A new watch is placed in every outfit it
+  suits; other new pieces get the best-fitting watch you own (closest
+  formality, then highest old-money fit). Belts and other accessories follow
+  the watch's metal.
+- **Daily watch choice.** The ranking call receives a separate watch pool and
+  picks the day's watch per outfit, alongside the accessories. The choice is
+  saved with the plan, shown on the card and counted when you mark the outfit
+  worn.
+- **"Any watch" filter** on the Outfits tab, and a **Watch** chip in the
+  readiness banner.
+- **Shopping** analyses watches as their own category, with its own unlock
+  count and suggestions.
+
+### Changed
+
+- Accessories no longer include watches; their types are belt, man bag,
+  scarf, sunglasses, pocket square and hat.
+- The scoring and tagging prompts describe the watch as its own slot.
+- The Outfits completeness order counts the watch as one more piece.
+
+### Database
+
+- Migration `0009_watches.sql`: allows the `watch` category, adds
+  `combinations.watch_id`, moves existing watch accessories into the new
+  category (their watch style becomes the type, defaulting to *sports* when
+  none was set), moves watch ids out of `accessory_ids` into `watch_id`, and
+  rebuilds the uniqueness index to include the watch slot. No rows are
+  deleted.
+
 ## 1.1.0 — 2026-10-11
 
 ### Added

@@ -4,8 +4,8 @@ import { RECO_MAX_PICKS } from "@/lib/constants";
 
 const watch = {
   name: "Tudor Black Bay GMT",
-  category: "accessory",
-  subcategory: "watch",
+  category: "watch",
+  subcategory: "gmt",
   color_name: "black",
   color_hex: "#111111",
   pattern: "solid",
@@ -13,7 +13,7 @@ const watch = {
   season: ["spring", "summer", "fall", "winter"],
   formality_level: 6,
   old_money_score: 7,
-  attributes: { watch_style: "gmt", band: "bracelet", hardware_tone: "silver" },
+  attributes: { band: "bracelet", hardware_tone: "silver" },
 };
 
 describe("itemTagsSchema", () => {
@@ -27,7 +27,7 @@ describe("itemTagsSchema", () => {
       category: "top",
       subcategory: "polo",
       material: "pique",
-      attributes: { watch_style: null, band: null, hardware_tone: null },
+      attributes: { band: null, hardware_tone: null },
     };
     expect(itemTagsSchema.safeParse(polo).success).toBe(true);
   });
@@ -38,8 +38,8 @@ describe("itemTagsSchema", () => {
     expect(itemTagsSchema.safeParse({ ...watch, formality_level: 11 }).success).toBe(false);
   });
 
-  it("rejects unknown watch styles", () => {
-    const bad = { ...watch, attributes: { ...watch.attributes, watch_style: "smart" } };
+  it("rejects unknown watch bands", () => {
+    const bad = { ...watch, attributes: { ...watch.attributes, band: "velcro" } };
     expect(itemTagsSchema.safeParse(bad).success).toBe(false);
   });
 });
@@ -48,6 +48,7 @@ describe("rerankSchema", () => {
   const pick = (i: number) => ({
     combination_id: `c${i}`,
     rank: i,
+    watch_id: null,
     accessory_ids: [],
     explanation: "Two sentences. About the day.",
   });

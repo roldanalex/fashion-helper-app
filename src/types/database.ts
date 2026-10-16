@@ -1,14 +1,19 @@
 // Hand-maintained row types mirroring supabase/migrations.
 // Regenerate with `supabase gen types typescript` once the CLI is linked, if preferred.
 
-export type Category = "top" | "bottom" | "outerwear" | "shoes" | "accessory";
+export type Category =
+  | "top"
+  | "bottom"
+  | "outerwear"
+  | "shoes"
+  | "watch"
+  | "accessory";
 export type AiStatus = "pending" | "tagged" | "confirmed" | "failed";
 export type ComboStatus = "none" | "queued" | "generating" | "done" | "failed";
 export type SuggestionStatus = "suggested" | "saved" | "dismissed" | "purchased";
 
 /** Type-specific accessory details (see ACCESSORY_DETAILS in constants). */
 export interface ItemAttributes {
-  watch_style?: string | null;
   band?: string | null;
   hardware_tone?: string | null;
 }
@@ -76,6 +81,7 @@ export interface Combination {
   bottom_id: string;
   outerwear_id: string | null;
   shoes_id: string;
+  watch_id: string | null;
   accessory_ids: string[];
   color_harmony_score: number | null;
   old_money_score: number | null;
@@ -108,6 +114,8 @@ export interface RankedRecommendation {
   combination_id: string;
   rank: number;
   explanation: string;
+  /** Watch chosen for the day; falls back to the combination's own when absent. */
+  watch_id?: string | null;
   /** Accessories chosen for the day; falls back to the combination's own when absent. */
   accessory_ids?: string[];
 }

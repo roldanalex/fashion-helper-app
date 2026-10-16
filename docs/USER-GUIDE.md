@@ -1,6 +1,6 @@
 # Aether Wardrobe — User Guide
 
-Version 1.1.0 · October 2026
+Version 1.2.0 · October 2026
 
 This guide follows the order you will use the app: sign in, set up your
 profile, add pieces, review tags, browse the Outfits table, ask for today's
@@ -18,7 +18,7 @@ is available in the app at `/welcome`.
 - **Only confirmed pieces count.** A piece still marked "Review tags" is not in
   any outfit.
 - The readiness banner on Wardrobe and Today shows the three required slots
-  with a check or cross, and Outerwear and Accessories as optional, dashed
+  with a check or cross, and Outerwear, Watch and Accessories as optional, dashed
   chips: outfits work without them, but they are what make a look complete.
 
 ## 2. Sign in and set up your profile
@@ -39,7 +39,7 @@ changed later under **Settings**.
 
 1. On **Wardrobe**, tap **Add piece**. On a phone you can take the photo with
    the camera; on desktop, choose a file.
-2. Pick the **category**: top, bottom, outerwear, shoes or accessory. This is
+2. Pick the **category**: top, bottom, outerwear, shoes, watch or accessory. This is
    the one tag the AI will not override.
 3. **Describe what the photo cannot show.** Optional but valuable: "pique
    cotton", "merino", "Tudor Black Bay GMT on steel bracelet". Your words are
@@ -54,8 +54,8 @@ Every piece lands in "Review tags" first. Check and correct, then confirm.
 | Tag | What to check |
 | --- | --- |
 | Name and colour | The swatch should match the dominant colour. For a watch, the dial colour. |
-| Type | Depends on the category: polo, chinos, loafers, watch, belt… |
-| Material | Includes steel, gold, titanium, rubber, nylon and acetate for accessories. |
+| Type | Depends on the category: polo, chinos, loafers, belt… For a watch, the type is its style. |
+| Material | Includes steel, gold, titanium, rubber, nylon and acetate for watches and accessories. |
 | Pattern | Solid, striped, plaid, check, herringbone, houndstooth, floral, printed. |
 | Seasons | Every season the piece comfortably suits. |
 | Formality | 1 gym wear · 5 smart casual · 8 business · 10 black tie. |
@@ -67,14 +67,28 @@ vision model again (useful after adding a description). **Archive** removes
 the piece from every outfit without deleting the photo. Saving changes on an
 already confirmed piece rebuilds its outfits.
 
-### Watches and accessories
+### Watches
 
-Accessories carry extra chips that appear under **Type** when you pick the
-matching type.
+Watches are their own category. Pick **Watch** when you add one.
 
-| Type | Extra chips |
+| Chip row | Options |
 | --- | --- |
-| Watch | **Watch style** (dress, sports, diver, GMT / travel, chronograph, field, pilot), **Band** (metal bracelet, leather strap, rubber strap, fabric / NATO), **Hardware tone** (silver, gold, rose gold, two-tone) |
+| **Watch style** (the type) | Dress, sports, diver, GMT / travel, chronograph, field, pilot |
+| **Band** | Metal bracelet, leather strap, rubber strap, fabric / NATO |
+| **Hardware tone** | Silver, gold, rose gold, two-tone |
+
+Every outfit has an optional watch slot, like outerwear. A new watch goes into
+every outfit it suits. Any other new piece gets the watch you own that best
+matches the outfit's formality, with old-money fit breaking ties. On the Today
+tab the stylist can swap in a different watch for the day.
+
+### Accessories
+
+Belts, man bags, scarves, sunglasses, pocket squares and hats. Metal-bearing
+types carry one extra chip, which the engine matches to the outfit's watch.
+
+| Type | Extra chip |
+| --- | --- |
 | Belt | **Buckle tone** |
 | Sunglasses | **Frame tone** |
 | Man bag | **Hardware tone** |
@@ -87,8 +101,8 @@ How the stylist reads a watch:
   a point off.
 - GMT and sports watches go to travel and active days; dress watches to work,
   dinner and events.
-- The engine prefers a belt buckle that matches the watch's hardware tone and
-  never pairs two watches.
+- The engine prefers a belt buckle that matches the watch's hardware tone.
+  An outfit only ever has one watch.
 
 Example tags:
 
@@ -97,8 +111,12 @@ Example tags:
 | Tudor Black Bay GMT, black dial, red/blue bezel | steel | gmt | bracelet | silver | 6 | 7 |
 | TAG Heuer Carrera Twin-Time, blue dial | steel | sports | bracelet | silver | 7 | 8 |
 
-Each new accessory creates its own variants of the outfits it suits, so the
-Outfits table can show the same shirt and chinos once with each watch.
+Each new watch or accessory creates its own variants of the outfits it suits,
+so the Outfits table can show the same shirt and chinos once with each watch.
+
+**Upgrading from 1.1:** watches you added as accessories move to the Watches
+category automatically. Their style comes from the old watch-style chip, or
+*sports* if none was set; open each watch to check it.
 
 ## 4. The Outfits table
 
@@ -106,11 +124,11 @@ Every combination that scored 7.0 or better, best first. The Today tab draws
 from this pool, so curating it here improves every morning.
 
 - **Order.** Boosted outfits first, then the most complete ones (top, bottom,
-  shoes, outerwear and accessories all present), then those missing a layer,
+  shoes, outerwear, watch and accessories all present), then those missing a layer,
   then the bare three-piece looks; within each group, by score.
 - **Build around a piece.** The first dropdowns filter to one top, one bottom,
-  one pair of shoes, one piece of outerwear or one accessory. "Any accessory →
-  Tudor GMT" shows every outfit that works with that watch.
+  one pair of shoes, one piece of outerwear, one watch or one accessory.
+  "Any watch → Tudor GMT" shows every outfit that works with that watch.
 - **Occasion, season, score.** Occasion re-sorts by a blend of work, daily,
   formality and old-money scores. Score 7+, 8+ or 9+ sets the floor.
 - **Boost or hide.** The star boosts an outfit to the top of every daily
@@ -135,7 +153,7 @@ from this pool, so curating it here improves every morning.
 Behind the button: the forecast at the destination is fetched (suede and
 canvas shoes are dropped on rainy days), the table is filtered by season and
 sorted by the occasion blend with boosted and fresh outfits first, and one AI
-call ranks the picks and selects accessories from everything you own. The
+call ranks the picks and selects the watch and accessories from everything you own. The
 plan is saved per day and occasion, so reloading costs nothing.
 
 ### Choosing the occasion

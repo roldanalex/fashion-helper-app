@@ -7,6 +7,7 @@ describe("getWardrobeReadiness", () => {
     const r = getWardrobeReadiness(baseWardrobe());
     expect(r.ready).toBe(true);
     expect(r.hasOuterwear).toBe(false);
+    expect(r.hasWatch).toBe(false);
     expect(r.hasAccessory).toBe(false);
     expect(r.pendingCount).toBe(0);
   });
@@ -23,10 +24,12 @@ describe("getWardrobeReadiness", () => {
     const items = [
       ...baseWardrobe(),
       makeItem({ category: "outerwear", combo_status: "queued" }),
-      makeItem({ category: "accessory", subcategory: "watch" }),
+      makeItem({ category: "watch", subcategory: "sports" }),
+      makeItem({ category: "accessory", subcategory: "belt" }),
     ];
     const r = getWardrobeReadiness(items);
     expect(r.hasOuterwear).toBe(true);
+    expect(r.hasWatch).toBe(true);
     expect(r.hasAccessory).toBe(true);
     expect(r.pendingCount).toBe(1);
   });

@@ -82,7 +82,7 @@ export async function generateCombinationsForItem(
       .delete()
       .eq("user_id", userId)
       .or(
-        `top_id.eq.${itemId},bottom_id.eq.${itemId},shoes_id.eq.${itemId},outerwear_id.eq.${itemId},accessory_ids.cs.{${itemId}}`,
+        `top_id.eq.${itemId},bottom_id.eq.${itemId},shoes_id.eq.${itemId},outerwear_id.eq.${itemId},watch_id.eq.${itemId},accessory_ids.cs.{${itemId}}`,
       );
 
     let inserted = 0;
@@ -108,6 +108,7 @@ export async function generateCombinationsForItem(
             bottom_id: c.bottom.id,
             shoes_id: c.shoes.id,
             outerwear_id: c.outerwear?.id ?? null,
+            watch_id: c.watch?.id ?? null,
             // Sorted so the same accessory set never produces two rows.
             accessory_ids: c.accessories.map((a) => a.id).sort(),
             color_harmony_score: s.color_harmony_score,

@@ -5,7 +5,7 @@ plans each morning, and it lays out the outfit: matched to your style, the
 occasion, and the weather where you are going.
 
 [![CI](https://github.com/roldanalex/fashion-helper-app/actions/workflows/ci.yml/badge.svg)](https://github.com/roldanalex/fashion-helper-app/actions/workflows/ci.yml)
-![Version](https://img.shields.io/badge/version-1.1.0-c9a45c)
+![Version](https://img.shields.io/badge/version-1.2.0-c9a45c)
 ![Next.js](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white)
@@ -74,10 +74,11 @@ from your phone.
 | --- | --- |
 | **Onboarding wizard** | A four-step profile (build, colouring, style preferences, home city) personalises every AI prompt and provides the weather fallback when you do not name a destination. |
 | **Wardrobe cataloguing** | One photo per piece, from your gallery or the phone camera. Photos are compressed to WebP in the browser, then GPT-4o vision reads cut, colour, pattern and material. Your own notes ("pique", "merino") always win over what it sees. |
-| **Watches and accessories** | Watches carry a style (dress, sports, diver, GMT, chronograph, field, pilot), a band and a hardware tone; belts, sunglasses and bags carry a hardware tone. The engine matches metals and never pairs two watches. |
+| **Watches** | Watches are their own category with their own outfit slot. Each is typed by style (dress, sports, diver, GMT, chronograph, field, pilot) and tagged with band and hardware tone. Every outfit gets the best-fitting watch you own, and the daily stylist can swap it for the day. |
+| **Accessories** | Belts, bags, scarves, sunglasses, pocket squares and hats. Metal-bearing pieces carry a hardware tone, and the engine matches it to the outfit's watch. |
 | **Combination table** | A deterministic engine pairs each confirmed piece against your wardrobe (formality, season and colour-clash filters). gpt-4o-mini scores candidates in batches; only outfits scoring 7.0 or better are kept. |
-| **Outfits browser** | Build around a single top, bottom, shoes, outerwear or accessory. Filter by occasion, season or score. Most complete outfits first. Boost favourites, hide misses, see which looks are resting. |
-| **Daily recommendations** | Pick one of ten occasions, optionally a destination (city autocomplete) and notes. The app pulls the forecast there, filters the table, and one AI call ranks five to seven picks, chooses the day's accessories and explains each choice. |
+| **Outfits browser** | Build around a single top, bottom, shoes, outerwear, watch or accessory. Filter by occasion, season or score. Most complete outfits first. Boost favourites, hide misses, see which looks are resting. |
+| **Daily recommendations** | Pick one of ten occasions, optionally a destination (city autocomplete) and notes. The app pulls the forecast there, filters the table, and one AI call ranks five to seven picks, chooses the day's watch and accessories, and explains each choice. |
 | **Wear tracking** | Mark an outfit as worn and every piece updates its wear count and last-worn date. Recently worn looks rest for a week. |
 | **Shopping gap analysis** | Tick the categories you are shopping for. The app counts how many new outfits one good piece would unlock and suggests specific items that pair with what you own. |
 | **Live status and readiness** | A banner tracks outfit generation in the background. If a batch is interrupted, one click rebuilds only what is missing. |
@@ -102,8 +103,8 @@ from your phone.
 
 1. Create a project, then run every file in `supabase/migrations/` **in
    order** in the SQL Editor (or `supabase link && supabase db push` with the
-   CLI). The editor warns that `0008` contains a `DROP`; it only rebuilds an
-   index and removes no data.
+   CLI). The editor warns that `0008` and `0009` contain `DROP` statements;
+   they only rebuild an index and a check constraint, and remove no data.
 2. The private `wardrobe` storage bucket is created by migration `0006`.
 3. **Grant yourself access.** The app is invitation-only, so bootstrap the
    first admin in the SQL Editor:
@@ -116,8 +117,10 @@ from your phone.
    Without this step every sign-in, including yours, lands on the "awaiting
    invitation" screen.
 
-**Upgrading from 1.0.x?** Run `0008_accessories.sql` only. It adds the
-`attributes` column and rebuilds the combinations uniqueness index.
+**Upgrading?** From 1.0.x, run `0008_accessories.sql` then
+`0009_watches.sql`. From 1.1.x, run `0009_watches.sql` only: it moves your
+existing watches from Accessories into the new Watches category and into the
+new watch slot of every outfit that had one.
 
 ### 2. Enable Google sign-in
 
@@ -165,9 +168,9 @@ already exist.
 ```mermaid
 flowchart TD
     subgraph build["Building the combination table — once per item"]
-        A["Photo upload<br/>(compressed to WebP in-browser)"] --> B["gpt-4o vision tagging<br/>cut · colour · pattern · material · accessory details"]
+        A["Photo upload<br/>(compressed to WebP in-browser)"] --> B["gpt-4o vision tagging<br/>cut · colour · pattern · material · watch and accessory details"]
         B --> C{"You confirm<br/>the tags"}
-        C --> D["Candidate engine (pure TypeScript)<br/>formality · season · colour-clash · matching metals"]
+        C --> D["Candidate engine (pure TypeScript)<br/>formality · season · colour-clash · best watch · matching metals"]
         D --> E["gpt-4o-mini batch scoring<br/>12 candidates per call"]
         E --> F[("combinations table<br/>only scores ≥ 7.0 kept")]
     end
@@ -175,7 +178,7 @@ flowchart TD
     subgraph daily["Daily recommendation — every morning"]
         G["Occasion + destination + notes"] --> H["Forecast at destination<br/>(OpenWeatherMap)"]
         H --> I["SQL filter over the table<br/>season · occasion · freshness"]
-        I --> J["gpt-4o-mini re-rank<br/>5–7 picks · day's accessories · 'why this outfit'"]
+        I --> J["gpt-4o-mini re-rank<br/>5–7 picks · day's watch and accessories · 'why this outfit'"]
     end
 
     F --> I
@@ -202,8 +205,8 @@ sequenceDiagram
         A->>W: forecast at destination
         W-->>A: temperature, rain, feel
         A->>S: combinations filtered by season, sorted by occasion blend
-        S-->>A: up to 16 candidates + all accessories
-        A->>O: rank 5–7, choose accessories, explain
+        S-->>A: up to 16 candidates + all watches and accessories
+        A->>O: rank 5–7, choose watch and accessories, explain
         O-->>A: ranked picks
         A->>S: save plan, mark picks as recommended
         A-->>U: outfits with explanations
@@ -239,10 +242,11 @@ Source: [`docs/diagrams/architecture.drawio`](docs/diagrams/architecture.drawio)
 
 ### Data model
 
-Six tables, all behind Supabase row-level security. Accessory details live in
-a `jsonb` column on `clothing_items`. The `combinations` uniqueness rule
-includes the accessory set, so one base outfit may exist once per accessory
-variant.
+Six tables, all behind Supabase row-level security. Watch and accessory
+details live in a `jsonb` column on `clothing_items`. A combination has three
+required slots (top, bottom, shoes) and three optional ones (outerwear, watch,
+accessories). The uniqueness rule covers all six, so one base outfit may exist
+once per watch or accessory variant.
 
 ```mermaid
 erDiagram
@@ -263,7 +267,7 @@ erDiagram
     clothing_items {
         uuid id PK
         text category
-        jsonb attributes "watch_style · band · hardware_tone"
+        jsonb attributes "band · hardware_tone"
         text combo_status
         int wear_count
         date last_worn
@@ -273,6 +277,7 @@ erDiagram
         uuid top_id FK
         uuid bottom_id FK
         uuid shoes_id FK
+        uuid watch_id FK
         uuid[] accessory_ids
         numeric overall_score "CHECK >= 7.0"
         boolean boosted
@@ -283,7 +288,7 @@ erDiagram
         date plan_date
         text occasion
         jsonb weather
-        jsonb recommendations "ranked picks + daily accessory_ids"
+        jsonb recommendations "ranked picks + daily watch and accessories"
         uuid worn_combination_id FK
     }
     shopping_suggestions {
@@ -318,7 +323,7 @@ src/
 └── stores/                 # Zustand (onboarding draft)
 public/welcome/             # Static onboarding site (index.html + aether_onboarding.json)
 docs/                       # User guide, screenshots, architecture diagram
-supabase/migrations/        # 8 SQL migrations: schema, RLS, storage policies, access control, accessories
+supabase/migrations/        # 9 SQL migrations: schema, RLS, storage, access control, accessories, watches
 .github/workflows/ci.yml    # Type-check, tests, build, secret scan
 ```
 
@@ -360,7 +365,7 @@ Every push and pull request runs [the CI workflow](.github/workflows/ci.yml):
 | Job | What it checks |
 | --- | --- |
 | Type-check | `tsc --noEmit` over the whole project |
-| Unit tests | Vitest over the deterministic core: candidate engine, accessory picking, readiness, gap analysis, occasion weights, Zod schemas, prompt descriptors |
+| Unit tests | Vitest over the deterministic core: candidate engine, watch and accessory picking, readiness, gap analysis, occasion weights, Zod schemas, prompt descriptors |
 | Production build | `next build` with no secrets; every external call happens at request time |
 | Secret scan | [gitleaks](https://github.com/gitleaks/gitleaks) over the full git history |
 
@@ -398,8 +403,9 @@ tests cover.
 | Symptom | Cause and fix |
 | --- | --- |
 | Sign-in lands on "awaiting invitation" | Your email is not in `access_grants`. Insert it with the SQL in [Quick start](#1-set-up-supabase). |
-| Saving tags fails after upgrading | Migration `0008` has not been run. Run it in the SQL Editor. |
-| A second watch never appears in any outfit | Same cause: `0008` rebuilds the combinations uniqueness index to include accessories. Re-save the watch afterwards. |
+| Saving tags fails after upgrading | A migration has not been run. Run `0008` and `0009` in the SQL Editor, in order. |
+| Saving a watch fails with a category error | Migration `0009` has not been run; it allows the `watch` category. |
+| A watch shows the wrong style after upgrading | `0009` sets the type from the old watch-style chip, or *sports* when none was set. Open the watch, pick the right style, **Save changes**. |
 | Images do not show in the wardrobe grid | Migration `0006` (storage) was not run, or the bucket was created by hand with a different name. |
 | "No outfits yet" with pieces confirmed | Generation was interrupted. Use **Rebuild outfits** on the Wardrobe tab. |
 | Outfit generation times out on Vercel | Hobby tier function limit. Upgrade the plan or use the rebuild button, which resumes where it stopped. |

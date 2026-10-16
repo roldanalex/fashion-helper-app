@@ -214,16 +214,19 @@ export async function POST(request: Request) {
     });
   }
 
-  // Accessory pool: every confirmed accessory, so the stylist can pick the
-  // right watch or belt for the day rather than the table's default.
-  const { data: accessoryData } = await supabase
+  // Watch and accessory pools: every confirmed piece, so the stylist can pick
+  // the right watch or belt for the day rather than the table's default.
+  const { data: poolData } = await supabase
     .from("clothing_items")
     .select("*")
     .eq("user_id", user.id)
-    .eq("category", "accessory")
+    .in("category", ["watch", "accessory"])
     .eq("archived", false)
     .eq("ai_status", "confirmed");
-  const accessoryPool = (accessoryData ?? []) as ClothingItem[];
+  const ownedExtras = (poolData ?? []) as ClothingItem[];
+  const watchPool = ownedExtras.filter((i) => i.category === "watch");
+  const accessoryPool = ownedExtras.filter((i) => i.category === "accessory");
+  const watchIds = new Set(watchPool.map((w) => w.id));
   const accessoryById = new Map(accessoryPool.map((a) => [a.id, a]));
 
   // LLM stage: one gpt-4o-mini call to rank, accessorize and explain.
@@ -236,6 +239,7 @@ export async function POST(request: Request) {
     candidates.slice(0, RECO_MIN_PICKS).map((c, i) => ({
       combination_id: c.id,
       rank: i + 1,
+      watch_id: c.watch_id,
       accessory_ids: c.accessory_ids,
       explanation: c.notes ?? "A reliably strong combination from your table.",
     }));
@@ -245,6 +249,7 @@ export async function POST(request: Request) {
     const result = await rerankAndExplain({
       candidates,
       itemsById,
+      watchPool,
       accessoryPool,
       weather,
       occasion,
@@ -259,6 +264,11 @@ export async function POST(request: Request) {
         combination_id: p.combination_id,
         rank: p.rank,
         explanation: p.explanation,
+        // Only a watch the client owns; otherwise keep the outfit's default.
+        watch_id:
+          p.watch_id && watchIds.has(p.watch_id)
+            ? p.watch_id
+            : valid.get(p.combination_id)!.watch_id,
         accessory_ids: sanitizeAccessories(
           p.accessory_ids,
           accessoryById,
@@ -338,7 +348,7 @@ function sanitizeAccessories(
   return out.length > 0 ? out : fallback;
 }
 
-/** Swap each combination's accessories for the ones chosen for the day. */
+/** Swap each combination's watch and accessories for the day's choices. */
 function withDailyAccessories(
   combos: Combination[],
   picks: RankedRecommendation[],
@@ -346,9 +356,14 @@ function withDailyAccessories(
   const byId = new Map(picks.map((p) => [p.combination_id, p]));
   return combos.map((c) => {
     const pick = byId.get(c.id);
-    return pick?.accessory_ids?.length
-      ? { ...c, accessory_ids: pick.accessory_ids }
-      : c;
+    if (!pick) return c;
+    return {
+      ...c,
+      watch_id: pick.watch_id ?? c.watch_id,
+      accessory_ids: pick.accessory_ids?.length
+        ? pick.accessory_ids
+        : c.accessory_ids,
+    };
   });
 }
 

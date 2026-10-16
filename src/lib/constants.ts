@@ -1,4 +1,4 @@
-export const APP_VERSION = "1.1.0";
+export const APP_VERSION = "1.2.0";
 export const APP_CREDIT = "Created by Alexis Roldan · 2026";
 
 export const CATEGORIES = [
@@ -6,6 +6,7 @@ export const CATEGORIES = [
   "bottom",
   "outerwear",
   "shoes",
+  "watch",
   "accessory",
 ] as const;
 export type Category = (typeof CATEGORIES)[number];
@@ -16,6 +17,7 @@ export const CATEGORY_PLURAL_LABELS: Record<Category, string> = {
   bottom: "Bottoms",
   outerwear: "Outerwear",
   shoes: "Shoes",
+  watch: "Watches",
   accessory: "Accessories",
 };
 
@@ -61,7 +63,9 @@ export const SUBCATEGORIES: Record<Category, string[]> = {
     "boat shoes",
     "monk straps",
   ],
-  accessory: ["watch", "belt", "man bag", "scarf", "sunglasses", "pocket square", "hat"],
+  // Watch types are the watch style: a dress watch and a diver dress differently.
+  watch: ["dress", "sports", "diver", "gmt", "chronograph", "field", "pilot"],
+  accessory: ["belt", "man bag", "scarf", "sunglasses", "pocket square", "hat"],
 };
 
 export const MATERIALS = [
@@ -107,7 +111,7 @@ export type WatchBand = (typeof WATCH_BANDS)[number];
 export const HARDWARE_TONES = ["silver", "gold", "rose gold", "two-tone"] as const;
 export type HardwareTone = (typeof HARDWARE_TONES)[number];
 
-export type AccessoryAttributeKey = "watch_style" | "band" | "hardware_tone";
+export type AccessoryAttributeKey = "band" | "hardware_tone";
 
 export interface AccessoryDetailField {
   key: AccessoryAttributeKey;
@@ -115,30 +119,42 @@ export interface AccessoryDetailField {
   options: readonly string[];
 }
 
-/** Human labels for attribute values that read poorly when auto-capitalized. */
+/** Human labels for chip values that read poorly when auto-capitalized. */
 export const ATTRIBUTE_VALUE_LABELS: Record<string, string> = {
   gmt: "GMT / travel",
+  dress: "Dress",
+  sports: "Sports",
   bracelet: "Metal bracelet",
   leather: "Leather strap",
   rubber: "Rubber strap",
   fabric: "Fabric / NATO",
 };
 
+/** Extra chip rows every watch gets; its style is the Type row. */
+export const WATCH_DETAILS: AccessoryDetailField[] = [
+  { key: "band", label: "Band", options: WATCH_BANDS },
+  { key: "hardware_tone", label: "Hardware tone", options: HARDWARE_TONES },
+];
+
 /**
- * Which extra chip rows the tag editor shows per accessory type.
- * Watches get style + band + hardware tone; metal-bearing accessories get
- * hardware tone only so buckles and frames can be matched to the watch.
+ * Extra chip rows per accessory type. Metal-bearing accessories get a
+ * hardware tone so buckles and frames can be matched to the watch.
  */
 export const ACCESSORY_DETAILS: Record<string, AccessoryDetailField[]> = {
-  watch: [
-    { key: "watch_style", label: "Watch style", options: WATCH_STYLES },
-    { key: "band", label: "Band", options: WATCH_BANDS },
-    { key: "hardware_tone", label: "Hardware tone", options: HARDWARE_TONES },
-  ],
   belt: [{ key: "hardware_tone", label: "Buckle tone", options: HARDWARE_TONES }],
   sunglasses: [{ key: "hardware_tone", label: "Frame tone", options: HARDWARE_TONES }],
   "man bag": [{ key: "hardware_tone", label: "Hardware tone", options: HARDWARE_TONES }],
 };
+
+/** Detail chip rows the tag editor shows for a category + type. */
+export function detailFieldsFor(
+  category: string,
+  subcategory: string | null | undefined,
+): AccessoryDetailField[] {
+  if (category === "watch") return WATCH_DETAILS;
+  if (category === "accessory") return ACCESSORY_DETAILS[subcategory ?? ""] ?? [];
+  return [];
+}
 
 export const PATTERNS = [
   "solid",

@@ -10,13 +10,13 @@ import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { ChipGroup } from "@/components/onboarding/chip-group";
 import {
-  ACCESSORY_DETAILS,
   ATTRIBUTE_VALUE_LABELS,
   CATEGORIES,
   MATERIALS,
   PATTERNS,
   SEASONS,
   SUBCATEGORIES,
+  detailFieldsFor,
   type AccessoryAttributeKey,
 } from "@/lib/constants";
 import { EMPTY_ATTRIBUTES, itemTagsSchema } from "@/lib/schemas";
@@ -54,9 +54,8 @@ export function TagEditor({ item }: { item: ClothingItem }) {
     setTags((t) => ({ ...t, attributes: { ...t.attributes, [key]: value } }));
   }
 
-  // Extra chip rows for accessories that carry type-specific details.
-  const detailFields =
-    tags.category === "accessory" ? (ACCESSORY_DETAILS[tags.subcategory] ?? []) : [];
+  // Extra chip rows for watches and accessories with type-specific details.
+  const detailFields = detailFieldsFor(tags.category, tags.subcategory);
 
   function save() {
     // Details only make sense for the current type; clear stale ones.
@@ -161,8 +160,11 @@ export function TagEditor({ item }: { item: ClothingItem }) {
       />
 
       <ChipGroup
-        label="Type"
-        options={SUBCATEGORIES[tags.category as Category] ?? []}
+        label={tags.category === "watch" ? "Watch style" : "Type"}
+        options={(SUBCATEGORIES[tags.category as Category] ?? []).map((o) => ({
+          value: o,
+          label: ATTRIBUTE_VALUE_LABELS[o] ?? o,
+        }))}
         value={tags.subcategory}
         onChange={(v) => set("subcategory", v as string)}
       />
