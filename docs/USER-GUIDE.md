@@ -1,10 +1,10 @@
 # Aether Wardrobe — User Guide
 
-Version 1.2.0 · October 2026
+Version 1.3.0 · October 2026
 
 This guide follows the order you will use the app: sign in, set up your
 profile, add pieces, review tags, browse the Outfits table, ask for today's
-outfit, and shop with intention. The same content, with progress checkpoints,
+outfit, pack for a trip with the stylist, and shop with intention. The same content, with progress checkpoints,
 is available in the app at `/welcome`.
 
 ## 1. Before you start
@@ -178,7 +178,104 @@ the day's accessories, updates its wear count and last-worn date, and the
 outfit rests for seven days. Each occasion has its own plan for the day:
 switching from Work to Dinner asks fresh.
 
-## 6. Shop: what to buy next
+## 6. Stylist: pack for a trip
+
+The **Stylist** tab is a conversation with your personal stylist. Its
+specialty is trips of two days or more, where the question is not "what do I
+wear" but "what do I pack so that every day works and the bag stays small".
+
+### Ask for a plan
+
+Say three things, in your own words:
+
+1. **Where.** A city, with the country if the name is ambiguous.
+2. **When.** Dates, or "this weekend", "Thursday to Sunday", "next month from
+   the 12th to the 16th".
+3. **What the days hold.** "Work Thursday and Friday, dinner on Friday,
+   sightseeing Saturday." One outfit is planned per occasion you mention, so
+   a work day with a dinner gets two.
+
+Constraints are welcome in the same sentence: "carry-on only", "one pair of
+shoes", "no blazer", "I want to take the Tudor GMT".
+
+The stylist asks one question if the destination or dates are missing, then
+lays out the trip. Three example requests are shown when the conversation is
+empty; tap one to put it in the box and change the city and dates.
+
+### Read the manifest
+
+Every plan arrives as a card:
+
+| Part | What it shows |
+| --- | --- |
+| Header | Destination, dates, and the totals: pieces packed, outfits, pairs of shoes, outerwear, watches. |
+| Day by day | The forecast for each day (temperature, range, rain chance), then one row per occasion with the outfit's pieces as colour swatches. Each piece links to its wardrobe page. **loose fit** marks an outfit chosen below the usual score floor. |
+| What to pack | The packing list grouped by category. **×3** next to a piece means it appears in three of the trip's outfits. **Copy list** puts a tick-box version on the clipboard. |
+| Caveats | Honest notes: days planned from an estimated temperature, days that had no suitable outfit, a shoe limit that had to be relaxed. |
+
+Below the card the stylist writes a few sentences: which pieces carry the
+trip, the weather caveat, and tweaks you might like.
+
+### Name the pieces you want
+
+Mention them in the request and they become part of the plan:
+
+- "Use the navy blazer on Friday" builds every Friday outfit around it.
+- "I want to take the Tudor GMT" guarantees it is worn at least once.
+- "No suede drivers" keeps a piece out altogether.
+
+Pieces are matched by name, colour, type or brand as you tagged them. If two
+pieces could match ("the blue shirt"), the stylist asks which. When a named
+piece cannot be worn on a day (wrong season for the forecast, or never scored
+with the rest), the card's caveats say so; the stylist will not claim it was
+used when it was not.
+
+### Ask for one outfit
+
+The stylist also answers single-occasion questions from the same table:
+"What goes with my navy blazer for dinner on Friday? I'd like to wear the
+brown loafers." Name the occasion, the pieces you want, and optionally where
+and when for the forecast. You get a card with up to five outfits that
+contain every piece you named, each with its score and stylist note, and a
+few sentences of insight: why the colours sit together, where the formality
+lands, how the watch and belt metals agree, and what to swap to dress it up
+or down. An empty card means those pieces have never been scored together;
+ask with fewer pieces, or let Shop name what is missing.
+
+### Refine it
+
+Reply in plain words and a new card arrives:
+
+- "Do it with one pair of shoes."
+- "Drop the suede drivers."
+- "Add a dinner on Saturday."
+- "Make it carry-on only."
+- "Swap Friday's work outfit for something with the navy blazer."
+- "Show me three options for Saturday's dinner with the loafers."
+
+### How the plan is made
+
+The stylist does not compose outfits. Your words are turned into a
+structured request (destination, dates, occasions per day, constraints) and
+a deterministic planner answers it from the Outfits table:
+
+- The forecast is read per day at the destination. The free forecast
+  reaches five days ahead; for later days the stylist estimates the typical
+  temperature and the card says *estimate*.
+- For each day and occasion, outfits are filtered by season band and rain
+  (no suede or canvas shoes on wet days) and by the occasion blend, exactly
+  as on the Today tab.
+- Across the trip, the planner prefers outfits that share pieces, so one pair
+  of loafers and one watch can serve the whole trip, and avoids the identical
+  outfit two days running.
+- Shoe and outerwear limits are kept unless a day would otherwise have
+  nothing to wear; the card says when a limit was relaxed.
+
+The conversation stays on your device, per account, until you tap **Start
+over**. Nothing in a trip plan changes your table or your wear counts; mark
+outfits as worn from the Today tab as usual.
+
+## 7. Shop: what to buy next
 
 Tick the categories you are shopping for. For each, the app counts how many
 new outfits one good neutral piece would unlock against your actual wardrobe
@@ -187,7 +284,7 @@ blazer") and say which of your pieces they would pair with. Save, dismiss or
 mark purchased; a purchased suggestion is a reminder to photograph and add
 the real piece. Shop needs at least three confirmed pieces.
 
-## 7. Photos that tag well
+## 8. Photos that tag well
 
 - One piece, flat, filling the frame, in daylight. No people or other clothes
   in shot.
@@ -197,13 +294,15 @@ the real piece. Shop needs at least three confirmed pieces.
 - Watches: dial facing up, bracelet straight, so the bezel, dial and band are
   readable.
 
-## 8. When something looks off
+## 9. When something looks off
 
 | Symptom | What to do |
 | --- | --- |
 | No outfits yet | You need a confirmed top, bottom and shoes; the readiness banner lists what is missing. If pieces are confirmed but the table is empty, use **Rebuild outfits** on Wardrobe; it fills in only what is missing. |
 | "Nothing quite fits this day" | Nothing scored 6.5 or better for this season and occasion. Try another occasion, relax the score filter on Outfits, or let Shop tell you which piece would unlock the most. |
 | Wrong tags | Open the piece, fix the chips, **Save changes**. For a stubborn material or watch style, add a description and **Re-analyze**. |
+| The stylist cannot place a destination | Add the country: "Porto, Portugal". |
+| A trip day says "Nothing in your table suits this" | No visible outfit passes that day's season band, rain rule and occasion. Ask the stylist to relax the occasion ("errands instead of work"), or let Shop name the missing piece. |
 | It feels slow | Confirming a piece scores up to 120 candidates in batches and can take a minute or two on a large wardrobe; the banner shows progress. Today waits on the weather service and one model call, usually a few seconds. |
 
 ## Privacy

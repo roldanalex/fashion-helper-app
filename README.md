@@ -5,7 +5,7 @@ plans each morning, and it lays out the outfit: matched to your style, the
 occasion, and the weather where you are going.
 
 [![CI](https://github.com/roldanalex/fashion-helper-app/actions/workflows/ci.yml/badge.svg)](https://github.com/roldanalex/fashion-helper-app/actions/workflows/ci.yml)
-![Version](https://img.shields.io/badge/version-1.2.0-c9a45c)
+![Version](https://img.shields.io/badge/version-1.3.0-c9a45c)
 ![Next.js](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white)
@@ -48,6 +48,9 @@ problem:
   never invents.
 - **It answers the real morning question.** What fits today's plans, the
   weather at the destination, and what have I not worn recently?
+- **It packs the suitcase the same way.** Tell the stylist where you are
+  going and what the days hold; it picks one outfit per day from the same
+  table, chosen so pieces repeat and the bag stays small.
 - **It stays cheap.** The heavy AI work happens once per piece. A daily
   recommendation is a single small model call.
 
@@ -79,6 +82,7 @@ from your phone.
 | **Combination table** | A deterministic engine pairs each confirmed piece against your wardrobe (formality, season and colour-clash filters). gpt-4o-mini scores candidates in batches; only outfits scoring 7.0 or better are kept. |
 | **Outfits browser** | Build around a single top, bottom, shoes, outerwear, watch or accessory. Filter by occasion, season or score. Most complete outfits first. Boost favourites, hide misses, see which looks are resting. |
 | **Daily recommendations** | Pick one of ten occasions, optionally a destination (city autocomplete) and notes. The app pulls the forecast there, filters the table, and one AI call ranks five to seven picks, chooses the day's watch and accessories, and explains each choice. |
+| **Stylist chat: trip packing** | A conversation with your stylist. "Three days in Lisbon: work Thursday and Friday, dinner Friday, sightseeing Saturday." It reads the forecast for each day, lays out one outfit per day and occasion from your Outfits table, and shows a manifest card: the day-by-day plan, a packing list with how often each piece is worn, and a one-click copy. Ask for tweaks in plain words: one pair of shoes, carry-on only, drop the blazer. Name pieces and they are built in, not hinted at. For a single occasion ("what goes with my navy blazer for dinner on Friday?") it pulls the table's best outfits around those pieces and explains why they work. |
 | **Wear tracking** | Mark an outfit as worn and every piece updates its wear count and last-worn date. Recently worn looks rest for a week. |
 | **Shopping gap analysis** | Tick the categories you are shopping for. The app counts how many new outfits one good piece would unlock and suggests specific items that pair with what you own. |
 | **Live status and readiness** | A banner tracks outfit generation in the background. If a batch is interrupted, one click rebuilds only what is missing. |
@@ -96,7 +100,7 @@ from your phone.
 | --- | --- | --- |
 | Supabase | Database, Google sign-in, image storage | [supabase.com](https://supabase.com) |
 | Google Cloud | OAuth credentials for sign-in | [console.cloud.google.com](https://console.cloud.google.com/apis/credentials) |
-| OpenAI | Vision tagging and outfit scoring | [platform.openai.com](https://platform.openai.com) |
+| OpenAI | Vision tagging, outfit scoring and the stylist chat | [platform.openai.com](https://platform.openai.com) |
 | OpenWeatherMap | Destination weather and city autocomplete | [openweathermap.org/api](https://openweathermap.org/api) |
 
 ### 1. Set up Supabase
@@ -145,6 +149,7 @@ Open <http://localhost:3000>. The expected first run:
 2. Add a top, a bottom and a pair of shoes; confirm each one's tags.
 3. Wait for the generation banner to finish, then open **Today** and tap
    **Style my day**.
+4. Open **Stylist** and describe a trip to get a packing plan.
 
 ## How it works
 
@@ -184,6 +189,24 @@ flowchart TD
     F --> I
 ```
 
+### Packing for a trip
+
+The Stylist tab is a chat, but the outfits still come from the table. The
+model's only job is to turn your words into a structured request for the
+planner, and then to explain what the planner chose.
+
+```mermaid
+flowchart TD
+    subgraph chat["Stylist chat — one request"]
+        A["Your words<br/>'Lisbon Thu–Sat, work, dinner Friday, one pair of shoes'"] --> B["gpt-4o-mini<br/>destination · dates · occasions per day · constraints"]
+        B -->|"plan_trip tool"| C["Forecast per day at the destination<br/>(five days; climate estimate after)"]
+        C --> D["Packing optimizer (pure TypeScript)<br/>per slot: season band · rain · occasion blend · shoe and outerwear limits<br/>across slots: share pieces, avoid repeats on consecutive days"]
+        D --> E["Trip manifest card<br/>day-by-day outfits · packing list with wear counts · caveats"]
+        E --> F["gpt-4o-mini narrates<br/>what carries the trip, the weather caveat, tweaks to try"]
+    end
+    T[("combinations table")] --> D
+```
+
 ### Request flow for "Style my day"
 
 ```mermaid
@@ -213,6 +236,35 @@ sequenceDiagram
     end
 ```
 
+### Request flow for a packing plan
+
+```mermaid
+sequenceDiagram
+    actor U as You
+    participant C as Stylist chat (browser)
+    participant A as /api/stylist/chat
+    participant O as OpenAI
+    participant W as OpenWeatherMap
+    participant S as Supabase
+
+    U->>C: "Three days in Lisbon: work Thu–Fri, dinner Fri, walking Sat"
+    C->>A: conversation + your local date
+    A->>S: is this email on the allowlist?
+    S-->>A: yes
+    A->>S: confirmed wardrobe + profile (for the system prompt)
+    A->>O: stream, with the plan_trip tool
+    O-->>A: plan_trip(destination, dates, days, constraints)
+    A->>W: geocode + five-day forecast
+    W-->>A: per-day temperature and rain
+    A->>S: visible combinations + confirmed pieces
+    S-->>A: the table
+    Note over A: Packing optimizer picks one outfit per day and occasion,<br/>maximising shared pieces
+    A-->>C: manifest card (streamed tool result)
+    A->>O: compact text summary of the plan
+    O-->>A: three to six sentences of explanation
+    A-->>C: streamed reply
+```
+
 ## Architecture
 
 ![System architecture: browser, Vercel-hosted Next.js app, Supabase, OpenAI, OpenWeatherMap and GitHub Actions CI](docs/diagrams/architecture.drawio.png)
@@ -226,10 +278,22 @@ Source: [`docs/diagrams/architecture.drawio`](docs/diagrams/architecture.drawio)
   `src/lib/combinations/candidates.ts` generates and filters pairings in pure
   TypeScript. The LLM only scores, ranks and explains. Results stay
   consistent and costs stay flat.
+- **The chat follows the same rule.** The stylist chat cannot compose an
+  outfit. Its two tools run over the table: `plan_trip` calls the packing
+  optimizer in `src/lib/trips/pack.ts`, and `find_outfits` returns scored
+  outfits containing the pieces you named. The model only translates your
+  words into tool inputs and narrates the result. Earlier plans in
+  the conversation are replayed to the model as short text summaries, not
+  full payloads, so a long chat stays cheap.
 - **Batch scoring for cost control.** Candidates are scored 12 per
   gpt-4o-mini call and only outfits scoring 7.0 or better are stored,
   enforced by a database `CHECK` constraint. Estimated cost: about one to
   three cents per uploaded item, fractions of a cent per daily request.
+- **Spend where it matters.** The Stylist chat runs on gpt-5.5 (low
+  reasoning effort) because its job, turning your words into exact tool
+  inputs and carrying every constraint through a conversation, is where
+  a small model fails. A message costs a few cents; the high-volume batch
+  scoring stays on gpt-4o-mini.
 - **No paid call without approval.** Every API route verifies the caller
   against the `access_grants` allowlist before touching OpenAI or
   OpenWeatherMap.
@@ -310,12 +374,13 @@ src/
 │   ├── page.tsx            # Landing page with React Three Fiber hero
 │   ├── onboarding/         # 4-step profile wizard
 │   ├── auth/callback/      # OAuth PKCE code exchange
-│   ├── (app)/              # Auth-gated: today, wardrobe, combinations, shop, settings, admin
-│   └── api/                # 7 routes; every one checks the allowlist before spending
+│   ├── (app)/              # Auth-gated: today, stylist, wardrobe, combinations, shop, settings, admin
+│   └── api/                # 8 routes; every one checks the allowlist before spending
 ├── components/             # shadcn/ui primitives + feature components
 ├── lib/
-│   ├── ai/                 # 4 AI call sites (tagging, scoring, re-ranking, shopping) + helpers
+│   ├── ai/                 # 5 AI call sites (tagging, scoring, re-ranking, shopping, stylist chat) + helpers
 │   ├── combinations/       # Deterministic candidate engine, generation, readiness
+│   ├── trips/              # Packing optimizer, trip planner, tool schema, calendar helpers
 │   ├── supabase/           # Browser / server / middleware clients
 │   └── …                   # weather, geocoding, image compression, access control, gap analysis
 ├── test/                   # Shared test fixtures
@@ -335,12 +400,15 @@ Unit tests live next to the code they cover as `*.test.ts`.
 | --- | --- | --- |
 | `NEXT_PUBLIC_SUPABASE_URL` | Yes (safe by design) | Supabase client |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Yes (safe by design; RLS enforces access) | Supabase client |
-| `OPENAI_API_KEY` | **Server-only** | Vision tagging, scoring, re-ranking, shopping suggestions |
-| `OPENWEATHER_API_KEY` | **Server-only** | Forecasts and city autocomplete |
+| `OPENAI_API_KEY` | **Server-only** | Vision tagging, scoring, re-ranking, shopping suggestions, stylist chat |
+| `OPENWEATHER_API_KEY` | **Server-only** | Forecasts (today, and day by day for trips) and city autocomplete |
+| `STYLIST_MODEL` | **Server-only**, optional | OpenAI model for the Stylist chat. Default `gpt-5.5`; set `gpt-5.4-mini` to trade some reliability for cost |
 
 Tuning knobs live in `src/lib/constants.ts`: scoring batch size, minimum
-stored score, candidate cap, number of daily picks, freshness window, and the
-weight each occasion gives to work, daily, formality and old-money scores.
+stored score, candidate cap, number of daily picks, freshness window, the
+weight each occasion gives to work, daily, formality and old-money scores,
+and the packing optimizer's penalties (new piece, travel-light, repeated
+outfit), trip length cap and chat history limit.
 
 > **Tip:** set a monthly budget cap on your OpenAI key. The app is designed to
 > stay cheap, but a cap costs nothing and removes all surprise.
@@ -365,7 +433,7 @@ Every push and pull request runs [the CI workflow](.github/workflows/ci.yml):
 | Job | What it checks |
 | --- | --- |
 | Type-check | `tsc --noEmit` over the whole project |
-| Unit tests | Vitest over the deterministic core: candidate engine, watch and accessory picking, readiness, gap analysis, occasion weights, Zod schemas, prompt descriptors |
+| Unit tests | Vitest over the deterministic core: candidate engine, watch and accessory picking, readiness, gap analysis, packing optimizer, calendar helpers, occasion weights, Zod schemas, prompt descriptors |
 | Production build | `next build` with no secrets; every external call happens at request time |
 | Secret scan | [gitleaks](https://github.com/gitleaks/gitleaks) over the full git history |
 
@@ -407,6 +475,8 @@ tests cover.
 | Saving a watch fails with a category error | Migration `0009` has not been run; it allows the `watch` category. |
 | A watch shows the wrong style after upgrading | `0009` sets the type from the old watch-style chip, or *sports* when none was set. Open the watch, pick the right style, **Save changes**. |
 | Images do not show in the wardrobe grid | Migration `0006` (storage) was not run, or the bucket was created by hand with a different name. |
+| The stylist says it cannot place a destination | Give the city and country ("Porto, Portugal"); the geocoder takes the first match. |
+| A trip day shows "no forecast" | The free forecast reaches five days ahead. Tell the stylist the expected temperature, or let it estimate from the season. |
 | "No outfits yet" with pieces confirmed | Generation was interrupted. Use **Rebuild outfits** on the Wardrobe tab. |
 | Outfit generation times out on Vercel | Hobby tier function limit. Upgrade the plan or use the rebuild button, which resumes where it stopped. |
 | Local Google sign-in bounces to the landing page | Add `http://localhost:3000/auth/callback` to Supabase's redirect URLs. |
@@ -419,9 +489,12 @@ Built solo and used daily. Honest notes on what is not here yet:
   deterministic core only.
 - **Single-photo items.** One photo per piece; multi-angle photos are a
   candidate feature.
-- **Ideas on the list:** laundry and availability tracking, packing lists for
-  trips, seasonal rotation reminders, more accessory types (ties, cufflinks,
-  bracelets) on the same `attributes` mechanism.
+- **Saved trips.** A packing plan lives in the conversation on your device;
+  saving named trips to the database, and ticking pieces off while packing,
+  is the natural next step.
+- **Ideas on the list:** laundry and availability tracking, seasonal
+  rotation reminders, more accessory types (ties, cufflinks, bracelets) on
+  the same `attributes` mechanism.
 
 ## License
 

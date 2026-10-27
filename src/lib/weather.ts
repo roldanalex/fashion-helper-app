@@ -1,4 +1,6 @@
 import "server-only";
+import { geocodeVariants } from "@/lib/geocode-variants";
+import { tempToSeasonBands } from "@/lib/weather-bands";
 import type { WeatherSnapshot } from "@/types/database";
 
 const GEO_URL = "https://api.openweathermap.org/geo/1.0/direct";
@@ -18,12 +20,16 @@ export interface GeoResult {
   state?: string;
 }
 
+/** First match for a free-text place, trying friendlier spellings in turn. */
 export async function geocode(query: string): Promise<GeoResult | null> {
-  const url = `${GEO_URL}?q=${encodeURIComponent(query)}&limit=1&appid=${apiKey()}`;
-  const res = await fetch(url, { next: { revalidate: 86400 } });
-  if (!res.ok) throw new Error(`Geocoding failed (${res.status})`);
-  const results: GeoResult[] = await res.json();
-  return results[0] ?? null;
+  for (const variant of geocodeVariants(query)) {
+    const url = `${GEO_URL}?q=${encodeURIComponent(variant)}&limit=1&appid=${apiKey()}`;
+    const res = await fetch(url, { next: { revalidate: 86400 } });
+    if (!res.ok) throw new Error(`Geocoding failed (${res.status})`);
+    const results: GeoResult[] = await res.json();
+    if (results[0]) return results[0];
+  }
+  return null;
 }
 
 /** Typeahead search — multiple matching places for an autocomplete. */
@@ -68,7 +74,11 @@ export async function getTodayWeather(
     return hour >= 7 && hour <= 22;
   });
   const used = slices.length > 0 ? slices : data.list.slice(0, 4);
+  return summarizeSlices(used, locationName);
+}
 
+/** Reduce a set of 3-hourly slices to one snapshot. */
+function summarizeSlices(used: ForecastSlice[], locationName: string): WeatherSnapshot {
   const temps = used.map((s) => s.main.temp);
   const tempC = temps.reduce((a, b) => a + b, 0) / temps.length;
   const feelsLikeC =
@@ -93,13 +103,44 @@ export async function getTodayWeather(
   };
 }
 
-/** Map a temperature to the wardrobe season bands it suits. */
-export function tempToSeasonBands(tempC: number): string[] {
-  if (tempC >= 23) return ["summer"];
-  if (tempC >= 15) return ["spring", "fall", "summer"];
-  if (tempC >= 5) return ["fall", "winter", "spring"];
-  return ["winter"];
+/**
+ * Day-by-day outlook at a location for the forecast horizon (five days of
+ * 3-hourly slices on the free tier), keyed by the destination's local date.
+ * Daytime slices only; a day with no daytime slice yet (late evening at the
+ * destination) falls back to whatever slices it has.
+ */
+export async function getTripForecast(
+  lat: number,
+  lon: number,
+  locationName: string,
+): Promise<Record<string, WeatherSnapshot>> {
+  const url = `${FORECAST_URL}?lat=${lat}&lon=${lon}&units=metric&cnt=40&appid=${apiKey()}`;
+  const res = await fetch(url, { next: { revalidate: 1800 } });
+  if (!res.ok) throw new Error(`Forecast fetch failed (${res.status})`);
+  const data: { list: ForecastSlice[]; city?: { timezone?: number } } =
+    await res.json();
+  const offset = data.city?.timezone ?? 0;
+
+  const byDate = new Map<string, { day: ForecastSlice[]; all: ForecastSlice[] }>();
+  for (const slice of data.list) {
+    const local = new Date((slice.dt + offset) * 1000);
+    const date = local.toISOString().slice(0, 10);
+    const hour = local.getUTCHours();
+    const bucket = byDate.get(date) ?? { day: [], all: [] };
+    bucket.all.push(slice);
+    if (hour >= 7 && hour <= 22) bucket.day.push(slice);
+    byDate.set(date, bucket);
+  }
+
+  const out: Record<string, WeatherSnapshot> = {};
+  for (const [date, bucket] of byDate) {
+    const used = bucket.day.length > 0 ? bucket.day : bucket.all;
+    out[date] = summarizeSlices(used, locationName);
+  }
+  return out;
 }
+
+export { tempToSeasonBands };
 
 export function weatherFlags(weather: WeatherSnapshot) {
   return {

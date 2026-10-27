@@ -20,7 +20,7 @@
     "subtitle": "Aether Wardrobe catalogues the clothes you already own, builds every outfit that genuinely works from them, and each morning picks the ones that suit your plans and the weather where you are going. It never invents clothes you do not have, and it explains every choice like a stylist laying pieces on the bed.",
     "app_url": "/",
     "owner": "Alexis Roldan · Aether Wardrobe",
-    "last_reviewed": "2026-10-11",
+    "last_reviewed": "2026-10-26",
     "authoritative_sources": ["Aether Wardrobe user guide (docs/USER-GUIDE.md)", "Release notes (CHANGELOG.md)"],
     "disclaimer": "Aether Wardrobe is a styling assistant. Suggestions are based on the tags you confirm and a weather forecast; use your own judgement for dress codes, safety and comfort. Your photos stay private to your account.",
     "est_minutes_guide": 15
@@ -68,7 +68,7 @@
         "kicker": "HOW IT WORKS",
         "nav_label": "How it works",
         "headline": "Six steps from a photo to today's outfit.",
-        "intro": "One model, start to finish. The first three steps happen once per piece; the last three happen every day.",
+        "intro": "One model, start to finish. The first three steps happen once per piece; the last three happen every day. The Stylist tab reuses the same table to pack for a trip.",
         "blocks": [
           {
             "type": "lifecycle",
@@ -170,6 +170,7 @@
           { "section": "wear", "label": "Wear it and keep it fresh" }
         ]
       },
+      { "section": "stylist", "label": "Stylist: pack for a trip" },
       { "section": "shop", "label": "Shop: what to buy next", "optional": true }
     ],
     "practical_guides": [
@@ -421,6 +422,42 @@
           }
         ],
         "checkpoint": "I have marked an outfit as worn."
+      },
+
+      "stylist": {
+        "kicker": "STYLIST",
+        "title": "Pack for a trip in one conversation",
+        "intro": "The Stylist tab is a chat with your personal stylist. Say where you are going, for how long and what the days hold, and it lays out one outfit per day and occasion from your own Outfits table, chosen so pieces repeat and the bag stays small.",
+        "minutes": 3,
+        "chips": ["Trips of one day or more", "Outfits only from your table", "Refine in plain words"],
+        "aside": {
+          "kicker": "GOOD HABIT",
+          "title": "Plan the weekend before",
+          "text": "Ask a few days before you travel: the forecast covers more of the trip, and there is time to add a missing piece."
+        },
+        "blocks": [
+          {
+            "type": "steps",
+            "items": [
+              { "title": "Say where and when", "text": "A city (with the country if the name is ambiguous) and the dates, or 'this weekend', 'Thursday to Sunday'." },
+              { "title": "Describe the days", "text": "'Work Thursday and Friday, dinner on Friday, sightseeing Saturday.' One outfit is planned per occasion you mention. Add constraints in the same breath: carry-on only, one pair of shoes, no blazer." },
+              { "title": "Read the manifest", "text": "A card shows the forecast per day, each day's outfits as colour swatches that link to the pieces, and a packing list with how many times each piece is worn. Copy list puts a tick-box version on the clipboard." },
+              { "title": "Name your pieces", "text": "'Use the navy blazer on Friday', 'I want to take the GMT'. Named pieces are built in wherever the table allows, and the card says when one cannot be worn." },
+              { "title": "Refine it, or ask for one outfit", "text": "'Do it with one pair of shoes', 'add a dinner on Saturday'. For a single occasion, 'what goes with my blazer for dinner Friday?' returns the table's best outfits around it, with the stylist's reasons." }
+            ]
+          },
+          {
+            "type": "glance",
+            "title": "How the plan is made",
+            "items": [
+              { "label": "Forecast", "text": "Read per day at the destination. Five days ahead; later days use an estimated temperature and the card says so." },
+              { "label": "Filter", "text": "Each day and occasion is filtered by season band, rain and the occasion blend, exactly as on Today." },
+              { "label": "Pack", "text": "A deterministic planner prefers outfits that share pieces and avoids the identical look two days running. The model only explains." },
+              { "label": "Honest", "text": "A day with no suitable outfit says so and points to Shop. A relaxed shoe limit is reported in the caveats." }
+            ]
+          }
+        ],
+        "checkpoint": "I have asked the stylist for a trip plan and read the manifest card."
       },
 
       "shop": {

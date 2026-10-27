@@ -1,4 +1,4 @@
-export const APP_VERSION = "1.2.0";
+export const APP_VERSION = "1.3.0";
 export const APP_CREDIT = "Created by Alexis Roldan · 2026";
 
 export const CATEGORIES = [
@@ -246,3 +246,22 @@ export const MAX_DAILY_ACCESSORIES = 3;
 export const RECO_MIN_OCCASION_SCORE = 6.5;
 export const RECO_RELAXED_SCORE = 6.0;
 export const FRESHNESS_DAYS = 7;
+
+/** Trip packing tuning (Stylist chat → plan_trip tool) */
+/** Score taken off a candidate per piece it would add to the suitcase. */
+export const PACK_NEW_ITEM_PENALTY = 0.7;
+/** Same, when the client asks to travel light / carry-on only. */
+export const PACK_NEW_ITEM_PENALTY_LIGHT = 1.3;
+/** Penalty for wearing the identical outfit on consecutive days. */
+export const PACK_REPEAT_PENALTY = 2.5;
+export const PACK_BOOST_BONUS = 0.5;
+/** Bonus per piece the client explicitly asked to pack. */
+export const PACK_REQUIRED_BONUS = 2;
+export const PACK_IMPROVEMENT_PASSES = 3;
+/** Longest trip the planner lays out, in days. */
+export const TRIP_MAX_DAYS = 14;
+/** OpenWeatherMap free forecast covers five days of 3-hour slices. */
+export const FORECAST_HORIZON_DAYS = 5;
+/** Conversation turns sent back to the model per request. */
+export const STYLIST_HISTORY_LIMIT = 16;
+export const STYLIST_MAX_MESSAGE_CHARS = 2000;

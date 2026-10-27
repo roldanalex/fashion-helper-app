@@ -2,6 +2,72 @@
 
 All notable changes to Aether Wardrobe. Dates are release dates.
 
+## 1.3.0 — 2026-10-26
+
+### Added
+
+- **Stylist tab: pack for a trip in one conversation.** A new **Stylist**
+  tab opens a chat with your personal stylist. Say where you are going, for
+  how long and what the days hold ("work Thursday and Friday, dinner Friday,
+  sightseeing Saturday") and it lays out one outfit per day and occasion,
+  chosen from your own Outfits table so that pieces repeat across the trip
+  and the suitcase stays small. Ask for tweaks in plain words: one pair of
+  shoes, drop the blazer, carry-on only, add a dinner.
+- **Trip manifest card.** Every plan arrives as a card: the forecast per
+  day, each day's outfits with colour swatches linking to the pieces, and a
+  packing list grouped by category with how many times each piece is worn.
+  **Copy list** puts a tick-box packing list on the clipboard.
+- **Deterministic packing optimizer.** The stylist does not invent outfits.
+  A pure TypeScript planner filters the table by each day's season band and
+  rain, by the occasion blend, and by your constraints (shoe and outerwear
+  limits, pieces to exclude or insist on), then chooses outfits that share
+  pieces, avoids the identical look two days running, and reports honestly
+  when nothing suits a day. One gpt-4o-mini call narrates the result.
+- **Ask for one outfit, built around your pieces.** "What goes with my
+  navy blazer for dinner on Friday? I'd like to wear the brown loafers."
+  A second tool, `find_outfits`, returns the table's best outfits for one
+  occasion that contain every piece you named, filtered by the forecast
+  when you give a place and date. The card shows each outfit with swatches
+  and scores; the stylist adds the eye: why the colours sit together, where
+  the formality lands, what to swap to dress it up or down.
+- **Named pieces are honoured, not hinted.** On a trip, "use the blazer on
+  Friday" builds every Friday outfit around it when the table allows, and
+  "I want to take the GMT" guarantees it is worn at least once. Several
+  pieces named for one day are spread across that day's outfits (the loafers
+  at the conference, the drivers at dinner). When a piece cannot be worn on
+  a day (wrong season, never scored with the rest) the card says so once,
+  per day, instead of quietly leaving it out.
+- **Day-by-day forecast.** The weather service's five-day outlook is read
+  per local day at the destination. Beyond five days the stylist estimates
+  the climate and the card says so.
+- The stylist's replies render headings, bullets, bold and numbered lists
+  properly, and are asked to stay in short prose after a plan rather than
+  restating the card.
+- The conversation is kept on the device per account, so switching tabs or
+  reloading does not lose the plan. **Start over** clears it.
+
+### Changed
+
+- The mobile tab bar has six tabs (seven for admins).
+- **Free-text destinations are more forgiving.** "San Francisco, CA" used
+  to match nothing because the geocoder read "CA" as Canada. Geocoding now
+  tries the US-state reading and then the city alone, for the stylist and
+  for the Today tab's typed destination alike.
+- The daily "Style my day" flow is unchanged; the season-band helper it
+  shares with the planner moved to `src/lib/weather-bands.ts`.
+
+### Models
+
+- The Stylist chat runs on **gpt-5.5** with low reasoning effort; batch
+  scoring, daily ranking and shopping stay on gpt-4o-mini. Optional
+  `STYLIST_MODEL` environment variable overrides the chat model (for
+  example `gpt-5.4-mini`).
+
+### Dependencies
+
+- `@ai-sdk/react` for the streaming chat hook. No required new environment
+  variables and no database migration.
+
 ## 1.2.0 — 2026-10-16
 
 ### Added

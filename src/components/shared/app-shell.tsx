@@ -7,6 +7,7 @@ import {
   CalendarDays,
   Layers,
   Loader2,
+  MessageCircle,
   Settings,
   ShieldCheck,
   Shirt,
@@ -19,6 +20,7 @@ import { GenerationBanner } from "@/components/shared/generation-banner";
 
 const baseNavItems = [
   { href: "/today", label: "Today", icon: CalendarDays },
+  { href: "/stylist", label: "Stylist", icon: MessageCircle },
   { href: "/wardrobe", label: "Wardrobe", icon: Shirt },
   { href: "/combinations", label: "Outfits", icon: Layers },
   { href: "/shop", label: "Shop", icon: ShoppingBag },
@@ -106,7 +108,7 @@ export function AppShell({
         <div
           className={cn(
             "grid pb-[env(safe-area-inset-bottom)]",
-            isAdmin ? "grid-cols-6" : "grid-cols-5",
+            isAdmin ? "grid-cols-7" : "grid-cols-6",
           )}
         >
           {navItems.map(({ href, label, icon }) => {
