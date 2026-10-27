@@ -10,6 +10,9 @@ import { Slider } from "@/components/ui/slider";
 import { Separator } from "@/components/ui/separator";
 import { ChipGroup } from "@/components/onboarding/chip-group";
 import { SignOutButton } from "@/components/shared/sign-out-button";
+import { UnitSwitch } from "@/components/shared/unit-switch";
+import { useUnits } from "@/components/shared/units-provider";
+import { formatTemp } from "@/lib/units";
 import { STYLE_PREFERENCES } from "@/lib/constants";
 import { updateSettings } from "@/app/(app)/settings/actions";
 import type { Profile } from "@/types/database";
@@ -25,6 +28,7 @@ export function SettingsClient({
   const [styles, setStyles] = useState<string[]>(profile.style_preferences);
   const [formality, setFormality] = useState(profile.preferred_formality ?? 5);
   const [location, setLocation] = useState(profile.home_location ?? "");
+  const { units, setUnits } = useUnits();
 
   function save() {
     startTransition(async () => {
@@ -82,6 +86,16 @@ export function SettingsClient({
             onChange={(e) => setLocation(e.target.value)}
           />
         </div>
+      </div>
+
+      <div className="space-y-3">
+        <Label asChild>
+          <span id="units-label">Temperature</span>
+        </Label>
+        <UnitSwitch value={units} onChange={setUnits} aria-labelledby="units-label" />
+        <p className="text-sm text-muted-foreground">
+          Weather on Today and in trip plans reads as {formatTemp(21, units)}. Saves as soon as you pick.
+        </p>
       </div>
 
       <div className="flex items-center gap-3">

@@ -14,6 +14,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { formatTripDate } from "@/lib/trips/dates";
+import { formatTemp, formatTempRange } from "@/lib/units";
+import { useUnits } from "@/components/shared/units-provider";
 import { CATEGORIES, CATEGORY_PLURAL_LABELS, OCCASIONS } from "@/lib/constants";
 import type { TripDayPlan, TripItemSummary, TripPlan } from "@/lib/trips/schema";
 
@@ -52,6 +54,7 @@ function packingText(plan: TripPlan): string {
 
 export function TripPlanCard({ plan }: { plan: TripPlan }) {
   const { stats } = plan;
+  const { units } = useUnits();
   const sameYear = plan.start_date.slice(0, 4) === plan.end_date.slice(0, 4);
 
   async function copyList() {
@@ -102,9 +105,9 @@ export function TripPlanCard({ plan }: { plan: TripPlan }) {
                     "no forecast"
                   ) : (
                     <>
-                      {Math.round(w.tempC)}°C
+                      {formatTemp(w.tempC, units)}
                       {w.tempMinC != null && w.tempMaxC != null && (
-                        <span className="text-xs"> ({Math.round(w.tempMinC)}–{Math.round(w.tempMaxC)})</span>
+                        <span className="text-xs"> ({formatTempRange(w.tempMinC, w.tempMaxC, units)})</span>
                       )}
                       {w.precipProb != null && <>, {w.precipProb}% rain</>}
                       {w.source === "estimate" && <span className="text-xs"> · estimate</span>}

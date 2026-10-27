@@ -20,6 +20,9 @@ import { ChipGroup } from "@/components/onboarding/chip-group";
 import { OutfitCard, type Outfit } from "@/components/today/outfit-card";
 import { LocationAutocomplete } from "@/components/today/location-autocomplete";
 import { ReadinessBanner } from "@/components/wardrobe/readiness-banner";
+import { UnitSwitch } from "@/components/shared/unit-switch";
+import { useUnits } from "@/components/shared/units-provider";
+import { formatTemp } from "@/lib/units";
 import { OCCASIONS } from "@/lib/constants";
 import { markWorn } from "@/app/(app)/today/actions";
 import type { WardrobeReadiness } from "@/lib/combinations/readiness";
@@ -35,6 +38,7 @@ interface RecommendationResponse {
 }
 
 function WeatherChip({ weather }: { weather: WeatherSnapshot }) {
+  const { units, setUnits } = useUnits();
   const Icon =
     weather.precipProb > 40
       ? CloudRain
@@ -44,12 +48,15 @@ function WeatherChip({ weather }: { weather: WeatherSnapshot }) {
           ? Sun
           : CloudSun;
   return (
-    <div className="inline-flex items-center gap-2 rounded-full border bg-card px-4 py-2 text-sm">
-      <Icon className="size-4 text-primary" aria-hidden />
-      <span>
-        {weather.locationName}: {Math.round(weather.tempC)}°C,{" "}
-        {weather.condition.toLowerCase()}, {weather.precipProb}% rain
+    <div className="inline-flex flex-wrap items-center gap-x-3 gap-y-1.5 rounded-full border bg-card py-1.5 pl-4 pr-1.5 text-sm">
+      <span className="inline-flex items-center gap-2">
+        <Icon className="size-4 text-primary" aria-hidden />
+        <span>
+          {weather.locationName}: {formatTemp(weather.tempC, units)},{" "}
+          {weather.condition.toLowerCase()}, {weather.precipProb}% rain
+        </span>
       </span>
+      <UnitSwitch value={units} onChange={setUnits} size="compact" />
     </div>
   );
 }

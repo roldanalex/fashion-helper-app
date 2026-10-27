@@ -1,6 +1,6 @@
 # Aether Wardrobe — User Guide
 
-Version 1.3.0 · October 2026
+Version 1.3.1 · October 2026
 
 This guide follows the order you will use the app: sign in, set up your
 profile, add pieces, review tags, browse the Outfits table, ask for today's
@@ -31,7 +31,8 @@ changed later under **Settings**.
 3. **Your style**: one or more styles (Old Money, Classic, Smart Casual,
    Minimalist, Sporty, Streetwear) and your usual formality from 1 to 10.
 4. **Your home city**: start typing and pick from the list. This is the weather
-   fallback whenever you do not name a destination.
+   fallback whenever you do not name a destination. It also sets your first
+   temperature unit: °F for a home in the United States, °C elsewhere.
 
 ## 3. Build your wardrobe
 
@@ -149,6 +150,11 @@ from this pool, so curating it here improves every morning.
 4. Tap **Style my day**. You get five to seven ranked outfits. Each card shows
    the pieces, including the watch and belt chosen for today, the score, and
    two sentences on why it suits the day. **Fresh suggestions** asks again.
+
+The weather line above the outfits ends in a small **°C / °F** switch. Tap
+the unit you read, and every temperature in the app follows, including trip
+plans and the stylist's replies. The same choice lives under **Settings →
+Temperature**.
 
 Behind the button: the forecast at the destination is fetched (suede and
 canvas shoes are dropped on rainy days), the table is filtered by season and
@@ -302,6 +308,7 @@ the real piece. Shop needs at least three confirmed pieces.
 | "Nothing quite fits this day" | Nothing scored 6.5 or better for this season and occasion. Try another occasion, relax the score filter on Outfits, or let Shop tell you which piece would unlock the most. |
 | Wrong tags | Open the piece, fix the chips, **Save changes**. For a stubborn material or watch style, add a description and **Re-analyze**. |
 | The stylist cannot place a destination | Add the country: "Porto, Portugal". |
+| Temperatures are in the wrong unit | Tap °C or °F on the weather line on Today, or change it under **Settings → Temperature**. The forecast itself is always fetched in °C and converted on screen. |
 | A trip day says "Nothing in your table suits this" | No visible outfit passes that day's season band, rain rule and occasion. Ask the stylist to relax the occasion ("errands instead of work"), or let Shop name the missing piece. |
 | It feels slow | Confirming a piece scores up to 120 candidates in batches and can take a minute or two on a large wardrobe; the banner shows progress. Today waits on the weather service and one model call, usually a few seconds. |
 

@@ -51,3 +51,26 @@ export async function updateSettings(input: unknown) {
   revalidatePath("/settings");
   return { ok: true };
 }
+
+const unitsSchema = z.enum(["metric", "imperial"]);
+
+/** Temperature unit, saved the moment the user picks it (Settings or the Today weather chip). */
+export async function updateUnits(input: unknown) {
+  const parsed = unitsSchema.safeParse(input);
+  if (!parsed.success) return { error: "Choose Celsius or Fahrenheit." };
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { error: "Not signed in" };
+
+  const { error } = await supabase
+    .from("profiles")
+    .update({ units: parsed.data })
+    .eq("id", user.id);
+  if (error) return { error: "Could not save the temperature unit." };
+
+  revalidatePath("/", "layout");
+  return { ok: true };
+}

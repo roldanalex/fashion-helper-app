@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { profileSchema, type ProfileInput } from "@/lib/schemas";
 import { createClient } from "@/lib/supabase/server";
 import { geocode } from "@/lib/weather";
+import { defaultUnitsForCountry, type Units } from "@/lib/units";
 
 export async function saveProfile(input: ProfileInput) {
   const parsed = profileSchema.safeParse(input);
@@ -20,11 +21,13 @@ export async function saveProfile(input: ProfileInput) {
   let home_lat: number | null = null;
   let home_lon: number | null = null;
   let home_location = parsed.data.home_location;
+  let units: Units | undefined;
   try {
     const geo = await geocode(home_location);
     if (geo) {
       home_lat = geo.lat;
       home_lon = geo.lon;
+      units = defaultUnitsForCountry(geo.country);
       home_location = [geo.name, geo.state, geo.country]
         .filter(Boolean)
         .join(", ");
@@ -40,6 +43,7 @@ export async function saveProfile(input: ProfileInput) {
       home_location,
       home_lat,
       home_lon,
+      ...(units ? { units } : {}),
       onboarded_at: new Date().toISOString(),
     })
     .eq("id", user.id);

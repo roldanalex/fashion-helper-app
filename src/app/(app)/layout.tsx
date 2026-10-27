@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { AppShell } from "@/components/shared/app-shell";
+import { UnitsProvider } from "@/components/shared/units-provider";
 import { createClient } from "@/lib/supabase/server";
 import { getAccess } from "@/lib/access";
 
@@ -16,11 +17,15 @@ export default async function AppLayout({
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("onboarded_at")
+    .select("onboarded_at, units")
     .eq("id", user.id)
     .single();
 
   if (!profile?.onboarded_at) redirect("/onboarding");
 
-  return <AppShell isAdmin={isAdmin}>{children}</AppShell>;
+  return (
+    <UnitsProvider initial={profile.units === "imperial" ? "imperial" : "metric"}>
+      <AppShell isAdmin={isAdmin}>{children}</AppShell>
+    </UnitsProvider>
+  );
 }

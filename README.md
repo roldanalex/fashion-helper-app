@@ -5,7 +5,7 @@ plans each morning, and it lays out the outfit: matched to your style, the
 occasion, and the weather where you are going.
 
 [![CI](https://github.com/roldanalex/fashion-helper-app/actions/workflows/ci.yml/badge.svg)](https://github.com/roldanalex/fashion-helper-app/actions/workflows/ci.yml)
-![Version](https://img.shields.io/badge/version-1.3.0-c9a45c)
+![Version](https://img.shields.io/badge/version-1.3.1-c9a45c)
 ![Next.js](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white)
@@ -81,7 +81,7 @@ from your phone.
 | **Accessories** | Belts, bags, scarves, sunglasses, pocket squares and hats. Metal-bearing pieces carry a hardware tone, and the engine matches it to the outfit's watch. |
 | **Combination table** | A deterministic engine pairs each confirmed piece against your wardrobe (formality, season and colour-clash filters). gpt-4o-mini scores candidates in batches; only outfits scoring 7.0 or better are kept. |
 | **Outfits browser** | Build around a single top, bottom, shoes, outerwear, watch or accessory. Filter by occasion, season or score. Most complete outfits first. Boost favourites, hide misses, see which looks are resting. |
-| **Daily recommendations** | Pick one of ten occasions, optionally a destination (city autocomplete) and notes. The app pulls the forecast there, filters the table, and one AI call ranks five to seven picks, chooses the day's watch and accessories, and explains each choice. |
+| **Daily recommendations** | Pick one of ten occasions, optionally a destination (city autocomplete) and notes. The app pulls the forecast there, filters the table, and one AI call ranks five to seven picks, chooses the day's watch and accessories, and explains each choice. Temperatures read in °C or °F: flip the unit on the weather line or under Settings, and the whole app follows. |
 | **Stylist chat: trip packing** | A conversation with your stylist. "Three days in Lisbon: work Thursday and Friday, dinner Friday, sightseeing Saturday." It reads the forecast for each day, lays out one outfit per day and occasion from your Outfits table, and shows a manifest card: the day-by-day plan, a packing list with how often each piece is worn, and a one-click copy. Ask for tweaks in plain words: one pair of shoes, carry-on only, drop the blazer. Name pieces and they are built in, not hinted at. For a single occasion ("what goes with my navy blazer for dinner on Friday?") it pulls the table's best outfits around those pieces and explains why they work. |
 | **Wear tracking** | Mark an outfit as worn and every piece updates its wear count and last-worn date. Recently worn looks rest for a week. |
 | **Shopping gap analysis** | Tick the categories you are shopping for. The app counts how many new outfits one good piece would unlock and suggests specific items that pair with what you own. |

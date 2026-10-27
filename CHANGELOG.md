@@ -2,6 +2,22 @@
 
 All notable changes to Aether Wardrobe. Dates are release dates.
 
+## 1.3.1 — 2026-10-27
+
+### Added
+
+- **Celsius or Fahrenheit.** A two-way °C / °F switch on the weather line on
+  Today, and the same control under **Settings → Temperature**. The choice
+  saves to your profile the moment you pick it and applies everywhere a
+  temperature shows: Today, the trip manifest card, the outfit options card
+  and the stylist's replies. Onboarding now guesses °F for a home in the
+  United States and its territories, °C elsewhere.
+
+### Changed
+
+- Forecasts are still fetched and scored in °C; only the display converts, so
+  season bands and rain rules are unchanged.
+
 ## 1.3.0 — 2026-10-26
 
 ### Added

@@ -4,6 +4,8 @@ import Link from "next/link";
 import { CloudRain, CloudSun, Snowflake, Sun } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { formatTripDate } from "@/lib/trips/dates";
+import { formatTemp } from "@/lib/units";
+import { useUnits } from "@/components/shared/units-provider";
 import { OCCASIONS } from "@/lib/constants";
 import type { OutfitOptions, TripItemSummary } from "@/lib/trips/schema";
 
@@ -21,6 +23,7 @@ function Swatch({ item }: { item: TripItemSummary }) {
 
 export function OutfitOptionsCard({ options }: { options: OutfitOptions }) {
   const w = options.weather;
+  const { units } = useUnits();
   const Icon =
     w.tempC == null ? null : (w.precipProb ?? 0) > 40 ? CloudRain : w.tempC < 8 ? Snowflake : w.tempC >= 23 ? Sun : CloudSun;
   const builtAround = options.built_around
@@ -47,7 +50,7 @@ export function OutfitOptionsCard({ options }: { options: OutfitOptions }) {
             {Icon && w.tempC != null && (
               <span className="inline-flex items-center gap-1.5">
                 <Icon className="size-4 text-primary" aria-hidden />
-                {Math.round(w.tempC)}°C
+                {formatTemp(w.tempC, units)}
                 {w.precipProb != null && <>, {w.precipProb}% rain</>}
               </span>
             )}
