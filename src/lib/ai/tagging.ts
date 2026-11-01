@@ -38,6 +38,10 @@ Rules:
 - color_hex: the dominant color as a hex value (for a watch: the dial color).
 - Choose subcategory from this guide when possible:
 ${subcategoryGuide}
+- A sweater is a top when it is the main layer (worn on its own or over a
+  T-shirt) and outerwear when it is layered over a collared shirt, like a
+  cardigan. Without a hint from the owner, treat it as a top.
+- pattern "cable-knit" is for the raised, braided cable texture on knitwear.
 
 Watches (category "watch") — the subcategory IS the watch style: dress (thin
 case, plain dial, usually leather), sports (steel bracelet, everyday), diver

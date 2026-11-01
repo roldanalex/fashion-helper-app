@@ -49,6 +49,7 @@ export const SUBCATEGORIES: Record<Category, string[]> = {
     "overcoat",
     "trench coat",
     "cardigan",
+    "sweater",
     "quarter-zip",
     "harrington jacket",
     "field jacket",
@@ -163,6 +164,7 @@ export const PATTERNS = [
   "check",
   "herringbone",
   "houndstooth",
+  "cable-knit",
   "floral",
   "printed",
 ] as const;

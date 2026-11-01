@@ -57,7 +57,7 @@ Every piece lands in "Review tags" first. Check and correct, then confirm.
 | Name and colour | The swatch should match the dominant colour. For a watch, the dial colour. |
 | Type | Depends on the category: polo, chinos, loafers, belt… For a watch, the type is its style. |
 | Material | Includes steel, gold, titanium, rubber, nylon and acetate for watches and accessories. |
-| Pattern | Solid, striped, plaid, check, herringbone, houndstooth, floral, printed. |
+| Pattern | Solid, striped, plaid, check, herringbone, houndstooth, cable-knit, floral, printed. |
 | Seasons | Every season the piece comfortably suits. |
 | Formality | 1 gym wear · 5 smart casual · 8 business · 10 black tie. |
 | Old money fit | Timeless cuts, natural fabrics, muted colours, no loud logos. |
