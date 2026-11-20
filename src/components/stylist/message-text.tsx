@@ -55,9 +55,9 @@ export function MessageText({ text, className }: { text: string; className?: str
         switch (block.kind) {
           case "heading":
             return (
-              <p key={i} className="mt-4 mb-1 font-semibold first:mt-0">
+              <h3 key={i} className="mt-4 mb-1 text-[1.125rem] font-semibold first:mt-0">
                 {inline(block.text)}
-              </p>
+              </h3>
             );
           case "list":
             return (

@@ -8,6 +8,15 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { grantAccess, revokeAccess } from "@/app/(app)/admin/actions";
 import type { AccessGrant } from "@/types/database";
 
@@ -28,6 +37,8 @@ export function AdminClient({
   const router = useRouter();
   const [busy, startTransition] = useTransition();
   const [newEmail, setNewEmail] = useState("");
+  // Revoking locks another person out, so it asks first (undo would leave a gap).
+  const [revokeTarget, setRevokeTarget] = useState<string | null>(null);
 
   function run(fn: () => Promise<{ error?: string; ok?: boolean }>, okMsg: string) {
     startTransition(async () => {
@@ -78,7 +89,14 @@ export function AdminClient({
           Pre-approve someone — they&apos;ll get straight in the first time they
           sign in with Google.
         </p>
-        <div className="mt-4 flex gap-2">
+        <form
+          className="mt-4 flex flex-col gap-2 sm:flex-row"
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (!newEmail.trim()) return;
+            run(() => grantAccess(newEmail), `Invited ${newEmail.trim().toLowerCase()}`);
+          }}
+        >
           <div className="flex-1">
             <Label htmlFor="invite-email" className="sr-only">
               Email to invite
@@ -86,18 +104,14 @@ export function AdminClient({
             <Input
               id="invite-email"
               type="email"
+              autoComplete="off"
+              inputMode="email"
               placeholder="friend@example.com"
               value={newEmail}
               onChange={(e) => setNewEmail(e.target.value)}
             />
           </div>
-          <Button
-            className="gap-1.5"
-            disabled={busy || !newEmail.trim()}
-            onClick={() =>
-              run(() => grantAccess(newEmail), `Invited ${newEmail.trim().toLowerCase()}`)
-            }
-          >
+          <Button type="submit" className="gap-1.5" disabled={busy || !newEmail.trim()}>
             {busy ? (
               <Loader2 className="size-4 animate-spin" aria-hidden />
             ) : (
@@ -105,7 +119,7 @@ export function AdminClient({
             )}
             Grant access
           </Button>
-        </div>
+        </form>
       </section>
 
       <section>
@@ -130,7 +144,7 @@ export function AdminClient({
                   variant="ghost"
                   className="gap-1.5 text-muted-foreground"
                   disabled={busy}
-                  onClick={() => run(() => revokeAccess(g.email), `Revoked ${g.email}`)}
+                  onClick={() => setRevokeTarget(g.email)}
                 >
                   <X className="size-3.5" aria-hidden /> Revoke
                 </Button>
@@ -145,6 +159,35 @@ export function AdminClient({
           access_grants.
         </p>
       </section>
+
+      <Dialog open={revokeTarget !== null} onOpenChange={(o) => !o && setRevokeTarget(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Revoke access for {revokeTarget}?</DialogTitle>
+            <DialogDescription>
+              They will be signed out of the app on their next visit and see the
+              waiting page. Their wardrobe stays saved, and you can grant access again
+              at any time.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="outline">Keep access</Button>
+            </DialogClose>
+            <Button
+              variant="destructive"
+              disabled={busy}
+              onClick={() => {
+                const email = revokeTarget;
+                setRevokeTarget(null);
+                if (email) run(() => revokeAccess(email), `Revoked ${email}`);
+              }}
+            >
+              Revoke access
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

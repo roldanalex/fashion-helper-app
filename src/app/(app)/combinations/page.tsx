@@ -1,4 +1,6 @@
 import { Suspense } from "react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import { Layers } from "lucide-react";
 import { PageHeader } from "@/components/shared/page-header";
 import { ComboCard } from "@/components/combinations/combo-card";
@@ -9,6 +11,9 @@ import { OCCASION_WEIGHTS, type Occasion } from "@/lib/constants";
 import type { Combination } from "@/types/database";
 
 export const metadata = { title: "Outfits" };
+
+/** Cards per page; "Show more" adds another page. Keeps image signing and phones light. */
+const PAGE_SIZE = 24;
 
 /** Pieces in the outfit: 3 required + outerwear + watch + each accessory. */
 function completeness(c: Combination): number {
@@ -34,11 +39,16 @@ export default async function CombinationsPage({
 }) {
   const params = await searchParams;
   const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const userId = user?.id ?? "";
 
   // Confirmed pieces, to populate the "build around this item" filters.
   const { data: itemRows } = await supabase
     .from("clothing_items")
     .select("id, name, category")
+    .eq("user_id", userId)
     .eq("archived", false)
     .eq("ai_status", "confirmed")
     .in("category", ["top", "bottom", "shoes", "outerwear", "watch", "accessory"])
@@ -54,6 +64,7 @@ export default async function CombinationsPage({
   let query = supabase
     .from("combinations")
     .select("*")
+    .eq("user_id", userId)
     .gte("overall_score", Number(params.min ?? 7))
     .order("boosted", { ascending: false })
     .order("overall_score", { ascending: false })
@@ -88,7 +99,15 @@ export default async function CombinationsPage({
       rank(b) - rank(a),
   );
 
-  const enriched = await enrichCombinations(supabase, combos);
+  const filtered = ["top", "bottom", "shoes", "outerwear", "watch", "accessory", "occasion", "season", "hidden"].some(
+    (k) => !!params[k],
+  ) || (params.min !== undefined && params.min !== "7");
+  const shown = Math.max(PAGE_SIZE, Math.min(Number(params.show) || PAGE_SIZE, 120));
+  const enriched = await enrichCombinations(supabase, combos.slice(0, shown));
+  const moreParams = new URLSearchParams(
+    Object.entries(params).filter((e): e is [string, string] => typeof e[1] === "string"),
+  );
+  moreParams.set("show", String(shown + PAGE_SIZE));
 
   return (
     <main>
@@ -112,11 +131,25 @@ export default async function CombinationsPage({
         {enriched.length === 0 ? (
           <div className="flex flex-col items-center rounded-xl border border-dashed py-20 text-center">
             <Layers className="size-8 text-muted-foreground" aria-hidden />
-            <h2 className="mt-4 font-serif text-2xl">No combinations yet</h2>
-            <p className="mt-2 max-w-sm text-sm text-muted-foreground">
-              Confirm a few wardrobe pieces and the stylist will weave your
-              combination table — or relax the filters above.
-            </p>
+            {filtered ? (
+              <>
+                <h2 className="mt-4 font-serif text-2xl">No outfits match these filters</h2>
+                <p className="mt-2 max-w-sm text-sm text-muted-foreground">
+                  Remove a filter or lower the score to see more of your table.
+                </p>
+              </>
+            ) : (
+              <>
+                <h2 className="mt-4 font-serif text-2xl">No combinations yet</h2>
+                <p className="mt-2 max-w-sm text-sm text-muted-foreground">
+                  Confirm at least a top, a bottom and a pair of shoes in your
+                  wardrobe, and outfits build themselves.
+                </p>
+                <Button asChild variant="outline" className="mt-6">
+                  <Link href="/wardrobe">Go to wardrobe</Link>
+                </Button>
+              </>
+            )}
           </div>
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
@@ -127,6 +160,19 @@ export default async function CombinationsPage({
                 slots={slots}
               />
             ))}
+          </div>
+        )}
+
+        {combos.length > shown && (
+          <div className="flex flex-col items-center gap-2 pt-2">
+            <p className="text-sm text-muted-foreground" aria-live="polite">
+              Showing {shown} of {combos.length}
+            </p>
+            <Button asChild variant="outline">
+              <Link href={`/combinations?${moreParams.toString()}`} scroll={false}>
+                Show more outfits
+              </Link>
+            </Button>
           </div>
         )}
       </div>

@@ -41,9 +41,11 @@ function GoldenThread() {
   );
 }
 
-export default function HeroScene() {
+/** `active` false stops the render loop while the hero is off-screen or the tab hidden. */
+export default function HeroScene({ active = true }: { active?: boolean }) {
   return (
     <Canvas
+      frameloop={active ? "always" : "never"}
       dpr={[1, 1.75]}
       camera={{ position: [0, 0, 4.4], fov: 42 }}
       gl={{ antialias: true, alpha: true, powerPreference: "low-power" }}

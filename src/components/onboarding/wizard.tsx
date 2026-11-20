@@ -1,25 +1,37 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { toast } from "sonner";
-import { ArrowLeft, ArrowRight, Loader2, MapPin } from "lucide-react";
+import { ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Progress } from "@/components/ui/progress";
 import { ChipGroup } from "@/components/onboarding/chip-group";
+import {
+  BuildFields,
+  ColoringFields,
+  StyleNotesField,
+  type PersonalDraft,
+} from "@/components/personal/personal-fields";
+import { LocationAutocomplete } from "@/components/today/location-autocomplete";
 import { STYLE_PREFERENCES } from "@/lib/constants";
 import { profileSchema, type ProfileInput } from "@/lib/schemas";
+import type { Units } from "@/lib/units";
 import { useOnboardingStore } from "@/stores/onboarding";
 import { saveProfile } from "@/app/onboarding/actions";
 
-const STEPS = ["About you", "Your coloring", "Your style", "Home base"] as const;
+const STEPS = [
+  { title: "About you", optional: true },
+  { title: "Your colouring", optional: true },
+  { title: "Your style", optional: false },
+  { title: "Home base", optional: false },
+] as const;
 
 const stepFields: (keyof ProfileInput)[][] = [
-  ["gender", "age_range", "height_cm", "weight_kg", "body_shape"],
+  ["gender", "age_range", "height_cm", "weight_kg", "body_shape", "fit_preference"],
   ["skin_tone", "skin_undertone", "hair_color", "eye_color"],
-  ["preferred_formality", "style_preferences", "lifestyle_tags"],
+  ["preferred_formality", "style_preferences", "lifestyle_tags", "style_notes"],
   ["home_location"],
 ];
 
@@ -32,10 +44,36 @@ const LIFESTYLE_TAGS = [
   "social events",
 ];
 
+/** First guess for measurement units; the user can flip it on the step. */
+function guessUnits(): Units {
+  try {
+    const region = new Intl.Locale(navigator.language).maximize().region;
+    return region === "US" || region === "LR" || region === "MM" ? "imperial" : "metric";
+  } catch {
+    return "metric";
+  }
+}
+
 export function OnboardingWizard() {
   const { draft, step, set, setStep } = useOnboardingStore();
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
+  const [units, setUnits] = useState<Units>("metric");
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const firstRender = useRef(true);
+
+  useEffect(() => setUnits(guessUnits()), []);
+
+  // Move focus to the new step's heading so screen readers start there.
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+    headingRef.current?.focus();
+  }, [step]);
+
+  const setPersonal = (fields: PersonalDraft) => set(fields as Partial<ProfileInput>);
 
   function validateStep(): boolean {
     const fields = stepFields[step];
@@ -54,10 +92,15 @@ export function OnboardingWizard() {
     return true;
   }
 
+  function goTo(nextStep: number) {
+    setError(null);
+    setStep(nextStep);
+  }
+
   function next() {
     if (!validateStep()) return;
     if (step < STEPS.length - 1) {
-      setStep(step + 1);
+      goTo(step + 1);
       return;
     }
     const result = profileSchema.safeParse(draft);
@@ -70,113 +113,70 @@ export function OnboardingWizard() {
       if (res?.error) {
         setError(res.error);
         toast.error(res.error);
+      } else {
+        useOnboardingStore.persist.clearStorage();
       }
     });
   }
 
+  /** Skip an optional step: clear its answers so nothing half-entered is saved. */
+  function skip() {
+    const cleared = Object.fromEntries(stepFields[step].map((f) => [f, null]));
+    set(cleared as Partial<ProfileInput>);
+    goTo(step + 1);
+  }
+
+  const current = STEPS[step];
+
   return (
-    <div className="mx-auto w-full max-w-xl px-6 py-12">
-      <p className="text-sm uppercase tracking-[0.25em] text-primary">
+    <div className="mx-auto w-full max-w-xl px-6 py-10 md:py-12">
+      <p className="text-sm text-primary">
         Step {step + 1} of {STEPS.length}
+        {current.optional && " · optional"}
       </p>
-      <h1 className="mt-2 text-4xl">{STEPS[step]}</h1>
+      <h1 ref={headingRef} tabIndex={-1} className="mt-2 text-4xl outline-none">
+        {current.title}
+      </h1>
       <Progress
         value={((step + 1) / STEPS.length) * 100}
         className="mt-6 h-1"
         aria-label="Onboarding progress"
       />
 
-      <div className="mt-10 space-y-8">
+      {step < 2 && (
+        <p className="mt-6 text-sm text-muted-foreground">
+          Every question here is optional. Your answers help the stylist pick colours
+          and cuts that flatter you; they are sent to OpenAI only to rank your outfits
+          and are never shown to anyone else. Edit them any time in Settings.
+        </p>
+      )}
+
+      <div className="mt-8 space-y-8">
         {step === 0 && (
           <>
-            <ChipGroup
-              label="Gender"
-              options={["male", "female", "other"]}
-              value={draft.gender}
-              onChange={(v) => set({ gender: v as ProfileInput["gender"] })}
-            />
-            <ChipGroup
-              label="Age range"
-              options={["18-24", "25-34", "35-44", "45-54", "55+"]}
-              value={draft.age_range}
-              onChange={(v) => set({ age_range: v as ProfileInput["age_range"] })}
-            />
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="height">Height (cm)</Label>
-                <Input
-                  id="height"
-                  type="number"
-                  inputMode="numeric"
-                  placeholder="178"
-                  value={draft.height_cm ?? ""}
-                  onChange={(e) =>
-                    set({ height_cm: e.target.value ? Number(e.target.value) : undefined })
+            <div className="flex items-center gap-2 text-sm">
+              <span className="text-muted-foreground">Measure in</span>
+              {(["metric", "imperial"] as const).map((u) => (
+                <button
+                  key={u}
+                  type="button"
+                  aria-pressed={units === u}
+                  onClick={() => setUnits(u)}
+                  className={
+                    units === u
+                      ? "min-h-9 cursor-pointer rounded-full border border-primary bg-primary/15 px-3 text-primary pointer-coarse:min-h-11"
+                      : "min-h-9 cursor-pointer rounded-full border border-input px-3 text-muted-foreground pointer-coarse:min-h-11"
                   }
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="weight">Weight (kg)</Label>
-                <Input
-                  id="weight"
-                  type="number"
-                  inputMode="numeric"
-                  placeholder="75"
-                  value={draft.weight_kg ?? ""}
-                  onChange={(e) =>
-                    set({ weight_kg: e.target.value ? Number(e.target.value) : undefined })
-                  }
-                />
-              </div>
+                >
+                  {u === "metric" ? "cm and kg" : "ft and lb"}
+                </button>
+              ))}
             </div>
-            <ChipGroup
-              label="Body shape"
-              options={["slim", "average", "athletic", "broad", "full"]}
-              value={draft.body_shape}
-              onChange={(v) => set({ body_shape: v as ProfileInput["body_shape"] })}
-            />
+            <BuildFields key={units} draft={draft} set={setPersonal} units={units} />
           </>
         )}
 
-        {step === 1 && (
-          <>
-            <ChipGroup
-              label="Skin tone"
-              options={["fair", "light", "medium", "olive", "tan", "deep"]}
-              value={draft.skin_tone}
-              onChange={(v) => set({ skin_tone: v as ProfileInput["skin_tone"] })}
-            />
-            <ChipGroup
-              label="Undertone"
-              options={["warm", "cool", "neutral"]}
-              value={draft.skin_undertone}
-              onChange={(v) =>
-                set({ skin_undertone: v as ProfileInput["skin_undertone"] })
-              }
-            />
-            <ChipGroup
-              label="Hair color"
-              options={[
-                "black",
-                "dark brown",
-                "brown",
-                "light brown",
-                "blonde",
-                "red",
-                "gray",
-                "white",
-              ]}
-              value={draft.hair_color}
-              onChange={(v) => set({ hair_color: v as ProfileInput["hair_color"] })}
-            />
-            <ChipGroup
-              label="Eye color"
-              options={["brown", "hazel", "green", "blue", "gray"]}
-              value={draft.eye_color}
-              onChange={(v) => set({ eye_color: v as ProfileInput["eye_color"] })}
-            />
-          </>
-        )}
+        {step === 1 && <ColoringFields draft={draft} set={setPersonal} />}
 
         {step === 2 && (
           <>
@@ -188,7 +188,7 @@ export function OnboardingWizard() {
               multiple
             />
             <div>
-              <Label className="text-sm font-medium">
+              <Label id="formality-label" className="text-sm font-medium">
                 How dressed-up do you like to be? ({draft.preferred_formality ?? 5}/10)
               </Label>
               <Slider
@@ -198,9 +198,9 @@ export function OnboardingWizard() {
                 step={1}
                 value={[draft.preferred_formality ?? 5]}
                 onValueChange={([v]) => set({ preferred_formality: v })}
-                aria-label="Preferred formality"
+                aria-labelledby="formality-label"
               />
-              <div className="mt-2 flex justify-between text-xs text-muted-foreground">
+              <div className="mt-2 flex justify-between text-xs text-muted-foreground" aria-hidden>
                 <span>Relaxed</span>
                 <span>Polished</span>
               </div>
@@ -212,28 +212,28 @@ export function OnboardingWizard() {
               onChange={(v) => set({ lifestyle_tags: v as string[] })}
               multiple
             />
+            <StyleNotesField
+              value={draft.style_notes ?? ""}
+              onChange={(v) => set({ style_notes: v })}
+            />
           </>
         )}
 
         {step === 3 && (
           <div className="space-y-2">
             <Label htmlFor="home">Where are you based?</Label>
-            <div className="relative">
-              <MapPin
-                className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
-                aria-hidden
-              />
-              <Input
-                id="home"
-                className="pl-9"
-                placeholder="e.g. San Juan, Puerto Rico"
-                value={draft.home_location ?? ""}
-                onChange={(e) => set({ home_location: e.target.value })}
-              />
-            </div>
-            <p className="text-sm text-muted-foreground">
-              Used to check your local weather each morning. You can set a
-              different destination any day.
+            <LocationAutocomplete
+              id="home"
+              placeholder="Start typing a city"
+              value={draft.home_location ?? ""}
+              onChange={(text) => set({ home_location: text })}
+              onSelect={(r) => set({ home_location: r.label })}
+              aria-describedby="home-help"
+              aria-invalid={!!error}
+            />
+            <p id="home-help" className="text-sm text-muted-foreground">
+              Used to check your local weather each morning, and to choose °C or °F.
+              You can set a different destination any day.
             </p>
           </div>
         )}
@@ -245,26 +245,36 @@ export function OnboardingWizard() {
         </p>
       )}
 
-      <div className="mt-10 flex items-center justify-between">
+      <div className="mt-10 flex flex-wrap items-center justify-between gap-3">
         <Button
           variant="ghost"
-          onClick={() => setStep(Math.max(0, step - 1))}
+          onClick={() => goTo(Math.max(0, step - 1))}
           disabled={step === 0 || pending}
           className="gap-2"
         >
           <ArrowLeft className="size-4" aria-hidden /> Back
         </Button>
-        <Button onClick={next} disabled={pending} className="gap-2">
-          {pending ? (
-            <Loader2 className="size-4 animate-spin" aria-hidden />
-          ) : step === STEPS.length - 1 ? (
-            "Enter your wardrobe"
-          ) : (
-            <>
-              Continue <ArrowRight className="size-4" aria-hidden />
-            </>
+        <div className="flex items-center gap-2">
+          {current.optional && (
+            <Button variant="ghost" onClick={skip} disabled={pending}>
+              Skip
+            </Button>
           )}
-        </Button>
+          <Button onClick={next} disabled={pending} className="gap-2">
+            {pending ? (
+              <>
+                <Loader2 className="size-4 animate-spin" aria-hidden />
+                Saving…
+              </>
+            ) : step === STEPS.length - 1 ? (
+              "Enter your wardrobe"
+            ) : (
+              <>
+                Continue <ArrowRight className="size-4" aria-hidden />
+              </>
+            )}
+          </Button>
+        </div>
       </div>
     </div>
   );

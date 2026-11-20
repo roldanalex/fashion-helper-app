@@ -6,6 +6,7 @@ import { describeItem } from "@/lib/ai/describe";
 import { withRetry } from "@/lib/ai/retry";
 import type { CategoryGap } from "@/lib/gap-analysis";
 import type { ClothingItem } from "@/types/database";
+import { describeClient, PERSONAL_FIT_RULE, type PersonalProfile } from "@/lib/personal/client-profile";
 
 export async function suggestPurchases({
   wardrobe,
@@ -13,13 +14,17 @@ export async function suggestPurchases({
   selectedCategories,
   stylePreferences,
   preferredFormality,
+  client,
 }: {
   wardrobe: ClothingItem[];
   gaps: CategoryGap[];
   selectedCategories: string[];
   stylePreferences: string[];
   preferredFormality: number | null;
+  /** Build and colouring, when shared; shapes colours and cuts suggested. */
+  client?: PersonalProfile | null;
 }): Promise<ShoppingResult> {
+  const personal = describeClient(client);
   const byCategory = selectedCategories
     .map((cat) => {
       const items = wardrobe.filter((i) => i.category === cat);
@@ -45,7 +50,9 @@ export async function suggestPurchases({
           role: "system",
           content: `You are a personal shopper helping a client grow their wardrobe with intention.
 Client styles: ${stylePreferences.join(", ") || "smart casual"}. Preferred formality: ${preferredFormality ?? 5}/10.
-
+${personal ? `${personal}
+${PERSONAL_FIT_RULE} For tops, knitwear and jackets, suggest colours from the client's season; for every piece, suggest cuts that suit their build and fit preference.
+` : ""}
 Suggest 3-5 specific pieces for EACH requested category. Rules:
 - Every suggestion must pair with MANY existing pieces — versatility first.
 - Match the client's styles (for old money: natural fabrics, muted palette, timeless cuts, no loud logos).

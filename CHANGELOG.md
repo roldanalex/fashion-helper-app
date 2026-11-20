@@ -2,6 +2,86 @@
 
 All notable changes to Aether Wardrobe. Dates are release dates.
 
+## 1.4.0 — 2026-11-19
+
+### Added
+
+- **Personal fit.** Tell the stylist about yourself and it dresses you, not
+  just your wardrobe. Skin tone, undertone, hair and eye colour give your
+  **colour season** (Spring, Summer, Autumn or Winter), shown with its
+  flattering colours as you choose. Body shape, height, fit preference (slim,
+  regular, relaxed) and a free-text note ("I prefer to cover my arms") go to the
+  stylist too.
+  - **Today** gives a small boost to outfits whose shirt and jacket colours suit
+    your season. It only settles close calls; the occasion still decides.
+  - **Stylist chat** applies the same boost when planning a trip or finding an
+    outfit, and may say why a colour or cut suits you.
+  - **Shop** suggests tops and jackets in your season's colours and cuts that
+    suit your build.
+  - Everything is optional. Onboarding's first two steps have **Skip**, tapping
+    a chosen chip clears it, and **Settings → Your build and colouring** edits
+    or clears it all (with **Undo**). These details could not be changed after
+    onboarding before.
+  - Weight is never sent to the AI. Outfit scores are not recalculated:
+    personal fit reorders and explains, so changing your profile costs nothing.
+- **Phone navigation.** The bottom bar now holds Today, Stylist, Wardrobe,
+  Outfits and **More**; More opens Shop, Settings, Admin and the "How it works"
+  guide (which phones could not reach before).
+- **Undo instead of surprises.** Archive a piece, hide an outfit, dismiss or
+  buy a suggestion, or clear the stylist conversation, and the confirmation
+  offers **Undo**. Revoking someone's access in Admin asks first.
+- **Dismissed suggestions** in Shop are listed at the bottom with **Bring
+  back**. Shop says how many confirmed pieces you have until it can suggest.
+- **Outfits on a phone:** filters open in a sheet from a **Filters** button,
+  active filters show as chips you tap to remove, and the table loads 24 at a
+  time with **Show more outfits**.
+- **Install to home screen.** A web app manifest and Apple web-app settings let
+  Aether open full screen from the home screen.
+- Pages for "not found" and for errors outside the app, in the app's voice,
+  with a reference code to quote.
+- Onboarding keeps your answers if the page reloads, and both onboarding and
+  Settings use the city autocomplete for your home location.
+
+### Changed
+
+- Buttons, inputs, selects, chips and the tab bar are at least 44px tall on
+  touch screens; desktop keeps its compact sizes.
+- The bottom bar, the stylist composer and sheets respect the iPhone home
+  indicator and notch (`viewport-fit=cover` was missing, so safe-area padding
+  never applied).
+- Input, select and chip outlines are stronger (3:1 contrast against the
+  background), every control shows a visible brass focus ring, and the
+  smallest text is now 12px.
+- **Style my day** sits above the tab bar on phones, results show placeholders
+  while they load, and the page scrolls to the picks when they arrive.
+- The landing page's 3D thread runs only on desktop screens with a mouse, and
+  pauses when off-screen or in a background tab; phones get the static
+  gradient and skip the 3D download.
+- Upload sheet: fits short phones, with the **Upload & analyze** button always
+  visible.
+- Information that only appeared on mouse hover (optional readiness chips,
+  piece names, "worn in N outfits") is now visible or read by screen readers.
+- Screen readers: the stylist's finished reply is announced once, its headings
+  are real headings, sliders and the location field are properly labelled, the
+  wizard moves focus to each new step, and collapsed wardrobe sections stay
+  linked to their toggles.
+- Toasts always use the dark theme; dialog and sheet backdrops are darker.
+- The `/welcome` guide opens in brass instead of flashing red, and has a proper
+  title.
+- The outfit-building banner appears as soon as you confirm a piece and stops
+  polling if the status check fails.
+
+### Fixed
+
+- Shop failed to load the formality preference for admins (the profile query
+  could return several rows).
+
+### Upgrade
+
+- Run `supabase/migrations/0010_personal_fit.sql` in the Supabase SQL Editor.
+  It adds `fit_preference` and `style_notes` and constrains `color_season`.
+  Until it runs, everything works except saving build and colouring.
+
 ## 1.3.1 — 2026-10-27
 
 ### Added

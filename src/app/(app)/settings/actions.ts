@@ -5,13 +5,16 @@ import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { geocode } from "@/lib/weather";
 import { STYLE_PREFERENCES } from "@/lib/constants";
+import { personalSchema } from "@/lib/schemas";
+import { deriveColorSeason } from "@/lib/personal/color-season";
 
 const settingsSchema = z.object({
   style_preferences: z
     .array(z.enum(STYLE_PREFERENCES.map((s) => s.value) as [string, ...string[]]))
     .min(1),
   preferred_formality: z.number().int().min(1).max(10),
-  home_location: z.string().min(2),
+  home_location: z.string().trim().min(2, "Enter your home city"),
+  lifestyle_tags: z.array(z.string().max(40)).max(12).optional(),
 });
 
 export async function updateSettings(input: unknown) {
@@ -73,4 +76,65 @@ export async function updateUnits(input: unknown) {
 
   revalidatePath("/", "layout");
   return { ok: true };
+}
+
+/**
+ * Build, colouring, fit and notes. Every field is optional; the colour season
+ * is derived here so prompts and Settings agree. Outfit scores are untouched:
+ * these shape ranking and the stylist's choices, not the stored table.
+ */
+export async function updatePersonal(input: unknown) {
+  const parsed = personalSchema.safeParse(input);
+  if (!parsed.success) {
+    return { error: parsed.error.issues[0]?.message ?? "Check your details" };
+  }
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { error: "Not signed in" };
+
+  const d = parsed.data;
+  const row = {
+    gender: d.gender ?? null,
+    age_range: d.age_range ?? null,
+    height_cm: d.height_cm ?? null,
+    weight_kg: d.weight_kg ?? null,
+    body_shape: d.body_shape ?? null,
+    skin_tone: d.skin_tone ?? null,
+    skin_undertone: d.skin_undertone ?? null,
+    hair_color: d.hair_color ?? null,
+    eye_color: d.eye_color ?? null,
+    fit_preference: d.fit_preference ?? null,
+    style_notes: d.style_notes || null,
+    color_season: deriveColorSeason(d),
+  };
+
+  const { error } = await supabase.from("profiles").update(row).eq("id", user.id);
+  if (error) {
+    // Most likely cause: migration 0010 has not been run yet.
+    console.error("updatePersonal failed:", error.message);
+    return { error: "Could not save your details. Please try again." };
+  }
+
+  revalidatePath("/settings");
+  return { ok: true };
+}
+
+/** Clears every personal characteristic in one go. */
+export async function clearPersonal() {
+  return updatePersonal({
+    gender: null,
+    age_range: null,
+    height_cm: null,
+    weight_kg: null,
+    body_shape: null,
+    skin_tone: null,
+    skin_undertone: null,
+    hair_color: null,
+    eye_color: null,
+    fit_preference: null,
+    style_notes: null,
+  });
 }

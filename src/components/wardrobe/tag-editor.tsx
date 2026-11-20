@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Archive, Check, Loader2, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -20,12 +21,13 @@ import {
   type AccessoryAttributeKey,
 } from "@/lib/constants";
 import { EMPTY_ATTRIBUTES, itemTagsSchema } from "@/lib/schemas";
-import { archiveItem, confirmItemTags } from "@/app/(app)/wardrobe/actions";
+import { archiveItem, confirmItemTags, unarchiveItem } from "@/app/(app)/wardrobe/actions";
 import type { ClothingItem } from "@/types/database";
 import type { Category } from "@/lib/constants";
 
 export function TagEditor({ item }: { item: ClothingItem }) {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [pending, startTransition] = useTransition();
   const [reanalyzing, setReanalyzing] = useState(false);
 
@@ -81,7 +83,11 @@ export function TagEditor({ item }: { item: ClothingItem }) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ itemId: item.id }),
-      }).catch(() => {});
+      })
+        .catch(() => {})
+        .finally(() => queryClient.invalidateQueries({ queryKey: ["combination-status"] }));
+      // Show the "building outfits" banner straight away.
+      queryClient.invalidateQueries({ queryKey: ["combination-status"] });
       router.push("/wardrobe");
       router.refresh();
     });
@@ -112,7 +118,18 @@ export function TagEditor({ item }: { item: ClothingItem }) {
         toast.error(res.error);
         return;
       }
-      toast.success("Archived");
+      toast.success(`Archived ${tags.name}`, {
+        description: "Its outfits are hidden until you bring it back.",
+        action: {
+          label: "Undo",
+          onClick: async () => {
+            const undo = await unarchiveItem(item.id);
+            if (undo?.error) toast.error(undo.error);
+            else toast.success(`Restored ${tags.name}`);
+            router.refresh();
+          },
+        },
+      });
       router.push("/wardrobe");
       router.refresh();
     });
@@ -141,7 +158,7 @@ export function TagEditor({ item }: { item: ClothingItem }) {
             <input
               type="color"
               aria-label="Color swatch"
-              className="h-9 w-12 cursor-pointer rounded-md border bg-transparent"
+              className="h-9 w-12 shrink-0 cursor-pointer pointer-coarse:h-11 pointer-coarse:w-14 rounded-md border bg-transparent"
               value={tags.color_hex}
               onChange={(e) => set("color_hex", e.target.value)}
             />
@@ -211,7 +228,7 @@ export function TagEditor({ item }: { item: ClothingItem }) {
 
       <div className="grid gap-8 sm:grid-cols-2">
         <div>
-          <Label className="text-sm font-medium">
+          <Label id="formality-label" className="text-sm font-medium">
             Formality ({tags.formality_level}/10)
           </Label>
           <Slider
@@ -221,11 +238,11 @@ export function TagEditor({ item }: { item: ClothingItem }) {
             step={1}
             value={[tags.formality_level]}
             onValueChange={([v]) => set("formality_level", v)}
-            aria-label="Formality level"
+            aria-labelledby="formality-label"
           />
         </div>
         <div>
-          <Label className="text-sm font-medium">
+          <Label id="old-money-label" className="text-sm font-medium">
             Old money fit ({tags.old_money_score}/10)
           </Label>
           <Slider
@@ -235,7 +252,7 @@ export function TagEditor({ item }: { item: ClothingItem }) {
             step={1}
             value={[tags.old_money_score]}
             onValueChange={([v]) => set("old_money_score", v)}
-            aria-label="Old money score"
+            aria-labelledby="old-money-label"
           />
         </div>
       </div>

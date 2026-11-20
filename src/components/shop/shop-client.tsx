@@ -8,6 +8,7 @@ import {
   Bookmark,
   Check,
   Loader2,
+  RotateCcw,
   ShoppingBag,
   Sparkles,
   X,
@@ -29,13 +30,19 @@ const CATEGORY_LABELS: Record<string, string> = {
   accessory: "Accessories",
 };
 
+/** The shopper needs a few confirmed pieces to judge what is missing (see /api/shop/analyze). */
+const MIN_PIECES_FOR_SUGGESTIONS = 3;
+
 export function ShopClient({
   gaps,
+  wardrobeCount,
   suggestions,
 }: {
   gaps: CategoryGap[];
+  wardrobeCount: number;
   suggestions: ShoppingSuggestion[];
 }) {
+  const tooFewPieces = wardrobeCount < MIN_PIECES_FOR_SUGGESTIONS;
   const router = useRouter();
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [pending, startTransition] = useTransition();
@@ -69,12 +76,28 @@ export function ShopClient({
     });
   }
 
-  function setStatus(id: string, status: "saved" | "dismissed" | "purchased") {
+  function setStatus(
+    s: ShoppingSuggestion,
+    status: "suggested" | "saved" | "dismissed" | "purchased",
+  ) {
+    const previous = s.status;
     startTransition(async () => {
-      const res = await updateSuggestionStatus(id, status);
-      if (res?.error) toast.error(res.error);
-      else if (status === "purchased")
-        toast.success("Wonderful — photograph it to add it to your wardrobe");
+      const res = await updateSuggestionStatus(s.id, status);
+      if (res?.error) {
+        toast.error(res.error);
+      } else if (status === "purchased") {
+        toast.success("Wonderful — photograph it to add it to your wardrobe", {
+          action: { label: "Undo", onClick: () => setStatus(s, previous) },
+        });
+      } else if (status === "saved") {
+        toast.success(`Saved ${s.item_name}`);
+      } else if (status === "dismissed") {
+        toast.success(`Dismissed ${s.item_name}`, {
+          action: { label: "Undo", onClick: () => setStatus(s, previous) },
+        });
+      } else {
+        toast.success(`${s.item_name} is back in your suggestions`);
+      }
       router.refresh();
     });
   }
@@ -82,6 +105,7 @@ export function ShopClient({
   const open = suggestions.filter(
     (s) => s.status === "suggested" || s.status === "saved",
   );
+  const dismissed = suggestions.filter((s) => s.status === "dismissed");
 
   return (
     <div className="space-y-10">
@@ -122,7 +146,7 @@ export function ShopClient({
                 <span className="mt-1 block text-xs text-muted-foreground">
                   {gap.owned} owned · up to {gap.unlocks} new outfits
                 </span>
-                <span className="mt-2 block h-1 overflow-hidden rounded-full bg-secondary">
+                <span className="mt-2 block h-1 overflow-hidden rounded-full bg-secondary" aria-hidden>
                   <span
                     className="block h-full rounded-full bg-primary/70"
                     style={{ width: `${(gap.unlocks / maxUnlocks) * 100}%` }}
@@ -136,7 +160,7 @@ export function ShopClient({
         <Button
           className="mt-5 gap-2"
           size="lg"
-          disabled={selected.size === 0 || mutation.isPending}
+          disabled={tooFewPieces || selected.size === 0 || mutation.isPending}
           onClick={() => mutation.mutate()}
         >
           {mutation.isPending ? (
@@ -150,6 +174,12 @@ export function ShopClient({
             </>
           )}
         </Button>
+        {tooFewPieces && (
+          <p className="mt-3 text-sm text-muted-foreground">
+            Confirm at least {MIN_PIECES_FOR_SUGGESTIONS} pieces in your wardrobe first,
+            so the shopper can see what you already own. You have {wardrobeCount}.
+          </p>
+        )}
       </section>
 
       {open.length > 0 && (
@@ -185,7 +215,7 @@ export function ShopClient({
                       <p className="font-serif text-2xl text-primary">
                         +{s.estimated_new_combinations}
                       </p>
-                      <p className="text-[11px] text-muted-foreground">
+                      <p className="text-xs text-muted-foreground">
                         potential outfits
                       </p>
                     </div>
@@ -203,13 +233,13 @@ export function ShopClient({
                   </p>
                 )}
 
-                <div className="mt-4 flex items-center gap-2 border-t pt-4">
+                <div className="mt-4 flex flex-wrap items-center gap-2 border-t pt-4">
                   <Button
                     size="sm"
                     variant="outline"
                     className="gap-1.5"
                     disabled={pending}
-                    onClick={() => setStatus(s.id, "purchased")}
+                    onClick={() => setStatus(s, "purchased")}
                   >
                     <Check className="size-3.5" aria-hidden /> I bought it
                   </Button>
@@ -219,7 +249,7 @@ export function ShopClient({
                       variant="ghost"
                       className="gap-1.5 text-muted-foreground"
                       disabled={pending}
-                      onClick={() => setStatus(s.id, "saved")}
+                      onClick={() => setStatus(s, "saved")}
                     >
                       <Bookmark className="size-3.5" aria-hidden /> Save
                     </Button>
@@ -229,7 +259,7 @@ export function ShopClient({
                     variant="ghost"
                     className="gap-1.5 text-muted-foreground"
                     disabled={pending}
-                    onClick={() => setStatus(s.id, "dismissed")}
+                    onClick={() => setStatus(s, "dismissed")}
                   >
                     <X className="size-3.5" aria-hidden /> Not for me
                   </Button>
@@ -249,6 +279,30 @@ export function ShopClient({
             outfits it unlocks.
           </p>
         </div>
+      )}
+
+      {dismissed.length > 0 && (
+        <details className="rounded-xl border bg-card/40">
+          <summary className="flex min-h-12 cursor-pointer items-center px-4 text-sm text-muted-foreground">
+            Dismissed suggestions ({dismissed.length})
+          </summary>
+          <ul className="divide-y border-t">
+            {dismissed.map((s) => (
+              <li key={s.id} className="flex items-center justify-between gap-3 px-4 py-2">
+                <span className="min-w-0 truncate text-sm">{s.item_name}</span>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="gap-1.5 text-muted-foreground"
+                  disabled={pending}
+                  onClick={() => setStatus(s, "suggested")}
+                >
+                  <RotateCcw className="size-3.5" aria-hidden /> Bring back
+                </Button>
+              </li>
+            ))}
+          </ul>
+        </details>
       )}
     </div>
   );

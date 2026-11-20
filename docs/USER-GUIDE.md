@@ -1,6 +1,6 @@
 # Aether Wardrobe — User Guide
 
-Version 1.3.1 · October 2026
+Version 1.4.0 · November 2026
 
 This guide follows the order you will use the app: sign in, set up your
 profile, add pieces, review tags, browse the Outfits table, ask for today's
@@ -8,6 +8,13 @@ outfit, pack for a trip with the stylist, and shop with intention. The same cont
 is available in the app at `/welcome`.
 
 ## 1. Before you start
+
+- **Finding your way.** On a computer every section is in the left sidebar. On
+  a phone the bar at the bottom holds **Today**, **Stylist**, **Wardrobe** and
+  **Outfits**; **More** opens Shop, Settings, Admin (for admins) and this
+  guide.
+- **Add it to your home screen.** In Safari or Chrome, use *Share → Add to
+  Home Screen* (or *Install app*). Aether then opens full screen like an app.
 
 - **Access is by invitation.** Sign in with the Google account whose email was
   granted access. If you land on an "awaiting invitation" page, ask the person
@@ -24,15 +31,45 @@ is available in the app at `/welcome`.
 ## 2. Sign in and set up your profile
 
 The four-step wizard personalises every later suggestion. All of it can be
-changed later under **Settings**.
+changed later under **Settings**. Your answers are kept if you reload the page
+part-way through.
 
-1. **Your build**: gender, age range, height, weight, body shape.
-2. **Your colouring**: skin tone and undertone, hair and eye colour.
+1. **About you** (optional): gender, age range, height and weight (in cm and
+   kg, or ft and lb: pick at the top of the step), body shape, and how you like
+   clothes to fit (slim, regular or relaxed).
+2. **Your colouring** (optional): skin tone, undertone, hair and eye colour.
+   As you choose, the step shows your **colour season** (Spring, Summer,
+   Autumn or Winter) with the colours that flatter you near the face. Not sure
+   of your undertone? Warm if your veins look greener and gold suits you, cool
+   if they look bluer and silver suits you, neutral if both or you can't tell.
 3. **Your style**: one or more styles (Old Money, Classic, Smart Casual,
-   Minimalist, Sporty, Streetwear) and your usual formality from 1 to 10.
-4. **Your home city**: start typing and pick from the list. This is the weather
+   Minimalist, Sporty, Streetwear), your usual formality from 1 to 10, your
+   lifestyle, and an optional note for the stylist ("I prefer to cover my
+   arms", "no skinny jeans").
+4. **Home base**: start typing and pick from the list. This is the weather
    fallback whenever you do not name a destination. It also sets your first
    temperature unit: °F for a home in the United States, °C elsewhere.
+
+Steps 1 and 2 have a **Skip** button. Tapping a chosen chip again clears it, so
+you can answer some questions and leave others.
+
+### How your build and colouring are used
+
+- **Today** gives a small boost to outfits whose shirt and jacket colours suit
+  your colour season. It only reorders close calls: an outfit that clearly
+  suits the occasion better still wins.
+- **The Stylist chat** applies the same boost when it plans a trip or finds an
+  outfit, and may say why a colour or cut suits you.
+- **Shop** suggests tops and jackets in your season's colours, and cuts that
+  suit your build and fit preference.
+- Your weight is never sent to the AI; body shape says what the stylist needs.
+  The rest is sent to OpenAI only to rank and explain your outfits, and is
+  never shown to anyone else.
+- The scores in your Outfits table do not change. They describe how the pieces
+  work together, which does not depend on who wears them.
+
+Edit or clear any of it under **Settings → Your build and colouring**;
+**Clear all** removes every answer at once (with an **Undo**).
 
 ## 3. Build your wardrobe
 
@@ -65,7 +102,8 @@ Every piece lands in "Review tags" first. Check and correct, then confirm.
 **Confirm tags** starts outfit generation in the background; the app-wide
 banner shows progress and you can keep adding pieces. **Re-analyze** asks the
 vision model again (useful after adding a description). **Archive** removes
-the piece from every outfit without deleting the photo. Saving changes on an
+the piece from every outfit without deleting the photo; the confirmation has an
+**Undo** that puts it straight back. Saving changes on an
 already confirmed piece rebuilds its outfits.
 
 ### Watches
@@ -133,8 +171,12 @@ from this pool, so curating it here improves every morning.
 - **Occasion, season, score.** Occasion re-sorts by a blend of work, daily,
   formality and old-money scores. Score 7+, 8+ or 9+ sets the floor.
 - **Boost or hide.** The star boosts an outfit to the top of every daily
-  request; the eye hides it for good. **Show hidden** reveals what you put
-  away.
+  request; the eye hides it, with an **Undo** on the confirmation. **Show
+  hidden** reveals what you put away.
+- **On a phone** the filters live behind a **Filters** button that opens a
+  sheet; the filters you set show as chips above the results, and tapping a
+  chip removes that filter.
+- The table shows 24 outfits at a time; **Show more outfits** loads the next 24.
 - **Resting** means the outfit was recommended or worn in the last seven days.
 - The one-sentence stylist note is reused to explain the pick on Today.
 
@@ -147,7 +189,8 @@ from this pool, so curating it here improves every morning.
    used. Leave it blank and your home city fills in.
 3. **Anything else? (optional)** Free text the stylist reads: "client meeting,
    then lunch with the kids", "all-day conference, long walk after".
-4. Tap **Style my day**. You get five to seven ranked outfits. Each card shows
+4. Tap **Style my day** (on a phone it sits just above the tab bar). You get
+   five to seven ranked outfits, and the page scrolls to them. Each card shows
    the pieces, including the watch and belt chosen for today, the score, and
    two sentences on why it suits the day. **Fresh suggestions** asks again.
 
@@ -158,8 +201,9 @@ Temperature**.
 
 Behind the button: the forecast at the destination is fetched (suede and
 canvas shoes are dropped on rainy days), the table is filtered by season and
-sorted by the occasion blend with boosted and fresh outfits first, and one AI
-call ranks the picks and selects the watch and accessories from everything you own. The
+sorted by the occasion blend (plus the small colour-season boost, if you shared
+your colouring) with boosted and fresh outfits first, and one AI call ranks the
+picks and selects the watch and accessories from everything you own. The
 plan is saved per day and occasion, so reloading costs nothing.
 
 ### Choosing the occasion
@@ -278,7 +322,7 @@ a deterministic planner answers it from the Outfits table:
   nothing to wear; the card says when a limit was relaxed.
 
 The conversation stays on your device, per account, until you tap **Start
-over**. Nothing in a trip plan changes your table or your wear counts; mark
+over** (which offers **Undo** for a few seconds). Nothing in a trip plan changes your table or your wear counts; mark
 outfits as worn from the Today tab as usual.
 
 ## 7. Shop: what to buy next
@@ -286,9 +330,13 @@ outfits as worn from the Today tab as usual.
 Tick the categories you are shopping for. For each, the app counts how many
 new outfits one good neutral piece would unlock against your actual wardrobe
 and names the bottleneck category. Suggestions are concrete ("Navy hopsack
-blazer") and say which of your pieces they would pair with. Save, dismiss or
-mark purchased; a purchased suggestion is a reminder to photograph and add
-the real piece. Shop needs at least three confirmed pieces.
+blazer") and say which of your pieces they would pair with. If you shared your
+build and colouring, colours and cuts follow them. Save, dismiss or mark
+purchased; a purchased suggestion is a reminder to photograph and add the real
+piece. **Not for me** and **I bought it** both offer **Undo**, and dismissed
+suggestions stay in a **Dismissed suggestions** list at the bottom where
+**Bring back** restores them. Shop needs at least three confirmed pieces; until
+then the page says how many you have.
 
 ## 8. Photos that tag well
 
@@ -304,7 +352,10 @@ the real piece. Shop needs at least three confirmed pieces.
 
 | Symptom | What to do |
 | --- | --- |
-| No outfits yet | You need a confirmed top, bottom and shoes; the readiness banner lists what is missing. If pieces are confirmed but the table is empty, use **Rebuild outfits** on Wardrobe; it fills in only what is missing. |
+| No outfits yet | You need a confirmed top, bottom and shoes; the readiness banner lists what is missing. If pieces are confirmed but the table is empty, use **Build outfits** on Wardrobe; it fills in only what is missing. |
+| I archived a piece by mistake | Tap **Undo** on the confirmation. If it has gone, ask the admin to set `archived` back to false on the piece. |
+| I cleared the stylist conversation by mistake | Tap **Undo** on the "Conversation cleared" confirmation. |
+| Saving build and colouring fails | The database update for 1.4.0 (migration `0010`) has not been run yet; ask whoever runs the app. |
 | "Nothing quite fits this day" | Nothing scored 6.5 or better for this season and occasion. Try another occasion, relax the score filter on Outfits, or let Shop tell you which piece would unlock the most. |
 | Wrong tags | Open the piece, fix the chips, **Save changes**. For a stubborn material or watch style, add a description and **Re-analyze**. |
 | The stylist cannot place a destination | Add the country: "Porto, Portugal". |
@@ -316,5 +367,6 @@ the real piece. Shop needs at least three confirmed pieces.
 
 Photos live in a private storage bucket served through short-lived links.
 Every table is protected by row-level security, so you only ever see your own
-rows. AI calls run server-side; your images are sent to the vision model only
+rows. Build and colouring are optional; weight is never sent to the AI, and the
+rest is sent to OpenAI only to rank and explain your own outfits. AI calls run server-side; your images are sent to the vision model only
 for tagging, never for scoring or daily ranking.

@@ -1,4 +1,5 @@
 import "server-only";
+import { faceFitBonus } from "@/lib/personal/face-fit";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { geocode, getTripForecast, locationLabel } from "@/lib/weather";
 import {
@@ -40,6 +41,7 @@ export async function planTrip(
   supabase: SupabaseClient,
   userId: string,
   input: PlanTripInput,
+  personal: { colorSeason?: string | null } = {},
 ): Promise<PlanTripResult> {
   if (!isIsoDate(input.start_date) || !isIsoDate(input.end_date)) {
     return { ok: false, reason: "Dates must be YYYY-MM-DD; resolve them from today's date and call again." };
@@ -183,6 +185,7 @@ export async function planTrip(
     travelLight: c?.travel_light ?? null,
     excludeItemIds: c?.exclude_item_ids ?? null,
     requireItemIds: c?.require_item_ids ?? null,
+    colorSeason: personal.colorSeason ?? null,
   });
   notes.push(...result.notes);
 
@@ -273,6 +276,7 @@ export async function findOutfits(
   supabase: SupabaseClient,
   userId: string,
   input: FindOutfitsInput,
+  personal: { colorSeason?: string | null } = {},
 ): Promise<FindOutfitsResult> {
   const notes: string[] = [];
   const limit = input.limit ?? 5;
@@ -395,12 +399,15 @@ export async function findOutfits(
   }
 
   const score = (c: Combination) => occasionScore(c, input.occasion);
+  // Sort key adds the small near-face colour bonus; thresholds use the plain score.
+  const sortKey = (c: Combination) =>
+    score(c) + faceFitBonus(c, itemsById, personal.colorSeason);
   const ranked = pool
     .slice()
     .sort(
       (a, b) =>
         Number(b.combo.boosted) - Number(a.combo.boosted) ||
-        score(b.combo) - score(a.combo) ||
+        sortKey(b.combo) - sortKey(a.combo) ||
         b.combo.overall_score - a.combo.overall_score,
     );
   let picked = ranked.filter(({ combo }) => score(combo) >= RECO_MIN_OCCASION_SCORE);

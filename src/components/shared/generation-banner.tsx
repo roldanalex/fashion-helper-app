@@ -30,8 +30,9 @@ export function GenerationBanner() {
       if (!res.ok) throw new Error("status failed");
       return res.json();
     },
+    // Poll only while outfits are building; stop on errors instead of retrying forever.
     refetchInterval: (query) =>
-      query.state.data?.generating !== false ? 3000 : false,
+      query.state.status !== "error" && query.state.data?.generating ? 3000 : false,
   });
 
   useEffect(() => {

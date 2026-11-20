@@ -41,6 +41,30 @@ export function ComboCard({
     });
   }
 
+  function unhide() {
+    update(async () => {
+      const res = await toggleHide(combination.id, false);
+      if (!res?.error) toast.success("Outfit back in your table");
+      return res;
+    });
+  }
+
+  function hide() {
+    update(async () => {
+      const res = await toggleHide(combination.id, true);
+      if (!res?.error) {
+        toast.success("Outfit hidden", {
+          description: "It will not be recommended. Show hidden outfits to find it again.",
+          action: {
+            label: "Undo",
+            onClick: () => update(() => toggleHide(combination.id, false)),
+          },
+        });
+      }
+      return res;
+    });
+  }
+
   return (
     <article
       className={cn(
@@ -54,19 +78,18 @@ export function ComboCard({
           <figure key={item.id} className="w-full min-w-0">
             <div
               className="relative aspect-square overflow-hidden rounded-md border bg-secondary"
-              title={item.name}
             >
               {imageUrl && (
                 <Image
                   src={imageUrl}
-                  alt={item.name}
+                  alt=""
                   fill
                   sizes="120px"
                   className="object-cover"
                 />
               )}
             </div>
-            <figcaption className="mt-1 line-clamp-2 text-center text-[11px] leading-tight text-muted-foreground">
+            <figcaption className="mt-1 line-clamp-2 text-center text-xs leading-tight text-muted-foreground">
               {item.name}
             </figcaption>
           </figure>
@@ -110,7 +133,7 @@ export function ComboCard({
             size="icon"
             aria-label={combination.hidden ? "Unhide combination" : "Hide combination"}
             disabled={pending}
-            onClick={() => update(() => toggleHide(combination.id, !combination.hidden))}
+            onClick={() => (combination.hidden ? unhide() : hide())}
           >
             {combination.hidden ? (
               <Eye className="size-4 text-muted-foreground" aria-hidden />
@@ -122,7 +145,7 @@ export function ComboCard({
       </div>
 
       {combination.notes && (
-        <p className="border-t px-3 py-2 text-xs leading-relaxed text-muted-foreground">
+        <p className="border-t px-3 py-2 text-sm leading-relaxed text-muted-foreground">
           {combination.notes}
         </p>
       )}

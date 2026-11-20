@@ -4,6 +4,8 @@ import { requireApproved } from "@/lib/access";
 import { geocode, getTodayWeather, weatherFlags } from "@/lib/weather";
 import { rerankAndExplain } from "@/lib/ai/reranking";
 import { enrichCombinations } from "@/lib/combinations/enrich";
+import { seasonOf } from "@/lib/personal/client-profile";
+import { faceFitBonus } from "@/lib/personal/face-fit";
 import {
   MAX_DAILY_ACCESSORIES,
   OCCASION_WEIGHTS,
@@ -95,7 +97,8 @@ export async function POST(request: Request) {
   // Profile (home location + styles)
   const { data: profile } = await supabase
     .from("profiles")
-    .select("home_location, home_lat, home_lon, style_preferences")
+    // "*" also brings build and colouring (and keeps working before migration 0010).
+    .select("*")
     .eq("id", user.id)
     .single();
 
@@ -186,6 +189,24 @@ export async function POST(request: Request) {
     pool = pool.filter((c) => !badShoes.has(c.shoes_id));
   }
 
+  // Personal fit: a small bonus for colours that flatter near the face. It
+  // only reorders close calls; thresholds still use the table's own scores.
+  const colorSeason = profile ? seasonOf(profile) : null;
+  const faceBonus = new Map<string, number>();
+  if (colorSeason && pool.length > 0) {
+    const faceIds = [
+      ...new Set(pool.flatMap((c) => [c.top_id, c.outerwear_id]).filter(Boolean) as string[]),
+    ];
+    const { data: faceItems } = await supabase
+      .from("clothing_items")
+      .select("id, color_hex")
+      .eq("user_id", user.id)
+      .in("id", faceIds);
+    const colorsById = new Map((faceItems ?? []).map((i) => [i.id as string, i]));
+    for (const c of pool) faceBonus.set(c.id, faceFitBonus(c, colorsById, colorSeason));
+  }
+  const sortKey = (c: Combination) => occasionScore(c, occasion) + (faceBonus.get(c.id) ?? 0);
+
   const select = (minScore: number) =>
     pool
       .filter((c) => occasionScore(c, occasion) >= minScore)
@@ -193,7 +214,7 @@ export async function POST(request: Request) {
         (a, b) =>
           Number(b.boosted) - Number(a.boosted) ||
           Number(isFresh(b)) - Number(isFresh(a)) ||
-          occasionScore(b, occasion) - occasionScore(a, occasion) ||
+          sortKey(b) - sortKey(a) ||
           (b.weather_suitability_score ?? 0) - (a.weather_suitability_score ?? 0) ||
           // Cold days favor combinations with outerwear.
           (flags.cold
@@ -255,6 +276,7 @@ export async function POST(request: Request) {
       occasion,
       notes,
       stylePreferences: profile?.style_preferences ?? [],
+      client: profile,
     });
     const valid = new Map(candidates.map((c) => [c.id, c]));
     picks = result.picks

@@ -19,10 +19,9 @@ function Requirement({
         met
           ? "border-primary/40 bg-primary/10 text-primary"
           : optional
-            ? "border-dashed border-border text-muted-foreground"
-            : "border-border text-muted-foreground",
+            ? "border-dashed border-input text-muted-foreground"
+            : "border-input text-muted-foreground",
       )}
-      title={optional ? "Optional — adds layers and accessories to outfits" : undefined}
     >
       {met ? (
         <Check className="size-3.5" aria-hidden />
@@ -32,6 +31,9 @@ function Requirement({
         <X className="size-3.5" aria-hidden />
       )}
       {label}
+      <span className="sr-only">
+        {met ? ": in your wardrobe" : optional ? ": optional, not added yet" : ": missing"}
+      </span>
     </span>
   );
 }
@@ -63,6 +65,10 @@ export function ReadinessBanner({ readiness }: { readiness: WardrobeReadiness })
         <Requirement label="Watch" met={hasWatch} optional />
         <Requirement label="Accessories" met={hasAccessory} optional />
       </div>
+      <p className="mt-2 text-xs text-muted-foreground">
+        Top, bottom and shoes are required. Outerwear, a watch and accessories are
+        optional; they add layers and finishing touches to outfits.
+      </p>
 
       {!ready ? (
         <p className="mt-3 text-sm text-muted-foreground">

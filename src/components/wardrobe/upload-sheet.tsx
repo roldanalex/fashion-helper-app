@@ -115,7 +115,7 @@ export function UploadSheet() {
           </SheetDescription>
         </SheetHeader>
 
-        <div className="space-y-6 overflow-y-auto px-4 pb-6">
+        <div className="space-y-6 px-4">
           {/* Gallery picker */}
           <input
             ref={fileRef}
@@ -137,7 +137,8 @@ export function UploadSheet() {
           <button
             type="button"
             onClick={() => fileRef.current?.click()}
-            className="relative flex aspect-square w-full max-w-60 cursor-pointer items-center justify-center overflow-hidden rounded-lg border border-dashed text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground"
+            aria-label={preview ? "Change photo" : "Choose a photo"}
+            className="relative mx-auto flex aspect-square w-full max-w-48 cursor-pointer sm:max-w-60 items-center justify-center overflow-hidden rounded-lg border border-dashed text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground"
           >
             {preview ? (
               <Image
@@ -196,8 +197,11 @@ export function UploadSheet() {
               more accurate.
             </p>
           </div>
+        </div>
 
-          <Button onClick={submit} disabled={!!busy} className="w-full gap-2">
+        {/* The upload action stays reachable at the bottom of the sheet on short phones. */}
+        <div className="sticky bottom-0 border-t bg-popover px-4 pb-4 pt-3">
+          <Button onClick={submit} disabled={!!busy} className="w-full gap-2" size="lg">
             {busy ? (
               <>
                 <Loader2 className="size-4 animate-spin" aria-hidden /> {busy}
@@ -206,6 +210,9 @@ export function UploadSheet() {
               "Upload & analyze"
             )}
           </Button>
+          <p className="sr-only" aria-live="polite">
+            {busy ?? ""}
+          </p>
         </div>
       </SheetContent>
     </Sheet>

@@ -96,7 +96,7 @@ export function OutfitOptionsCard({ options }: { options: OutfitOptions }) {
                     <Badge className="bg-primary/15 text-primary">Old money</Badge>
                   )}
                   {o.fit === "relaxed" && (
-                    <span className="rounded-full border border-dashed px-2 py-0.5 text-[11px] text-muted-foreground">
+                    <span className="rounded-full border border-dashed px-2 py-0.5 text-xs text-muted-foreground">
                       loose fit
                     </span>
                   )}

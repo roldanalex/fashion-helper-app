@@ -27,10 +27,10 @@ export default async function ItemPage({
   const urls = await signImageUrls(supabase, [item.image_url]);
 
   return (
-    <main className="px-6 py-8 md:px-10">
+    <main className="px-6 py-6 md:px-10 md:py-8">
       <Link
         href="/wardrobe"
-        className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+        className="-ml-2 inline-flex min-h-11 items-center gap-2 rounded-md px-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
       >
         <ArrowLeft className="size-4" aria-hidden /> Wardrobe
       </Link>

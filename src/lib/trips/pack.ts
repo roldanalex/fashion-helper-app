@@ -11,6 +11,7 @@ import {
   type Occasion,
 } from "@/lib/constants";
 import { tempToSeasonBands } from "@/lib/weather-bands";
+import { faceFitBonus } from "@/lib/personal/face-fit";
 import type { ClothingItem, Combination } from "@/types/database";
 
 /**
@@ -43,6 +44,8 @@ export interface PackOptions {
   travelLight?: boolean | null;
   excludeItemIds?: string[] | null;
   requireItemIds?: string[] | null;
+  /** The client's colour season: flattering near-face colours win close calls. */
+  colorSeason?: string | null;
 }
 
 export interface PackedSlot {
@@ -188,6 +191,7 @@ export function planPacking(
   ): number => {
     let score = occasionScore(p.combo, slot.occasion);
     if (p.combo.boosted) score += PACK_BOOST_BONUS;
+    score += faceFitBonus(p.combo, itemsById, options.colorSeason);
     const temp = slot.weather.tempC;
     if (temp != null && temp < 15 && p.outerwearId) score += 0.5;
     if (temp != null && temp >= 27 && p.outerwearId) score -= 1;

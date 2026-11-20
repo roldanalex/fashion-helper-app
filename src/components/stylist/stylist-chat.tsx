@@ -42,7 +42,9 @@ export function StylistChat({
   const storageKey = `aether-stylist:${userId}`;
   const [input, setInput] = useState("");
   const [restored, setRestored] = useState(false);
+  const [announcement, setAnnouncement] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const wasBusy = useRef(false);
   const endRef = useRef<HTMLDivElement>(null);
 
   const { messages, sendMessage, status, stop, error, setMessages, regenerate } =
@@ -80,6 +82,29 @@ export function StylistChat({
     }
   }, [messages, status, restored, storageKey]);
 
+  // Screen readers hear the finished reply once, not every streamed token.
+  useEffect(() => {
+    if (busy) {
+      wasBusy.current = true;
+      return;
+    }
+    if (!wasBusy.current) return;
+    wasBusy.current = false;
+    const last = messages[messages.length - 1];
+    if (status !== "ready" || last?.role !== "assistant") return;
+    const text = last.parts
+      .filter((p) => p.type === "text")
+      .map((p) => p.text)
+      .join(" ")
+      .trim();
+    const hasCard = last.parts.some(
+      (p) => p.type === "tool-plan_trip" || p.type === "tool-find_outfits",
+    );
+    setAnnouncement(
+      `The stylist replied${hasCard ? " with a plan card" : ""}. ${text.slice(0, 400)}`,
+    );
+  }, [busy, status, messages]);
+
   // Follow the reply as it streams.
   useEffect(() => {
     if (busy) endRef.current?.scrollIntoView({ block: "end" });
@@ -93,10 +118,14 @@ export function StylistChat({
   }
 
   function startOver() {
+    const snapshot = messages;
     stop();
     setMessages([]);
     setInput("");
     textareaRef.current?.focus();
+    toast.success("Conversation cleared", {
+      action: { label: "Undo", onClick: () => setMessages(snapshot) },
+    });
   }
 
   function useStarter(text: string) {
@@ -188,6 +217,9 @@ export function StylistChat({
           </>
         )}
         <div ref={endRef} />
+        <p className="sr-only" aria-live="polite" aria-atomic="true">
+          {announcement}
+        </p>
       </div>
 
       {/* Composer: sits above the mobile tab bar, flush with the bottom on desktop. */}
@@ -215,7 +247,7 @@ export function StylistChat({
             }}
             rows={1}
             placeholder="Where to, and what are the days like?"
-            className="max-h-40 min-h-9 flex-1 resize-none border-0 bg-transparent px-2 py-1.5 shadow-none focus-visible:ring-0 dark:bg-transparent"
+            className="max-h-40 min-h-9 flex-1 pointer-coarse:min-h-11 resize-none border-0 bg-transparent px-2 py-1.5 shadow-none focus-visible:ring-0 dark:bg-transparent"
             disabled={busy}
           />
           {busy ? (

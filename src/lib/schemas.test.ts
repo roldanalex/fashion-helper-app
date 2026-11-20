@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { itemTagsSchema, rerankSchema } from "@/lib/schemas";
+import { itemTagsSchema, personalSchema, profileSchema, rerankSchema } from "@/lib/schemas";
 import { RECO_MAX_PICKS } from "@/lib/constants";
 
 const watch = {
@@ -62,5 +62,39 @@ describe("rerankSchema", () => {
     const tooMany = Array.from({ length: RECO_MAX_PICKS + 1 }, (_, i) => pick(i + 1));
     expect(rerankSchema.safeParse({ picks: tooMany }).success).toBe(false);
     expect(rerankSchema.safeParse({ picks: [] }).success).toBe(false);
+  });
+});
+
+describe("personalSchema", () => {
+  it("accepts an empty profile: every characteristic is optional", () => {
+    expect(personalSchema.safeParse({}).success).toBe(true);
+  });
+
+  it("treats empty strings as prefer-not-to-say", () => {
+    const r = personalSchema.parse({ skin_tone: "", height_cm: "", style_notes: null });
+    expect(r.skin_tone).toBeNull();
+    expect(r.height_cm).toBeNull();
+  });
+
+  it("coerces numbers and rejects out-of-range heights", () => {
+    expect(personalSchema.parse({ height_cm: "178" }).height_cm).toBe(178);
+    expect(personalSchema.safeParse({ height_cm: 40 }).success).toBe(false);
+  });
+
+  it("rejects unknown options and over-long notes", () => {
+    expect(personalSchema.safeParse({ body_shape: "pear" }).success).toBe(false);
+    expect(personalSchema.safeParse({ style_notes: "x".repeat(301) }).success).toBe(false);
+  });
+});
+
+describe("profileSchema", () => {
+  it("still requires styles and a home", () => {
+    const r = profileSchema.safeParse({
+      preferred_formality: 5,
+      style_preferences: [],
+      lifestyle_tags: [],
+      home_location: "",
+    });
+    expect(r.success).toBe(false);
   });
 });

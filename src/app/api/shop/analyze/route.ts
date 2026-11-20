@@ -28,11 +28,12 @@ export async function POST(request: Request) {
     supabase
       .from("clothing_items")
       .select("*")
+      .eq("user_id", user.id)
       .eq("archived", false)
       .eq("ai_status", "confirmed"),
     supabase
       .from("profiles")
-      .select("style_preferences, preferred_formality")
+      .select("*")
       .eq("id", user.id)
       .single(),
   ]);
@@ -58,6 +59,7 @@ export async function POST(request: Request) {
       gaps,
       selectedCategories: selected,
       stylePreferences: profile?.style_preferences ?? [],
+      client: profile,
       preferredFormality: profile?.preferred_formality ?? null,
     });
 

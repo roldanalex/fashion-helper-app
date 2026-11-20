@@ -244,3 +244,34 @@ describe("planPacking", () => {
     expect(light.uses.size).toBe(3);
   });
 });
+
+describe("planPacking with a colour season", () => {
+  const items = new Map(
+    [
+      makeItem({ id: "camel", category: "top", color_hex: "#b88a55" }),
+      makeItem({ id: "white", category: "top", color_hex: "#ffffff" }),
+      makeItem({ id: "b", category: "bottom" }),
+      makeItem({ id: "s", category: "shoes", material: "leather" }),
+    ].map((i) => [i.id, i]),
+  );
+  const combos = [
+    combo({ id: "W", top_id: "white", bottom_id: "b", shoes_id: "s", work_score: 8 }),
+    combo({ id: "C", top_id: "camel", bottom_id: "b", shoes_id: "s", work_score: 8 }),
+  ];
+
+  it("breaks an equal-score tie toward the flattering near-face colour", () => {
+    const autumn = planPacking(combos, items, [slot("2026-11-03", "work")], { colorSeason: "autumn" });
+    expect(autumn.slots[0].combination?.id).toBe("C");
+    const winter = planPacking(combos, items, [slot("2026-11-03", "work")], { colorSeason: "winter" });
+    expect(winter.slots[0].combination?.id).toBe("W");
+  });
+
+  it("never overrides a clearly better outfit for the occasion", () => {
+    const better = [
+      combo({ id: "W", top_id: "white", bottom_id: "b", shoes_id: "s", work_score: 9 }),
+      combo({ id: "C", top_id: "camel", bottom_id: "b", shoes_id: "s", work_score: 7.5 }),
+    ];
+    const r = planPacking(better, items, [slot("2026-11-03", "work")], { colorSeason: "autumn" });
+    expect(r.slots[0].combination?.id).toBe("W");
+  });
+});

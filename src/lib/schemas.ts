@@ -10,34 +10,64 @@ import {
   STYLE_PREFERENCES,
   WATCH_BANDS,
 } from "@/lib/constants";
+import {
+  AGE_RANGES,
+  BODY_SHAPES,
+  EYE_COLORS,
+  FIT_PREFERENCES,
+  GENDERS,
+  HAIR_COLORS,
+  SKIN_TONES,
+  SKIN_UNDERTONES,
+  STYLE_NOTES_MAX,
+} from "@/lib/personal/options";
 
 /* ---------- Profile / onboarding ---------- */
 
-export const profileSchema = z.object({
-  gender: z.enum(["male", "female", "other"]),
-  age_range: z.enum(["18-24", "25-34", "35-44", "45-54", "55+"]),
-  height_cm: z.coerce.number().int().min(100).max(250),
-  weight_kg: z.coerce.number().int().min(30).max(250),
-  body_shape: z.enum(["slim", "average", "athletic", "broad", "full"]),
-  skin_tone: z.enum(["fair", "light", "medium", "olive", "tan", "deep"]),
-  skin_undertone: z.enum(["warm", "cool", "neutral"]),
-  hair_color: z.enum([
-    "black",
-    "dark brown",
-    "brown",
-    "light brown",
-    "blonde",
-    "red",
-    "gray",
-    "white",
-  ]),
-  eye_color: z.enum(["brown", "hazel", "green", "blue", "gray"]),
+/** "" and null both mean "prefer not to say". */
+const optionalEnum = <T extends readonly [string, ...string[]]>(values: T) =>
+  z.preprocess((v) => (v === "" ? null : v), z.enum(values).nullable()).optional();
+
+const optionalInt = (min: number, max: number, message: string) =>
+  z
+    .preprocess(
+      (v) => (v === "" || v === null || v === undefined ? null : Number(v)),
+      z.number().int(message).min(min, message).max(max, message).nullable(),
+    )
+    .optional();
+
+/**
+ * Personal characteristics. All optional: they sharpen recommendations but
+ * the app works without them. Edited at onboarding and in Settings.
+ */
+export const personalSchema = z.object({
+  gender: optionalEnum(GENDERS),
+  age_range: optionalEnum(AGE_RANGES),
+  height_cm: optionalInt(100, 250, "Height should be between 100 and 250 cm (3 ft 3 in and 8 ft 2 in)"),
+  weight_kg: optionalInt(30, 250, "Weight should be between 30 and 250 kg (66 and 551 lb)"),
+  body_shape: optionalEnum(BODY_SHAPES),
+  skin_tone: optionalEnum(SKIN_TONES),
+  skin_undertone: optionalEnum(SKIN_UNDERTONES),
+  hair_color: optionalEnum(HAIR_COLORS),
+  eye_color: optionalEnum(EYE_COLORS),
+  fit_preference: optionalEnum(FIT_PREFERENCES),
+  style_notes: z
+    .string()
+    .trim()
+    .max(STYLE_NOTES_MAX, `Keep notes under ${STYLE_NOTES_MAX} characters`)
+    .nullable()
+    .optional(),
+});
+
+export type PersonalInput = z.infer<typeof personalSchema>;
+
+export const profileSchema = personalSchema.extend({
   preferred_formality: z.number().int().min(1).max(10),
   style_preferences: z
     .array(z.enum(STYLE_PREFERENCES.map((s) => s.value) as [string, ...string[]]))
     .min(1, "Pick at least one style"),
   lifestyle_tags: z.array(z.string()),
-  home_location: z.string().min(2, "Where do you live?"),
+  home_location: z.string().trim().min(2, "Where do you live?"),
 });
 
 export type ProfileInput = z.infer<typeof profileSchema>;

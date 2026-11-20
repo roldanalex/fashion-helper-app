@@ -37,7 +37,12 @@ export interface Profile {
   skin_undertone: string | null;
   hair_color: string | null;
   eye_color: string | null;
+  /** Derived from colouring by deriveColorSeason(); spring | summer | autumn | winter. */
   color_season: string | null;
+  /** slim | regular | relaxed (0010). */
+  fit_preference: string | null;
+  /** Free-text notes for the stylist, max 300 characters (0010). */
+  style_notes: string | null;
   preferred_formality: number | null;
   style_preferences: string[];
   lifestyle_tags: string[];

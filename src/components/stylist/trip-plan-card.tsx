@@ -139,7 +139,7 @@ export function TripPlanCard({ plan }: { plan: TripPlan }) {
                               </Link>
                             ))}
                             {slot.fit === "relaxed" && (
-                              <span className="rounded-full border border-dashed px-2 py-0.5 text-[11px] text-muted-foreground">
+                              <span className="rounded-full border border-dashed px-2 py-0.5 text-xs text-muted-foreground">
                                 loose fit
                               </span>
                             )}
@@ -194,8 +194,9 @@ export function TripPlanCard({ plan }: { plan: TripPlan }) {
                         >
                           <Swatch item={it} />
                           {it.name}
-                          <span className="text-xs text-muted-foreground" title={`Worn in ${r.uses} outfits`}>
-                            ×{r.uses}
+                          <span className="text-xs text-muted-foreground">
+                            <span aria-hidden>×{r.uses}</span>
+                            <span className="sr-only">, worn in {r.uses} {r.uses === 1 ? "outfit" : "outfits"}</span>
                           </span>
                         </Link>
                       );

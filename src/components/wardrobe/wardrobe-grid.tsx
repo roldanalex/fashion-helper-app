@@ -85,11 +85,12 @@ export function WardrobeGrid({
               />
             </button>
 
-            {isOpen && (
-              <div
-                id={panelId}
-                className="grid grid-cols-2 gap-4 p-4 pt-0 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
-              >
+            {/* Stays mounted while collapsed so aria-controls always points at it. */}
+            <div
+              id={panelId}
+              hidden={!isOpen}
+              className="grid grid-cols-2 gap-4 p-4 pt-0 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+            >
                 {categoryItems.map((item) => (
                   <ItemCard
                     key={item.id}
@@ -97,8 +98,7 @@ export function WardrobeGrid({
                     imageUrl={imageUrls[item.image_url]}
                   />
                 ))}
-              </div>
-            )}
+            </div>
           </section>
         );
       })}

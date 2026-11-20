@@ -64,7 +64,8 @@ export async function POST(request: Request) {
       .eq("ai_status", "confirmed"),
     supabase
       .from("profiles")
-      .select("style_preferences, preferred_formality, home_location, units")
+      // "*" so the chat keeps working before migration 0010 adds the fit columns.
+      .select("*")
       .eq("id", user.id)
       .single(),
   ]);

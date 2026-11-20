@@ -42,19 +42,19 @@ export function OutfitCard({
 
       <div className="flex gap-2 overflow-x-auto px-5 py-4">
         {slots.map(({ item, imageUrl }) => (
-          <figure key={item.id} className="w-20 shrink-0 sm:w-24" title={item.name}>
+          <figure key={item.id} className="w-20 shrink-0 sm:w-24">
             <div className="relative aspect-square overflow-hidden rounded-lg border bg-secondary">
               {imageUrl && (
                 <Image
                   src={imageUrl}
-                  alt={item.name}
+                  alt=""
                   fill
                   sizes="96px"
                   className="object-cover"
                 />
               )}
             </div>
-            <figcaption className="mt-1 line-clamp-2 text-center text-[11px] leading-tight text-muted-foreground">
+            <figcaption className="mt-1 line-clamp-2 text-center text-xs leading-tight text-muted-foreground">
               {item.name}
             </figcaption>
           </figure>

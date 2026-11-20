@@ -29,6 +29,15 @@ export async function confirmItemTags(itemId: string, tags: unknown) {
 }
 
 export async function archiveItem(itemId: string) {
+  return setArchived(itemId, true);
+}
+
+/** Undo for archiveItem: puts the piece back in the wardrobe. */
+export async function unarchiveItem(itemId: string) {
+  return setArchived(itemId, false);
+}
+
+async function setArchived(itemId: string, archived: boolean) {
   const supabase = await createClient();
   const {
     data: { user },
@@ -37,11 +46,17 @@ export async function archiveItem(itemId: string) {
 
   const { error } = await supabase
     .from("clothing_items")
-    .update({ archived: true })
+    .update({ archived })
     .eq("id", itemId)
     .eq("user_id", user.id);
 
-  if (error) return { error: "Could not archive. Please try again." };
+  if (error) {
+    return {
+      error: archived
+        ? "Could not archive. Please try again."
+        : "Could not restore the piece. Please try again.",
+    };
+  }
 
   revalidatePath("/wardrobe");
   return { ok: true };

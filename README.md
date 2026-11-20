@@ -5,7 +5,7 @@ plans each morning, and it lays out the outfit: matched to your style, the
 occasion, and the weather where you are going.
 
 [![CI](https://github.com/roldanalex/fashion-helper-app/actions/workflows/ci.yml/badge.svg)](https://github.com/roldanalex/fashion-helper-app/actions/workflows/ci.yml)
-![Version](https://img.shields.io/badge/version-1.3.1-c9a45c)
+![Version](https://img.shields.io/badge/version-1.4.0-c9a45c)
 ![Next.js](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white)
@@ -75,18 +75,20 @@ from your phone.
 
 | Feature | What you get |
 | --- | --- |
-| **Onboarding wizard** | A four-step profile (build, colouring, style preferences, home city) personalises every AI prompt and provides the weather fallback when you do not name a destination. |
+| **Onboarding wizard** | A four-step profile (build, colouring, style preferences, home city) personalises every AI prompt and provides the weather fallback when you do not name a destination. Build and colouring are optional and skippable; answers survive a reload. |
+| **Personal fit** | Skin tone, undertone, hair and eyes give a colour season (Spring, Summer, Autumn, Winter), worked out by fixed rules with no AI. Outfits whose shirt and jacket colours flatter you get a small, capped boost on Today and in the Stylist chat; build, fit preference and your own notes go to the ranking, chat and Shop prompts. Weight is never sent. Editable or clearable in Settings. |
 | **Wardrobe cataloguing** | One photo per piece, from your gallery or the phone camera. Photos are compressed to WebP in the browser, then GPT-4o vision reads cut, colour, pattern and material. Your own notes ("pique", "merino") always win over what it sees. |
 | **Watches** | Watches are their own category with their own outfit slot. Each is typed by style (dress, sports, diver, GMT, chronograph, field, pilot) and tagged with band and hardware tone. Every outfit gets the best-fitting watch you own, and the daily stylist can swap it for the day. |
 | **Accessories** | Belts, bags, scarves, sunglasses, pocket squares and hats. Metal-bearing pieces carry a hardware tone, and the engine matches it to the outfit's watch. |
 | **Combination table** | A deterministic engine pairs each confirmed piece against your wardrobe (formality, season and colour-clash filters). gpt-4o-mini scores candidates in batches; only outfits scoring 7.0 or better are kept. |
-| **Outfits browser** | Build around a single top, bottom, shoes, outerwear, watch or accessory. Filter by occasion, season or score. Most complete outfits first. Boost favourites, hide misses, see which looks are resting. |
+| **Outfits browser** | Build around a single top, bottom, shoes, outerwear, watch or accessory. Filter by occasion, season or score (in a bottom sheet on phones, with removable filter chips). Most complete outfits first, 24 at a time. Boost favourites, hide misses (with undo), see which looks are resting. |
 | **Daily recommendations** | Pick one of ten occasions, optionally a destination (city autocomplete) and notes. The app pulls the forecast there, filters the table, and one AI call ranks five to seven picks, chooses the day's watch and accessories, and explains each choice. Temperatures read in °C or °F: flip the unit on the weather line or under Settings, and the whole app follows. |
 | **Stylist chat: trip packing** | A conversation with your stylist. "Three days in Lisbon: work Thursday and Friday, dinner Friday, sightseeing Saturday." It reads the forecast for each day, lays out one outfit per day and occasion from your Outfits table, and shows a manifest card: the day-by-day plan, a packing list with how often each piece is worn, and a one-click copy. Ask for tweaks in plain words: one pair of shoes, carry-on only, drop the blazer. Name pieces and they are built in, not hinted at. For a single occasion ("what goes with my navy blazer for dinner on Friday?") it pulls the table's best outfits around those pieces and explains why they work. |
 | **Wear tracking** | Mark an outfit as worn and every piece updates its wear count and last-worn date. Recently worn looks rest for a week. |
 | **Shopping gap analysis** | Tick the categories you are shopping for. The app counts how many new outfits one good piece would unlock and suggests specific items that pair with what you own. |
 | **Live status and readiness** | A banner tracks outfit generation in the background. If a batch is interrupted, one click rebuilds only what is missing. |
 | **Admin allowlist** | Grant or revoke access by email from the in-app `/admin` page. |
+| **Phone-first shell** | Four tabs plus **More** in the thumb zone, 44px touch targets on touch screens, iPhone safe areas, undo on every reversible action, installable to the home screen (web app manifest). |
 | **Onboarding site** | A self-contained "why and how" page at `/welcome` with a value deck, a step-by-step guide with checkpoints, light and dark themes, and print-to-PDF. |
 
 ## Quick start
@@ -107,8 +109,9 @@ from your phone.
 
 1. Create a project, then run every file in `supabase/migrations/` **in
    order** in the SQL Editor (or `supabase link && supabase db push` with the
-   CLI). The editor warns that `0008` and `0009` contain `DROP` statements;
-   they only rebuild an index and a check constraint, and remove no data.
+   CLI). The editor warns that `0008`, `0009` and `0010` contain `DROP`
+   statements; they only rebuild an index and check constraints, and remove no
+   data.
 2. The private `wardrobe` storage bucket is created by migration `0006`.
 3. **Grant yourself access.** The app is invitation-only, so bootstrap the
    first admin in the SQL Editor:
@@ -121,8 +124,11 @@ from your phone.
    Without this step every sign-in, including yours, lands on the "awaiting
    invitation" screen.
 
-**Upgrading?** From 1.0.x, run `0008_accessories.sql` then
-`0009_watches.sql`. From 1.1.x, run `0009_watches.sql` only: it moves your
+**Upgrading?** From 1.3.x, run `0010_personal_fit.sql` only: it adds the fit
+preference and style-notes columns and constrains `color_season`. The app keeps
+working before you run it, but saving build and colouring in Settings fails
+until you do. From 1.0.x, run `0008_accessories.sql`, `0009_watches.sql` and
+`0010_personal_fit.sql`. From 1.1.x, run `0009` then `0010`: `0009` moves your
 existing watches from Accessories into the new Watches category and into the
 new watch slot of every outfit that had one.
 
@@ -300,6 +306,13 @@ Source: [`docs/diagrams/architecture.drawio`](docs/diagrams/architecture.drawio)
 - **Defence in depth.** Row-level security on every table, a private storage
   bucket with short-lived signed URLs, and `server-only` imports that make it
   a build error for API keys to reach the browser.
+- **Personal fit ranks, it does not rescore.** Build and colouring shape
+  ranking and explanations, not the stored scores: a combination's score says
+  how the pieces work together, which does not change with the wearer, so
+  editing your profile never triggers a costly rebuild. The colour season is
+  derived by pure rules (`src/lib/personal/color-season.ts`), and the near-face
+  colour bonus (`face-fit.ts`, OKLab distances to the season palette) is capped
+  at ±0.4 so it only settles close calls.
 - **Next.js 16 idioms.** App Router route groups, per-route `loading.tsx`,
   session refresh in the `src/proxy.ts` middleware, and structured AI output
   via the Vercel AI SDK's `generateObject` with Zod schemas.
@@ -325,6 +338,10 @@ erDiagram
         uuid id PK
         text body_shape
         text skin_tone
+        text skin_undertone
+        text color_season "derived: spring · summer · autumn · winter"
+        text fit_preference "slim · regular · relaxed"
+        text style_notes "<= 300 chars"
         text home_location
         int preferred_formality
     }
@@ -388,7 +405,7 @@ src/
 └── stores/                 # Zustand (onboarding draft)
 public/welcome/             # Static onboarding site (index.html + aether_onboarding.json)
 docs/                       # User guide, screenshots, architecture diagram
-supabase/migrations/        # 9 SQL migrations: schema, RLS, storage, access control, accessories, watches
+supabase/migrations/        # 10 SQL migrations: schema, RLS, storage, access control, accessories, watches, personal fit
 .github/workflows/ci.yml    # Type-check, tests, build, secret scan
 ```
 
@@ -459,6 +476,11 @@ tests cover.
   approval server-side before spending API credits.
 - **Row-level security** on every table: users only ever read or write their
   own rows.
+- **Personal characteristics are optional and minimised.** Build and
+  colouring can be skipped or cleared at any time. Weight is stored for the
+  user's own reference but never sent to a model; the other traits go to
+  OpenAI only inside ranking, chat and shopping prompts, phrased as what
+  flatters. Free-text style notes are quoted and capped at 300 characters.
 - **Private photos.** Wardrobe images live in a private bucket served through
   short-lived signed URLs. Storage policies scope every operation to the
   owner's folder. Images go to the vision model only for tagging, never for
@@ -477,7 +499,8 @@ tests cover.
 | Images do not show in the wardrobe grid | Migration `0006` (storage) was not run, or the bucket was created by hand with a different name. |
 | The stylist says it cannot place a destination | Give the city and country ("Porto, Portugal"); the geocoder takes the first match. |
 | A trip day shows "no forecast" | The free forecast reaches five days ahead. Tell the stylist the expected temperature, or let it estimate from the season. |
-| "No outfits yet" with pieces confirmed | Generation was interrupted. Use **Rebuild outfits** on the Wardrobe tab. |
+| "No outfits yet" with pieces confirmed | Generation was interrupted. Use **Build outfits** on the Wardrobe tab. |
+| "Could not save your details" in Settings | Migration `0010` has not been run. Run `0010_personal_fit.sql` in the SQL Editor. |
 | Outfit generation times out on Vercel | Hobby tier function limit. Upgrade the plan or use the rebuild button, which resumes where it stopped. |
 | Local Google sign-in bounces to the landing page | Add `http://localhost:3000/auth/callback` to Supabase's redirect URLs. |
 
@@ -489,6 +512,10 @@ Built solo and used daily. Honest notes on what is not here yet:
   deterministic core only.
 - **Single-photo items.** One photo per piece; multi-angle photos are a
   candidate feature.
+- **Group looks.** Linking accounts so a family or a party can ask for a
+  coordinated look drawn from everyone's wardrobes. Planned as opt-in,
+  per-group sharing served through a membership-checked database function
+  rather than wider row-level security.
 - **Saved trips.** A packing plan lives in the conversation on your device;
   saving named trips to the database, and ticking pieces off while packing,
   is the natural next step.

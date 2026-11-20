@@ -1,10 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { useLinkStatus } from "next/link";
 import { usePathname } from "next/navigation";
 import {
+  BookOpen,
   CalendarDays,
+  Ellipsis,
   Layers,
   Loader2,
   MessageCircle,
@@ -17,17 +20,35 @@ import {
 import { cn } from "@/lib/utils";
 import { APP_CREDIT, APP_VERSION } from "@/lib/constants";
 import { GenerationBanner } from "@/components/shared/generation-banner";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 
-const baseNavItems = [
+type NavItem = { href: string; label: string; icon: LucideIcon };
+
+/** Everyday destinations: the mobile tab bar shows these plus "More". */
+const primaryNavItems: NavItem[] = [
   { href: "/today", label: "Today", icon: CalendarDays },
   { href: "/stylist", label: "Stylist", icon: MessageCircle },
   { href: "/wardrobe", label: "Wardrobe", icon: Shirt },
   { href: "/combinations", label: "Outfits", icon: Layers },
+];
+
+/** Less frequent destinations: in the sidebar on desktop, in "More" on mobile. */
+const secondaryNavItems: NavItem[] = [
   { href: "/shop", label: "Shop", icon: ShoppingBag },
   { href: "/settings", label: "Settings", icon: Settings },
 ];
 
-const adminNavItem = { href: "/admin", label: "Admin", icon: ShieldCheck };
+const adminNavItem: NavItem = { href: "/admin", label: "Admin", icon: ShieldCheck };
+
+function isActive(pathname: string, href: string) {
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
 
 /** Shows a spinner in place of the icon while this link's navigation is pending. */
 function NavIcon({ icon: Icon, className }: { icon: LucideIcon; className?: string }) {
@@ -47,24 +68,31 @@ export function AppShell({
   isAdmin?: boolean;
 }) {
   const pathname = usePathname();
-  const navItems = isAdmin ? [...baseNavItems, adminNavItem] : baseNavItems;
+  const [moreOpen, setMoreOpen] = useState(false);
+  const moreItems = isAdmin ? [...secondaryNavItems, adminNavItem] : secondaryNavItems;
+  const allItems = [...primaryNavItems, ...moreItems];
+  const moreActive = moreItems.some((i) => isActive(pathname, i.href));
 
   return (
     <div className="flex min-h-dvh">
       {/* Desktop sidebar */}
       <aside className="sticky top-0 hidden h-dvh w-56 flex-col border-r bg-sidebar px-3 py-6 md:flex">
-        <Link href="/today" className="px-3 font-serif text-lg tracking-wide">
+        <Link
+          href="/today"
+          className="rounded-md px-3 font-serif text-lg tracking-wide focus-visible:outline-2 focus-visible:outline-primary"
+        >
           Aether <span className="text-primary">Wardrobe</span>
         </Link>
         <nav className="mt-8 flex flex-col gap-1" aria-label="Main">
-          {navItems.map(({ href, label, icon }) => {
-            const active = pathname.startsWith(href);
+          {allItems.map(({ href, label, icon }) => {
+            const active = isActive(pathname, href);
             return (
               <Link
                 key={href}
                 href={href}
+                aria-current={active ? "page" : undefined}
                 className={cn(
-                  "flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors duration-200",
+                  "flex items-center gap-3 rounded-md px-3 py-2.5 text-sm transition-colors duration-200",
                   active
                     ? "bg-sidebar-accent font-medium text-primary"
                     : "text-muted-foreground hover:bg-sidebar-accent hover:text-foreground",
@@ -79,11 +107,12 @@ export function AppShell({
         <div className="mt-auto px-3">
           <Link
             href="/welcome"
-            className="text-xs text-muted-foreground transition-colors hover:text-foreground"
+            className="inline-flex min-h-9 items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
+            <BookOpen className="size-4" aria-hidden />
             How it works
           </Link>
-          <p className="mt-3 text-[11px] leading-relaxed text-muted-foreground">
+          <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
             v{APP_VERSION}
             <br />
             {APP_CREDIT}
@@ -91,35 +120,31 @@ export function AppShell({
         </div>
       </aside>
 
-      {/* Content */}
-      <div className="flex min-w-0 flex-1 flex-col pb-20 md:pb-0">
+      {/* Content. Bottom padding clears the tab bar and the iOS home indicator. */}
+      <div className="flex min-w-0 flex-1 flex-col pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-0">
         <GenerationBanner />
         {children}
-        <footer className="mt-auto px-6 pb-4 pt-10 text-center text-[11px] text-muted-foreground md:hidden">
+        <footer className="mt-auto px-6 pb-4 pt-10 text-center text-xs text-muted-foreground md:hidden">
           v{APP_VERSION} · {APP_CREDIT}
         </footer>
       </div>
 
-      {/* Mobile bottom tab bar */}
+      {/* Mobile bottom tab bar: four destinations plus More, all in the thumb zone. */}
       <nav
         aria-label="Main"
-        className="fixed inset-x-0 bottom-0 z-40 border-t bg-background/90 backdrop-blur md:hidden"
+        className="fixed inset-x-0 bottom-0 z-40 border-t bg-background/95 backdrop-blur md:hidden"
       >
-        <div
-          className={cn(
-            "grid pb-[env(safe-area-inset-bottom)]",
-            isAdmin ? "grid-cols-7" : "grid-cols-6",
-          )}
-        >
-          {navItems.map(({ href, label, icon }) => {
-            const active = pathname.startsWith(href);
+        <div className="grid grid-cols-5 pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]">
+          {primaryNavItems.map(({ href, label, icon }) => {
+            const active = isActive(pathname, href);
             return (
               <Link
                 key={href}
                 href={href}
+                aria-current={active ? "page" : undefined}
                 className={cn(
-                  "flex min-h-14 flex-col items-center justify-center gap-1 text-[11px] transition-colors duration-200",
-                  active ? "text-primary" : "text-muted-foreground",
+                  "flex min-h-14 flex-col items-center justify-center gap-1 text-xs transition-colors duration-200 focus-visible:-outline-offset-4",
+                  active ? "font-medium text-primary" : "text-muted-foreground",
                 )}
               >
                 <NavIcon icon={icon} className="size-5" />
@@ -127,8 +152,54 @@ export function AppShell({
               </Link>
             );
           })}
+          <button
+            type="button"
+            onClick={() => setMoreOpen(true)}
+            aria-haspopup="dialog"
+            aria-expanded={moreOpen}
+            className={cn(
+              "flex min-h-14 cursor-pointer flex-col items-center justify-center gap-1 text-xs transition-colors duration-200 focus-visible:-outline-offset-4",
+              moreActive ? "font-medium text-primary" : "text-muted-foreground",
+            )}
+          >
+            <Ellipsis className="size-5" aria-hidden />
+            More
+          </button>
         </div>
       </nav>
+
+      <Sheet open={moreOpen} onOpenChange={setMoreOpen}>
+        <SheetContent side="bottom" className="rounded-t-2xl md:hidden">
+          <SheetHeader className="pb-0">
+            <SheetTitle className="font-serif text-xl">More</SheetTitle>
+            <SheetDescription className="sr-only">
+              Shop, settings and help
+            </SheetDescription>
+          </SheetHeader>
+          <nav aria-label="More" className="flex flex-col px-2 pb-4">
+            {[...moreItems, { href: "/welcome", label: "How it works", icon: BookOpen }].map(
+              ({ href, label, icon: Icon }) => {
+                const active = isActive(pathname, href);
+                return (
+                  <Link
+                    key={href}
+                    href={href}
+                    onClick={() => setMoreOpen(false)}
+                    aria-current={active ? "page" : undefined}
+                    className={cn(
+                      "flex min-h-12 items-center gap-4 rounded-lg px-3 text-base transition-colors",
+                      active ? "bg-accent text-primary" : "hover:bg-accent",
+                    )}
+                  >
+                    <Icon className="size-5 text-muted-foreground" aria-hidden />
+                    {label}
+                  </Link>
+                );
+              },
+            )}
+          </nav>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }

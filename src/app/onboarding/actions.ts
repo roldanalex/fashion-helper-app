@@ -5,6 +5,7 @@ import { profileSchema, type ProfileInput } from "@/lib/schemas";
 import { createClient } from "@/lib/supabase/server";
 import { geocode } from "@/lib/weather";
 import { defaultUnitsForCountry, type Units } from "@/lib/units";
+import { deriveColorSeason } from "@/lib/personal/color-season";
 
 export async function saveProfile(input: ProfileInput) {
   const parsed = profileSchema.safeParse(input);
@@ -40,6 +41,8 @@ export async function saveProfile(input: ProfileInput) {
     .from("profiles")
     .update({
       ...parsed.data,
+      style_notes: parsed.data.style_notes || null,
+      color_season: deriveColorSeason(parsed.data),
       home_location,
       home_lat,
       home_lon,

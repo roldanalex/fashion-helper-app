@@ -1,4 +1,5 @@
 import "server-only";
+import { describeClient, PERSONAL_FIT_RULE, seasonOf, type PersonalProfile } from "@/lib/personal/client-profile";
 import { tool } from "ai";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { describeItem } from "@/lib/ai/describe";
@@ -35,10 +36,10 @@ export interface StylistContext {
   /** The client's local date, YYYY-MM-DD. */
   today: string;
   wardrobe: ClothingItem[];
-  profile: Pick<
-    Profile,
-    "style_preferences" | "preferred_formality" | "home_location" | "units"
-  > | null;
+  profile:
+    | (Pick<Profile, "style_preferences" | "preferred_formality" | "home_location" | "units"> &
+        PersonalProfile)
+    | null;
 }
 
 /** Tools the stylist may call. The planner does the choosing; the model narrates. */
@@ -50,7 +51,9 @@ export function stylistTools(ctx: StylistContext) {
       inputSchema: planTripInputSchema,
       execute: async (input) => {
         try {
-          return await planTrip(ctx.supabase, ctx.userId, input);
+          return await planTrip(ctx.supabase, ctx.userId, input, {
+            colorSeason: ctx.profile ? seasonOf(ctx.profile) : null,
+          });
         } catch (err) {
           console.error("plan_trip failed:", err);
           return {
@@ -70,7 +73,9 @@ export function stylistTools(ctx: StylistContext) {
       inputSchema: findOutfitsInputSchema,
       execute: async (input) => {
         try {
-          return await findOutfits(ctx.supabase, ctx.userId, input);
+          return await findOutfits(ctx.supabase, ctx.userId, input, {
+            colorSeason: ctx.profile ? seasonOf(ctx.profile) : null,
+          });
         } catch (err) {
           console.error("find_outfits failed:", err);
           return {
@@ -88,6 +93,7 @@ export function stylistTools(ctx: StylistContext) {
 }
 
 export function buildStylistSystemPrompt(ctx: StylistContext): string {
+  const personalBlock = describeClient(ctx.profile);
   const horizonEnd = addDays(ctx.today, FORECAST_HORIZON_DAYS - 1);
   const styles = ctx.profile?.style_preferences?.join(", ") || "smart casual";
   const wardrobeLines = ctx.wardrobe
@@ -180,6 +186,8 @@ detail. ${ctx.profile?.units === "imperial" ? "The client reads temperatures in 
 # The client
 Styles: ${styles}. Preferred formality: ${ctx.profile?.preferred_formality ?? 5}/10.
 Home: ${ctx.profile?.home_location ?? "not set"}. Today: ${ctx.today}.
+${personalBlock ? `${personalBlock}
+${PERSONAL_FIT_RULE} The tools already favour flattering near-face colours; when you explain a pick, you may say why its colours or cut suit the client.` : "The client has not shared their build or colouring; do not ask unless they bring it up."}
 
 # Occasions (use these values in plan_trip)
 ${occasionLines}

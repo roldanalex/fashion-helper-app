@@ -22,12 +22,29 @@ export const metadata: Metadata = {
   },
   description:
     "Your personal AI stylist. Photograph your wardrobe, plan your day, and dress impeccably — whatever the weather.",
+  applicationName: "Aether Wardrobe",
+  appleWebApp: {
+    capable: true,
+    title: "Aether",
+    statusBarStyle: "black",
+  },
+  formatDetection: { telephone: false },
+  openGraph: {
+    type: "website",
+    siteName: "Aether Wardrobe",
+    title: "Aether Wardrobe",
+    description:
+      "Your personal AI stylist. Photograph your wardrobe, plan your day, and dress impeccably — whatever the weather.",
+  },
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  // "cover" lets env(safe-area-inset-*) report the notch and home-indicator insets on iOS.
+  viewportFit: "cover",
   themeColor: "#13110e",
+  colorScheme: "dark",
 };
 
 export default function RootLayout({

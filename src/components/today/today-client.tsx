@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
 import { ChipGroup } from "@/components/onboarding/chip-group";
 import { OutfitCard, type Outfit } from "@/components/today/outfit-card";
@@ -76,6 +77,7 @@ export function TodayClient({
   const [notes, setNotes] = useState("");
   const [result, setResult] = useState<RecommendationResponse | null>(null);
   const [wornId, setWornId] = useState<string | null>(null);
+  const resultsHeadingRef = useRef<HTMLHeadingElement>(null);
 
   const mutation = useMutation({
     mutationFn: async (force: boolean) => {
@@ -98,6 +100,12 @@ export function TodayClient({
     onSuccess: (data) => {
       setResult(data);
       setWornId(null);
+      // Bring the picks into view (on phones the form fills the screen) and
+      // move focus there so screen readers start at the results.
+      requestAnimationFrame(() => {
+        resultsHeadingRef.current?.scrollIntoView({ block: "start", behavior: "smooth" });
+        resultsHeadingRef.current?.focus({ preventScroll: true });
+      });
     },
     onError: (err: Error) => toast.error(err.message),
   });
@@ -164,7 +172,7 @@ export function TodayClient({
             <Label htmlFor="notes">Anything else? (optional)</Label>
             <Textarea
               id="notes"
-              className="min-h-9"
+              className="min-h-9 pointer-coarse:min-h-11"
               rows={1}
               placeholder="e.g. client meeting, then lunch with the kids"
               value={notes}
@@ -173,8 +181,10 @@ export function TodayClient({
           </div>
         </div>
 
+        {/* On phones the main action stays in the thumb zone, just above the tab bar. */}
+        <div className="sticky bottom-[calc(4.25rem+env(safe-area-inset-bottom))] z-10 -mx-2 mt-6 rounded-xl bg-background/90 p-2 backdrop-blur md:static md:mx-0 md:bg-transparent md:p-0 md:backdrop-blur-none">
         <Button
-          className="mt-6 gap-2"
+          className="w-full gap-2 md:w-auto"
           size="lg"
           onClick={() => mutation.mutate(false)}
           disabled={mutation.isPending}
@@ -188,10 +198,42 @@ export function TodayClient({
             "Style my day"
           )}
         </Button>
+        </div>
       </section>
 
+      {mutation.isPending && !result && (
+        <div className="grid gap-5 xl:grid-cols-2" aria-hidden>
+          {Array.from({ length: 2 }).map((_, i) => (
+            <div key={i} className="rounded-xl border bg-card">
+              <div className="flex gap-2 px-5 py-4">
+                {Array.from({ length: 4 }).map((__, j) => (
+                  <Skeleton key={j} className="aspect-square w-20 rounded-lg sm:w-24" />
+                ))}
+              </div>
+              <div className="space-y-2 border-t px-5 py-4">
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-2/3" />
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <p className="sr-only" aria-live="polite">
+        {mutation.isPending
+          ? "Checking the weather and choosing outfits."
+          : result
+            ? result.outfits.length
+              ? `${result.outfits.length} outfits ready.`
+              : "No outfit in your table fits this day."
+            : ""}
+      </p>
+
       {result && (
-        <section className="space-y-4">
+        <section className="scroll-mt-4 space-y-4" aria-labelledby="picks-heading" aria-busy={mutation.isPending}>
+          <h2 id="picks-heading" ref={resultsHeadingRef} tabIndex={-1} className="text-2xl outline-none">
+            Today&apos;s picks
+          </h2>
           <div className="flex flex-wrap items-center justify-between gap-3">
             {result.weather && <WeatherChip weather={result.weather} />}
             <Button

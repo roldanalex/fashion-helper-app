@@ -1,5 +1,6 @@
 "use client";
 
+import { useId } from "react";
 import { cn } from "@/lib/utils";
 
 interface ChipOption {
@@ -13,13 +14,23 @@ export function ChipGroup({
   value,
   onChange,
   multiple = false,
+  allowDeselect = false,
+  hint,
+  swatches,
 }: {
   label: string;
   options: readonly ChipOption[] | readonly string[];
-  value: string | string[] | undefined;
+  value: string | string[] | null | undefined;
   onChange: (value: string | string[]) => void;
   multiple?: boolean;
+  /** Single choice only: tapping the chosen chip again clears it (sends ""). */
+  allowDeselect?: boolean;
+  /** Help text read with the group. */
+  hint?: string;
+  /** Optional colour dot per option value. */
+  swatches?: Partial<Record<string, string>>;
 }) {
+  const hintId = useId();
   const opts: ChipOption[] = options.map((o) =>
     typeof o === "string" ? { value: o, label: o } : o,
   );
@@ -33,14 +44,21 @@ export function ChipGroup({
       if (next.has(v)) next.delete(v);
       else next.add(v);
       onChange([...next]);
+    } else if (allowDeselect && selected.has(v)) {
+      onChange("");
     } else {
       onChange(v);
     }
   }
 
   return (
-    <fieldset>
+    <fieldset aria-describedby={hint ? hintId : undefined}>
       <legend className="mb-2 text-sm font-medium">{label}</legend>
+      {hint && (
+        <p id={hintId} className="-mt-1 mb-2 text-sm text-muted-foreground">
+          {hint}
+        </p>
+      )}
       <div className="flex flex-wrap gap-2">
         {opts.map(({ value: v, label: l }) => {
           const active = selected.has(v);
@@ -51,12 +69,19 @@ export function ChipGroup({
               aria-pressed={active}
               onClick={() => toggle(v)}
               className={cn(
-                "min-h-10 cursor-pointer rounded-full border px-4 text-sm capitalize transition-colors duration-200",
+                "min-h-10 cursor-pointer rounded-full border px-4 pointer-coarse:min-h-11 text-sm capitalize transition-colors duration-200",
                 active
                   ? "border-primary bg-primary/15 text-primary"
-                  : "border-border text-muted-foreground hover:border-primary/40 hover:text-foreground",
+                  : "border-input text-muted-foreground hover:border-primary/40 hover:text-foreground",
               )}
             >
+              {swatches?.[v] && (
+                <span
+                  className="mr-2 inline-block size-3 rounded-full border border-foreground/20 align-[-1px]"
+                  style={{ backgroundColor: swatches[v] }}
+                  aria-hidden
+                />
+              )}
               {l}
             </button>
           );

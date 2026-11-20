@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 
 export async function updateSuggestionStatus(
   suggestionId: string,
-  status: "saved" | "dismissed" | "purchased",
+  status: "suggested" | "saved" | "dismissed" | "purchased",
 ) {
   const supabase = await createClient();
   const {

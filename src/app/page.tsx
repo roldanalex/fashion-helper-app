@@ -19,7 +19,7 @@ const features = [
   {
     icon: CloudSun,
     title: "Dressed for the day",
-    body: "Tell it where you're going — work, dinner, the park. It checks the weather there and picks what suits the occasion.",
+    body: "Tell it where you're going — work, dinner, the park. It checks the weather there and picks what suits the occasion, and the colours that flatter you.",
   },
   {
     icon: Shirt,
@@ -33,18 +33,18 @@ export default function LandingPage() {
     <main className="relative flex min-h-dvh flex-col">
       <HeroVisual />
 
-      <header className="relative z-10 flex items-center justify-between px-6 py-5 md:px-12">
+      <header className="relative z-10 flex items-center justify-between px-6 pb-5 pt-[max(1.25rem,env(safe-area-inset-top))] md:px-12">
         <span className="font-serif text-xl tracking-wide">
           Aether <span className="text-primary">Wardrobe</span>
         </span>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4">
           <Link
             href="/welcome"
-            className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+            className="hidden min-h-11 items-center px-2 text-sm text-muted-foreground transition-colors hover:text-foreground sm:inline-flex"
           >
             How it works
           </Link>
-          <GoogleSignIn size="sm" variant="outline" label="Sign in" />
+          <GoogleSignIn variant="outline" label="Sign in" />
         </div>
       </header>
 
@@ -64,7 +64,7 @@ export default function LandingPage() {
             <GoogleSignIn />
             <Link
               href="/welcome"
-              className="text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
+              className="inline-flex min-h-11 items-center text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
             >
               See how it works
             </Link>

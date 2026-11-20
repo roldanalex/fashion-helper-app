@@ -4,6 +4,7 @@ import { openai } from "@ai-sdk/openai";
 import { rerankSchema, type RerankResult } from "@/lib/schemas";
 import { describeItem } from "@/lib/ai/describe";
 import { withRetry } from "@/lib/ai/retry";
+import { describeClient, PERSONAL_FIT_RULE, type PersonalProfile } from "@/lib/personal/client-profile";
 import {
   MAX_DAILY_ACCESSORIES,
   OCCASION_HINTS,
@@ -26,6 +27,7 @@ export async function rerankAndExplain({
   occasion,
   notes,
   stylePreferences,
+  client,
 }: {
   candidates: Combination[];
   itemsById: Map<string, ClothingItem>;
@@ -37,7 +39,10 @@ export async function rerankAndExplain({
   occasion: Occasion;
   notes?: string | null;
   stylePreferences: string[];
+  /** Build and colouring, when the client shared them. */
+  client?: PersonalProfile | null;
 }): Promise<RerankResult> {
+  const personal = describeClient(client);
   const describeCombo = (c: Combination) => {
     const slots: [string, string | null][] = [
       ["top", c.top_id],
@@ -90,7 +95,12 @@ Consider:
 - The occasion and the client's own words about their plans.
 - Their preferred styles: ${stylePreferences.join(", ") || "smart casual"}.
 - Variety is a virtue, but never at the cost of appropriateness.
+${personal ? `- The client themselves (below): among outfits that suit the day equally, prefer
+  colours near the face that flatter them and cuts that suit their build.
 
+${personal}
+${PERSONAL_FIT_RULE}
+` : ""}
 Watch: for each pick, choose today's watch from the watch pool (watch_id
 verbatim, or null if the pool is empty). You may keep the outfit's default or
 swap it. Match the watch to the day: a GMT or sports watch for travel and
