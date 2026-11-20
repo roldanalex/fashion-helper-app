@@ -1,0 +1,111 @@
+{
+  "meta": {
+    "title": "Armario",
+    "pieceTitle": "Prenda"
+  },
+  "page": {
+    "title": "Armario",
+    "titleFor": "Armario de {name}",
+    "catalogued": "{count, plural, one {# prenda catalogada} other {# prendas catalogadas}}",
+    "subtitleEmpty": "Cada prenda que tienes, bellamente catalogada.",
+    "emptyTitle": "Un armario vacío",
+    "emptyBody": "Fotografía tu primera prenda y el estilista empezará a crear tu repertorio de combinaciones. Con seis a ocho prendas ya salen conjuntos de verdad."
+  },
+  "item": {
+    "back": "Armario"
+  },
+  "status": {
+    "pending": "Analizando…",
+    "tagged": "Revisar etiquetas",
+    "failed": "Hay que reintentar"
+  },
+  "readiness": {
+    "top": "Prenda superior",
+    "bottom": "Prenda inferior",
+    "shoes": "Zapatos",
+    "outerwear": "Abrigo",
+    "watch": "Reloj",
+    "accessories": "Accesorios",
+    "srMet": ": en tu armario",
+    "srOptional": ": opcional, aún no agregado",
+    "srMissing": ": falta",
+    "requiredNote": "Se necesitan una prenda superior, una inferior y zapatos. El abrigo, el reloj y los accesorios son opcionales; añaden capas y toques finales a los conjuntos.",
+    "notReady": "Confirma al menos una prenda superior, una inferior y un par de zapatos: es lo mínimo que necesita el estilista para tejer un conjunto. Después, los conjuntos se crean solos a medida que agregas cada prenda.",
+    "pending": "{count, plural, one {A # prenda aún le faltan} other {A # prendas aún les faltan}} sus conjuntos. Suele ocurrir solo; toca para terminar ahora.",
+    "ready": "Todo listo: el estilista ya tejió conjuntos con tu armario. Ve a <b>Hoy</b> para ver una recomendación."
+  },
+  "rebuild": {
+    "label": "Crear conjuntos",
+    "couldNotStart": "No se pudo iniciar la creación",
+    "started": "En marcha: el estilista está creando tus conjuntos"
+  },
+  "tags": {
+    "name": "Nombre",
+    "color": "Color",
+    "colorPlaceholder": "azul marino",
+    "colorSwatch": "Muestra de color",
+    "category": "Categoría",
+    "watchStyle": "Estilo de reloj",
+    "type": "Tipo",
+    "material": "Material",
+    "pattern": "Estampado",
+    "seasons": "Temporadas",
+    "formality": "Formalidad ({value}/10)",
+    "oldMoney": "Afinidad old money ({value}/10)",
+    "saveChanges": "Guardar cambios",
+    "confirm": "Confirmar etiquetas",
+    "reanalyze": "Volver a analizar",
+    "archive": "Archivar",
+    "checkTags": "Revisa las etiquetas",
+    "saved": "Guardado: generando combinaciones de conjuntos…",
+    "reanalyzed": "Analizada de nuevo: revisa las nuevas etiquetas",
+    "reanalyzeFailed": "No se pudo volver a analizar. Inténtalo en un momento.",
+    "archived": "{name} archivado",
+    "archivedDescription": "Sus conjuntos quedan ocultos hasta que lo recuperes.",
+    "undo": "Deshacer",
+    "restored": "{name} restaurado"
+  },
+  "upload": {
+    "trigger": "Agregar prenda",
+    "title": "Agregar una prenda",
+    "titleFor": "Agregar una prenda para {name}",
+    "descriptionMinor": "Fotografía la prenda sola: sin nadie que la lleve puesta y sin etiquetas con nombres a la vista.",
+    "description": "Lo mejor es una foto clara sobre una superficie plana o en un gancho.",
+    "changePhoto": "Cambiar foto",
+    "choosePhoto": "Elegir una foto",
+    "previewAlt": "Prenda seleccionada",
+    "tapToAdd": "Toca para agregar una foto",
+    "takePhoto": "Tomar foto",
+    "fromGallery": "De la galería",
+    "kindLabel": "¿Qué tipo de prenda es?",
+    "aboutLabel": "Cuéntale al estilista sobre ella (opcional)",
+    "aboutPlaceholder": "p. ej., polo de piqué blanco, entallado, de Lacoste",
+    "aboutHint": "Mencionar el material (piqué, punto, merino) hace el etiquetado mucho más preciso.",
+    "aboutHintMinor": " Describe la prenda, no al niño: sin nombres, edades ni nombres de escuela.",
+    "manualLabel": "Etiquetarla yo",
+    "manualOn": "Tú indicas el color, el tipo y el material; la foto no se envía a la IA.",
+    "manualOff": "La IA lee la foto y completa los detalles para que los revises.",
+    "upload": "Subir",
+    "uploadAnalyze": "Subir y analizar",
+    "needPhoto": "Primero agrega una foto de la prenda",
+    "preparing": "Preparando la foto…",
+    "uploading": "Subiendo…",
+    "reading": "Leyendo la prenda…",
+    "photoSaved": "Foto guardada: agrega sus detalles",
+    "analyzeFailed": "Se subió, pero el estilista no pudo leerla; puedes volver a analizarla desde la página de la prenda.",
+    "analyzed": "Prenda analizada: revisa sus etiquetas",
+    "failed": "No se pudo subir. Inténtalo de nuevo."
+  },
+  "errors": {
+    "couldNotAdd": "No se pudo agregar la prenda. Inténtalo de nuevo.",
+    "personGone": "Esa persona ya no está en tu cuenta. Recarga la página.",
+    "invalidTags": "Etiquetas no válidas",
+    "couldNotSave": "No se pudo guardar. Inténtalo de nuevo.",
+    "couldNotArchive": "No se pudo archivar. Inténtalo de nuevo.",
+    "couldNotRestore": "No se pudo restaurar la prenda. Inténtalo de nuevo.",
+    "itemNotFound": "No se encontró la prenda",
+    "couldNotReadPhoto": "No se pudo leer la foto",
+    "aiFailed": "El estilista no pudo leer esta foto. Prueba a volver a analizarla."
+  },
+  "newPiece": "Nueva prenda"
+}

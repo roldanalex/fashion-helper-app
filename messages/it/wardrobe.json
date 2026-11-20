@@ -1,0 +1,111 @@
+{
+  "meta": {
+    "title": "Guardaroba",
+    "pieceTitle": "Capo"
+  },
+  "page": {
+    "title": "Guardaroba",
+    "titleFor": "Il guardaroba di {name}",
+    "catalogued": "{count, plural, one {# capo catalogato} other {# capi catalogati}}",
+    "subtitleEmpty": "Ogni capo che possiedi, catalogato con cura.",
+    "emptyTitle": "Un armadio vuoto",
+    "emptyBody": "Fotografa il tuo primo capo e lo stylist inizierà a costruire la tua tabella delle combinazioni. Con sei-otto capi arrivano i primi veri outfit."
+  },
+  "item": {
+    "back": "Guardaroba"
+  },
+  "status": {
+    "pending": "Analisi in corso…",
+    "tagged": "Controlla i tag",
+    "failed": "Da riprovare"
+  },
+  "readiness": {
+    "top": "Top",
+    "bottom": "Pantalone",
+    "shoes": "Scarpe",
+    "outerwear": "Capospalla",
+    "watch": "Orologio",
+    "accessories": "Accessori",
+    "srMet": ": nel tuo guardaroba",
+    "srOptional": ": facoltativo, non ancora aggiunto",
+    "srMissing": ": mancante",
+    "requiredNote": "Top, pantalone e scarpe sono obbligatori. Capospalla, orologio e accessori sono facoltativi: aggiungono strati e tocchi finali agli outfit.",
+    "notReady": "Conferma almeno un top, un pantalone e un paio di scarpe: è il minimo che serve allo stylist per intrecciare un outfit. Poi gli outfit si creano da soli a ogni capo che aggiungi.",
+    "pending": "{count, plural, one {# capo attende ancora} other {# capi attendono ancora}} la creazione degli outfit. Di solito avviene da sola: tocca per completare ora.",
+    "ready": "Ci sei: lo stylist ha intrecciato gli outfit dal tuo guardaroba. Vai su <b>Oggi</b> per un consiglio."
+  },
+  "rebuild": {
+    "label": "Crea outfit",
+    "couldNotStart": "Impossibile avviare la creazione",
+    "started": "Ci penso io: lo stylist sta creando i tuoi outfit"
+  },
+  "tags": {
+    "name": "Nome",
+    "color": "Colore",
+    "colorPlaceholder": "blu navy",
+    "colorSwatch": "Campione di colore",
+    "category": "Categoria",
+    "watchStyle": "Tipo di orologio",
+    "type": "Tipo",
+    "material": "Materiale",
+    "pattern": "Fantasia",
+    "seasons": "Stagioni",
+    "formality": "Formalità ({value}/10)",
+    "oldMoney": "Stile old money ({value}/10)",
+    "saveChanges": "Salva modifiche",
+    "confirm": "Conferma i tag",
+    "reanalyze": "Rianalizza",
+    "archive": "Archivia",
+    "checkTags": "Controlla i tag",
+    "saved": "Salvato: creo le combinazioni di outfit…",
+    "reanalyzed": "Rianalizzato: controlla i nuovi tag",
+    "reanalyzeFailed": "Nuova analisi non riuscita. Riprova tra un momento.",
+    "archived": "{name} archiviato",
+    "archivedDescription": "I suoi outfit restano nascosti finché non lo ripristini.",
+    "undo": "Annulla",
+    "restored": "{name} ripristinato"
+  },
+  "upload": {
+    "trigger": "Aggiungi capo",
+    "title": "Aggiungi un capo",
+    "titleFor": "Aggiungi un capo per {name}",
+    "descriptionMinor": "Fotografa il capo da solo: nessuno che lo indossa e nessuna etichetta col nome in vista.",
+    "description": "Una foto nitida su una superficie piana o su una gruccia è l'ideale.",
+    "changePhoto": "Cambia foto",
+    "choosePhoto": "Scegli una foto",
+    "previewAlt": "Capo selezionato",
+    "tapToAdd": "Tocca per aggiungere una foto",
+    "takePhoto": "Scatta foto",
+    "fromGallery": "Dalla galleria",
+    "kindLabel": "Che tipo di capo è?",
+    "aboutLabel": "Raccontalo allo stylist (facoltativo)",
+    "aboutPlaceholder": "es. Polo bianca in piqué, slim fit, di Lacoste",
+    "aboutHint": "Indicare il materiale (piqué, maglia, merino) rende i tag molto più precisi.",
+    "aboutHintMinor": " Descrivi il capo, non il bambino: niente nomi, età o nomi della scuola.",
+    "manualLabel": "Inserisco io i tag",
+    "manualOn": "Inserisci tu colore, tipo e materiale; la foto non viene inviata all'IA.",
+    "manualOff": "L'IA legge la foto e compila i dettagli, che poi controlli tu.",
+    "upload": "Carica",
+    "uploadAnalyze": "Carica e analizza",
+    "needPhoto": "Aggiungi prima una foto del capo",
+    "preparing": "Preparo la foto…",
+    "uploading": "Caricamento…",
+    "reading": "Leggo il capo…",
+    "photoSaved": "Foto salvata: aggiungi i dettagli",
+    "analyzeFailed": "Caricato, ma lo stylist non è riuscito a leggerlo: puoi rianalizzarlo dalla pagina del capo.",
+    "analyzed": "Capo analizzato: controlla i tag",
+    "failed": "Caricamento non riuscito. Riprova."
+  },
+  "errors": {
+    "couldNotAdd": "Impossibile aggiungere il capo. Riprova.",
+    "personGone": "Questa persona non è più nel tuo account. Ricarica la pagina.",
+    "invalidTags": "Tag non validi",
+    "couldNotSave": "Impossibile salvare. Riprova.",
+    "couldNotArchive": "Impossibile archiviare. Riprova.",
+    "couldNotRestore": "Impossibile ripristinare il capo. Riprova.",
+    "itemNotFound": "Capo non trovato",
+    "couldNotReadPhoto": "Impossibile leggere la foto",
+    "aiFailed": "Lo stylist non è riuscito a leggere questa foto. Prova a rianalizzarla."
+  },
+  "newPiece": "Nuovo capo"
+}

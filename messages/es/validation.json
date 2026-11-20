@@ -1,0 +1,10 @@
+{
+  "heightRange": "La estatura debe estar entre 100 y 250 cm (3 ft 3 in y 8 ft 2 in).",
+  "weightRange": "El peso debe estar entre 30 y 250 kg (66 y 551 lb).",
+  "styleRequired": "Elige al menos un estilo.",
+  "homeRequired": "¿Dónde vives?",
+  "notesTooLong": "Las notas deben tener menos de 300 caracteres.",
+  "nameRequired": "Ponle un nombre o un apodo.",
+  "nameTooLong": "El nombre debe tener menos de 40 caracteres.",
+  "guardianRequired": "Confirma que eres su madre, padre o tutor legal."
+}

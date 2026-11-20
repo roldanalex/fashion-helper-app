@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
+import { getTranslations } from "next-intl/server";
 import { convertToModelMessages, stepCountIs, streamText } from "ai";
 import { openai } from "@ai-sdk/openai";
 import { createClient } from "@/lib/supabase/server";
 import { requireApproved } from "@/lib/access";
+import { personSessionOr404 } from "@/lib/people/session";
 import {
   STYLIST_MODEL,
   STYLIST_REASONING_EFFORT,
@@ -12,7 +14,6 @@ import {
 import { isIsoDate } from "@/lib/trips/dates";
 import { STYLIST_HISTORY_LIMIT, STYLIST_MAX_MESSAGE_CHARS } from "@/lib/constants";
 import type { StylistUIMessage } from "@/lib/trips/chat-types";
-import type { ClothingItem } from "@/types/database";
 
 export const maxDuration = 60;
 
@@ -39,6 +40,7 @@ function sanitize(messages: unknown): StylistUIMessage[] {
 }
 
 export async function POST(request: Request) {
+  const t = await getTranslations("stylist");
   const supabase = await createClient();
   const { user, deny } = await requireApproved(supabase);
   if (deny) return deny;
@@ -47,7 +49,7 @@ export async function POST(request: Request) {
   const messages = sanitize(body?.messages);
   if (messages.length === 0 || messages[messages.length - 1].role !== "user") {
     return NextResponse.json(
-      { error: { code: "bad_request", message: "A message is required" } },
+      { error: { code: "bad_request", message: t("errors.messageRequired") } },
       { status: 400 },
     );
   }
@@ -55,27 +57,19 @@ export async function POST(request: Request) {
     ? body.today
     : new Date().toISOString().slice(0, 10);
 
-  const [{ data: wardrobeData }, { data: profile }] = await Promise.all([
-    supabase
-      .from("clothing_items")
-      .select("*")
-      .eq("user_id", user.id)
-      .eq("archived", false)
-      .eq("ai_status", "confirmed"),
-    supabase
-      .from("profiles")
-      // "*" so the chat keeps working before migration 0010 adds the fit columns.
-      .select("*")
-      .eq("id", user.id)
-      .single(),
-  ]);
-
-  const ctx = {
+  const { session, deny: notFound } = await personSessionOr404(
     supabase,
-    userId: user.id,
+    user,
+    typeof body?.personId === "string" ? body.personId : null,
+  );
+  if (notFound) return notFound;
+  const ctx = {
+    wardrobe: session.wardrobe,
     today,
-    wardrobe: (wardrobeData ?? []) as ClothingItem[],
-    profile,
+    pieces: await session.wardrobe.pieces({ confirmed: true }),
+    person: session.active,
+    account: session.accountProfile,
+    locale: session.locale,
   };
 
   const tools = stylistTools(ctx);
@@ -99,7 +93,7 @@ export async function POST(request: Request) {
   return result.toUIMessageStreamResponse({
     onError: (error) => {
       console.error("Stylist chat failed:", error);
-      return "The stylist is unavailable right now. Try again shortly.";
+      return t("errors.unavailableShortly");
     },
   });
 }

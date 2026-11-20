@@ -1,0 +1,47 @@
+{
+  "meta": {
+    "title": "Admin"
+  },
+  "page": {
+    "title": "Admin",
+    "subtitle": "Decida quem pode usar o app — e seus créditos de API."
+  },
+  "pending": {
+    "title": "Aguardando acesso",
+    "description": "Estas pessoas entraram com o Google, mas ainda não podem usar o app.",
+    "signedIn": "entrou em {date}",
+    "approve": "Aprovar"
+  },
+  "invite": {
+    "title": "Convidar por e-mail",
+    "description": "Aprove alguém com antecedência — a pessoa entra direto na primeira vez que fizer login com o Google.",
+    "emailLabel": "E-mail para convidar",
+    "grant": "Liberar acesso"
+  },
+  "grants": {
+    "title": "Quem tem acesso",
+    "admin": "Admin",
+    "revoke": "Revogar",
+    "you": "você",
+    "supabaseHint": "Você também pode gerenciar esta lista em Supabase → Table Editor → access_grants."
+  },
+  "revoke": {
+    "title": "Revogar o acesso de {email}?",
+    "description": "A pessoa será desconectada na próxima visita e verá a página de espera. O guarda-roupa dela continua salvo, e você pode liberar o acesso de novo quando quiser.",
+    "keep": "Manter acesso",
+    "confirm": "Revogar acesso"
+  },
+  "toast": {
+    "approved": "{email} aprovado",
+    "invited": "{email} convidado",
+    "revoked": "Acesso de {email} revogado"
+  },
+  "errors": {
+    "adminsOnly": "Só para admins",
+    "invalidEmail": "Isso não parece um e-mail",
+    "alreadyHasAccess": "Já tem acesso",
+    "couldNotGrant": "Não foi possível liberar o acesso",
+    "cannotRevokeSelf": "Você não pode revogar o seu próprio acesso",
+    "couldNotRevoke": "Não foi possível revogar o acesso"
+  }
+}

@@ -1,14 +1,17 @@
 import { NextResponse } from "next/server";
+import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { requireApproved } from "@/lib/access";
 import { analyzeGaps } from "@/lib/gap-analysis";
 import { suggestPurchases } from "@/lib/ai/shopping";
 import { CATEGORIES } from "@/lib/constants";
-import type { ClothingItem } from "@/types/database";
+import { personSessionOr404 } from "@/lib/people/session";
+import { aiLanguageRule } from "@/i18n/config";
 
 export const maxDuration = 60;
 
 export async function POST(request: Request) {
+  const t = await getTranslations("shop");
   const supabase = await createClient();
   const { user, deny } = await requireApproved(supabase);
   if (deny) return deny;
@@ -19,64 +22,49 @@ export async function POST(request: Request) {
     : [];
   if (selected.length === 0) {
     return NextResponse.json(
-      { error: { code: "bad_request", message: "Pick at least one category" } },
+      { error: { code: "bad_request", message: t("errors.pickCategory") } },
       { status: 400 },
     );
   }
 
-  const [{ data: wardrobeData }, { data: profile }] = await Promise.all([
-    supabase
-      .from("clothing_items")
-      .select("*")
-      .eq("user_id", user.id)
-      .eq("archived", false)
-      .eq("ai_status", "confirmed"),
-    supabase
-      .from("profiles")
-      .select("*")
-      .eq("id", user.id)
-      .single(),
-  ]);
-  const wardrobe = (wardrobeData ?? []) as ClothingItem[];
+  const { session, deny: notFound } = await personSessionOr404(
+    supabase,
+    user,
+    typeof body.personId === "string" ? body.personId : null,
+  );
+  if (notFound) return notFound;
+  const { active } = session;
+  const wardrobe = await session.wardrobe.pieces({ confirmed: true });
 
   if (wardrobe.length < 3) {
     return NextResponse.json(
       {
         error: {
           code: "too_few_items",
-          message: "Add at least a few pieces first so I know what to build on.",
+          message: t("errors.tooFewItems"),
         },
       },
       { status: 422 },
     );
   }
 
-  const gaps = analyzeGaps(wardrobe, profile?.preferred_formality ?? null);
+  const gaps = analyzeGaps(wardrobe, active.formality);
 
   try {
     const result = await suggestPurchases({
       wardrobe,
       gaps,
       selectedCategories: selected,
-      stylePreferences: profile?.style_preferences ?? [],
-      client: profile,
-      preferredFormality: profile?.preferred_formality ?? null,
+      subject: active.subject,
+      languageRule: aiLanguageRule(session.locale),
     });
 
     const unlocksByCategory = new Map(gaps.map((g) => [g.category, g.unlocks]));
 
     // Refresh open suggestions for the selected categories.
-    await supabase
-      .from("shopping_suggestions")
-      .delete()
-      .eq("user_id", user.id)
-      .eq("status", "suggested")
-      .in("category", selected);
-
     const rows = result.suggestions
       .filter((s) => selected.includes(s.category))
       .map((s) => ({
-        user_id: user.id,
         category: s.category,
         subcategory: s.subcategory,
         item_name: s.item_name,
@@ -85,12 +73,7 @@ export async function POST(request: Request) {
         color_name: s.color_name,
         estimated_new_combinations: unlocksByCategory.get(s.category) ?? null,
       }));
-
-    const { data: inserted, error } = await supabase
-      .from("shopping_suggestions")
-      .insert(rows)
-      .select();
-    if (error) throw error;
+    const inserted = await session.wardrobe.replaceSuggestions(selected, rows);
 
     return NextResponse.json({ suggestions: inserted });
   } catch (err) {
@@ -99,7 +82,7 @@ export async function POST(request: Request) {
       {
         error: {
           code: "ai_failed",
-          message: "The personal shopper is unavailable. Try again shortly.",
+          message: t("errors.aiFailed"),
         },
       },
       { status: 502 },

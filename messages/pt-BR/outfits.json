@@ -1,0 +1,68 @@
+{
+  "meta": {
+    "title": "Looks"
+  },
+  "page": {
+    "title": "Looks",
+    "titleFor": "Looks de {name}",
+    "subtitle": "{count, plural, one {# combinação} other {# combinações}} que valem a pena",
+    "noMatchTitle": "Nenhum look corresponde a estes filtros",
+    "noMatchBody": "Remova um filtro ou baixe a nota para ver mais da sua tabela.",
+    "emptyTitle": "Ainda sem combinações",
+    "emptyBody": "Confirme pelo menos uma parte de cima, uma de baixo e um par de calçados no seu guarda-roupa, e os looks se montam sozinhos.",
+    "goToWardrobe": "Ir para o Guarda-roupa",
+    "showing": "Mostrando {shown} de {total}",
+    "showMore": "Mostrar mais looks"
+  },
+  "card": {
+    "unhidden": "Look de volta à sua tabela",
+    "hidden": "Look oculto",
+    "hiddenDescription": "Ele não será recomendado. Mostre os looks ocultos para encontrá-lo de novo.",
+    "undo": "Desfazer",
+    "boosted": "Destacado",
+    "hiddenBadge": "Oculto",
+    "resting": "Em descanso",
+    "removeBoost": "Remover destaque",
+    "boost": "Destacar combinação",
+    "unhide": "Mostrar combinação",
+    "hide": "Ocultar combinação"
+  },
+  "filters": {
+    "slot": {
+      "top": "parte de cima",
+      "bottom": "parte de baixo",
+      "shoes": "par de calçados",
+      "outerwear": "agasalho",
+      "watch": "relógio",
+      "accessory": "acessório"
+    },
+    "filterBy": "Filtrar por {label}",
+    "any": "Qualquer {label}",
+    "scoreMin": "Nota {min}+",
+    "includingHidden": "Incluindo ocultos",
+    "buildAround": "Montar a partir de uma peça",
+    "occasionSeasonScore": "Ocasião, estação e nota",
+    "filterByOccasion": "Filtrar por ocasião",
+    "occasion": "Ocasião",
+    "anyOccasion": "Qualquer ocasião",
+    "filterBySeason": "Filtrar por estação",
+    "season": "Estação",
+    "anySeason": "Qualquer estação",
+    "minimumScore": "Nota mínima",
+    "score": "Nota",
+    "showHidden": "Mostrar looks ocultos",
+    "filters": "Filtros",
+    "filtersCount": "Filtros ({count})",
+    "sheetTitle": "Filtrar looks",
+    "sheetDescription": "Os resultados mudam conforme você escolhe.",
+    "clearAll": "Limpar tudo",
+    "showOutfits": "Mostrar looks",
+    "activeFilters": "Filtros ativos",
+    "removeFilter": ", remover filtro"
+  },
+  "errors": {
+    "notSignedIn": "Você não está conectado",
+    "couldNotUpdate": "Não foi possível atualizar. Tente de novo.",
+    "generationFailed": "A geração de looks falhou. Você pode tentar de novo na página da peça."
+  }
+}

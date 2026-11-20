@@ -1,0 +1,47 @@
+{
+  "meta": {
+    "title": "Admin"
+  },
+  "page": {
+    "title": "Admin",
+    "subtitle": "Decidi chi può usare l'app e gestisci i tuoi crediti API."
+  },
+  "pending": {
+    "title": "In attesa di accesso",
+    "description": "Queste persone hanno fatto l'accesso con Google ma non possono ancora usare l'app.",
+    "signedIn": "accesso il {date}",
+    "approve": "Approva"
+  },
+  "invite": {
+    "title": "Invita via email",
+    "description": "Approva qualcuno in anticipo: entrerà subito la prima volta che accede con Google.",
+    "emailLabel": "Email da invitare",
+    "grant": "Concedi accesso"
+  },
+  "grants": {
+    "title": "Chi ha accesso",
+    "admin": "Admin",
+    "revoke": "Revoca",
+    "you": "tu",
+    "supabaseHint": "Puoi gestire questo elenco anche in Supabase → Table Editor → access_grants."
+  },
+  "revoke": {
+    "title": "Revocare l'accesso a {email}?",
+    "description": "Alla prossima visita verrà disconnesso dall'app e vedrà la pagina di attesa. Il suo guardaroba resta salvato e puoi concedere di nuovo l'accesso in qualsiasi momento.",
+    "keep": "Mantieni accesso",
+    "confirm": "Revoca accesso"
+  },
+  "toast": {
+    "approved": "{email} approvato",
+    "invited": "{email} invitato",
+    "revoked": "Accesso revocato a {email}"
+  },
+  "errors": {
+    "adminsOnly": "Solo per gli admin",
+    "invalidEmail": "Non sembra un indirizzo email",
+    "alreadyHasAccess": "Ha già accesso",
+    "couldNotGrant": "Impossibile concedere l'accesso",
+    "cannotRevokeSelf": "Non puoi revocare il tuo stesso accesso",
+    "couldNotRevoke": "Impossibile revocare l'accesso"
+  }
+}

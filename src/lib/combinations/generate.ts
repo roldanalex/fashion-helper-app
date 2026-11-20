@@ -1,5 +1,4 @@
 import "server-only";
-import type { SupabaseClient } from "@supabase/supabase-js";
 import {
   candidateSeasons,
   generateCandidatesForItem,
@@ -7,138 +6,73 @@ import {
 } from "@/lib/combinations/candidates";
 import { scoreCandidateBatch } from "@/lib/ai/scoring";
 import { MIN_OVERALL_SCORE, SCORING_BATCH_SIZE } from "@/lib/constants";
-import type { ClothingItem } from "@/types/database";
-
-type ComboRow = Record<string, unknown>;
-
-/**
- * Insert a batch; if the batch trips the unique index (an identical outfit
- * already exists), retry row by row so one duplicate never discards the
- * rest of the batch.
- */
-async function insertTolerant(
-  supabase: SupabaseClient,
-  rows: ComboRow[],
-): Promise<number> {
-  if (rows.length === 0) return 0;
-  const { error, count } = await supabase
-    .from("combinations")
-    .insert(rows, { count: "exact" });
-  if (!error) return count ?? rows.length;
-  if (error.code !== "23505") {
-    console.error("Combination insert failed:", error);
-    return 0;
-  }
-  let ok = 0;
-  for (const row of rows) {
-    const { error: rowError } = await supabase.from("combinations").insert(row);
-    if (!rowError) ok += 1;
-    else if (rowError.code !== "23505")
-      console.error("Combination insert failed:", rowError);
-  }
-  return ok;
-}
+import type { Wardrobe, NewOutfit } from "@/lib/wardrobe";
+import type { PromptSubject } from "@/lib/people/subject";
 
 /**
- * Incrementally extend the combination table with outfits containing
- * `itemId`. Idempotent: existing combinations containing the item are
- * replaced, without ever touching the rest of the table.
+ * Incrementally extend one Person's Outfit table with Outfits containing
+ * `itemId`. Idempotent: existing Outfits containing the piece are replaced,
+ * without touching the rest of the table. Candidates come only from this
+ * Person's pieces, so an Outfit can never mix People.
  */
 export async function generateCombinationsForItem(
-  supabase: SupabaseClient,
-  userId: string,
+  wardrobe: Wardrobe,
+  subject: PromptSubject,
+  styles: string[],
   itemId: string,
+  languageRule = "",
 ): Promise<{ inserted: number; candidates: number }> {
-  const { data: wardrobeData, error: wardrobeError } = await supabase
-    .from("clothing_items")
-    .select("*")
-    .eq("user_id", userId)
-    .eq("archived", false)
-    .eq("ai_status", "confirmed");
-  if (wardrobeError) throw wardrobeError;
+  const pieces = await wardrobe.pieces({ confirmed: true });
+  const newItem = pieces.find((i) => i.id === itemId);
+  if (!newItem) throw new Error("Piece not found or not confirmed");
 
-  const wardrobe = (wardrobeData ?? []) as ClothingItem[];
-  const newItem = wardrobe.find((i) => i.id === itemId);
-  if (!newItem) throw new Error("Item not found or not confirmed");
-
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("style_preferences")
-    .eq("id", userId)
-    .single();
-  const styles: string[] = profile?.style_preferences ?? [];
-
-  await supabase
-    .from("clothing_items")
-    .update({ combo_status: "generating" })
-    .eq("id", itemId);
+  await wardrobe.setComboStatus([itemId], "generating");
 
   try {
-    const candidates = generateCandidatesForItem(newItem, wardrobe);
+    const candidates = generateCandidatesForItem(newItem, pieces);
+    const rows: NewOutfit[] = [];
 
-    // Replace any prior combinations containing this item (idempotent re-runs).
-    await supabase
-      .from("combinations")
-      .delete()
-      .eq("user_id", userId)
-      .or(
-        `top_id.eq.${itemId},bottom_id.eq.${itemId},shoes_id.eq.${itemId},outerwear_id.eq.${itemId},watch_id.eq.${itemId},accessory_ids.cs.{${itemId}}`,
-      );
-
-    let inserted = 0;
     for (let i = 0; i < candidates.length; i += SCORING_BATCH_SIZE) {
       const batch = candidates.slice(i, i + SCORING_BATCH_SIZE);
       let scores;
       try {
-        scores = await scoreCandidateBatch(batch, styles);
+        scores = await scoreCandidateBatch(batch, styles, subject, languageRule);
       } catch (err) {
         console.error("Scoring batch failed, skipping:", err);
         continue;
       }
 
-      const rows = scores
-        .filter((s) => s.overall_score >= MIN_OVERALL_SCORE)
-        .map((s) => {
-          const c: Candidate | undefined = batch[s.index];
-          if (!c) return null;
-          const seasons = candidateSeasons(c);
-          return {
-            user_id: userId,
-            top_id: c.top.id,
-            bottom_id: c.bottom.id,
-            shoes_id: c.shoes.id,
-            outerwear_id: c.outerwear?.id ?? null,
-            watch_id: c.watch?.id ?? null,
-            // Sorted so the same accessory set never produces two rows.
-            accessory_ids: c.accessories.map((a) => a.id).sort(),
-            color_harmony_score: s.color_harmony_score,
-            old_money_score: s.old_money_score,
-            formality_score: s.formality_score,
-            weather_suitability_score: s.weather_suitability_score,
-            work_score: s.work_score,
-            daily_score: s.daily_score,
-            overall_score: s.overall_score,
-            season_suitability:
-              s.season_suitability.length > 0 ? s.season_suitability : seasons,
-            notes: s.notes,
-          };
-        })
-        .filter((r): r is NonNullable<typeof r> => r !== null);
-
-      inserted += await insertTolerant(supabase, rows);
+      for (const s of scores) {
+        if (s.overall_score < MIN_OVERALL_SCORE) continue;
+        const c: Candidate | undefined = batch[s.index];
+        if (!c) continue;
+        rows.push({
+          top_id: c.top.id,
+          bottom_id: c.bottom.id,
+          shoes_id: c.shoes.id,
+          outerwear_id: c.outerwear?.id ?? null,
+          watch_id: c.watch?.id ?? null,
+          // Sorted so the same accessory set never produces two rows.
+          accessory_ids: c.accessories.map((a) => a.id).sort(),
+          color_harmony_score: s.color_harmony_score,
+          old_money_score: s.old_money_score,
+          formality_score: s.formality_score,
+          weather_suitability_score: s.weather_suitability_score,
+          work_score: s.work_score,
+          daily_score: s.daily_score,
+          overall_score: s.overall_score,
+          season_suitability:
+            s.season_suitability.length > 0 ? s.season_suitability : candidateSeasons(c),
+          notes: s.notes,
+        });
+      }
     }
 
-    await supabase
-      .from("clothing_items")
-      .update({ combo_status: "done" })
-      .eq("id", itemId);
-
+    const inserted = await wardrobe.replaceOutfitsWith(itemId, rows);
+    await wardrobe.setComboStatus([itemId], "done");
     return { inserted, candidates: candidates.length };
   } catch (err) {
-    await supabase
-      .from("clothing_items")
-      .update({ combo_status: "failed" })
-      .eq("id", itemId);
+    await wardrobe.setComboStatus([itemId], "failed");
     throw err;
   }
 }

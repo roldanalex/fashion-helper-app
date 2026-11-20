@@ -1,18 +1,23 @@
 # Aether Wardrobe — User Guide
 
-Version 1.4.0 · November 2026
+Version 1.5.2 · November 2026
 
 This guide follows the order you will use the app: sign in, set up your
 profile, add pieces, review tags, browse the Outfits table, ask for today's
-outfit, pack for a trip with the stylist, and shop with intention. The same content, with progress checkpoints,
+outfit, pack for a trip with the stylist, shop with intention, and dress the
+whole family together. The same content, with progress checkpoints,
 is available in the app at `/welcome`.
 
 ## 1. Before you start
 
 - **Finding your way.** On a computer every section is in the left sidebar. On
   a phone the bar at the bottom holds **Today**, **Stylist**, **Wardrobe** and
-  **Outfits**; **More** opens Shop, Settings, Admin (for admins) and this
-  guide.
+  **Outfits**; **More** opens Family, Shop, Settings, Admin (for admins) and
+  this guide.
+- **Language.** Aether speaks English, Spanish, Brazilian Portuguese, French
+  and Italian. Your first visit follows your browser; change it any time under
+  **Settings → Language** (or on the landing page before you sign in). The AI's
+  explanations, the Stylist chat and this guide follow the same choice.
 - **Add it to your home screen.** In Safari or Chrome, use *Share → Add to
   Home Screen* (or *Install app*). Aether then opens full screen like an app.
 
@@ -82,8 +87,11 @@ Edit or clear any of it under **Settings → Your build and colouring**;
 3. **Describe what the photo cannot show.** Optional but valuable: "pique
    cotton", "merino", "Tudor Black Bay GMT on steel bracelet". Your words are
    treated as ground truth, especially for material.
-4. Submit. The photo is compressed in your browser, stored privately, analysed,
-   and you are taken to the piece's page.
+4. **Tag it myself** (optional). Switch it on to fill in colour, type and
+   material yourself; the photo is then never sent to the AI. It is on by
+   default for a child's pieces.
+5. Submit. The photo is compressed in your browser, stored privately, analysed
+   (unless you tag it yourself), and you are taken to the piece's page.
 
 ### Review the tags
 
@@ -338,7 +346,92 @@ suggestions stay in a **Dismissed suggestions** list at the bottom where
 **Bring back** restores them. Shop needs at least three confirmed pieces; until
 then the page says how many you have.
 
-## 8. Photos that tag well
+## 8. Dressing your family
+
+### Add the people you dress
+
+Under **Settings → People you dress**, tap **Add a person**. Use it for your
+children, or for an adult who has no email (a grandparent, say). They never
+sign in; you look after their wardrobe.
+
+- **Name or nickname**: shown only to you.
+- **Age**: adult, teen (13–17), child (4–12) or toddler (0–3). Children and
+  teens get **School** as an occasion instead of **Work**, and their outfits
+  are judged for comfort, ease of movement and durability.
+- **Parent or guardian**: for anyone under 18 you confirm you are their parent
+  or legal guardian.
+- **Styles, how dressed-up, fit**: as for you.
+- **Colouring** (optional): gives their colour season. For a child it is used
+  only by the app's own colour rules and is never sent to the AI.
+
+A family can have up to eight people, you included. **Edit** changes any of
+this; **Delete** removes the person, all their pieces, photos, outfits and
+plans for good, after asking.
+
+### Switch who you are dressing
+
+Once you have added someone, **Dressing: …** appears under the logo on a
+computer and as a bar at the top of the page on a phone. Pick a person and
+Wardrobe, Outfits, Today, Stylist and Shop all switch to them: their pieces,
+their outfit table, their day, their stylist conversation, their shopping
+list. **Add piece** adds to the person you are dressing. Outfits never mix
+two people's clothes.
+
+### Plan a family look
+
+Open **Family** (sidebar, or **More** on a phone; Today also shows a shortcut).
+
+1. Tick **who is going**. Someone without outfits yet is marked.
+2. Pick the **occasion**. **Celebration** covers birthdays, weddings as guests
+   and family photos.
+3. Choose **how to look together**: **Coordinated colours** (a shared
+   palette), **One shared accent** (one colour picked up by everyone) or
+   **Just dress well** (everyone's best, lightly matched).
+4. Optionally set the **day** and the **place**; the forecast there is used.
+5. Tap **Plan our look**. You get up to three looks: one outfit per person
+   from their own table, a strip with the family's palette and a note on why
+   it works. Parents stay at a similar level of dress; children are given
+   more leeway.
+6. **Wear this** under a person puts that outfit first in their plan for the
+   day and occasion (any picks Today already made stay after it). For today it
+   also counts as worn; for a later day it is saved as the plan only.
+
+If someone has no outfits, or nothing for that weather, the page says so and
+dresses everyone else. If nothing in someone's wardrobe is really made for the
+occasion, they get their closest outfit and the page says so.
+
+### Link another parent or family member
+
+Someone who has their own Aether account (the other parent, a grandparent)
+can join your family under **Settings → Family members with an account**:
+
+1. Type their email and choose what they can do. **Manage** lets them add and
+   edit the children's clothes and plan family looks. **View only** lets them
+   see the outfits and plan looks without changing anything.
+2. Tap **Send invitation**. If they don't have access to Aether yet, the
+   invitation waits until the admin lets them in.
+3. They open **Settings** on their own account, see the invitation, choose
+   whether your family may see **their own wardrobe**, and tap **Join family**.
+
+Sharing your own wardrobe is off unless you turn it on, and it shares your
+pieces and outfits only; your day plans and shopping suggestions stay private.
+Each member can change it at any time. The owner can remove a member; a member can **Leave this family**.
+People you can only view appear on the **Family** page but not in the
+**Dressing** switcher, and only the people you dress get **Wear this**.
+
+### Children's privacy
+
+- Children never sign in and have no email.
+- Nothing about a child is sent to the AI except descriptions of their
+  clothes. The stylist knows them only as "Child A" or "Teen B"; the app puts
+  their name back on screen. Please don't type a child's name, age or school
+  into the stylist chat.
+- For children the app keeps only the minimum: no height, body shape, weight
+  or notes.
+- Photograph a child's pieces on their own: no one wearing them and no name
+  labels in view.
+
+## 9. Photos that tag well
 
 - One piece, flat, filling the frame, in daylight. No people or other clothes
   in shot.
@@ -348,25 +441,33 @@ then the page says how many you have.
 - Watches: dial facing up, bracelet straight, so the bezel, dial and band are
   readable.
 
-## 9. When something looks off
+## 10. When something looks off
 
 | Symptom | What to do |
 | --- | --- |
 | No outfits yet | You need a confirmed top, bottom and shoes; the readiness banner lists what is missing. If pieces are confirmed but the table is empty, use **Build outfits** on Wardrobe; it fills in only what is missing. |
 | I archived a piece by mistake | Tap **Undo** on the confirmation. If it has gone, ask the admin to set `archived` back to false on the piece. |
 | I cleared the stylist conversation by mistake | Tap **Undo** on the "Conversation cleared" confirmation. |
-| Saving build and colouring fails | The database update for 1.4.0 (migration `0010`) has not been run yet; ask whoever runs the app. |
+| Saving build and colouring fails, or onboarding will not finish | The database update for 1.4.0 (migration `0010`) has not been run yet; ask whoever runs the app. |
 | "Nothing quite fits this day" | Nothing scored 6.5 or better for this season and occasion. Try another occasion, relax the score filter on Outfits, or let Shop tell you which piece would unlock the most. |
 | Wrong tags | Open the piece, fix the chips, **Save changes**. For a stubborn material or watch style, add a description and **Re-analyze**. |
 | The stylist cannot place a destination | Add the country: "Porto, Portugal". |
-| Temperatures are in the wrong unit | Tap °C or °F on the weather line on Today, or change it under **Settings → Temperature**. The forecast itself is always fetched in °C and converted on screen. |
+| Temperatures, weight or height are in the wrong unit | Each has its own setting under **Settings → Units**: temperature (°C or °F; also on the weather line on Today), weight (kg or lb) and height (cm or feet and inches). The forecast itself is always fetched in °C and converted on screen. |
 | A trip day says "Nothing in your table suits this" | No visible outfit passes that day's season band, rain rule and occasion. Ask the stylist to relax the occasion ("errands instead of work"), or let Shop name the missing piece. |
+| Settings won't save the language or units, or the family section is empty | The 1.5.2 database update (migration `0013`) has not been run yet; ask whoever runs the app. |
+| The app shows the wrong language on a new phone | The language is remembered per device. Choose it once under **Settings → Language**. |
+| "One database update to go" | The database update for 1.5.0 (migration `0011`) has not been run yet; ask whoever runs the app. Nothing has been lost. |
+| "Could not add this person" | The 1.5.1 database fix (migration `0012`) has not been run yet; ask whoever runs the app. |
+| I can't see the person switcher | It appears once you have added someone under **Settings → People you dress**. |
+| Family says someone "has no outfits yet" | Switch to that person and confirm at least a top, a bottom and shoes for them; their outfits then build. |
 | It feels slow | Confirming a piece scores up to 120 candidates in batches and can take a minute or two on a large wardrobe; the banner shows progress. Today waits on the weather service and one model call, usually a few seconds. |
 
 ## Privacy
 
 Photos live in a private storage bucket served through short-lived links.
 Every table is protected by row-level security, so you only ever see your own
-rows. Build and colouring are optional; weight is never sent to the AI, and the
+rows, and the people you dress. Build and colouring are optional; weight is never sent to the AI, and the
 rest is sent to OpenAI only to rank and explain your own outfits. AI calls run server-side; your images are sent to the vision model only
-for tagging, never for scoring or daily ranking.
+for tagging (never when you choose **Tag it myself**), never for scoring or
+daily ranking. Nothing about a child is sent to the AI except descriptions of
+their clothes.

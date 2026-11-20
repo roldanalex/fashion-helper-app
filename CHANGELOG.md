@@ -2,6 +2,151 @@
 
 All notable changes to Aether Wardrobe. Dates are release dates.
 
+## 1.5.2 — 2026-11-21
+
+### Added
+
+- **Family link.** Invite the other parent, or anyone with their own Aether
+  account, into your family from **Settings → Family members with an account**.
+  - **Manager** can add and edit the children's clothes and plan family looks;
+    **Viewer** can see them and plan looks, but not change anything.
+  - The invited person accepts or declines in their own Settings, and chooses
+    whether the family may see **their own wardrobe** (they can change it at
+    any time).
+  - The **Family** page now includes everyone you can see through a linked
+    family. **Wear this** appears only for the people you dress.
+  - Owners can remove members; members can leave. A family has at most 8
+    members. An invitation can only be accepted by someone the admin has let
+    into Aether; until then it waits.
+  - Sharing your own wardrobe is off unless you turn it on, and shares your
+    pieces and outfits only: your day plans (with destinations) and shopping
+    suggestions stay private.
+  - If you manage more than one family, **Add a person** asks which one.
+- **Five languages:** English, Spanish, Brazilian Portuguese, French and
+  Italian. Choose under **Settings → Language** (or on the landing page before
+  signing in); the first visit follows your browser's language.
+  - Every screen, button, message and clothing term is translated.
+  - **The AI writes in your language too:** Today's explanations, the Stylist
+    chat, Shop suggestions, family-look notes and the short note on each new
+    outfit.
+  - Weather descriptions come in your language.
+  - **The "How it works" guide** opens in your language (`/welcome`), or
+    directly at `/welcome/es`, `/welcome/pt-BR`, `/welcome/fr`, `/welcome/it`.
+- **A logo.** A clothes hanger drawn as a serif "A" (the hook is the apex,
+  the bar is the crossbar) with a small sparkle for the AI stylist, beside the
+  wordmark in the app's own Cormorant Garamond and Jost. It replaces the text
+  name in the sidebar and on the landing page, heads the "How it works" guide
+  in every language, and is the new app icon and home-screen icon. Files are in
+  `public/brand/`.
+- **Units, one setting each.** **Settings → Units** now has temperature (°C or
+  °F), weight (kg or lb) and height (cm or feet and inches) as three separate
+  choices, each saved the moment you pick it.
+
+### Changed
+
+- The person switcher lists only the people you can dress; people you can only
+  view appear on the Family page.
+- Outfit generation, ranking, the stylist and the shopper are told which
+  language to answer in; ids and stored values stay in English, so switching
+  language never changes your data.
+
+### Upgrade
+
+- Run `supabase/migrations/0013_family_link_locale_units.sql` in the Supabase
+  SQL Editor (after `0012`). It adds the language and unit columns, the family
+  invitations and the wider viewing rules. Until it runs, the app works in
+  every language but Settings cannot save the language or units and the family
+  section stays empty.
+
+## 1.5.1 — 2026-11-20
+
+### Fixed
+
+- **Adding a person failed** with "Could not add this person" (the server log
+  said the new row violated the people table's row-level security). The read
+  rule looked the person up by id, which cannot see a row while it is being
+  inserted. It now checks the row's own columns. Run
+  `supabase/migrations/0012_people_read_policy.sql`.
+- **Weight in pounds rewrote itself while typing** (typing 3 showed 2, typing
+  1 cleared the box). The box re-derived pounds from the stored whole
+  kilograms on every keystroke; it now keeps exactly what you type.
+
+### Changed
+
+- **The "How it works" guide (`/welcome`) has a new look and content.** It
+  now uses the app's espresso and brass, the app's hanger icon, and a new
+  background animation: clothes rails glide along the edges and, every few
+  seconds, a top, trousers and shoes come together as an outfit with its
+  score. A new **Family** chapter and a **Parent** role cover dressing your
+  children, and the copy leads with what each part does for you.
+
+## 1.5.0 — 2026-11-20
+
+### Added
+
+- **People you dress.** Add your children, or an adult without an email,
+  under **Settings → People you dress**. Each person gets their own wardrobe,
+  outfit table, daily picks, stylist conversation and shopping list. They
+  never sign in.
+  - Name or nickname, age (adult, teen, child, toddler), styles, how dressed-up
+    they like to be, fit, and optional colouring.
+  - Adding a child asks you to confirm you are their parent or legal guardian.
+  - **Delete** removes the person, their photos and all their outfits for good
+    (it asks first).
+- **Person switcher.** "Dressing: …" under the logo on a computer, and a bar
+  at the top of the page on a phone. Wardrobe, Outfits, Today, Stylist and
+  Shop follow your choice.
+- **Family look** (new **Family** page, in the sidebar and under **More** on a
+  phone). Choose who is going, the occasion, the day and the place, and how
+  you want to look together: coordinated colours, one shared accent, or just
+  well dressed. You get up to three looks, one outfit per person from their
+  own wardrobe, with a family palette and a note on why it works. If someone
+  has nothing really made for the occasion, they get their closest outfit and
+  the page says so. **Wear this** puts each person's outfit first in their plan
+  for that day (keeping Today's own picks after it), and counts it as worn
+  only when the day is today. Today shows a shortcut when you dress more than
+  one person.
+- **New occasions:** **Celebration** (birthday, wedding guest, family photo)
+  for everyone, and **School** for children and teens. Work is not offered for
+  children.
+- **Tag it myself** when adding a piece: fill in colour, type and material
+  yourself and the photo is never sent to the AI. It is the default for
+  children's pieces.
+
+### Privacy for children
+
+- Nothing about a child is sent to the AI except descriptions of their clothes:
+  not their name, age, colouring or notes. The AI knows them only as
+  "Child A" or "Teen B", and the app puts their name back on screen. See
+  `docs/adr/0002-no-minor-personal-data-to-ai.md` for why (OpenAI's API terms
+  on children's data).
+- For children the app keeps only the minimum: no height, body shape, weight
+  or notes. Their colouring is used only by the app's own colour rules, and
+  neither their style preferences nor your home town go into prompts about
+  them.
+- Wherever you type for a child (a piece's description, Today's notes, the
+  stylist chat), the app asks you not to include names, ages or schools.
+
+### Changed
+
+- Wardrobe data now belongs to a person, not an account
+  (`docs/adr/0001-person-owns-wardrobe-data.md`). The database refuses any
+  outfit that mixes two people's clothes, and two people can each have a plan
+  for the same day and occasion.
+- Outfits that include an archived piece no longer appear anywhere.
+- Children's outfits are scored for comfort, ease of movement and
+  durability; teens' for current, versatile looks.
+- New `GLOSSARY.md` and `docs/adr/` record the project's vocabulary and its
+  two hard-to-reverse decisions.
+
+### Upgrade
+
+- Run `supabase/migrations/0011_people.sql` in the Supabase SQL Editor (after
+  `0010`). It creates families and people, gives every account its own
+  person, and moves existing pieces, outfits, plans and suggestions to that
+  person. No data is deleted. Until it runs, the app shows a "one database
+  update to go" page instead of your wardrobe.
+
 ## 1.4.0 — 2026-11-19
 
 ### Added
@@ -80,7 +225,8 @@ All notable changes to Aether Wardrobe. Dates are release dates.
 
 - Run `supabase/migrations/0010_personal_fit.sql` in the Supabase SQL Editor.
   It adds `fit_preference` and `style_notes` and constrains `color_season`.
-  Until it runs, everything works except saving build and colouring.
+  Run it before deploying: until it runs, saving build and colouring in
+  Settings fails, and so does finishing onboarding for a new user.
 
 ## 1.3.1 — 2026-10-27
 

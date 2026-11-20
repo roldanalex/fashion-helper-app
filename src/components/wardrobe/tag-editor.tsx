@@ -10,8 +10,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { ChipGroup } from "@/components/onboarding/chip-group";
+import { useTranslations } from "next-intl";
+import { useValidationMessage } from "@/i18n/validation";
+import { useTaxonomy } from "@/i18n/taxonomy";
 import {
-  ATTRIBUTE_VALUE_LABELS,
   CATEGORIES,
   MATERIALS,
   PATTERNS,
@@ -26,6 +28,9 @@ import type { ClothingItem } from "@/types/database";
 import type { Category } from "@/lib/constants";
 
 export function TagEditor({ item }: { item: ClothingItem }) {
+  const t = useTranslations("wardrobe.tags");
+  const vmsg = useValidationMessage();
+  const tx = useTaxonomy();
   const router = useRouter();
   const queryClient = useQueryClient();
   const [pending, startTransition] = useTransition();
@@ -68,21 +73,21 @@ export function TagEditor({ item }: { item: ClothingItem }) {
     for (const key of allowed) attributes[key] = tags.attributes[key] ?? null;
     const parsed = itemTagsSchema.safeParse({ ...tags, attributes });
     if (!parsed.success) {
-      toast.error(parsed.error.issues[0]?.message ?? "Check the tags");
+      toast.error(vmsg(parsed.error.issues[0]?.message, t("checkTags")));
       return;
     }
     startTransition(async () => {
-      const res = await confirmItemTags(item.id, parsed.data);
+      const res = await confirmItemTags(item.id, item.person_id, parsed.data);
       if (res?.error) {
         toast.error(res.error);
         return;
       }
-      toast.success("Saved — generating outfit combinations…");
+      toast.success(t("saved"));
       // Fire-and-forget: the combination engine works in the background.
       fetch("/api/combinations/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ itemId: item.id }),
+        body: JSON.stringify({ itemId: item.id, personId: item.person_id }),
       })
         .catch(() => {})
         .finally(() => queryClient.invalidateQueries({ queryKey: ["combination-status"] }));
@@ -99,13 +104,13 @@ export function TagEditor({ item }: { item: ClothingItem }) {
       const res = await fetch("/api/items/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ itemId: item.id }),
+        body: JSON.stringify({ itemId: item.id, personId: item.person_id }),
       });
       if (!res.ok) throw new Error();
-      toast.success("Re-analyzed — review the fresh tags");
+      toast.success(t("reanalyzed"));
       router.refresh();
     } catch {
-      toast.error("Re-analysis failed. Try again in a moment.");
+      toast.error(t("reanalyzeFailed"));
     } finally {
       setReanalyzing(false);
     }
@@ -113,19 +118,19 @@ export function TagEditor({ item }: { item: ClothingItem }) {
 
   function archive() {
     startTransition(async () => {
-      const res = await archiveItem(item.id);
+      const res = await archiveItem(item.id, item.person_id);
       if (res?.error) {
         toast.error(res.error);
         return;
       }
-      toast.success(`Archived ${tags.name}`, {
-        description: "Its outfits are hidden until you bring it back.",
+      toast.success(t("archived", { name: tags.name }), {
+        description: t("archivedDescription"),
         action: {
-          label: "Undo",
+          label: t("undo"),
           onClick: async () => {
-            const undo = await unarchiveItem(item.id);
+            const undo = await unarchiveItem(item.id, item.person_id);
             if (undo?.error) toast.error(undo.error);
-            else toast.success(`Restored ${tags.name}`);
+            else toast.success(t("restored", { name: tags.name }));
             router.refresh();
           },
         },
@@ -139,7 +144,7 @@ export function TagEditor({ item }: { item: ClothingItem }) {
     <div className="space-y-8">
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="name">Name</Label>
+          <Label htmlFor="name">{t("name")}</Label>
           <Input
             id="name"
             value={tags.name}
@@ -147,17 +152,17 @@ export function TagEditor({ item }: { item: ClothingItem }) {
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="color">Color</Label>
+          <Label htmlFor="color">{t("color")}</Label>
           <div className="flex gap-2">
             <Input
               id="color"
               value={tags.color_name}
               onChange={(e) => set("color_name", e.target.value)}
-              placeholder="navy"
+              placeholder={t("colorPlaceholder")}
             />
             <input
               type="color"
-              aria-label="Color swatch"
+              aria-label={t("colorSwatch")}
               className="h-9 w-12 shrink-0 cursor-pointer pointer-coarse:h-11 pointer-coarse:w-14 rounded-md border bg-transparent"
               value={tags.color_hex}
               onChange={(e) => set("color_hex", e.target.value)}
@@ -167,8 +172,8 @@ export function TagEditor({ item }: { item: ClothingItem }) {
       </div>
 
       <ChipGroup
-        label="Category"
-        options={[...CATEGORIES]}
+        label={t("category")}
+        options={CATEGORIES.map((o) => ({ value: o, label: tx("category", o) }))}
         value={tags.category}
         onChange={(v) => {
           set("category", v as Category);
@@ -177,10 +182,10 @@ export function TagEditor({ item }: { item: ClothingItem }) {
       />
 
       <ChipGroup
-        label={tags.category === "watch" ? "Watch style" : "Type"}
+        label={tags.category === "watch" ? t("watchStyle") : t("type")}
         options={(SUBCATEGORIES[tags.category as Category] ?? []).map((o) => ({
           value: o,
-          label: ATTRIBUTE_VALUE_LABELS[o] ?? o,
+          label: tx("subcategory", o),
         }))}
         value={tags.subcategory}
         onChange={(v) => set("subcategory", v as string)}
@@ -189,10 +194,10 @@ export function TagEditor({ item }: { item: ClothingItem }) {
       {detailFields.map((field) => (
         <ChipGroup
           key={field.key}
-          label={field.label}
+          label={tx("detailLabel", field.label)}
           options={field.options.map((o) => ({
             value: o,
-            label: ATTRIBUTE_VALUE_LABELS[o] ?? o,
+            label: tx("attribute", o),
           }))}
           value={tags.attributes[field.key] ?? undefined}
           onChange={(v) =>
@@ -205,22 +210,22 @@ export function TagEditor({ item }: { item: ClothingItem }) {
       ))}
 
       <ChipGroup
-        label="Material"
-        options={[...MATERIALS]}
+        label={t("material")}
+        options={MATERIALS.map((o) => ({ value: o, label: tx("material", o) }))}
         value={tags.material}
         onChange={(v) => set("material", v as string)}
       />
 
       <ChipGroup
-        label="Pattern"
-        options={[...PATTERNS]}
+        label={t("pattern")}
+        options={PATTERNS.map((o) => ({ value: o, label: tx("pattern", o) }))}
         value={tags.pattern}
         onChange={(v) => set("pattern", v as string)}
       />
 
       <ChipGroup
-        label="Seasons"
-        options={[...SEASONS]}
+        label={t("seasons")}
+        options={SEASONS.map((o) => ({ value: o, label: tx("season", o) }))}
         value={tags.season}
         onChange={(v) => set("season", v as string[])}
         multiple
@@ -229,7 +234,7 @@ export function TagEditor({ item }: { item: ClothingItem }) {
       <div className="grid gap-8 sm:grid-cols-2">
         <div>
           <Label id="formality-label" className="text-sm font-medium">
-            Formality ({tags.formality_level}/10)
+            {t("formality", { value: tags.formality_level })}
           </Label>
           <Slider
             className="mt-3"
@@ -243,7 +248,7 @@ export function TagEditor({ item }: { item: ClothingItem }) {
         </div>
         <div>
           <Label id="old-money-label" className="text-sm font-medium">
-            Old money fit ({tags.old_money_score}/10)
+            {t("oldMoney", { value: tags.old_money_score })}
           </Label>
           <Slider
             className="mt-3"
@@ -264,7 +269,7 @@ export function TagEditor({ item }: { item: ClothingItem }) {
           ) : (
             <Check className="size-4" aria-hidden />
           )}
-          {item.ai_status === "confirmed" ? "Save changes" : "Confirm tags"}
+          {item.ai_status === "confirmed" ? t("saveChanges") : t("confirm")}
         </Button>
         <Button
           variant="outline"
@@ -277,7 +282,7 @@ export function TagEditor({ item }: { item: ClothingItem }) {
           ) : (
             <RefreshCw className="size-4" aria-hidden />
           )}
-          Re-analyze
+          {t("reanalyze")}
         </Button>
         <Button
           variant="ghost"
@@ -285,7 +290,7 @@ export function TagEditor({ item }: { item: ClothingItem }) {
           disabled={pending || reanalyzing}
           className="gap-2 text-muted-foreground"
         >
-          <Archive className="size-4" aria-hidden /> Archive
+          <Archive className="size-4" aria-hidden /> {t("archive")}
         </Button>
       </div>
     </div>

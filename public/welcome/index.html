@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>How Aether Wardrobe works</title>
+<title>Onboarding</title>
 <!--
   app-onboarding-page template — single-file, dependency-free onboarding engine.
   Two views: "Why" landing (default) and "Guide" walkthrough (?view=guide&section=<id>).
@@ -20,9 +20,9 @@
 
 /* ===== tier 1 — inputs overridable from meta.theme (applyTheme() writes --t-* on <html>) ===== */
 :root{
-  --t-accent:#C9A45C; --t-accent-rgb:201,164,92; --t-accent-light:#A8873F; --t-accent-soft:#E2C88F;
+  --t-accent:#E1242A; --t-accent-rgb:225,36,42; --t-accent-light:#C11F24; --t-accent-soft:#FF5B5B;
   --t-secondary:#2E86AB; --t-secondary-rgb:46,134,171; --t-secondary-tint:#C0DBE6; --t-secondary-dark:#22647F;
-  --t-bg:#16140F; --t-font:"DM Sans"; --t-motif-alpha:.07; --t-glow:.55; --t-radius:14px;
+  --t-bg:#0A0A0C; --t-font:"DM Sans"; --t-motif-alpha:.07; --t-glow:.55; --t-radius:14px;
   --bar-clear:88px;
 }
 /* ===== tier 2 — palettes (consume tier 1; light theme re-derives surfaces/text only) ===== */
@@ -101,6 +101,8 @@ html[data-motif="nodes"] .bgfx::after{
 .pill button.primary:hover .circ{filter:brightness(1.12)}
 /* brand lockup */
 .brandpill{padding:6px 18px 6px 12px;gap:12px;min-height:50px}
+a.brandpill{text-decoration:none;color:inherit;transition:border-color .18s}
+a.brandpill:hover{border-color:rgba(var(--accent-rgb),.45)}
 .brandpill img{height:22px;display:block}
 .brandpill .borg{font-weight:800;font-size:15px;letter-spacing:.01em;white-space:nowrap}
 .brandpill .bsep{width:1px;height:20px;background:var(--line2)}
@@ -108,6 +110,8 @@ html[data-motif="nodes"] .bgfx::after{
 .brandpill .bpow .pw{color:var(--text);font-weight:800;letter-spacing:.02em}
 .brandpill .bpow .pw .acc{color:var(--accent)}
 .brandpill .appicon{font-size:18px;line-height:1} .brandpill img.appicon{height:20px;width:20px;object-fit:contain}
+.brandpill .bpow .pw img.pwicon{height:24px;width:auto;vertical-align:-7px;margin-right:5px;display:inline-block}
+.brandpill .bpow .pw.pwbadge{display:inline-block;padding:5px 13px 6px;border-radius:14px;color:#fff;background:center/100% 100% no-repeat;line-height:1.1;letter-spacing:.03em;text-shadow:0 1px 2px rgba(0,0,0,.25)} .brandpill .bpow .pw.pwbadge .acc{color:#fff}
 
 /* ---------- WHY chapter rail ---------- */
 .whynav{position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:40;
@@ -382,6 +386,15 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
   .print-section{page-break-before:always}
   .print-section:first-child{page-break-before:auto}
 }
+/* ANIMCSS:BEGIN — animated background canvas (shared; byte-identical in both templates) */
+.bganim{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.9;
+  -webkit-mask-image:radial-gradient(ellipse 60% 56% at 46% 50%,rgba(0,0,0,.22) 0%,rgba(0,0,0,.55) 55%,#000 100%);
+          mask-image:radial-gradient(ellipse 60% 56% at 46% 50%,rgba(0,0,0,.22) 0%,rgba(0,0,0,.55) 55%,#000 100%)}
+.bganim[data-focus="full"]{-webkit-mask-image:none;mask-image:none}
+[data-theme="light"] .bganim{opacity:.75}
+[data-view="guide"] .bganim{opacity:.4}
+@media print{.bganim{display:none!important}}
+/* ANIMCSS:END */
 </style>
 </head>
 <body>
@@ -389,40 +402,52 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
 {
   "meta": {
     "app": "Aether Wardrobe",
-    "what": "Your personal AI stylist · photograph once, dress well every day",
+    "what": "Your personal stylist for the clothes your family already owns",
     "storage_key": "aether-wardrobe-onboarding",
     "favicon_emoji": "🧵",
     "theme": {
-      "accent": "#C9A45C",
-      "accent_soft": "#E2C27E",
+      "accent": "#957331",
+      "accent_soft": "#C9A45C",
       "secondary": "#5B7C99",
       "bg": "#16140F",
-      "motif": "rings",
-      "motif_opacity": 0.07,
-      "glow_strength": 0.5,
+      "animation": {
+        "type": "wardrobe",
+        "intensity": "medium",
+        "speed": "normal"
+      },
+      "motif": "none",
+      "glow_strength": 0.45,
       "radius": "14px",
       "font_family": "DM Sans"
     },
     "tagline": [
       "Photograph once.",
-      "Confirm the tags.",
-      "Get dressed in a minute."
+      "Dress the whole family.",
+      "Ready in a minute."
     ],
     "tagline_colors": [
       "text",
       "accent_soft",
       "secondary_tint"
     ],
-    "subtitle": "Aether Wardrobe catalogues the clothes you already own, builds every outfit that genuinely works from them, and each morning picks the ones that suit your plans and the weather where you are going. It never invents clothes you do not have, and it explains every choice like a stylist laying pieces on the bed.",
+    "subtitle": "Aether Wardrobe turns the clothes you already own into outfits that work, and picks the right one for your day and the weather where you are going. It does the same for your children and anyone else you dress, and plans looks for the whole family. It never invents clothes you do not have, and it explains every choice.",
     "app_url": "/",
     "owner": "Alexis Roldan · Aether Wardrobe",
-    "last_reviewed": "2026-11-19",
+    "last_reviewed": "2026-11-20",
     "authoritative_sources": [
       "Aether Wardrobe user guide (docs/USER-GUIDE.md)",
       "Release notes (CHANGELOG.md)"
     ],
     "disclaimer": "Aether Wardrobe is a styling assistant. Suggestions are based on the tags you confirm and a weather forecast; use your own judgement for dress codes, safety and comfort. Your photos stay private to your account.",
-    "est_minutes_guide": 15
+    "est_minutes_guide": 15,
+    "title": "How Aether Wardrobe works",
+    "favicon": "/welcome/assets/favicon.svg",
+    "brand": {
+      "logo_src": "/welcome/assets/aether-logo.svg",
+      "logo_alt": "Aether Wardrobe",
+      "logo_height": 40
+    },
+    "lang": "en"
   },
   "why": {
     "scroll_hint": "See why",
@@ -496,7 +521,7 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
         "kicker": "HOW IT WORKS",
         "nav_label": "How it works",
         "headline": "Six steps from a photo to today's outfit.",
-        "intro": "One model, start to finish. The first three steps happen once per piece; the last three happen every day.",
+        "intro": "One model, start to finish. The first three steps happen once per piece; the last three happen every day. The Stylist tab reuses the same table to pack for a trip.",
         "blocks": [
           {
             "type": "lifecycle",
@@ -533,8 +558,8 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
         "id": "features",
         "kicker": "THE TABS",
         "nav_label": "The tabs",
-        "headline": "Four places to go, each with one job.",
-        "intro": "The app shell shows the same four tabs on desktop and phone.",
+        "headline": "Five places to go, each with one job.",
+        "intro": "On a computer every section sits in the sidebar. On a phone, Today, Stylist, Wardrobe and Outfits are one tap away at the bottom; More holds Family, Shop and Settings.",
         "blocks": [
           {
             "type": "capabilities",
@@ -574,6 +599,44 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
                 "badge": "invite only",
                 "title": "Allowlisted accounts",
                 "text": "Sign in with Google. An administrator grants access by email, so no paid AI call runs for an unknown account."
+              },
+              {
+                "category": "FAMILY",
+                "badge": "new",
+                "title": "The whole family, dressed together",
+                "text": "Add your children or anyone without an email, give each their own wardrobe, and plan one look for everyone: coordinated colours, a shared accent, or simply well dressed. Children never sign in and nothing about them reaches the AI."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "family",
+        "kicker": "FAMILY",
+        "nav_label": "Family",
+        "headline": "Dress everyone you look after, together.",
+        "intro": "Add your children, or an adult without an email, under your own account. Each person gets their own wardrobe and outfits, and one tap plans a look for everyone.",
+        "blocks": [
+          {
+            "type": "capabilities",
+            "items": [
+              {
+                "category": "PEOPLE",
+                "badge": "new",
+                "title": "A wardrobe per person",
+                "text": "Switch who you are dressing at the top of the page. Wardrobe, Outfits, Today, Stylist and Shop follow, and outfits never mix two people's clothes."
+              },
+              {
+                "category": "FAMILY LOOK",
+                "badge": "new",
+                "title": "One look for the occasion",
+                "text": "Choose who is going, the occasion and how you want to look together. You get up to three looks, one outfit each, with a shared palette and a note on why it works."
+              },
+              {
+                "category": "PRIVACY",
+                "badge": "children",
+                "title": "Children stay private",
+                "text": "Children never sign in. The AI sees only descriptions of their clothes and knows them as 'Child A'. Delete a person and everything about them goes."
               }
             ]
           }
@@ -634,7 +697,7 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
         "kicker": "WHO IT IS FOR",
         "nav_label": "Who it is for",
         "headline": "What it means for you.",
-        "intro": "The app was built for a quiet-luxury, old-money wardrobe, but every style preference in the profile changes how outfits are scored.",
+        "intro": "Built for a quiet-luxury wardrobe, and every style you choose changes how outfits are scored.",
         "blocks": [
           {
             "type": "roles",
@@ -642,6 +705,10 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
               {
                 "role": "Busy professional",
                 "text": "Pick 'Work' or 'Indoors / Conferences', tap once, wear the first pick. Under a minute."
+              },
+              {
+                "role": "Parent",
+                "text": "Add the children, photograph their clothes once, and plan the birthday or the family photo in one go. Nothing about them reaches the AI except their clothes."
               },
               {
                 "role": "Frequent traveller",
@@ -662,8 +729,8 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
     ],
     "cta": {
       "kicker": "BEFORE YOU BEGIN",
-      "headline": "Now put your wardrobe to work.",
-      "intro": "The guide walks you from first sign-in to your first styled day: profile, adding pieces, reviewing tags, the Outfits table, Today, and what to buy next.",
+      "headline": "Put your wardrobe to work.",
+      "intro": "The guide takes about 15 minutes and goes from first sign-in to your first styled day: your profile, adding pieces, the Outfits table, Today, the Stylist, Shop and dressing your family. Tick each checkpoint as you go; your progress is saved in this browser only.",
       "button": "Start the guide"
     }
   },
@@ -717,8 +784,17 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
         ]
       },
       {
+        "section": "stylist",
+        "label": "Stylist: pack for a trip"
+      },
+      {
         "section": "shop",
         "label": "Shop: what to buy next",
+        "optional": true
+      },
+      {
+        "section": "family",
+        "label": "Dressing your family",
         "optional": true
       }
     ],
@@ -736,7 +812,7 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
       "welcome": {
         "kicker": "START HERE",
         "title": "Fifteen minutes to your first styled day",
-        "intro": "This guide follows the order you will actually use the app: sign in, tell it about you, add a handful of pieces, let the table build, then ask for today's outfit. Tick the checkpoint at the end of each section; your progress is saved in this browser only.",
+        "intro": "This guide follows the order you will use the app: sign in, tell it about you, add a handful of pieces, let the table build, ask for today's outfit, and then add the people you dress. Tick the checkpoint at the end of each section; your progress is saved in this browser only.",
         "minutes": 1,
         "chips": [
           "Invite only",
@@ -762,7 +838,7 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
               },
               {
                 "label": "Where to get help",
-                "html": "The <b>user guide<\/b> in the repository and the <b>release notes<\/b>. In the app, every empty state tells you what to do next."
+                "html": "The <b>user guide</b> in the repository and the <b>release notes</b>. In the app, every empty state tells you what to do next."
               }
             ]
           },
@@ -807,7 +883,7 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
           },
           {
             "type": "note",
-            "html": "You can change all of this later under <b>Settings<\/b>. Outfits already scored keep their scores; new pieces are scored against the updated profile."
+            "html": "You can change all of this later under <b>Settings</b>. Outfits already scored keep their scores; new pieces are scored against the updated profile."
           }
         ],
         "checkpoint": "I have completed the profile wizard and can see the Wardrobe tab."
@@ -893,7 +969,7 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
           },
           {
             "type": "note",
-            "html": "<b>Re-analyze<\/b> asks the vision model again, useful after you add a description. <b>Archive<\/b> removes the piece from every outfit without deleting the photo."
+            "html": "<b>Re-analyze</b> asks the vision model again, useful after you add a description. <b>Archive</b> removes the piece from every outfit without deleting the photo."
           }
         ],
         "checkpoint": "I have confirmed the tags on a piece and seen the generation banner."
@@ -933,7 +1009,7 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
           },
           {
             "type": "text",
-            "html": "<b>Example.<\/b> A Tudor Black Bay GMT on a steel bracelet tags as <i>Watch · GMT · steel · bracelet · silver<\/i>, formality 6, old money 7. A TAG Heuer Carrera with a blue dial tags as <i>Watch · sports · steel · bracelet · silver<\/i>, formality 7, old money 8. On a travel day the stylist reaches for the GMT; on a dinner, the Carrera."
+            "html": "<b>Example.</b> A Tudor Black Bay GMT on a steel bracelet tags as <i>Watch · GMT · steel · bracelet · silver</i>, formality 6, old money 7. A TAG Heuer Carrera with a blue dial tags as <i>Watch · sports · steel · bracelet · silver</i>, formality 7, old money 8. On a travel day the stylist reaches for the GMT; on a dinner, the Carrera."
           },
           {
             "type": "note",
@@ -976,7 +1052,7 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
           },
           {
             "type": "note",
-            "html": "A <b>Resting<\/b> badge means the outfit was recommended or worn in the last seven days. It is still in the table; it just waits its turn."
+            "html": "A <b>Resting</b> badge means the outfit was recommended or worn in the last seven days. It is still in the table; it just waits its turn."
           }
         ],
         "checkpoint": "I can filter the Outfits table by one piece and have boosted or hidden at least one outfit."
@@ -1048,7 +1124,7 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
                 "blocks": [
                   {
                     "type": "text",
-                    "html": "<b>Work<\/b> leans on the work score with a touch of formality: polished, business casual or above.<br><br><b>Indoors / Conferences<\/b> is for climate-controlled days. The weather only matters for the commute, so the stylist favours layers that come off indoors and comfort for long hours of sitting and standing."
+                    "html": "<b>Work</b> leans on the work score with a touch of formality: polished, business casual or above.<br><br><b>Indoors / Conferences</b> is for climate-controlled days. The weather only matters for the commute, so the stylist favours layers that come off indoors and comfort for long hours of sitting and standing."
                   }
                 ]
               },
@@ -1057,7 +1133,7 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
                 "blocks": [
                   {
                     "type": "text",
-                    "html": "<b>Lunch<\/b> is daytime and relaxed but put-together, with a nod to old-money fit.<br><br><b>Dinner<\/b> is elevated and considered; <b>Going Out<\/b> adds presence and polish for the evening."
+                    "html": "<b>Lunch</b> is daytime and relaxed but put-together, with a nod to old-money fit.<br><br><b>Dinner</b> is elevated and considered; <b>Going Out</b> adds presence and polish for the evening."
                   }
                 ]
               },
@@ -1066,7 +1142,7 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
                 "blocks": [
                   {
                     "type": "text",
-                    "html": "<b>Mall / Shopping<\/b>, <b>Park / Outdoors<\/b> and <b>Errands<\/b> all lean on the daily score: comfortable shoes, easy layers, weather first.<br><br><b>At Home<\/b> is comfort with a little intention."
+                    "html": "<b>Mall / Shopping</b>, <b>Park / Outdoors</b> and <b>Errands</b> all lean on the daily score: comfortable shoes, easy layers, weather first.<br><br><b>At Home</b> is comfort with a little intention."
                   }
                 ]
               },
@@ -1075,7 +1151,7 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
                 "blocks": [
                   {
                     "type": "text",
-                    "html": "<b>Travel<\/b> balances work and daily: comfortable in transit, presentable on arrival. A GMT or travel watch and easy-to-remove layers are natural picks. Type the destination city so the forecast is the one you will land in."
+                    "html": "<b>Travel</b> balances work and daily: comfortable in transit, presentable on arrival. A GMT or travel watch and easy-to-remove layers are natural picks. Type the destination city so the forecast is the one you will land in."
                   }
                 ]
               }
@@ -1109,6 +1185,72 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
           }
         ],
         "checkpoint": "I have marked an outfit as worn."
+      },
+      "stylist": {
+        "kicker": "STYLIST",
+        "title": "Pack for a trip in one conversation",
+        "intro": "The Stylist tab is a chat with your personal stylist. Say where you are going, for how long and what the days hold, and it lays out one outfit per day and occasion from your own Outfits table, chosen so pieces repeat and the bag stays small.",
+        "minutes": 3,
+        "chips": [
+          "Trips of one day or more",
+          "Outfits only from your table",
+          "Refine in plain words"
+        ],
+        "aside": {
+          "kicker": "GOOD HABIT",
+          "title": "Plan the weekend before",
+          "text": "Ask a few days before you travel: the forecast covers more of the trip, and there is time to add a missing piece."
+        },
+        "blocks": [
+          {
+            "type": "steps",
+            "items": [
+              {
+                "title": "Say where and when",
+                "text": "A city (with the country if the name is ambiguous) and the dates, or 'this weekend', 'Thursday to Sunday'."
+              },
+              {
+                "title": "Describe the days",
+                "text": "'Work Thursday and Friday, dinner on Friday, sightseeing Saturday.' One outfit is planned per occasion you mention. Add constraints in the same breath: carry-on only, one pair of shoes, no blazer."
+              },
+              {
+                "title": "Read the manifest",
+                "text": "A card shows the forecast per day, each day's outfits as colour swatches that link to the pieces, and a packing list with how many times each piece is worn. Copy list puts a tick-box version on the clipboard."
+              },
+              {
+                "title": "Name your pieces",
+                "text": "'Use the navy blazer on Friday', 'I want to take the GMT'. Named pieces are built in wherever the table allows, and the card says when one cannot be worn."
+              },
+              {
+                "title": "Refine it, or ask for one outfit",
+                "text": "'Do it with one pair of shoes', 'add a dinner on Saturday'. For a single occasion, 'what goes with my blazer for dinner Friday?' returns the table's best outfits around it, with the stylist's reasons."
+              }
+            ]
+          },
+          {
+            "type": "glance",
+            "title": "How the plan is made",
+            "items": [
+              {
+                "label": "Forecast",
+                "text": "Read per day at the destination. Five days ahead; later days use an estimated temperature and the card says so."
+              },
+              {
+                "label": "Filter",
+                "text": "Each day and occasion is filtered by season band, rain and the occasion blend, exactly as on Today."
+              },
+              {
+                "label": "Pack",
+                "text": "A deterministic planner prefers outfits that share pieces and avoids the identical look two days running. The model only explains."
+              },
+              {
+                "label": "Honest",
+                "text": "A day with no suitable outfit says so and points to Shop. A relaxed shoe limit is reported in the caveats."
+              }
+            ]
+          }
+        ],
+        "checkpoint": "I have asked the stylist for a trip plan and read the manifest card."
       },
       "shop": {
         "kicker": "SHOP",
@@ -1185,7 +1327,7 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
                 "blocks": [
                   {
                     "type": "text",
-                    "html": "You need at least one confirmed top, bottom and pair of shoes. The readiness banner on the Today tab lists what is missing. If pieces are confirmed but the table is empty, the generation may have been interrupted: use <b>Build outfits<\/b> on the Wardrobe tab; it fills in only what is missing."
+                    "html": "You need at least one confirmed top, bottom and pair of shoes. The readiness banner on the Today tab lists what is missing. If pieces are confirmed but the table is empty, the generation may have been interrupted: use <b>Build outfits</b> on the Wardrobe tab; it fills in only what is missing."
                   }
                 ]
               },
@@ -1203,7 +1345,7 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
                 "blocks": [
                   {
                     "type": "text",
-                    "html": "Open the piece, fix the chips and <b>Save changes<\/b>. Its outfits are rebuilt. For a stubborn material or watch style, add a description and tap <b>Re-analyze<\/b>."
+                    "html": "Open the piece, fix the chips and <b>Save changes</b>. Its outfits are rebuilt. For a stubborn material or watch style, add a description and tap <b>Re-analyze</b>."
                   }
                 ]
               },
@@ -1220,6 +1362,40 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
           }
         ],
         "checkpoint": "I know where the readiness banner and Build outfits are."
+      },
+      "family": {
+        "kicker": "FAMILY",
+        "title": "Dressing your family",
+        "intro": "Add your children, or an adult without an email, under your account. Each person gets their own wardrobe and outfits, and the Family page dresses everyone together for the same occasion.",
+        "minutes": 3,
+        "blocks": [
+          {
+            "type": "steps",
+            "items": [
+              {
+                "title": "Add a person",
+                "text": "Settings → People you dress → Add a person: a name or nickname, their age, styles and how dressed-up they like to be. For anyone under 18 you confirm you are their parent or legal guardian."
+              },
+              {
+                "title": "Switch who you are dressing",
+                "text": "'Dressing: …' under the logo (or the bar at the top on a phone). Wardrobe, Outfits, Today, Stylist and Shop follow your choice; add their pieces as usual."
+              },
+              {
+                "title": "Plan a family look",
+                "text": "On Family, tick who is going, pick the occasion (Celebration covers birthdays, weddings and family photos), the day, the place and how to look together. You get up to three looks, one outfit each from your own wardrobes."
+              },
+              {
+                "title": "Wear it",
+                "text": "'Wear this' under each person puts their outfit first in that day's plan; for today it also counts as worn."
+              }
+            ]
+          },
+          {
+            "type": "note",
+            "html": "Children never sign in. Nothing about a child is sent to the AI except descriptions of their clothes: the stylist knows them only as 'Child A', and the app puts their name back on screen."
+          }
+        ],
+        "checkpoint": "I have added a person and planned a family look."
       }
     }
   }
@@ -1228,12 +1404,792 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
 
 <div id="app"></div>
 
+<script id="look-engine">
+/* LOOK:BEGIN — shared look engine: palettes, ?palette/?accent/?secondary/?anim/?motif preview overrides,
+   animated canvas backgrounds. Byte-identical in template.html and hub-template.html (verify.md checks it). */
+var LOOK = (function(){
+  "use strict";
+  // accent ≈ 4.4:1 against white button text AND against the dark canvas (same balance as #E1242A)
+  var PALETTES = {
+    crimson: { accent:"#E1242A", secondary:"#2E86AB" },   // the takOS original — pick another for a distinct look
+    cobalt:  { accent:"#4072E7", secondary:"#F2A33A" },
+    violet:  { accent:"#8E5CE4", secondary:"#22B8CF" },
+    teal:    { accent:"#0B877F", secondary:"#F27059" },
+    emerald: { accent:"#148A53", secondary:"#5B6CF0" },
+    magenta: { accent:"#DD2C8A", secondary:"#2FB8A6" },
+    copper:  { accent:"#C55810", secondary:"#3A8FB7" },
+    indigo:  { accent:"#656DDE", secondary:"#E8B04A" }
+  };
+  var TYPES = { code:1, circuit:1, neural:1, data:1, helix:1, petals:1, matrix:1, tokens:1, latent:1, dag:1, snippets:1, plant:1, culture:1, wardrobe:1 };
+  var cfg = null;
+
+  function params(){ try{ return new URLSearchParams(location.search); }catch(e){ return { get:function(){ return null; } }; } }
+  function num(v, d){ return typeof v === "number" && isFinite(v) ? v : d; }
+  function clamp(v, a, b){ return Math.max(a, Math.min(b, v)); }
+  function parseAnim(a, bad){
+    if(!a) return null;
+    if(typeof a === "string") a = { type:a };
+    var t = String(a.type || "").toLowerCase();
+    if(!t || t === "none") return null;
+    if(!TYPES[t]){ bad.push("animation.type"); return null; }
+    var I = { low:.35, medium:.6, high:.85 }[a.intensity], S = { slow:.6, normal:1, fast:1.6 }[a.speed];
+    return {
+      type: t,
+      intensity: clamp(I != null ? I : num(a.intensity, .6), 0, 1),
+      speed: clamp(S != null ? S : num(a.speed, 1), .2, 2.5),
+      colors: /^(accent|secondary)$/.test(a.colors || "") ? a.colors : "mixed",
+      glyphs: typeof a.glyphs === "string" && a.glyphs.trim() ? a.glyphs.replace(/\s+/g, "") : null,
+      focus: a.focus === "full" ? "full" : "edges"
+    };
+  }
+  /* meta.theme → effective theme. Order: palette preset < explicit JSON keys < URL preview overrides. */
+  function resolve(theme){
+    var T = {}, k, p = params(), bad = [];
+    for(k in theme) if(Object.prototype.hasOwnProperty.call(theme, k)) T[k] = theme[k];
+    var qp = p.get("palette"), QP = qp ? PALETTES[String(qp).toLowerCase()] : null;
+    if(qp && !QP) bad.push("palette");                      // invalid preview: keep the JSON colours
+    if(QP){ delete T.accent; delete T.secondary; delete T.accent_soft; }
+    var pal = QP ? qp : T.palette;
+    if(pal){
+      var P = PALETTES[String(pal).toLowerCase()];
+      if(P){ if(T.accent == null) T.accent = P.accent; if(T.secondary == null) T.secondary = P.secondary; }
+      else bad.push("palette");
+    }
+    ["accent", "secondary"].forEach(function(c){
+      var v = p.get(c);
+      if(v && /^#?([0-9a-f]{3}|[0-9a-f]{6})$/i.test(v)){ T[c] = v.charAt(0) === "#" ? v : "#" + v; if(c === "accent") delete T.accent_soft; }
+    });
+    var qa = p.get("anim");
+    if(qa && !qa.split(":")[0]){ bad.push("animation.type"); qa = null; }   // "?anim=:high" — keep the JSON animation
+    if(qa){
+      if(!p.get("motif")) delete T.motif;   // previewing an animation: let it replace the page's static texture
+      var parts = qa.split(":");
+      T.animation = parts[0] === "none" ? "none" : {
+        type: parts[0],
+        intensity: parts[1] ? (isNaN(+parts[1]) ? parts[1] : +parts[1]) : (T.animation && T.animation.intensity),
+        speed: T.animation && T.animation.speed, colors: T.animation && T.animation.colors,
+        glyphs: T.animation && T.animation.glyphs, focus: T.animation && T.animation.focus };
+    }
+    if(p.get("motif")) T.motif = p.get("motif");
+    cfg = parseAnim(T.animation, bad);
+    if(cfg && T.motif == null) T.motif = "none";   // an animation replaces the static texture unless one is asked for
+    T._bad = bad;
+    return T;
+  }
+
+  /* ---------- animated background (canvas behind everything, pointer-transparent) ---------- */
+  function rnd(a, b){ return a + Math.random()*(b - a); }
+  function rgba(c, a){ return "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + clamp(a, 0, 1).toFixed(3) + ")"; }
+
+  var SCENES = {
+    /* falling code glyphs — developer tools, APIs, pipelines */
+    code: function(W, H, o, col){
+      var fs = 14, cw = 18, cols = Math.ceil(W/cw), rows = Math.ceil(H/fs) + 1;
+      var src = o.glyphs || "01{}[]()<>/=+-*;:#$&|!?~%λ→ABCDEF0123456789abcdef";
+      var G = Array.from ? Array.from(src) : src.split(""), drops = [];
+      function glyph(){ return G[Math.floor(Math.random()*G.length)]; }
+      function drop(init){ return { x: Math.floor(Math.random()*cols)*cw + 2, row: init ? Math.floor(Math.random()*rows) : -Math.floor(rnd(1, 24)),
+                                    acc: 0, v: rnd(5, 13), ch: null }; }
+      for(var i = 0, n = Math.round(cols*(.22 + .4*o.intensity)); i < n; i++) drops.push(drop(true));
+      return { warm: 260, frame: function(ctx, dt){
+        ctx.globalCompositeOperation = "destination-out";
+        ctx.fillStyle = "rgba(0,0,0," + (1 - Math.pow(1 - .07, dt*30)).toFixed(3) + ")";
+        ctx.fillRect(0, 0, W, H);
+        ctx.globalCompositeOperation = "source-over";
+        ctx.font = "500 " + fs + "px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace";
+        ctx.textBaseline = "top";
+        for(var j = 0; j < drops.length; j++){
+          var d = drops[j];
+          d.acc += d.v*dt;
+          while(d.acc >= 1){
+            d.acc -= 1;
+            if(d.ch && d.row >= 0){
+              ctx.globalCompositeOperation = "destination-out"; ctx.fillStyle = "#000"; ctx.fillRect(d.x - 2, d.row*fs, cw, fs);
+              ctx.globalCompositeOperation = "source-over"; ctx.fillStyle = rgba(col.s, .5*col.k); ctx.fillText(d.ch, d.x, d.row*fs);
+            }
+            d.row++; d.ch = glyph();
+            if(d.row >= 0){ ctx.fillStyle = rgba(col.a, .95*col.k); ctx.fillText(d.ch, d.x, d.row*fs); }
+            if(d.row*fs > H + rnd(0, H*.4)){ drops[j] = d = drop(false); break; }
+          }
+        }
+      } };
+    },
+
+    /* PCB traces, chips and travelling pulses — hardware, platforms, infrastructure */
+    circuit: function(W, H, o, col){
+      var g = 22, gw = Math.floor(W/g), gh = Math.floor(H/g), occ = new Uint8Array((gw + 2)*(gh + 2));
+      var DIRS = [[1,0],[1,1],[0,1],[-1,1],[-1,0],[-1,-1],[0,-1],[1,-1]], chips = [], traces = [], pulses = [];
+      function free(x, y){ return x >= 1 && y >= 1 && x < gw && y < gh && !occ[y*(gw + 2) + x]; }
+      function mark(x, y){ if(x >= 0 && y >= 0 && x <= gw + 1 && y <= gh + 1) occ[y*(gw + 2) + x] = 1; }
+      function grow(x, y, d, pad){
+        var pts = [[x, y]], steps = Math.floor(rnd(5, 26)), run = 0, cells = 0;
+        for(var s = 0; s < steps; s++){
+          var nd = d;
+          if(run > 2 && Math.random() < .2) nd = (d + (Math.random() < .5 ? 1 : 7)) % 8;
+          var nx = x + DIRS[nd][0], ny = y + DIRS[nd][1];
+          if(!free(nx, ny)){ if(nd !== d) continue; break; }
+          if(nd !== d){ pts.push([x, y]); run = 0; d = nd; }
+          x = nx; y = ny; mark(x, y); run++; cells++;
+        }
+        pts.push([x, y]);
+        if(cells < 3) return;
+        var P = pts.map(function(p){ return [p[0]*g, p[1]*g]; }), L = [0];
+        for(var i = 1; i < P.length; i++) L.push(L[i-1] + Math.hypot(P[i][0] - P[i-1][0], P[i][1] - P[i-1][1]));
+        traces.push({ p: P, l: L, len: L[L.length - 1], pad: pad });
+      }
+      var nChips = Math.max(2, Math.round(W*H/300000*(.6 + o.intensity)));
+      for(var c = 0, tries = 0; c < nChips && tries < 60; tries++){
+        var cwid = Math.floor(rnd(3, 7)), chei = Math.floor(rnd(3, 6)), cx = Math.floor(rnd(2, gw - cwid - 2)), cy = Math.floor(rnd(2, gh - chei - 2)), ok = true;
+        for(var yy = cy - 1; yy <= cy + chei + 1 && ok; yy++) for(var xx = cx - 1; xx <= cx + cwid + 1; xx++) if(!free(xx, yy)){ ok = false; break; }
+        if(!ok) continue;
+        for(yy = cy; yy <= cy + chei; yy++) for(xx = cx; xx <= cx + cwid; xx++) mark(xx, yy);
+        chips.push({ x: cx*g, y: cy*g, w: cwid*g, h: chei*g }); c++;
+        for(xx = cx + 1; xx < cx + cwid; xx++){ if(Math.random() < .75){ mark(xx, cy - 1); grow(xx, cy - 1, 6, true); } if(Math.random() < .75){ mark(xx, cy + chei + 1); grow(xx, cy + chei + 1, 2, true); } }
+        for(yy = cy + 1; yy < cy + chei; yy++){ if(Math.random() < .6){ mark(cx - 1, yy); grow(cx - 1, yy, 4, true); } if(Math.random() < .6){ mark(cx + cwid + 1, yy); grow(cx + cwid + 1, yy, 0, true); } }
+      }
+      for(var f = 0, nf = Math.round(gw*gh/38*(.4 + o.intensity)); f < nf; f++){
+        var fx = Math.floor(rnd(1, gw)), fy = Math.floor(rnd(1, gh));
+        if(free(fx, fy)){ mark(fx, fy); grow(fx, fy, Math.floor(rnd(0, 4))*2, false); }
+      }
+      var layer = document.createElement("canvas");
+      function paint(){
+        var dpr = Math.min(window.devicePixelRatio || 1, 1.5), lc;
+        layer.width = Math.round(W*dpr); layer.height = Math.round(H*dpr);
+        lc = layer.getContext("2d"); lc.setTransform(dpr, 0, 0, dpr, 0, 0); lc.lineCap = "round"; lc.lineJoin = "round";
+        lc.strokeStyle = rgba(col.ink, .13*col.k); lc.lineWidth = 1.3;
+        traces.forEach(function(t){
+          lc.beginPath(); lc.moveTo(t.p[0][0], t.p[0][1]);
+          for(var i = 1; i < t.p.length; i++) lc.lineTo(t.p[i][0], t.p[i][1]);
+          lc.stroke();
+          var e = t.p[t.p.length - 1];
+          lc.beginPath(); lc.arc(e[0], e[1], 2.8, 0, 6.2832); lc.stroke();
+          if(!t.pad){ lc.fillStyle = rgba(col.ink, .16*col.k); lc.fillRect(t.p[0][0] - 2, t.p[0][1] - 2, 4, 4); }
+        });
+        chips.forEach(function(ch){
+          lc.fillStyle = rgba(col.ink, .035*col.k); lc.strokeStyle = rgba(col.ink, .2*col.k); lc.lineWidth = 1.4;
+          lc.beginPath(); if(lc.roundRect) lc.roundRect(ch.x, ch.y, ch.w, ch.h, 5); else lc.rect(ch.x, ch.y, ch.w, ch.h);
+          lc.fill(); lc.stroke();
+          lc.strokeStyle = rgba(col.a, .22*col.k); lc.strokeRect(ch.x + 8, ch.y + 8, ch.w - 16, ch.h - 16);
+          lc.fillStyle = rgba(col.ink, .2*col.k); lc.beginPath(); lc.arc(ch.x + 6, ch.y + 6, 1.8, 0, 6.2832); lc.fill();
+        });
+      }
+      paint();
+      function at(t, s){
+        for(var i = 1; i < t.p.length; i++) if(t.l[i] >= s){
+          var k = (s - t.l[i-1])/((t.l[i] - t.l[i-1]) || 1);
+          return [t.p[i-1][0] + (t.p[i][0] - t.p[i-1][0])*k, t.p[i-1][1] + (t.p[i][1] - t.p[i-1][1])*k];
+        }
+        return t.p[t.p.length - 1];
+      }
+      function pulse(init){ var t = traces[Math.floor(Math.random()*traces.length)];
+        return { t: t, s: init ? rnd(0, t.len) : 0, v: rnd(60, 150), c: Math.random() < .55 ? "a" : "s" }; }
+      if(traces.length) for(var q = 0, nq = Math.round(traces.length*(.12 + .25*o.intensity)) + 2; q < nq; q++) pulses.push(pulse(true));
+      return { warm: 1, recolor: paint, frame: function(ctx, dt){
+        ctx.clearRect(0, 0, W, H);
+        if(layer.width && layer.height) ctx.drawImage(layer, 0, 0, W, H);
+        ctx.lineCap = "round";
+        for(var i = 0; i < pulses.length; i++){
+          var P = pulses[i]; P.s += P.v*dt;
+          if(P.s > P.t.len + 30){ pulses[i] = P = pulse(false); }
+          var C = col[P.c];
+          for(var k = 5; k >= 1; k--){
+            var a = at(P.t, Math.max(0, P.s - k*7)), b = at(P.t, Math.max(0, P.s - (k - 1)*7));
+            ctx.strokeStyle = rgba(C, (1 - k/6)*.8*col.k); ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
+          }
+          var h = at(P.t, Math.min(P.s, P.t.len));
+          ctx.fillStyle = rgba(C, .18*col.k); ctx.beginPath(); ctx.arc(h[0], h[1], 7, 0, 6.2832); ctx.fill();
+          ctx.fillStyle = rgba(C, .95*col.k); ctx.beginPath(); ctx.arc(h[0], h[1], 2.3, 0, 6.2832); ctx.fill();
+        }
+      } };
+    },
+
+    /* layered neural network with forward-pass signals — AI / ML / LLM / analytics */
+    neural: function(W, H, o, col){
+      var NL = W < 760 ? 4 : 6, layers = [], edges = [], sig = [], t = 0, spawn = 0;
+      for(var l = 0; l < NL; l++){
+        var cnt = Math.round(rnd(3, 5) + (l > 0 && l < NL - 1 ? rnd(1, 4) : 0)), Ly = [];
+        for(var i = 0; i < cnt; i++) Ly.push({ bx: W*(.07 + .86*l/(NL - 1)) + rnd(-22, 22), by: H*(.12 + .76*(i + .5)/cnt) + rnd(-18, 18),
+                                             ph: rnd(0, 6.28), x: 0, y: 0, act: 0, out: [] });
+        layers.push(Ly);
+      }
+      for(l = 0; l < NL - 1; l++) layers[l].forEach(function(n){
+        var nx = layers[l + 1], m = Math.min(nx.length, Math.round(rnd(2, 3.9))), pool = nx.slice();
+        for(var j = 0; j < m; j++){ var b = pool.splice(Math.floor(Math.random()*pool.length), 1)[0], e = { a: n, b: b }; edges.push(e); n.out.push(e); }
+      });
+      function fire(n, depth){
+        n.act = 1;
+        if(!n.out.length || sig.length > 140) return;
+        var k = Math.random() < .5 ? 1 : 2;
+        for(var j = 0; j < k; j++) sig.push({ e: n.out[Math.floor(Math.random()*n.out.length)], s: 0, v: rnd(.55, 1.05), c: depth % 2 ? "s" : "a", d: depth });
+      }
+      return { warm: 150, frame: function(ctx, dt){
+        t += dt; spawn -= dt;
+        if(spawn <= 0){ spawn = rnd(.5, 1.2)/(.4 + o.intensity); fire(layers[0][Math.floor(Math.random()*layers[0].length)], 0); }
+        layers.forEach(function(Ly){ Ly.forEach(function(n){ n.x = n.bx + Math.sin(t*.3 + n.ph)*9; n.y = n.by + Math.cos(t*.23 + n.ph)*11; n.act *= Math.exp(-2.2*dt); }); });
+        ctx.clearRect(0, 0, W, H);
+        ctx.lineWidth = 1; ctx.strokeStyle = rgba(col.ink, .08*col.k);
+        ctx.beginPath(); edges.forEach(function(e){ ctx.moveTo(e.a.x, e.a.y); ctx.lineTo(e.b.x, e.b.y); }); ctx.stroke();
+        for(var i = sig.length - 1; i >= 0; i--){
+          var S = sig[i]; S.s += S.v*dt;
+          if(S.s >= 1){ sig.splice(i, 1); if(Math.random() < .8) fire(S.e.b, S.d + 1); else S.e.b.act = Math.max(S.e.b.act, .6); continue; }
+          var a = S.e.a, b = S.e.b, x = a.x + (b.x - a.x)*S.s, y = a.y + (b.y - a.y)*S.s, s0 = Math.max(0, S.s - .14);
+          var g = ctx.createLinearGradient(a.x + (b.x - a.x)*s0, a.y + (b.y - a.y)*s0, x, y);
+          g.addColorStop(0, rgba(col[S.c], 0)); g.addColorStop(1, rgba(col[S.c], .75*col.k));
+          ctx.strokeStyle = g; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(a.x + (b.x - a.x)*s0, a.y + (b.y - a.y)*s0); ctx.lineTo(x, y); ctx.stroke();
+          ctx.fillStyle = rgba(col[S.c], .95*col.k); ctx.beginPath(); ctx.arc(x, y, 2.2, 0, 6.2832); ctx.fill();
+        }
+        layers.forEach(function(Ly){ Ly.forEach(function(n){
+          if(n.act > .03){ ctx.fillStyle = rgba(col.a, .16*n.act*col.k); ctx.beginPath(); ctx.arc(n.x, n.y, 6 + 12*n.act, 0, 6.2832); ctx.fill(); }
+          ctx.fillStyle = rgba(col.a, (.12 + .7*n.act)*col.k); ctx.strokeStyle = rgba(col.ink, .3*col.k); ctx.lineWidth = 1.2;
+          ctx.beginPath(); ctx.arc(n.x, n.y, 4 + 2*n.act, 0, 6.2832); ctx.fill(); ctx.stroke();
+        }); });
+      } };
+    },
+
+    /* flowing data streams — data platforms, dashboards, reporting */
+    data: function(W, H, o, col){
+      var streams = [], t = 0, ns = Math.round(6 + 8*o.intensity);
+      for(var i = 0; i < ns; i++){
+        var s = { y: H*(.08 + .84*(i + .5)/ns) + rnd(-12, 12), amp: rnd(8, 34), f: rnd(.002, .006), ph: rnd(0, 6.28), v: rnd(50, 150), c: i % 3 === 0 ? "s" : "a", p: [] };
+        for(var j = 0, np = Math.round(rnd(6, 14)); j < np; j++) s.p.push({ x: rnd(-40, W), len: rnd(6, 30), r: rnd(.75, 1.3), hot: Math.random() < .12 });
+        streams.push(s);
+      }
+      return { warm: 120, frame: function(ctx, dt){
+        t += dt;
+        ctx.globalCompositeOperation = "destination-out";
+        ctx.fillStyle = "rgba(0,0,0," + (1 - Math.pow(1 - .16, dt*30)).toFixed(3) + ")";
+        ctx.fillRect(0, 0, W, H);
+        ctx.globalCompositeOperation = "source-over"; ctx.lineCap = "round";
+        streams.forEach(function(s){
+          s.p.forEach(function(p){
+            p.x += s.v*p.r*dt;
+            if(p.x - p.len > W + 20){ p.x = rnd(-260, -20); p.len = rnd(6, 30); p.hot = Math.random() < .12; }
+            var y = s.y + Math.sin(p.x*s.f + s.ph + t*.5)*s.amp, y0 = s.y + Math.sin((p.x - p.len)*s.f + s.ph + t*.5)*s.amp;
+            ctx.strokeStyle = rgba(p.hot ? col.a : col[s.c], (p.hot ? .9 : .45)*col.k); ctx.lineWidth = p.hot ? 2.4 : 1.6;
+            ctx.beginPath(); ctx.moveTo(p.x - p.len, y0); ctx.lineTo(p.x, y); ctx.stroke();
+          });
+        });
+      } };
+    },
+
+    /* drifting petals — brand ambience for landing pages and portfolios (tumbling, swaying, falling) */
+    petals: function(W, H, o, col){
+      var n = Math.round(Math.max(14, Math.min(120, W*H/22000*(.35 + o.intensity*1.1)))), ps = [], t = 0;
+      function spawn(p, top){
+        p.x = rnd(-40, W + 40); p.y = top ? rnd(-70, -10) : rnd(-20, H); p.z = rnd(.35, 1); p.r = 4 + 7*p.z;
+        p.a = rnd(0, 6.28); p.va = rnd(-.9, .9); p.vy = 16 + 36*p.z; p.vx = rnd(-6, 14); p.ph = rnd(0, 6.28); p.fl = rnd(.6, 1.6);
+        p.c = Math.random() < .22 ? "s" : "a"; return p;
+      }
+      for(var i = 0; i < n; i++) ps.push(spawn({}, false));
+      function petal(ctx, r){   // a single sakura petal: two lobes meeting in a small notch at the tip
+        ctx.beginPath(); ctx.moveTo(0, r);
+        ctx.bezierCurveTo(r*1.15, r*.55, r*1.05, -r*.75, r*.38, -r*.95);
+        ctx.bezierCurveTo(r*.18, -r*1.02, r*.06, -r*.86, 0, -r*.68);
+        ctx.bezierCurveTo(-r*.06, -r*.86, -r*.18, -r*1.02, -r*.38, -r*.95);
+        ctx.bezierCurveTo(-r*1.05, -r*.75, -r*1.15, r*.55, 0, r); ctx.closePath();
+      }
+      return { warm: 1, frame: function(ctx, dt){
+        t += dt; ctx.clearRect(0, 0, W, H);
+        ps.forEach(function(p){
+          p.y += p.vy*dt; p.x += (p.vx + Math.sin(t*.8 + p.ph)*14)*dt; p.a += p.va*dt;
+          if(p.y > H + 30 || p.x < -90 || p.x > W + 90) spawn(p, true);
+          var fl = Math.cos(t*p.fl + p.ph);   // tumble: the petal narrows as it turns edge-on
+          ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.a); ctx.scale(.35 + .65*Math.abs(fl), 1);
+          ctx.fillStyle = rgba(col[p.c], (.16 + .5*p.z)*col.k); petal(ctx, p.r); ctx.fill();
+          ctx.restore();
+        });
+      } };
+    },
+
+    /* matrix rain — dense columns of katakana-like glyphs: bright heads, mutating trails, GenAI / "the code behind it".
+       Glyphs come from a sprite atlas baked once (three looks: trail, head, bright head, glow included), so a frame is
+       blits only: no per-glyph shadowBlur text, which made the first version the most expensive thing on the page. */
+    matrix: function(W, H, o, col){
+      var fs = 15, cw = 17, cols = Math.ceil(W/cw), rows = Math.ceil(H/fs) + 1;
+      var src = o.glyphs || "ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝ0123456789Z:・=*+<>¦";
+      var G = Array.from ? Array.from(src) : src.split(""), streams = [], grid = [];
+      var dpr = Math.min(window.devicePixelRatio || 1, 1.25), sw = cw + 8, sh = fs + 8, atlas = document.createElement("canvas"), ac = atlas.getContext("2d");
+      atlas.width = Math.round(G.length*sw*dpr); atlas.height = Math.round(3*sh*dpr);
+      function bake(){
+        ac.setTransform(dpr, 0, 0, dpr, 0, 0); ac.clearRect(0, 0, G.length*sw, 3*sh);
+        ac.font = "600 " + fs + "px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace"; ac.textBaseline = "top";
+        var looks = [[rgba(col.a, .62*col.k), 0, "transparent"], [rgba(col.a, .85*col.k), 4, rgba(col.a, .9*col.k)], [rgba(col.ink, .95*col.k), 10, rgba(col.a, .9*col.k)]];
+        for(var L = 0; L < 3; L++) for(var g = 0; g < G.length; g++){
+          ac.fillStyle = looks[L][0]; ac.shadowBlur = looks[L][1]; ac.shadowColor = looks[L][2];
+          ac.fillText(G[g], g*sw + 4, L*sh + 4);
+        }
+        ac.shadowBlur = 0;
+      }
+      bake();
+      function glyph(){ return Math.floor(Math.random()*G.length); }   // the grid holds atlas indices
+      for(var r = 0; r < rows*cols; r++) grid.push(glyph());
+      function stream(init){ return { c: Math.floor(Math.random()*cols), y: init ? rnd(-rows, rows) : -rnd(2, 30), v: rnd(6, 16)*(.7 + .6*o.intensity), len: Math.floor(rnd(8, 26)), acc: 0, bright: Math.random() < .25 }; }
+      for(var i = 0, n = Math.round(cols*(.35 + .55*o.intensity)); i < n; i++) streams.push(stream(true));
+      function blit(ctx, gi, look, x, y){ ctx.drawImage(atlas, gi*sw*dpr, look*sh*dpr, sw*dpr, sh*dpr, x - 4, y - 4, sw, sh); }
+      return { warm: 200, fps: 24, recolor: bake, frame: function(ctx, dt){
+        ctx.globalCompositeOperation = "destination-out";
+        ctx.fillStyle = "rgba(0,0,0," + (1 - Math.pow(1 - .085, dt*30)).toFixed(3) + ")";
+        ctx.fillRect(0, 0, W, H);
+        ctx.globalCompositeOperation = "source-over";
+        for(var j = 0; j < streams.length; j++){
+          var s = streams[j]; s.acc += s.v*dt;
+          while(s.acc >= 1){
+            s.acc -= 1; s.y++;
+            var row = Math.floor(s.y), x = s.c*cw + 1;
+            if(row >= 0 && row < rows){
+              if(row > 0){   // the previous head becomes trail, sometimes mutating into another glyph
+                var pi = (row - 1)*cols + s.c; if(Math.random() < .18) grid[pi] = glyph();
+                ctx.globalCompositeOperation = "destination-out"; ctx.fillStyle = "#000"; ctx.fillRect(x - 1, (row - 1)*fs, cw, fs);
+                ctx.globalCompositeOperation = "source-over"; blit(ctx, grid[pi], 0, x, (row - 1)*fs);
+              }
+              var gi = row*cols + s.c; grid[gi] = glyph();
+              blit(ctx, grid[gi], s.bright ? 2 : 1, x, row*fs);
+            }
+            if(s.y - s.len > rows + rnd(0, 8)){ streams[j] = s = stream(false); break; }
+          }
+        }
+      } };
+    },
+
+    /* floating snippets — short lines of real code from a data-science stack (R, Python, SQL, LLM calls) drifting up through depth,
+       the call that matters lit in the accent; software + GenAI + data in one scene */
+    snippets: function(W, H, o, col){
+      var SRC = ['chat <- chat_databricks("databricks-claude-sonnet-4")', 'observeEvent(input$lot, { refresh(lot()) })', 'df.groupby("site").agg(yield=("yield", "mean"))',
+                 'SELECT lot_id, cpk FROM gms_us_alyt.cpv_metrics', 'index.similarity_search(query, k=8)', 'renderPlot({ ggplot(cpv, aes(day, value)) })',
+                 'model.fit(X_train, y_train)', 'cpk <- (usl - mean(x)) / (3 * sd(x))', 'spark.read.table("ddt_portfolio_catalog_items")', 'answer <- chat$chat(prompt, evidence)',
+                 'for batch in loader: loss = step(batch)', 'bslib::page_sidebar(title = "AMIRA")', 'embeddings = encoder.encode(chunks)', 'deviations %>% filter(status == "open")',
+                 'MERGE INTO catalog USING snapshot ON run_id', 'tool(name = "lot_history", fn = history)', 'p = softmax(logits / temperature)', 'ExtendedTask$new(function(lot) fetch(lot))',
+                 'y_hat = pipeline.predict(features)', 'reactive({ lots() %>% summarise(mean(yield)) })'];
+      var KEY = /^(chat_databricks|observeEvent|groupby|SELECT|similarity_search|renderPlot|fit|read|MERGE|tool|softmax|encode|filter|page_sidebar|ExtendedTask|predict|reactive|summarise|agg)$/;
+      var n = Math.round(6 + 12*o.intensity), lines = [], t = 0;
+      // lines live in the outer bands (left and right ~30 %) so the middle, where the page's own content sits, stays clear
+      function line(init){ var z = rnd(.3, 1), left = Math.random() < .5, x = o.focus === "full" ? rnd(16, Math.max(40, W - 400)) : (left ? rnd(12, Math.max(20, W*.3 - 300)) : rnd(W*.68, Math.max(W*.7, W - 360)));
+                           return { s: SRC[Math.floor(Math.random()*SRC.length)], z: z, x: x, y: init ? rnd(0, H) : H + rnd(10, 140), v: rnd(6, 14)*(.5 + z), ph: rnd(0, 6.28), sw: rnd(5, 16) }; }
+      for(var i = 0; i < n; i++) lines.push(line(true));
+      return { warm: 1, frame: function(ctx, dt){
+        t += dt; ctx.clearRect(0, 0, W, H); ctx.textBaseline = "middle";
+        lines.sort(function(a, b){ return a.z - b.z; });   // far lines first, near lines on top
+        for(var j = 0; j < lines.length; j++){
+          var L = lines[j]; L.y -= L.v*dt; if(L.y < -30){ lines[j] = line(false); continue; }
+          var fs = Math.round(10 + 3*L.z), x = L.x + Math.sin(t*.4 + L.ph)*L.sw, a = (.1 + .42*L.z)*col.k;
+          ctx.font = (L.z > .75 ? "500 " : "400 ") + fs + "px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace";
+          var toks = L.s.match(/[A-Za-z_$][\w$]*|\s+|[^\sA-Za-z_$]+/g) || [L.s], px = x;
+          for(var k = 0; k < toks.length; k++){
+            var w = toks[k], hot = KEY.test(w), word = /^[A-Za-z_$]/.test(w);
+            if(!/^\s+$/.test(w)){
+              ctx.fillStyle = hot ? rgba(col.a, Math.min(1, a*1.9)) : rgba(col.ink, a*(word ? 1 : .7));
+              if(hot){ ctx.shadowColor = rgba(col.a, .7*col.k); ctx.shadowBlur = 8; }
+              ctx.fillText(w, px, L.y); ctx.shadowBlur = 0;
+            }
+            px += ctx.measureText(w).width;
+          }
+        }
+      } };
+    },
+
+    /* token stream — lines of tokens being generated left→right with a caret and faint top-k candidates (an LLM at work) */
+    tokens: function(W, H, o, col){
+      var fs = 13, VOC = ["the", "model", "→", "embed", "attn", "softmax", "∑", "θ", "∇L", "k=8", "RAG", "chunk", "token", "prompt", "logit", "0.92", "vector", "index",
+                          "query", "answer", "λ", "{ }", "def", "return", "agent", "tool", "plan", "eval", "ctx", "<eos>", "sample", "top_p", "loss", "batch", "epoch", "json",
+                          "sql", "join", "merge", "dedupe", "schema", "Δ", "μ", "σ", "·", "p=0.71", "yes", "no", "step", "think", "cite", "[1]"];
+      if(o.glyphs) VOC = o.glyphs.split(/[,\s]+/).filter(Boolean).concat(VOC.slice(0, 12));
+      var nl = Math.round(3 + 7*o.intensity), lines = [], t = 0;
+      function tok(){ return VOC[Math.floor(Math.random()*VOC.length)]; }
+      function line(init){ return { y: H*(.06 + .88*Math.random()), x0: rnd(24, W*.45), toks: [], w: 0, next: init ? rnd(0, .5) : rnd(.2, 1.2),
+                                    speed: rnd(.08, .22)/(.6 + .8*o.intensity), age: init ? rnd(0, 6) : 0, life: rnd(9, 16), cand: [tok(), tok(), tok()], fade: 1 }; }
+      for(var i = 0; i < nl; i++) lines.push(line(true));
+      return { warm: 90, frame: function(ctx, dt){
+        t += dt; ctx.clearRect(0, 0, W, H);
+        ctx.font = "500 " + fs + "px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace"; ctx.textBaseline = "middle";
+        for(var j = 0; j < lines.length; j++){
+          var L = lines[j]; L.age += dt; L.next -= dt;
+          if(L.next <= 0 && L.fade >= 1){ var s = tok(), w = ctx.measureText(s).width + 10; L.toks.push({ s: s, w: w, born: t }); L.w += w; L.next = L.speed*rnd(.5, 1.8); L.cand = [tok(), tok(), tok()]; }
+          var endX = L.x0 + L.w, dying = L.age > L.life || endX > W - 60;
+          if(dying){ L.fade -= dt*1.2; if(L.fade <= 0){ lines[j] = line(false); continue; } }
+          var fa = Math.max(0, Math.min(1, L.fade))*col.k, x = L.x0;
+          for(var k = 0; k < L.toks.length; k++){
+            var T = L.toks[k], a = Math.min(1, (t - T.born)*4), hot = k === L.toks.length - 1;
+            ctx.fillStyle = hot ? rgba(col.a, .95*fa*a) : rgba(col.ink, (.22 + .3*(k/L.toks.length))*fa*a);
+            ctx.fillText(T.s, x + 5, L.y); x += T.w;
+          }
+          if(!dying){   // blinking caret + three faint candidates stacked above it
+            if(Math.floor(t*2.4) % 2 === 0){ ctx.fillStyle = rgba(col.a, .9*fa); ctx.fillRect(x + 5, L.y - fs*.55, 2, fs*1.1); }
+            for(var c = 0; c < 3; c++){ ctx.fillStyle = rgba(c === 0 ? col.s : col.ink, (c === 0 ? .55 : .24 - c*.06)*fa); ctx.fillText(L.cand[c], x + 9, L.y - fs*(1.15 + c*1.05)); }
+          }
+        }
+      } };
+    },
+
+    /* latent space — a slowly rotating 3-D point cloud of embeddings in clusters, nearest-neighbour links, a roaming query pulse */
+    latent: function(W, H, o, col){
+      var n = Math.round(90 + 260*o.intensity), K = 4, pts = [], C = [], t = 0, R = Math.min(W, H)*.5;
+      for(var k = 0; k < K; k++) C.push([rnd(-.55, .55), rnd(-.45, .45), rnd(-.55, .55)]);
+      for(var i = 0; i < n; i++){ var k2 = i % K, c = C[k2]; pts.push({ k: k2, x: c[0] + rnd(-1, 1)*rnd(0, .28), y: c[1] + rnd(-1, 1)*rnd(0, .22), z: c[2] + rnd(-1, 1)*rnd(0, .28), px: 0, py: 0, s: 1 }); }
+      var links = [];   // two nearest neighbours inside the same cluster, fixed at build time
+      for(var a = 0; a < n; a++){
+        var best = [];
+        for(var b = 0; b < n; b++){ if(a === b || pts[a].k !== pts[b].k) continue; best.push([Math.pow(pts[a].x - pts[b].x, 2) + Math.pow(pts[a].y - pts[b].y, 2) + Math.pow(pts[a].z - pts[b].z, 2), b]); }
+        best.sort(function(p, q){ return p[0] - q[0]; });
+        for(var m = 0; m < Math.min(2, best.length); m++) if(a < best[m][1]) links.push([a, best[m][1]]);
+      }
+      var q = { i: 0, t: 0 };
+      return { warm: 1, frame: function(ctx, dt){
+        t += dt;
+        var ry = t*.12, rx = Math.sin(t*.07)*.35, cy = Math.cos(rx), sy = Math.sin(rx), cz = Math.cos(ry), sz = Math.sin(ry);
+        ctx.clearRect(0, 0, W, H);
+        for(var i = 0; i < n; i++){ var p = pts[i], x1 = p.x*cz + p.z*sz, z1 = -p.x*sz + p.z*cz, y1 = p.y*cy - z1*sy, z2 = p.y*sy + z1*cy, f = 1/(1.9 + z2);
+          p.px = W/2 + x1*R*f*1.15; p.py = H/2 + y1*R*f*1.15; p.s = f; }
+        ctx.lineWidth = 1;
+        for(var l = 0; l < links.length; l++){ var A = pts[links[l][0]], B = pts[links[l][1]]; ctx.strokeStyle = rgba(A.k % 2 ? col.s : col.a, .34*col.k*Math.min(A.s, B.s)); ctx.beginPath(); ctx.moveTo(A.px, A.py); ctx.lineTo(B.px, B.py); ctx.stroke(); }
+        for(var i2 = 0; i2 < n; i2++){ var P = pts[i2], cc = P.k % 3 === 2 ? col.ink : (P.k % 2 ? col.s : col.a); ctx.fillStyle = rgba(cc, (.38 + .6*(P.s - .35))*col.k); ctx.beginPath(); ctx.arc(P.px, P.py, 1.6 + 3.2*P.s, 0, 6.2832); ctx.fill(); }
+        q.t += dt; if(q.t > 3.2){ q.t = 0; q.i = Math.floor(Math.random()*n); }   // the query point: an expanding ring = nearest-neighbour search
+        var Q = pts[q.i], al = Math.max(0, 1 - q.t/3.2);
+        ctx.strokeStyle = rgba(col.a, .7*al*col.k); ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(Q.px, Q.py, 4 + q.t*90*Q.s*1.2, 0, 6.2832); ctx.stroke();
+      } };
+    },
+
+    /* data pipeline — a left→right DAG of stages with batches flowing along the edges and stages lighting up on arrival */
+    dag: function(W, H, o, col){
+      var layers = 5, nodes = [], edges = [], packets = [], nw = 54, nh = 24;
+      for(var l = 0; l < layers; l++){ var cnt = l === 0 ? 3 : l === layers - 1 ? 2 : 2 + Math.floor(rnd(1, 3));
+        for(var i = 0; i < cnt; i++) nodes.push({ l: l, x: W*(.08 + .84*l/(layers - 1)) + rnd(-20, 20), y: H*(.15 + .7*(i + .5)/cnt) + rnd(-18, 18), pulse: 0, bar: rnd(.25, .75) }); }
+      nodes.forEach(function(a){ if(a.l === layers - 1) return; var nxt = nodes.filter(function(b){ return b.l === a.l + 1; }); nxt.sort(function(){ return Math.random() - .5; });
+        nxt.slice(0, 1 + Math.floor(Math.random()*2)).forEach(function(b){ edges.push({ a: a, b: b }); }); });
+      nodes.forEach(function(b){ if(b.l === 0 || edges.some(function(e){ return e.b === b; })) return; var prev = nodes.filter(function(a){ return a.l === b.l - 1; }); edges.push({ a: prev[Math.floor(Math.random()*prev.length)], b: b }); });
+      function spawn(){ return { e: edges[Math.floor(Math.random()*edges.length)], u: 0, v: rnd(.25, .5)*(.7 + .6*o.intensity), hot: Math.random() < .2 }; }
+      for(var p = 0, np = Math.round(6 + 14*o.intensity); p < np; p++){ var pk = spawn(); pk.u = Math.random(); packets.push(pk); }
+      function bez(e, u){ var mx = (e.a.x + e.b.x)/2, v = 1 - u;
+        return [v*v*v*e.a.x + 3*v*v*u*mx + 3*v*u*u*mx + u*u*u*e.b.x, v*v*v*e.a.y + 3*v*v*u*e.a.y + 3*v*u*u*e.b.y + u*u*u*e.b.y]; }
+      return { warm: 1, frame: function(ctx, dt){
+        ctx.clearRect(0, 0, W, H); ctx.lineWidth = 1.2;
+        edges.forEach(function(e){ var mx = (e.a.x + e.b.x)/2; ctx.strokeStyle = rgba(col.ink, .22*col.k); ctx.beginPath(); ctx.moveTo(e.a.x, e.a.y); ctx.bezierCurveTo(mx, e.a.y, mx, e.b.y, e.b.x, e.b.y); ctx.stroke(); });
+        packets.forEach(function(pk, i){
+          pk.u += pk.v*dt;
+          if(pk.u >= 1){ pk.e.b.pulse = 1; var out = edges.filter(function(e){ return e.a === pk.e.b; }); if(out.length && Math.random() < .8){ pk.e = out[Math.floor(Math.random()*out.length)]; pk.u = 0; } else packets[i] = spawn(); return; }
+          var P = bez(pk.e, pk.u); ctx.fillStyle = rgba(pk.hot ? col.a : col.s, (pk.hot ? .95 : .7)*col.k); ctx.beginPath(); ctx.arc(P[0], P[1], pk.hot ? 3.2 : 2.4, 0, 6.2832); ctx.fill();
+        });
+        nodes.forEach(function(nd){
+          nd.pulse = Math.max(0, nd.pulse - dt*1.6); var g = nd.pulse, x = nd.x - nw/2, y = nd.y - nh/2;
+          ctx.fillStyle = rgba(col.ink, (.08 + .14*g)*col.k); ctx.strokeStyle = rgba(g > .05 ? col.a : col.ink, (.5 + .5*g)*col.k);
+          ctx.beginPath(); if(ctx.roundRect) ctx.roundRect(x, y, nw, nh, 5); else ctx.rect(x, y, nw, nh); ctx.fill(); ctx.stroke();
+          ctx.fillStyle = rgba(col.a, (.5 + .5*g)*col.k); ctx.fillRect(x + 7, nd.y - 1, (nw - 14)*nd.bar, 2);
+          ctx.fillStyle = rgba(col.ink, .3*col.k); ctx.fillRect(x + 7, nd.y + 5, nw - 14, 1);
+        });
+      } };
+    },
+
+    /* a manufacturing line — vessels in a chain with a live sensor trace above each, lots travelling between them
+       (the late ones in the accent), and a running control chart with its average and usual range at the top:
+       manufacturing analytics, plant-floor dashboards, SPC / real-time monitoring */
+    plant: function(W, H, o, col){
+      var n = Math.max(4, Math.min(7, Math.round(W/220))), vs = [], lots = [], t = 0, trace = [], acc = 0;
+      var tw = Math.min(W*.62, 760), tx0 = (W - tw)/2, ty = H*.2, th = 46, step = 6, cap = Math.ceil(tw/step) + 2, ymid = ty + th/2;
+      for(var i = 0; i < n; i++) vs.push({ x: W*(.09 + .82*i/(n - 1)), y: H*(.68 + (i % 2 ? .07 : -.07)), lvl: rnd(.3, .8), dl: rnd(-.06, .06)||.04, pulse: 0, sig: [] });
+      vs.forEach(function(v){ for(var j = 0; j < 22; j++) v.sig.push(rnd(-.6, .6)); });
+      for(var k = 0; k < cap; k++) trace.push(rnd(-.5, .5));
+      function spawn(init){ return { i: init ? Math.floor(Math.random()*(n - 1)) : 0, u: init ? Math.random() : 0, v: rnd(.12, .22)*(.6 + .8*o.intensity), hot: Math.random() < .18 }; }
+      for(var p = 0, np = Math.round(3 + 6*o.intensity); p < np; p++) lots.push(spawn(true));
+      function pipe(a, b, u){ var mx = (a.x + b.x)/2, w = 1 - u;
+        return [w*w*w*a.x + 3*w*w*u*mx + 3*w*u*u*mx + u*u*u*b.x, w*w*w*a.y + 3*w*w*u*a.y + 3*w*u*u*b.y + u*u*u*b.y]; }
+      function box(x, y, w, h, r){ ctx.beginPath(); if(ctx.roundRect) ctx.roundRect(x, y, w, h, r); else ctx.rect(x, y, w, h); }
+      var ctx;
+      return { warm: 1, fps: 30, frame: function(c, dt){
+        ctx = c; t += dt; ctx.clearRect(0, 0, W, H); ctx.lineCap = "round"; ctx.lineJoin = "round";
+        /* the running chart: average, usual range, one unusual point lit in the accent */
+        acc += dt*1.8;
+        while(acc >= 1){ acc -= 1; var last = trace[trace.length - 1], nv = last*.6 + rnd(-.45, .45);
+          if(Math.random() < .06) nv = (Math.random() < .5 ? 1 : -1)*rnd(1.1, 1.35); trace.push(clamp(nv, -1.4, 1.4)); trace.shift(); }
+        ctx.setLineDash([4, 6]); ctx.lineWidth = 1; ctx.strokeStyle = rgba(col.ink, .22*col.k);
+        [ymid - th/2, ymid + th/2].forEach(function(yy){ ctx.beginPath(); ctx.moveTo(tx0, yy); ctx.lineTo(tx0 + tw, yy); ctx.stroke(); });
+        ctx.setLineDash([]); ctx.strokeStyle = rgba(col.ink, .16*col.k); ctx.beginPath(); ctx.moveTo(tx0, ymid); ctx.lineTo(tx0 + tw, ymid); ctx.stroke();
+        var off = acc*step, x, y;
+        ctx.strokeStyle = rgba(col.s, .55*col.k); ctx.lineWidth = 1.6; ctx.beginPath();
+        for(k = 0; k < trace.length; k++){ x = tx0 + k*step - off; y = ymid - trace[k]*th/2; if(k) ctx.lineTo(x, y); else ctx.moveTo(x, y); }
+        ctx.stroke();
+        for(k = 0; k < trace.length; k++){ if(Math.abs(trace[k]) <= 1) continue; x = tx0 + k*step - off; y = ymid - trace[k]*th/2; if(x < tx0 || x > tx0 + tw) continue;
+          ctx.fillStyle = rgba(col.a, .95*col.k); ctx.beginPath(); ctx.moveTo(x, y - 4.5); ctx.lineTo(x + 4.5, y); ctx.lineTo(x, y + 4.5); ctx.lineTo(x - 4.5, y); ctx.closePath(); ctx.fill(); }
+        /* the line: pipes, lots on the move, vessels with a level and a sparkline */
+        ctx.lineWidth = 1.4; ctx.strokeStyle = rgba(col.ink, .2*col.k);
+        for(i = 0; i < n - 1; i++){ var a = vs[i], b = vs[i + 1], mx = (a.x + b.x)/2; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.bezierCurveTo(mx, a.y, mx, b.y, b.x, b.y); ctx.stroke(); }
+        lots.forEach(function(L, j){
+          L.u += L.v*dt;
+          if(L.u >= 1){ vs[L.i + 1].pulse = 1; if(L.i + 1 < n - 1 && Math.random() < .85){ L.i++; L.u = 0; } else lots[j] = spawn(false); return; }
+          var P = pipe(vs[L.i], vs[L.i + 1], L.u), r = L.hot ? 3.4 : 2.6, cc = L.hot ? col.a : col.s;
+          ctx.fillStyle = rgba(cc, (L.hot ? .95 : .75)*col.k); ctx.beginPath(); ctx.arc(P[0], P[1], r, 0, 6.2832); ctx.fill();
+          ctx.strokeStyle = rgba(cc, .25*col.k); ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(P[0], P[1], r + 3, 0, 6.2832); ctx.stroke();
+        });
+        vs.forEach(function(v){
+          v.pulse = Math.max(0, v.pulse - dt*1.4); var g = v.pulse, w = 30, h = 42, bx = v.x - w/2, by = v.y - h/2;
+          v.lvl = clamp(v.lvl + v.dl*dt, .2, .9); if(v.lvl <= .2 || v.lvl >= .9) v.dl = -v.dl;
+          ctx.fillStyle = rgba(col.ink, (.07 + .12*g)*col.k); ctx.strokeStyle = rgba(g > .05 ? col.a : col.ink, (.45 + .55*g)*col.k); ctx.lineWidth = 1.3;
+          box(bx, by, w, h, [10, 10, 7, 7]); ctx.fill(); ctx.stroke();
+          var lh = (h - 10)*v.lvl; ctx.fillStyle = rgba(col.s, (.28 + .3*g)*col.k); box(bx + 4, by + h - 4 - lh, w - 8, lh, 3); ctx.fill();
+          if(Math.random() < dt*6){ v.sig.push(clamp(v.sig[v.sig.length - 1]*.7 + rnd(-.5, .5), -1, 1)); v.sig.shift(); }
+          var sw = 56, sx = v.x - sw/2, sy = by - 22, ss = sw/(v.sig.length - 1);
+          ctx.strokeStyle = rgba(col.ink, .12*col.k); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(sx + sw, sy); ctx.stroke();
+          ctx.strokeStyle = rgba(g > .05 ? col.a : col.s, (.5 + .4*g)*col.k); ctx.lineWidth = 1.3; ctx.beginPath();
+          v.sig.forEach(function(s, k){ var px = sx + k*ss, py = sy - s*7; if(k) ctx.lineTo(px, py); else ctx.moveTo(px, py); }); ctx.stroke();
+        });
+      } };
+    },
+
+    /* rotating double helices — life sciences, lab, quality, biotech */
+    helix: function(W, H, o, col){
+      var hx = [{ cy: H*.2, amp: 34, wl: 300, sp: .55, ph: 0 }, { cy: H*.82, amp: 42, wl: 360, sp: -.42, ph: 2 }], t = 0;
+      if(o.intensity > .7) hx.push({ cy: H*.5, amp: 26, wl: 260, sp: .35, ph: 4 });
+      return { warm: 1, frame: function(ctx, dt){
+        t += dt;
+        ctx.clearRect(0, 0, W, H);
+        hx.forEach(function(h){
+          var cy = h.cy + Math.sin(t*.2 + h.ph)*10, step = 13, n = 0;
+          for(var x = -20; x < W + 20; x += step, n++){
+            var ang = x/h.wl*6.2832 + t*h.sp + h.ph, sy = Math.sin(ang)*h.amp, z = Math.cos(ang);
+            if(n % 3 === 0){ ctx.strokeStyle = rgba(col.ink, .1*col.k); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(x, cy + sy); ctx.lineTo(x, cy - sy); ctx.stroke(); }
+            var d1 = (z + 1)/2, d2 = 1 - d1;
+            ctx.fillStyle = rgba(col.a, (.18 + .72*d1)*col.k); ctx.beginPath(); ctx.arc(x, cy + sy, 1.4 + 2*d1, 0, 6.2832); ctx.fill();
+            ctx.fillStyle = rgba(col.s, (.18 + .72*d2)*col.k); ctx.beginPath(); ctx.arc(x, cy - sy, 1.4 + 2*d2, 0, 6.2832); ctx.fill();
+          }
+        });
+      } };
+    },
+    /* culture plates read one after another, colonies blooming, lots chained vessel to vessel —
+       microbiology, bioburden, contamination investigation, environmental monitoring */
+    culture: function(W, H, o, col){
+      var n = clamp(Math.round(W/330) + (o.intensity > .7 ? 1 : 0), 3, 7), plates = [], bugs = [], t = 0, lot = { i:0, p:0 }, i;
+      function seed(P){
+        P.age = 0; P.life = rnd(9, 15); P.col = [];
+        var k = Math.round(rnd(5, 9 + 8*o.intensity)), hot = Math.random() < .45 ? Math.floor(Math.random()*k) : -1;
+        for(var j = 0; j < k; j++){
+          var a = rnd(0, 6.2832), d = Math.sqrt(Math.random())*P.r*.76;
+          P.col.push({ x: Math.cos(a)*d, y: Math.sin(a)*d, r: rnd(2, 5.5), t0: rnd(.2, P.life*.45), hot: j === hot, v: Math.random() < .5 });
+        }
+      }
+      for(i = 0; i < n; i++){   // alternate top and bottom bands so the centre, where the content sits, stays clear
+        var P = { x: W*(i + .5)/n + rnd(-30, 30), y: i % 2 === 0 ? H*rnd(.12, .3) : H*rnd(.7, .88), r: rnd(38, 62) };
+        seed(P); P.age = rnd(0, P.life*.8); plates.push(P);
+      }
+      for(i = 0; i < Math.round(6 + 10*o.intensity); i++)
+        bugs.push({ x: rnd(0, W), y: rnd(0, H), a: rnd(0, 6.2832), v: rnd(4, 11), l: rnd(7, 13), w: rnd(-.25, .25), rod: Math.random() < .6 });
+      return { warm: 150, frame: function(ctx, dt){
+        t += dt; ctx.clearRect(0, 0, W, H);
+        var j, P, c, b, g, f;
+        // the chain: each lot runs on the next vessel, so the plates are linked in order
+        ctx.lineWidth = 1; ctx.setLineDash([3, 7]); ctx.strokeStyle = rgba(col.ink, .11*col.k); ctx.beginPath();
+        for(i = 0; i < n; i++){ P = plates[i]; if(i) ctx.lineTo(P.x, P.y); else ctx.moveTo(P.x, P.y); }
+        ctx.stroke(); ctx.setLineDash([]);
+        lot.p += dt*.16;
+        if(lot.p >= 1){ lot.p = 0; lot.i = (lot.i + 1) % (n - 1); }
+        var A = plates[lot.i], B = plates[lot.i + 1], e = lot.p*lot.p*(3 - 2*lot.p), lx = A.x + (B.x - A.x)*e, ly = A.y + (B.y - A.y)*e;
+        ctx.fillStyle = rgba(col.s, .8*col.k); ctx.beginPath(); ctx.arc(lx, ly, 3, 0, 6.2832); ctx.fill();
+        ctx.strokeStyle = rgba(col.s, .3*col.k); ctx.beginPath(); ctx.arc(lx, ly, 7.5, 0, 6.2832); ctx.stroke();
+        // drifting organisms: rods and paired cocci
+        ctx.lineCap = "round";
+        for(i = 0; i < bugs.length; i++){
+          b = bugs[i]; b.a += b.w*dt; b.x += Math.cos(b.a)*b.v*dt; b.y += Math.sin(b.a)*b.v*dt;
+          if(b.x < -20) b.x = W + 20; else if(b.x > W + 20) b.x = -20;
+          if(b.y < -20) b.y = H + 20; else if(b.y > H + 20) b.y = -20;
+          var dx = Math.cos(b.a)*b.l/2, dy = Math.sin(b.a)*b.l/2;
+          if(b.rod){ ctx.strokeStyle = rgba(col.ink, .13*col.k); ctx.lineWidth = 3.4; ctx.beginPath(); ctx.moveTo(b.x - dx, b.y - dy); ctx.lineTo(b.x + dx, b.y + dy); ctx.stroke(); }
+          else { ctx.fillStyle = rgba(col.s, .2*col.k); ctx.beginPath(); ctx.arc(b.x - dx*.45, b.y - dy*.45, 2.6, 0, 6.2832); ctx.arc(b.x + dx*.45, b.y + dy*.45, 2.6, 0, 6.2832); ctx.fill(); }
+        }
+        ctx.lineCap = "butt";
+        for(i = 0; i < n; i++){
+          P = plates[i]; P.age += dt;
+          if(P.age > P.life) seed(P);
+          f = clamp(Math.min(P.age/1.2, (P.life - P.age)/1.6), 0, 1);
+          ctx.fillStyle = rgba(col.ink, .03*col.k*f); ctx.beginPath(); ctx.arc(P.x, P.y, P.r, 0, 6.2832); ctx.fill();
+          ctx.lineWidth = 1.2; ctx.strokeStyle = rgba(col.ink, .22*col.k*f); ctx.beginPath(); ctx.arc(P.x, P.y, P.r, 0, 6.2832); ctx.stroke();
+          ctx.lineWidth = 1; ctx.strokeStyle = rgba(col.ink, .08*col.k*f); ctx.beginPath(); ctx.arc(P.x, P.y, P.r + 5, 0, 6.2832); ctx.stroke();
+          var rd = clamp((P.age - P.life*.55)/(P.life*.22), 0, 1);   // the read: an arc sweeps the rim once the colonies are up
+          if(rd > 0 && rd < 1){ ctx.lineWidth = 2; ctx.strokeStyle = rgba(col.s, .6*col.k*f); ctx.beginPath(); ctx.arc(P.x, P.y, P.r + 5, -1.5708, -1.5708 + rd*6.2832); ctx.stroke(); }
+          for(j = 0; j < P.col.length; j++){
+            c = P.col[j]; g = clamp((P.age - c.t0)/2.4, 0, 1); if(g <= 0) continue;
+            g = 1 - Math.pow(1 - g, 3);
+            ctx.fillStyle = c.hot ? rgba(col.a, .88*col.k*f) : c.v ? rgba(col.s, .5*col.k*f) : rgba(col.ink, .26*col.k*f);
+            ctx.beginPath(); ctx.arc(P.x + c.x, P.y + c.y, c.r*g, 0, 6.2832); ctx.fill();
+            if(c.hot && rd > 0){   // the one that matters: flagged once the plate is read
+              var q = (t*.7 + i*.37) % 1;
+              ctx.lineWidth = 1.4; ctx.strokeStyle = rgba(col.a, (1 - q)*.6*col.k*f);
+              ctx.beginPath(); ctx.arc(P.x + c.x, P.y + c.y, c.r + 3 + 11*q, 0, 6.2832); ctx.stroke();
+            }
+          }
+        }
+      } };
+    },
+    /* a wardrobe: two clothes rails glide along the top and bottom edges (shirts and jackets on hangers above,
+       trousers on clip hangers below); every few seconds a top, trousers and shoes lift off the rails, meet in
+       the left margin as an outfit, and a score ring draws around it before it fades (wide screens only, so it
+       never sits behind text) — wardrobe, styling and recommendation apps (pieces become scored outfits) */
+    wardrobe: function(W, H, o, col){
+      var gap = 74, n = Math.ceil(W/gap) + 2, ry = [Math.max(84, H*.1), Math.max(H*.5, H - 150)], off = [0, 0];
+      var vel = [9 + 7*o.intensity, -(7 + 6*o.intensity)], rails = [[], []], looks = [], t = 0, next = 1.2, side = 0;
+      var lookX = Math.max(52, W*.045), LS = .78, showLooks = W >= 1560;   // only where the left margin is wide enough to stay clear of text
+      var rails2 = H >= 940;   // the lower rail only on tall screens, so it never runs under the hero copy
+      var KINDS = [["shirt", "shirt", "jacket", "knit"], ["trousers", "trousers", "shorts"]];
+      function fillOf(){ var r = Math.random(); return r < .14 ? "a" : r < .4 ? "s" : "ink"; }
+      for(var r = 0; r < 2; r++) for(var i = 0; i < n; i++)
+        rails[r].push({ k: KINDS[r][Math.floor(Math.random()*KINDS[r].length)], f: fillOf(), w: rnd(26, 34), sw: rnd(0, 6.28) });
+      var ctx;
+      function strokeFill(f, a){ ctx.strokeStyle = rgba(col[f === "ink" ? "ink" : f], (f === "ink" ? .42 : .7)*a*col.k);
+        ctx.fillStyle = rgba(col[f === "ink" ? "ink" : f], (f === "ink" ? .05 : .16)*a*col.k); ctx.fill(); ctx.stroke(); }
+      function hanger(x, y, a){ ctx.strokeStyle = rgba(col.ink, .4*a*col.k); ctx.lineWidth = 1.2;
+        ctx.beginPath(); ctx.arc(x, y - 7, 4, Math.PI, 2.2*Math.PI); ctx.moveTo(x, y - 3); ctx.lineTo(x, y);
+        ctx.moveTo(x - 17, y + 9); ctx.lineTo(x, y); ctx.lineTo(x + 17, y + 9); ctx.stroke(); }
+      function top(x, y, w, kind, f, a){
+        var h = kind === "jacket" ? 62 : 52, hw = w/2;
+        ctx.lineWidth = 1.3; ctx.beginPath();
+        ctx.moveTo(x - 6, y + 4); ctx.lineTo(x - hw, y + 9); ctx.lineTo(x - hw - 9, y + 26); ctx.lineTo(x - hw - 2, y + 29);
+        ctx.lineTo(x - hw + 1, y + 20); ctx.lineTo(x - hw*.92, y + h); ctx.lineTo(x + hw*.92, y + h); ctx.lineTo(x + hw - 1, y + 20);
+        ctx.lineTo(x + hw + 2, y + 29); ctx.lineTo(x + hw + 9, y + 26); ctx.lineTo(x + hw, y + 9); ctx.lineTo(x + 6, y + 4);
+        ctx.quadraticCurveTo(x, y + (kind === "knit" ? 8 : 12), x - 6, y + 4); ctx.closePath(); strokeFill(f, a);
+        if(kind === "jacket"){ ctx.beginPath(); ctx.moveTo(x - 6, y + 4); ctx.lineTo(x, y + 30); ctx.lineTo(x + 6, y + 4); ctx.moveTo(x, y + 30); ctx.lineTo(x, y + h); ctx.stroke(); }
+        if(kind === "shirt"){ ctx.beginPath(); ctx.moveTo(x, y + 12); ctx.lineTo(x, y + h); ctx.stroke(); }
+      }
+      function bottom(x, y, kind, f, a){
+        var L = kind === "shorts" ? 26 : 50;
+        ctx.lineWidth = 1.3; ctx.beginPath();
+        ctx.moveTo(x - 12, y); ctx.lineTo(x + 12, y); ctx.lineTo(x + 14, y + L); ctx.lineTo(x + 3, y + L); ctx.lineTo(x, y + 14);
+        ctx.lineTo(x - 3, y + L); ctx.lineTo(x - 14, y + L); ctx.closePath(); strokeFill(f, a);
+      }
+      function shoe(x, y, f, a){ ctx.lineWidth = 1.2; ctx.beginPath();
+        ctx.moveTo(x - 9, y - 7); ctx.lineTo(x - 2, y - 7); ctx.quadraticCurveTo(x + 2, y - 2, x + 11, y - 2);
+        ctx.quadraticCurveTo(x + 14, y - 1, x + 13, y + 2); ctx.lineTo(x - 10, y + 2); ctx.closePath(); strokeFill(f, a); }
+      function clip(x, y, a){ ctx.strokeStyle = rgba(col.ink, .4*a*col.k); ctx.lineWidth = 1.2; ctx.beginPath();
+        ctx.arc(x, y - 7, 4, Math.PI, 2.2*Math.PI); ctx.moveTo(x, y - 3); ctx.lineTo(x, y); ctx.moveTo(x - 14, y); ctx.lineTo(x + 14, y); ctx.stroke(); }
+      function slotX(r, i){ return ((i*gap + off[r]) % (n*gap) + n*gap) % (n*gap) - gap; }
+      function spawn(){
+        var lx = lookX, near = function(r){ var best = 0, d = 1e9;
+          rails[r].forEach(function(g, i){ var dd = Math.abs(slotX(r, i) - lx); if(dd < d){ d = dd; best = i; } }); return best; };
+        var ti = near(0), bi = near(1);
+        looks.push({ t: 0, side: side, x: lx, yc: H*.5, top: rails[0][ti], bot: rails[1][bi],
+          fx: [slotX(0, ti), ry[0] + 2], fb: [slotX(1, bi), ry[1]], shoe: Math.random() < .5 ? "s" : "ink",
+          score: (7 + Math.random()*2.6).toFixed(1) });
+        side = 0;
+      }
+      function ease(u){ u = clamp(u, 0, 1); return u < .5 ? 2*u*u : 1 - Math.pow(-2*u + 2, 2)/2; }
+      return { warm: 90, fps: 30, frame: function(c, dt){
+        ctx = c; t += dt; ctx.clearRect(0, 0, W, H); ctx.lineJoin = "round"; ctx.lineCap = "round";
+        for(var r = 0; r < (rails2 ? 2 : 1); r++){
+          off[r] += vel[r]*dt;
+          ctx.strokeStyle = rgba(col.ink, .24*col.k); ctx.lineWidth = 1.6;
+          ctx.beginPath(); ctx.moveTo(0, ry[r] - 11); ctx.lineTo(W, ry[r] - 11); ctx.stroke();
+          rails[r].forEach(function(g, i){
+            var x = slotX(r, i) + Math.sin(t*.9 + g.sw)*1.2;
+            if(r === 0){ hanger(x, ry[0], 1); top(x, ry[0] + 2, g.w, g.k, g.f, 1); }
+            else { clip(x, ry[1], 1); bottom(x, ry[1], g.k, g.f, 1); }
+          });
+        }
+        next -= dt; if(showLooks && rails2 && next <= 0){ spawn(); next = rnd(4.2, 5.6); }
+        for(var j = looks.length - 1; j >= 0; j--){
+          var L = looks[j]; L.t += dt; if(L.t > 4.2){ looks.splice(j, 1); continue; }
+          var u = ease(L.t/1.3), a = L.t < 3.5 ? 1 : 1 - (L.t - 3.5)/.7;
+          /* pieces travel at full size, then settle into the look at LS scale around (L.x, L.yc) */
+          var sc2 = 1 + (LS - 1)*u;
+          var tx = L.fx[0] + (L.x - L.fx[0])*u, ty = L.fx[1] + (L.yc - 58*LS - L.fx[1])*u;
+          var bx = L.fb[0] + (L.x - L.fb[0])*u, by = L.fb[1] + (L.yc + 2*LS - L.fb[1])*u;
+          ctx.save(); ctx.translate(tx, ty); ctx.scale(sc2, sc2); top(0, 0, L.top.w, L.top.k, L.top.f, a); ctx.restore();
+          ctx.save(); ctx.translate(bx, by); ctx.scale(sc2, sc2); bottom(0, 0, L.bot.k === "shorts" ? "trousers" : L.bot.k, L.bot.f, a); ctx.restore();
+          if(u > .6){ var sa = a*clamp((u - .6)/.4, 0, 1);
+            ctx.save(); ctx.translate(L.x, L.yc + 62*LS); ctx.scale(LS, LS); shoe(-8, 0, L.shoe, sa); shoe(10, 0, L.shoe, sa); ctx.restore(); }
+          if(L.t > 1.3){
+            var p = clamp((L.t - 1.3)/.8, 0, 1), sc = +L.score/10, R = 64;
+            ctx.lineWidth = 1; ctx.strokeStyle = rgba(col.ink, .14*a*col.k);
+            ctx.beginPath(); ctx.arc(L.x, L.yc + 4, R, 0, 6.2832); ctx.stroke();
+            ctx.lineWidth = 2; ctx.strokeStyle = rgba(col.a, .85*a*col.k);
+            ctx.beginPath(); ctx.arc(L.x, L.yc + 4, R, -Math.PI/2, -Math.PI/2 + 6.2832*sc*p); ctx.stroke();
+            if(p >= 1){ ctx.fillStyle = rgba(col.a, .9*a*col.k); ctx.font = "600 12px ui-sans-serif,system-ui,sans-serif";
+              ctx.textAlign = "center"; ctx.fillText(L.score, L.x, L.yc + R + 22); ctx.textAlign = "start"; }
+          }
+        }
+      } };
+    }
+  };
+
+  function start(reduced){   // never lets an animation problem abort the host page's init
+    try{ run(reduced); }catch(e){ if(window.console) console.warn("onboarding: animated background disabled —", e); }
+  }
+  function run(reduced){
+    if(!cfg || !window.HTMLCanvasElement || !document.body) return;
+    var cv = document.createElement("canvas"), ctx = cv.getContext && cv.getContext("2d");
+    if(!ctx) return;
+    cv.className = "bganim"; cv.setAttribute("aria-hidden", "true"); cv.setAttribute("data-anim", cfg.type);
+    if(cfg.focus === "full") cv.setAttribute("data-focus", "full");
+    document.body.insertBefore(cv, document.body.firstChild);
+    var W = 0, H = 0, scene = null, raf = 0, last = 0, col = {}, rz = 0;
+    function readColors(){
+      var cs = getComputedStyle(document.documentElement), dark = document.documentElement.getAttribute("data-theme") !== "light";
+      function rgb(v, d){ var m = String(cs.getPropertyValue(v)).match(/\d+(\.\d+)?/g); return m && m.length >= 3 ? m.slice(0, 3).map(Number) : d; }
+      var A = rgb("--t-accent-rgb", [225, 36, 42]), S = rgb("--t-secondary-rgb", [46, 134, 171]);
+      if(!dark){ A = A.map(function(c){ return Math.round(c*.86); }); S = S.map(function(c){ return Math.round(c*.8); }); }
+      col.a = cfg.colors === "secondary" ? S : A; col.s = cfg.colors === "accent" ? A : S;
+      col.ink = dark ? [255, 255, 255] : [20, 22, 30];
+      col.k = (dark ? 1 : .85)*(.35 + .65*cfg.intensity);
+    }
+    function still(){ ctx.clearRect(0, 0, W, H); for(var i = 0; i < (scene.warm || 1); i++) scene.frame(ctx, 1/30); }
+    function build(){
+      var dpr = Math.min(window.devicePixelRatio || 1, 1.25);   // a background: 1.25× is plenty and halves the pixels of 1.5× on retina
+      W = Math.max(1, window.innerWidth || 0); H = Math.max(1, window.innerHeight || 0);   // hidden iframes report 0
+      cv.width = Math.round(W*dpr); cv.height = Math.round(H*dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      scene = SCENES[cfg.type](W, H, cfg, col);
+      still();
+    }
+    function tick(now){
+      raf = 0;
+      var dt = last ? (now - last)/1000 : 1;   // first tick always runs (a placeholder below the cap would freeze the loop)
+      if(dt >= 1/(scene.fps || 32)){ last = now; scene.frame(ctx, Math.min(dt, .1)*cfg.speed); }   // ~30 fps is plenty for ambience; a scene may ask for less
+      play();
+    }
+    function play(){ if(!reduced && !document.hidden && !raf) raf = requestAnimationFrame(tick); }
+    function pause(){ if(raf) cancelAnimationFrame(raf); raf = 0; last = 0; }
+    readColors(); build(); play();
+    document.addEventListener("visibilitychange", function(){ if(document.hidden) pause(); else play(); });
+    // the page can park the scene while something heavier runs (dragging the constellation, the view transition)
+    document.addEventListener("hub:ambient", function(e){ if(e && e.detail === "pause") pause(); else play(); });
+    window.addEventListener("resize", function(){ clearTimeout(rz); rz = setTimeout(function(){ pause(); build(); play(); }, 160); });
+    if(window.MutationObserver) new MutationObserver(function(){
+      readColors(); if(scene.recolor) scene.recolor(); if(reduced) still();
+    }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  }
+
+  return { resolve: resolve, start: start, palettes: PALETTES, types: Object.keys(TYPES) };
+})();
+/* LOOK:END */
+</script>
+
 <script>
 (function(){
   "use strict";
   var DATA = JSON.parse(document.getElementById("onboarding-data").textContent);
   var META = DATA.meta || {};
+  /* Chrome labels. English defaults; a page in another language overrides any of them
+     with meta.ui (same keys) and sets meta.lang (BCP 47, e.g. "es", "pt-BR"). {n}/{m}/{app} are filled in. */
+  var UI_DEFAULTS = {
+    all_pages: "All onboarding pages", source: "Source", source_missing: "MISSING — add one",
+    video_unsupported: "Your browser cannot play this video.", video_missing: "Video not configured — add <code>src</code> or <code>embed_url</code>.",
+    open_in_stream: "Open in Stream", video: "Video", powered_by: "Powered by",
+    previous_section: "Previous section", print_title: "Print / save as PDF (all guide sections)", print_label: "Print or save as PDF",
+    start: "Start onboarding", reset_title: "Reset progress", reset_confirm: "Reset onboarding progress in this browser?",
+    theme_title: "Toggle dark / light theme", theme_label: "Toggle dark or light theme",
+    why: "Why {app}?", see_why: "See why", chapter: "Chapter {n}", approx_minutes: "Approximately {n} minutes · ",
+    chapters: "Chapters", your_progress: "Your progress", sections_complete: "{n} of {m} sections complete",
+    saved_here: "Saved in this browser only", confirmed: "Confirmed", about_minute: "About {n} minute", about_minutes: "About {n} minutes",
+    checkpoint: "Completion checkpoint", n_confirmed: "{n} / 1 confirmed", owner: "Owner: ", last_reviewed: "Last reviewed: ",
+    sources: "Authoritative sources: ", steps: "Steps", practical: "Practical guides", previous: "‹ Previous", next: "Next ›"
+  };
+  function L(key, vars){
+    var v = (META.ui && typeof META.ui[key] === "string") ? META.ui[key] : UI_DEFAULTS[key];
+    if(v == null) return key;
+    return vars ? String(v).replace(/\{(\w+)\}/g, function(m, k){ return vars[k] != null ? vars[k] : m; }) : v;
+  }
+  if(META.lang && typeof META.lang === "string") document.documentElement.setAttribute("lang", META.lang);
   var KEY = META.storage_key || "app-onboarding";
+  var HUB = (function(h){   // relative, http(s) or file links only — never javascript:/data:
+    var u = h && h.href ? String(h.href).trim() : "", ok = false;
+    try{ ok = !!u && /^(https?|file):$/.test(new URL(u, location.href).protocol); }catch(e){}
+    return ok ? { href: u, label: h.label || L("all_pages") } : null;
+  })(META.hub);
   var root = document.getElementById("app");
   var REDUCED = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
 
@@ -1250,7 +2206,7 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
   function rgbHex(rgb){ return "#"+rgb.map(function(c){ c = Math.max(0,Math.min(255,Math.round(c))); return ("0"+c.toString(16)).slice(-2); }).join(""); }
   function mix(rgb, to, t){ return rgb.map(function(c,i){ return c + (to[i]-c)*t; }); }
   function applyTheme(){
-    var T = META.theme || {}, st = document.documentElement.style, bad = [];
+    var T = LOOK.resolve(META.theme || {}), st = document.documentElement.style, bad = T._bad;
     function color(key, cb){ if(T[key]==null) return; var rgb = hexRgb(T[key]); if(rgb) cb(rgb); else bad.push(key); }
     color("accent", function(a){
       st.setProperty("--t-accent", rgbHex(a)); st.setProperty("--t-accent-rgb", a.join(","));
@@ -1307,6 +2263,7 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
     reset:'<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>',
     moon:'<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>',
     sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>',
+    grid:'<rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/>',
     check:'<path d="M20 6 9 17l-5-5"/>', plus:'<path d="M5 12h14"/><path d="M12 5v14"/>', minus:'<path d="M5 12h14"/>'
   };
   function ico(name){ return '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">'+(ICONS[name]||"")+"</svg>"; }
@@ -1388,7 +2345,7 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
             return '<div class="card stat"><div class="lab">'+esc(s.label)+'</div>'+
               '<div class="val">'+esc(s.value)+(s.unit?' <small>'+esc(s.unit)+'</small>':'')+'</div>'+
               '<div class="txt">'+esc(s.text||"")+'</div>'+
-              '<div class="src">Source: '+esc(s.source||"MISSING — add one")+'</div></div>';
+              '<div class="src">'+L("source")+': '+esc(s.source||L("source_missing"))+'</div></div>';
           }).join("")+"</div>"; break;
         case "lifecycle":
           p = '<div class="grid lc'+cols(items.length,6)+'">'+items.map(function(s){
@@ -1453,18 +2410,18 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
           var emb = (b.embed_url && /^https:\/\//i.test(b.embed_url)) ? b.embed_url : null;
           var mime = b.src ? ({mp4:"video/mp4",m4v:"video/mp4",webm:"video/webm",mov:"video/quicktime",ogv:"video/ogg"}[String(b.src).split(".").pop().toLowerCase()]||"") : "";
           var player = emb ?
-            '<iframe src="'+esc(emb)+'" title="'+esc(b.title||"Video")+'" loading="lazy" allowfullscreen '+
+            '<iframe src="'+esc(emb)+'" title="'+esc(b.title||L("video"))+'" loading="lazy" allowfullscreen '+
             'allow="autoplay; encrypted-media; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin"></iframe>' :
             (b.src ? '<video controls preload="metadata" playsinline'+(b.poster?' poster="'+esc(b.poster)+'"':'')+' title="'+esc(b.title||"")+'">'+
-                     '<source src="'+esc(b.src)+'"'+(mime?' type="'+mime+'"':'')+'/>Your browser cannot play this video.</video>' : "");
+                     '<source src="'+esc(b.src)+'"'+(mime?' type="'+mime+'"':'')+'/>'+L("video_unsupported")+'</video>' : "");
           var wlink = (b.link && /^https:\/\//i.test(b.link)) ? b.link : null;   // share/watch URL: always-works fallback
           var link = wlink || emb || b.src || "";
           p = '<figure class="video">'+
-            (player ? '<div class="vscreen'+(emb?" embed":"")+'">'+player+"</div>" : '<div class="vnone">Video not configured — add <code>src</code> or <code>embed_url</code>.</div>')+
+            (player ? '<div class="vscreen'+(emb?" embed":"")+'">'+player+"</div>" : '<div class="vnone">'+L("video_missing")+'</div>')+
             (b.caption||b.duration||wlink ? '<figcaption>'+esc(b.caption||"")+(b.duration?(b.caption?" · ":"")+esc(b.duration):"")+
-              (wlink ? (b.caption||b.duration?" · ":"")+'<a class="vlink" href="'+esc(wlink)+'" target="_blank" rel="noopener">'+esc(b.link_label||"Open in Stream")+" "+ico("right")+"</a>" : "")+"</figcaption>" : "")+
+              (wlink ? (b.caption||b.duration?" · ":"")+'<a class="vlink" href="'+esc(wlink)+'" target="_blank" rel="noopener">'+esc(b.link_label||L("open_in_stream"))+" "+ico("right")+"</a>" : "")+"</figcaption>" : "")+
             '<div class="vprint">'+(b.poster?'<img src="'+esc(b.poster)+'" alt=""/>':'')+
-            '<span>Video: '+esc(b.title||"")+(link?" — "+esc(link):"")+"</span></div></figure>"; break;
+            '<span>'+L("video")+': '+esc(b.title||"")+(link?" — "+esc(link):"")+"</span></div></figure>"; break;
       }
       if(ai !== null && p) p = '<div class="anim" style="--i:'+(ai++)+'">'+p+"</div>";
       out += p;
@@ -1490,39 +2447,48 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
   }
 
   /* ---------- app bar (floating glass pills) ---------- */
+  function safeImg(u){ return typeof u === "string" && /^(assets\/|\.{0,2}\/|https?:\/\/|data:image\/)/i.test(u) && !/[()"']/.test(u.replace(/^data:image\/[a-z+]+;base64,/i, "")); }
   function brandHtml(){
     var b = META.brand;
     var icon = META.favicon ? '<img class="appicon" src="'+esc(META.favicon)+'" alt=""/>' :
                (META.favicon_emoji ? '<span class="appicon">'+esc(META.favicon_emoji)+"</span>" : "");
-    if(!b) return '<span class="pill brandpill">'+icon+'<span class="borg">'+esc(META.app||"")+"</span></span>";
+    if(!b) return HUB ? '<a class="pill brandpill" href="'+esc(HUB.href)+'" title="'+esc(HUB.label)+'">'+icon+'<span class="borg">'+esc(META.app||"")+"</span></a>"
+                      : '<span class="pill brandpill">'+icon+'<span class="borg">'+esc(META.app||"")+"</span></span>";
     var pw = "";
     if(b.powered_by){
       var t = b.powered_by, a = b.powered_by_accent, ix = a ? t.lastIndexOf(a) : -1;
-      pw = '<span class="bpow">Powered by <span class="pw">'+
+      var pi = b.powered_by_icon ? '<img class="pwicon" src="'+esc(b.powered_by_icon)+'" alt=""/>' : "";
+      var bg = safeImg(b.powered_by_badge) ? ' class="pw pwbadge" style="background-image:url(&quot;'+esc(b.powered_by_badge)+'&quot;)"' : ' class="pw"';
+      pw = '<span class="bpow">'+esc(L("powered_by"))+' <span'+bg+'>'+pi+
         (ix>=0 ? esc(t.slice(0,ix))+'<span class="acc">'+esc(t.slice(ix))+"</span>" : esc(t))+
         "</span></span>";
     }
-    var mark = (b.logo_src ? '<img src="'+esc(b.logo_src)+'" alt="'+esc(b.org||"logo")+'"/>' : "")+
+    var lh = typeof b.logo_height === "number" && b.logo_height >= 16 && b.logo_height <= 64 ? ' style="height:'+b.logo_height+'px"' : "";
+    var mark = (b.logo_src ? '<img src="'+esc(b.logo_src)+'" alt="'+esc(b.logo_alt||b.org||"logo")+'"'+lh+'/>' : "")+
                (b.org ? '<span class="borg">'+esc(b.org)+"</span>" : "");
-    return '<span class="pill brandpill">'+(mark||icon)+(mark&&pw?'<span class="bsep"></span>':"")+pw+"</span>";
+    var inner = (mark||icon)+(mark&&pw?'<span class="bsep"></span>':"")+pw;
+    return HUB ? '<a class="pill brandpill" href="'+esc(HUB.href)+'" title="'+esc(HUB.label)+'">'+inner+"</a>"
+               : '<span class="pill brandpill">'+inner+"</span>";
   }
   function appbar(route){
     var inGuide = route.view==="guide", dark = document.documentElement.getAttribute("data-theme")==="dark";
     var ctl = '<span class="pill right">'+
-      (inGuide ? '<button class="circ" id="backBtn" title="Previous section" aria-label="Previous section">'+ico("left")+"</button>" : "")+
-      '<button id="printBtn" title="Print / save as PDF (all guide sections)" aria-label="Print or save as PDF">'+ico("download")+"</button>"+
-      (GUIDE && !inGuide ? '<button class="primary" id="startBtn"><span>'+esc((DATA.why&&DATA.why.cta&&DATA.why.cta.button)||"Start onboarding")+'</span><span class="circ">'+ico("right")+"</span></button>" : "")+
-      (inGuide ? '<button id="resetBtn" title="Reset progress" aria-label="Reset progress">'+ico("reset")+"</button>" : "")+
+      (HUB ? '<button id="hubBtn" title="'+esc(HUB.label)+'" aria-label="'+esc(HUB.label)+'">'+ico("grid")+"</button>" : "")+
+      (inGuide ? '<button class="circ" id="backBtn" title="'+esc(L("previous_section"))+'" aria-label="'+esc(L("previous_section"))+'">'+ico("left")+"</button>" : "")+
+      '<button id="printBtn" title="'+esc(L("print_title"))+'" aria-label="'+esc(L("print_label"))+'">'+ico("download")+"</button>"+
+      (GUIDE && !inGuide ? '<button class="primary" id="startBtn"><span>'+esc((DATA.why&&DATA.why.cta&&DATA.why.cta.button)||L("start"))+'</span><span class="circ">'+ico("right")+"</span></button>" : "")+
+      (inGuide ? '<button id="resetBtn" title="'+esc(L("reset_title"))+'" aria-label="'+esc(L("reset_title"))+'">'+ico("reset")+"</button>" : "")+
       "</span>"+
-      '<span class="pill"><button id="themeBtn" title="Toggle dark / light theme" aria-label="Toggle dark or light theme">'+ico(dark?"moon":"sun")+"</button></span>";
+      '<span class="pill"><button id="themeBtn" title="'+esc(L("theme_title"))+'" aria-label="'+esc(L("theme_label"))+'">'+ico(dark?"moon":"sun")+"</button></span>";
     return '<header class="appbar">'+(inGuide ? '<span class="spacer"></span>' : brandHtml())+ctl+"</header>";
   }
   function wireAppbar(route){
     var s = document.getElementById("startBtn"); if(s) s.onclick = function(){ nav("guide", ORDER[0]); };
     var t = document.getElementById("themeBtn"); if(t) t.onclick = toggleTheme;
+    var hb = document.getElementById("hubBtn"); if(hb) hb.onclick = function(){ location.href = HUB.href; };
     var p = document.getElementById("printBtn"); if(p) p.onclick = printAll;
     var r = document.getElementById("resetBtn"); if(r) r.onclick = function(){
-      if(confirm("Reset onboarding progress in this browser?")){ store("done", []); render(); }
+      if(confirm(L("reset_confirm"))){ store("done", []); render(); }
     };
     var b = document.getElementById("backBtn"); if(b) b.onclick = function(){
       var ix = ORDER.indexOf(route && route.section);
@@ -1554,17 +2520,17 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
     var h = bgfxHtml()+appbar({view:"why"});
     var tag = META.tagline || [];
     var screens = '<section class="screen s-hero" id="why-start"><div class="screen-inner">'+
-      '<div class="hero"><div class="kick anim" style="--i:0">Why '+esc(META.app||"")+'?</div>'+
+      '<div class="hero"><div class="kick anim" style="--i:0">'+esc(L("why", { app: META.app||"" }))+'</div>'+
       '<h1 class="anim" style="--i:1">'+
       tag.map(function(t,i){ return '<span style="color:'+taglineColor(i)+'">'+esc(t)+"</span>"; }).join("")+
       '</h1><p class="anim" style="--i:2">'+esc(META.subtitle||"")+"</p>"+
       (META.what?'<div class="what anim" style="--i:3">'+esc(META.what)+"</div>":"")+"</div></div>"+
-      (W.scroll_hint!==false ? '<div class="scroll-hint"><span>'+esc(W.scroll_hint||"See why")+"</span><i></i></div>" : "")+
+      (W.scroll_hint!==false ? '<div class="scroll-hint"><span>'+esc(W.scroll_hint||L("see_why"))+"</span><i></i></div>" : "")+
       "</section>";
-    var navItems = [{ id: "why-start", label: "Why "+(META.app||"")+"?" }];
+    var navItems = [{ id: "why-start", label: L("why", { app: META.app||"" }) }];
     (W.chapters||[]).forEach(function(c, i){
       var sid = "why-"+(c.id||("ch"+i));
-      navItems.push({ id: sid, label: c.nav_label || titleCase(c.kicker||("Chapter "+(i+1))) });
+      navItems.push({ id: sid, label: c.nav_label || titleCase(c.kicker||L("chapter", { n: i+1 })) });
       screens += '<section class="screen" id="'+esc(sid)+'"><div class="screen-inner"><div class="chapter">'+
         '<div class="num anim" style="--i:0">'+pad2(i+1)+' · '+esc(c.kicker||"")+'</div>'+
         '<h2 class="anim" style="--i:1">'+esc(c.headline||"")+"</h2>"+
@@ -1573,17 +2539,17 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
     });
     if(W.cta && GUIDE){
       var n = (W.chapters||[]).length+1;
-      navItems.push({ id: "why-begin", label: W.cta.button || "Start onboarding" });
+      navItems.push({ id: "why-begin", label: W.cta.button || L("start") });
       screens += '<section class="screen s-cta" id="why-begin"><div class="screen-inner">'+
         '<div class="chapter"><div class="num anim" style="--i:0">'+pad2(n)+' · '+esc(W.cta.kicker||"BEFORE YOU BEGIN")+'</div></div>'+
         '<div class="cta-box anim" style="--i:1"><h2>'+esc(W.cta.headline||"")+"</h2>"+
         '<p class="mutedk">'+esc(W.cta.intro||"")+"</p>"+
-        '<button class="go" id="ctaGo"><span>'+esc(W.cta.button||"Start onboarding")+'</span><span class="circ">'+ico("right")+"</span></button>"+
-        '<div class="cta-meta">'+(META.est_minutes_guide?("Approximately "+META.est_minutes_guide+" minutes · "):"")+
+        '<button class="go" id="ctaGo"><span>'+esc(W.cta.button||L("start"))+'</span><span class="circ">'+ico("right")+"</span></button>"+
+        '<div class="cta-meta">'+(META.est_minutes_guide?L("approx_minutes", { n: META.est_minutes_guide }):"")+
         "Progress is saved in this browser</div></div></div></section>";
     }
     h += '<div class="why-scroll" id="whyScroll">'+screens+"</div>";
-    h += '<nav class="whynav" aria-label="Chapters"><span class="track"><i class="fill"></i></span>'+
+    h += '<nav class="whynav" aria-label="'+esc(L("chapters"))+'"><span class="track"><i class="fill"></i></span>'+
       navItems.map(function(it){
         return '<button class="wn" data-target="'+esc(it.id)+'"><span class="wlab">'+esc(it.label)+
                '</span><span class="wdot"><i></i></span></button>';
@@ -1636,10 +2602,10 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
   function progressHtml(){
     var cps = checkpointIds(), done = doneIds().filter(function(id){ return cps.indexOf(id)!==-1; });
     var pct = cps.length ? Math.round(100*done.length/cps.length) : 0;
-    return '<div class="prog"><div class="plabel"><span>Your progress</span><span>'+pct+"%</span></div>"+
+    return '<div class="prog"><div class="plabel"><span>'+L("your_progress")+'</span><span>'+pct+"%</span></div>"+
       '<div class="pbar"><div class="pfill" style="width:'+pct+'%"></div></div>'+
-      '<div class="pcount">'+done.length+" of "+cps.length+" sections complete</div>"+
-      '<div class="pcaveat">Saved in this browser only</div></div>';
+      '<div class="pcount">'+L("sections_complete", { n: done.length, m: cps.length })+"</div>"+
+      '<div class="pcaveat">'+L("saved_here")+'</div></div>';
   }
   function treeHtml(nodes, current){
     return (nodes||[]).map(function(n){
@@ -1653,7 +2619,7 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
         (n.section===current?' aria-current="page"':"")+'>'+
         '<span class="dot"><i></i></span><span class="bar"></span><span class="tlab">'+esc(n.label)+"</span>"+
         (n.optional?'<span class="opt">OPTIONAL</span>':"")+
-        (done?'<span class="tick" title="Confirmed">'+ico("check")+"</span>":'<span class="tnum">'+(NUM[n.section]||"")+"</span>")+"</button>";
+        (done?'<span class="tick" title="'+esc(L("confirmed"))+'">'+ico("check")+"</span>":'<span class="tnum">'+(NUM[n.section]||"")+"</span>")+"</button>";
     }).join("");
   }
   function containsCurrent(node, current){
@@ -1670,7 +2636,7 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
     var s = GUIDE.sections[id]; if(!s) return "";
     var confirmed = isDone(id);
     var heroStyle = s.hero===true || (s.hero!==false && ORDER[0]===id && !s.aside);
-    var meta = (s.minutes?'<div class="gmeta">About '+s.minutes+" minute"+(s.minutes>1?"s":"")+"</div>":"");
+    var meta = (s.minutes?'<div class="gmeta">'+L(s.minutes>1?"about_minutes":"about_minute", { n: s.minutes })+"</div>":"");
     var head;
     if(heroStyle){
       head = '<div class="ghero"><div class="gk kicker">'+esc(s.kicker||"")+'</div>'+
@@ -1686,31 +2652,31 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
     var h = '<article class="'+(forPrint?"print-section":"")+'">'+head+renderBlocks(s.blocks, undefined, {sec:id, print:!!forPrint});
     if(s.checkpoint){
       h += '<div class="checkpoint'+(confirmed?" confirmed":"")+'" id="cp">'+
-        '<div class="cphead"><span>Completion checkpoint</span><span class="cpn">'+(confirmed?"1":"0")+" / 1 confirmed</span></div>"+
+        '<div class="cphead"><span>'+L("checkpoint")+'</span><span class="cpn">'+L("n_confirmed", { n: confirmed?"1":"0" })+"</span></div>"+
         '<label><input type="checkbox" id="cpBox" '+(confirmed?"checked":"")+" data-sec=\""+esc(id)+'"/> '+esc(s.checkpoint)+"</label></div>";
     }
     h += '<div class="gfoot">'+
-      (META.owner?("Owner: "+esc(META.owner)+" · "):"")+
-      (META.last_reviewed?("Last reviewed: "+esc(META.last_reviewed)+" · "):"")+
+      (META.owner?(L("owner")+esc(META.owner)+" · "):"")+
+      (META.last_reviewed?(L("last_reviewed")+esc(META.last_reviewed)+" · "):"")+
       (META.authoritative_sources && META.authoritative_sources.length ?
-        ("Authoritative sources: "+META.authoritative_sources.map(esc).join(" · ")+"<br/>"):"")+
+        (L("sources")+META.authoritative_sources.map(esc).join(" · ")+"<br/>"):"")+
       esc(META.disclaimer||"")+"</div></article>";
     return h;
   }
   function renderGuide(route){
     var cur = route.section;
     var h = bgfxHtml()+appbar(route)+'<div class="guide"><aside class="side">'+progressHtml()+
-      '<div class="scat">'+esc(GUIDE.title||"Steps")+'</div><nav class="tree">'+treeHtml(GUIDE.tree, cur)+"</nav>";
+      '<div class="scat">'+esc(GUIDE.title||L("steps"))+'</div><nav class="tree">'+treeHtml(GUIDE.tree, cur)+"</nav>";
     if(GUIDE.practical_guides && GUIDE.practical_guides.length){
-      h += '<div class="scat">Practical guides</div><nav class="tree">'+treeHtml(GUIDE.practical_guides, cur)+"</nav>";
+      h += '<div class="scat">'+L("practical")+'</div><nav class="tree">'+treeHtml(GUIDE.practical_guides, cur)+"</nav>";
     }
     h += '<a class="backwhy" href="'+location.pathname+'" id="backWhy">‹ Back to Why '+esc(META.app)+"</a></aside>";
     var ix = ORDER.indexOf(cur), prev = ix>0?ORDER[ix-1]:null, next = ix<ORDER.length-1?ORDER[ix+1]:null;
     function plabel(id){ var s = GUIDE.sections[id]; return s ? s.title : id; }
     h += '<main class="gmain">'+sectionHtml(cur,false)+
       '<div class="pager">'+
-      '<button id="pgPrev" '+(prev?"":"disabled")+'><span class="pk">‹ Previous</span>'+(prev?esc(plabel(prev)):"—")+"</button>"+
-      '<button id="pgNext" '+(next?"":"disabled")+' style="text-align:right"><span class="pk">Next ›</span>'+(next?esc(plabel(next)):"—")+"</button>"+
+      '<button id="pgPrev" '+(prev?"":"disabled")+'><span class="pk">'+L("previous")+'</span>'+(prev?esc(plabel(prev)):"—")+"</button>"+
+      '<button id="pgNext" '+(next?"":"disabled")+' style="text-align:right"><span class="pk">'+L("next")+'</span>'+(next?esc(plabel(next)):"—")+"</button>"+
       "</div></main></div>";
     root.innerHTML = h;
     wireAppbar(route);
@@ -1745,13 +2711,15 @@ code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:.9em;fon
   /* ---------- boot ---------- */
   function render(){
     var r = currentRoute();
-    document.title = esc(META.app)+" — Onboarding";
+    document.title = META.title || ((META.app||"")+" — Onboarding");
+    document.documentElement.setAttribute("data-view", r.view==="guide" && GUIDE ? "guide" : "why");
     if(whySpy){ whySpy.disconnect(); whySpy = null; }
     if(whyAnim){ whyAnim.disconnect(); whyAnim = null; }
     if(r.view==="guide" && GUIDE) renderGuide(r); else renderWhy();
   }
   applyTheme();
   initTheme();
+  LOOK.start(REDUCED);
   setFavicon();
   render();
 })();

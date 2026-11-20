@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState, useTransition } from "react";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
+import { useValidationMessage } from "@/i18n/validation";
 import { ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -16,16 +18,18 @@ import {
 } from "@/components/personal/personal-fields";
 import { LocationAutocomplete } from "@/components/today/location-autocomplete";
 import { STYLE_PREFERENCES } from "@/lib/constants";
+import { useTaxonomy } from "@/i18n/taxonomy";
 import { profileSchema, type ProfileInput } from "@/lib/schemas";
 import type { Units } from "@/lib/units";
 import { useOnboardingStore } from "@/stores/onboarding";
 import { saveProfile } from "@/app/onboarding/actions";
 
+/** `title` is a key under onboarding.steps. */
 const STEPS = [
-  { title: "About you", optional: true },
-  { title: "Your colouring", optional: true },
-  { title: "Your style", optional: false },
-  { title: "Home base", optional: false },
+  { title: "about", optional: true },
+  { title: "coloring", optional: true },
+  { title: "style", optional: false },
+  { title: "home", optional: false },
 ] as const;
 
 const stepFields: (keyof ProfileInput)[][] = [
@@ -55,6 +59,10 @@ function guessUnits(): Units {
 }
 
 export function OnboardingWizard() {
+  const t = useTranslations("onboarding");
+  const vmsg = useValidationMessage();
+  const tc = useTranslations("common");
+  const tx = useTaxonomy();
   const { draft, step, set, setStep } = useOnboardingStore();
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -85,7 +93,7 @@ export function OnboardingWizard() {
     );
     const result = partial.safeParse(draft);
     if (!result.success) {
-      setError(result.error.issues[0]?.message ?? "Please complete this step");
+      setError(vmsg(result.error.issues[0]?.message, t("errors.completeStep")));
       return false;
     }
     setError(null);
@@ -105,11 +113,14 @@ export function OnboardingWizard() {
     }
     const result = profileSchema.safeParse(draft);
     if (!result.success) {
-      setError(result.error.issues[0]?.message ?? "Something is missing");
+      setError(vmsg(result.error.issues[0]?.message, t("errors.somethingMissing")));
       return;
     }
     startTransition(async () => {
-      const res = await saveProfile(result.data);
+      const res = await saveProfile(
+        result.data,
+        units === "imperial" ? { weight: "lb", height: "ftin" } : { weight: "kg", height: "cm" },
+      );
       if (res?.error) {
         setError(res.error);
         toast.error(res.error);
@@ -131,23 +142,21 @@ export function OnboardingWizard() {
   return (
     <div className="mx-auto w-full max-w-xl px-6 py-10 md:py-12">
       <p className="text-sm text-primary">
-        Step {step + 1} of {STEPS.length}
-        {current.optional && " · optional"}
+        {t("stepOf", { step: step + 1, total: STEPS.length })}
+        {current.optional && t("optionalSuffix")}
       </p>
       <h1 ref={headingRef} tabIndex={-1} className="mt-2 text-4xl outline-none">
-        {current.title}
+        {t(`steps.${current.title}`)}
       </h1>
       <Progress
         value={((step + 1) / STEPS.length) * 100}
         className="mt-6 h-1"
-        aria-label="Onboarding progress"
+        aria-label={t("progressLabel")}
       />
 
       {step < 2 && (
         <p className="mt-6 text-sm text-muted-foreground">
-          Every question here is optional. Your answers help the stylist pick colours
-          and cuts that flatter you; they are sent to OpenAI only to rank your outfits
-          and are never shown to anyone else. Edit them any time in Settings.
+          {t("privacy")}
         </p>
       )}
 
@@ -155,7 +164,7 @@ export function OnboardingWizard() {
         {step === 0 && (
           <>
             <div className="flex items-center gap-2 text-sm">
-              <span className="text-muted-foreground">Measure in</span>
+              <span className="text-muted-foreground">{t("measureIn")}</span>
               {(["metric", "imperial"] as const).map((u) => (
                 <button
                   key={u}
@@ -168,11 +177,16 @@ export function OnboardingWizard() {
                       : "min-h-9 cursor-pointer rounded-full border border-input px-3 text-muted-foreground pointer-coarse:min-h-11"
                   }
                 >
-                  {u === "metric" ? "cm and kg" : "ft and lb"}
+                  {u === "metric" ? t("metricUnits") : t("imperialUnits")}
                 </button>
               ))}
             </div>
-            <BuildFields key={units} draft={draft} set={setPersonal} units={units} />
+            <BuildFields
+              key={units}
+              draft={draft}
+              set={setPersonal}
+              measures={units === "imperial" ? { weight: "lb", height: "ftin" } : { weight: "kg", height: "cm" }}
+            />
           </>
         )}
 
@@ -181,15 +195,15 @@ export function OnboardingWizard() {
         {step === 2 && (
           <>
             <ChipGroup
-              label="Styles you love (pick all that apply)"
-              options={STYLE_PREFERENCES}
+              label={t("stylesLabel")}
+              options={STYLE_PREFERENCES.map((s) => ({ value: s.value, label: tx("style", s.value) }))}
               value={draft.style_preferences}
               onChange={(v) => set({ style_preferences: v as string[] })}
               multiple
             />
             <div>
               <Label id="formality-label" className="text-sm font-medium">
-                How dressed-up do you like to be? ({draft.preferred_formality ?? 5}/10)
+                {t("formalityLabel", { value: draft.preferred_formality ?? 5 })}
               </Label>
               <Slider
                 className="mt-4"
@@ -201,13 +215,13 @@ export function OnboardingWizard() {
                 aria-labelledby="formality-label"
               />
               <div className="mt-2 flex justify-between text-xs text-muted-foreground" aria-hidden>
-                <span>Relaxed</span>
-                <span>Polished</span>
+                <span>{t("relaxed")}</span>
+                <span>{t("polished")}</span>
               </div>
             </div>
             <ChipGroup
-              label="Your lifestyle (optional)"
-              options={LIFESTYLE_TAGS}
+              label={t("lifestyleLabel")}
+              options={LIFESTYLE_TAGS.map((l) => ({ value: l, label: tx("lifestyle", l) }))}
               value={draft.lifestyle_tags}
               onChange={(v) => set({ lifestyle_tags: v as string[] })}
               multiple
@@ -221,10 +235,10 @@ export function OnboardingWizard() {
 
         {step === 3 && (
           <div className="space-y-2">
-            <Label htmlFor="home">Where are you based?</Label>
+            <Label htmlFor="home">{t("homeLabel")}</Label>
             <LocationAutocomplete
               id="home"
-              placeholder="Start typing a city"
+              placeholder={t("homePlaceholder")}
               value={draft.home_location ?? ""}
               onChange={(text) => set({ home_location: text })}
               onSelect={(r) => set({ home_location: r.label })}
@@ -232,8 +246,7 @@ export function OnboardingWizard() {
               aria-invalid={!!error}
             />
             <p id="home-help" className="text-sm text-muted-foreground">
-              Used to check your local weather each morning, and to choose °C or °F.
-              You can set a different destination any day.
+              {t("homeHelp")}
             </p>
           </div>
         )}
@@ -252,25 +265,25 @@ export function OnboardingWizard() {
           disabled={step === 0 || pending}
           className="gap-2"
         >
-          <ArrowLeft className="size-4" aria-hidden /> Back
+          <ArrowLeft className="size-4" aria-hidden /> {tc("back")}
         </Button>
         <div className="flex items-center gap-2">
           {current.optional && (
             <Button variant="ghost" onClick={skip} disabled={pending}>
-              Skip
+              {tc("skip")}
             </Button>
           )}
           <Button onClick={next} disabled={pending} className="gap-2">
             {pending ? (
               <>
                 <Loader2 className="size-4 animate-spin" aria-hidden />
-                Saving…
+                {tc("saving")}
               </>
             ) : step === STEPS.length - 1 ? (
-              "Enter your wardrobe"
+              t("enterWardrobe")
             ) : (
               <>
-                Continue <ArrowRight className="size-4" aria-hidden />
+                {tc("continue")} <ArrowRight className="size-4" aria-hidden />
               </>
             )}
           </Button>

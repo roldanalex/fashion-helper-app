@@ -75,9 +75,9 @@ export function lbToKg(lb: number): number {
   return Math.round(lb / LB_PER_KG);
 }
 
-/** "178 cm" or "5 ft 10 in". */
-export function formatHeight(cm: number, units: "metric" | "imperial"): string {
-  if (units === "metric") return `${cm} cm`;
+/** "178 cm" or "5 ft 10 in". Accepts the height unit, or the older metric/imperial switch. */
+export function formatHeight(cm: number, unit: "cm" | "ftin" | "metric" | "imperial"): string {
+  if (unit === "cm" || unit === "metric") return `${cm} cm`;
   const { feet, inches } = cmToFeetInches(cm);
   return `${feet} ft ${inches} in`;
 }

@@ -1,0 +1,91 @@
+{
+  "meta": {
+    "title": "Família"
+  },
+  "page": {
+    "title": "Look em família",
+    "subtitle": "Um look para cada um, do próprio guarda-roupa, escolhidos para combinar entre si."
+  },
+  "modes": {
+    "coordinated": "Cores coordenadas",
+    "matching": "Um detalhe em comum",
+    "relaxed": "Só se vestir bem"
+  },
+  "missing": {
+    "no_outfits": "{name} ainda não tem looks: adicione e confirme uma parte de cima, uma de baixo e um calçado.",
+    "no_weather_match": "{name} não tem nada na tabela para este clima."
+  },
+  "toast": {
+    "savedToday": "Look de {name} salvo para hoje",
+    "planned": "Look de {name} planejado para {date}"
+  },
+  "empty": {
+    "title": "Adicione as pessoas que você veste",
+    "description": "Adicione seus filhos, ou qualquer pessoa sem e-mail, em Configurações → Pessoas que você veste. Cada um ganha o próprio guarda-roupa, e esta página veste todos juntos para a mesma ocasião.",
+    "addPerson": "Adicionar pessoa"
+  },
+  "form": {
+    "who": "Quem vai?",
+    "you": "(você)",
+    "noOutfits": "ainda sem looks",
+    "occasion": "Qual é a ocasião?",
+    "mode": "Como vocês querem ficar juntos?",
+    "when": "Quando?",
+    "where": "Onde? (opcional)",
+    "wherePlaceholder": "Em casa, ou digite uma cidade",
+    "dressing": "Vestindo todo mundo…",
+    "plan": "Planejar nosso look"
+  },
+  "status": {
+    "choosing": "Escolhendo looks para todos.",
+    "ready": "{count, plural, one {# look em família pronto.} other {# looks em família prontos.}}"
+  },
+  "results": {
+    "title": "Seus looks em família",
+    "weather": "{place}: {temp}, {condition}, {rain}% de chuva",
+    "looseFits": "Nada no guarda-roupa de {names} foi feito para esta ocasião, então estes são os looks mais próximos.",
+    "and": " e ",
+    "none": "Nenhum look em família serve para este dia ainda. Tente outra ocasião ou adicione algumas peças aos guarda-roupas listados acima.",
+    "look": "Look {n}",
+    "palette": "Paleta da família",
+    "outfitOf": "Look de {name}",
+    "choosesOwn": "{name} escolhe o próprio look",
+    "plannedFor": "Planejado para {name}",
+    "wear": "Vestir este"
+  },
+  "plan": {
+    "notes": "Look em família",
+    "explanation": "Escolhido como parte de um look em família."
+  },
+  "errors": {
+    "couldNotPlan": "Não foi possível planejar o look",
+    "couldNotSaveOutfit": "Não foi possível salvar esse look.",
+    "notSignedIn": "Você não está conectado",
+    "notOnAccount": "Essa pessoa não está na sua conta.",
+    "outfitGone": "Esse look não está mais na tabela dessa pessoa.",
+    "invalidEmail": "Digite um e-mail válido.",
+    "pickOccasion": "Escolha uma ocasião",
+    "checkRequest": "Confira o pedido",
+    "personNotFound": "Alguém deste look não está mais na sua conta. Recarregue a página.",
+    "chooseWho": "Escolha para quem é o look"
+  },
+  "rpcErrors": {
+    "notManager": "Só o dono da família ou um gestor pode convidar pessoas.",
+    "badRole": "Escolha gestor ou observador.",
+    "selfInvite": "Esse é o seu próprio e-mail.",
+    "notApproved": "Esse e-mail ainda não tem acesso ao Aether. Peça ao admin para convidar a pessoa primeiro.",
+    "alreadyMember": "Essa pessoa já está nesta família.",
+    "familyFull": "Uma família pode ter no máximo 8 membros.",
+    "inviteNotFound": "Esse convite não está mais disponível.",
+    "ownerCannotLeave": "O dono não pode sair da própria família.",
+    "notOwner": "Só o dono da família pode remover membros."
+  },
+  "rpcFallback": {
+    "invite": "Não foi possível enviar o convite. Tente de novo.",
+    "join": "Não foi possível entrar na família. Tente de novo.",
+    "deleteInvite": "Não foi possível remover o convite. Tente de novo.",
+    "leave": "Não foi possível sair da família. Tente de novo.",
+    "remove": "Não foi possível remover a pessoa. Tente de novo.",
+    "share": "Não foi possível alterar o compartilhamento. Tente de novo."
+  }
+}

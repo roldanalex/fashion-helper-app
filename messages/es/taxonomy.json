@@ -1,0 +1,225 @@
+{
+  "category": {
+    "top": "Prenda superior",
+    "bottom": "Prenda inferior",
+    "outerwear": "Abrigo",
+    "shoes": "Zapatos",
+    "watch": "Reloj",
+    "accessory": "Accesorio"
+  },
+  "categoryPlural": {
+    "top": "Prendas superiores",
+    "bottom": "Prendas inferiores",
+    "outerwear": "Abrigos",
+    "shoes": "Zapatos",
+    "watch": "Relojes",
+    "accessory": "Accesorios"
+  },
+  "subcategory": {
+    "t-shirt": "Camiseta",
+    "v-neck": "Camiseta cuello en V",
+    "polo": "Polo",
+    "oxford shirt": "Camisa Oxford",
+    "button-down shirt": "Camisa button-down",
+    "dress shirt": "Camisa de vestir",
+    "henley": "Henley",
+    "sweater": "Suéter",
+    "knit polo": "Polo de punto",
+    "turtleneck": "Cuello alto",
+    "blouse": "Blusa",
+    "chinos": "Chinos",
+    "dress trousers": "Pantalón de vestir",
+    "jeans": "Jeans",
+    "shorts": "Shorts",
+    "pleated trousers": "Pantalón de pinzas",
+    "skirt": "Falda",
+    "blazer": "Blazer",
+    "sport coat": "Saco sport",
+    "overcoat": "Abrigo",
+    "trench coat": "Gabardina",
+    "cardigan": "Cárdigan",
+    "quarter-zip": "Suéter con media cremallera",
+    "harrington jacket": "Chaqueta Harrington",
+    "field jacket": "Chaqueta field",
+    "loafers": "Mocasines",
+    "drivers": "Mocasines de conducir",
+    "oxfords": "Zapatos Oxford",
+    "derbies": "Zapatos Derby",
+    "boots": "Botas",
+    "sneakers": "Tenis",
+    "boat shoes": "Náuticos",
+    "monk straps": "Zapatos de hebilla",
+    "dress": "De vestir",
+    "sports": "Deportivo",
+    "diver": "De buceo",
+    "gmt": "GMT / viaje",
+    "chronograph": "Cronógrafo",
+    "field": "De campo",
+    "pilot": "De aviador",
+    "belt": "Cinturón",
+    "man bag": "Bolso de hombre",
+    "scarf": "Bufanda",
+    "sunglasses": "Gafas de sol",
+    "pocket square": "Pañuelo de bolsillo",
+    "hat": "Sombrero"
+  },
+  "attribute": {
+    "dress": "De vestir",
+    "sports": "Deportivo",
+    "diver": "De buceo",
+    "gmt": "GMT / viaje",
+    "chronograph": "Cronógrafo",
+    "field": "De campo",
+    "pilot": "De aviador",
+    "bracelet": "Brazalete metálico",
+    "leather": "Correa de cuero",
+    "rubber": "Correa de caucho",
+    "fabric": "Tela / NATO",
+    "silver": "Plateado",
+    "gold": "Dorado",
+    "rose gold": "Oro rosa",
+    "two-tone": "Bicolor"
+  },
+  "detailLabel": {
+    "Band": "Correa",
+    "Hardware tone": "Tono de herrajes",
+    "Buckle tone": "Tono de hebilla",
+    "Frame tone": "Tono de montura"
+  },
+  "material": {
+    "cotton": "Algodón",
+    "pique": "Piqué",
+    "knit": "Punto",
+    "wool": "Lana",
+    "merino": "Merino",
+    "cashmere": "Cachemira",
+    "linen": "Lino",
+    "denim": "Denim",
+    "leather": "Cuero",
+    "suede": "Gamuza",
+    "silk": "Seda",
+    "tweed": "Tweed",
+    "corduroy": "Pana",
+    "canvas": "Lona",
+    "synthetic": "Sintético",
+    "steel": "Acero",
+    "gold": "Oro",
+    "titanium": "Titanio",
+    "rubber": "Caucho",
+    "nylon": "Nailon",
+    "acetate": "Acetato"
+  },
+  "pattern": {
+    "solid": "Liso",
+    "striped": "A rayas",
+    "plaid": "Tartán",
+    "check": "A cuadros",
+    "herringbone": "Espiga",
+    "houndstooth": "Pata de gallo",
+    "cable-knit": "Punto trenzado",
+    "floral": "Floral",
+    "printed": "Estampado"
+  },
+  "season": {
+    "spring": "Primavera",
+    "summer": "Verano",
+    "fall": "Otoño",
+    "winter": "Invierno"
+  },
+  "style": {
+    "old_money": "Old Money",
+    "classic": "Clásico",
+    "smart_casual": "Smart Casual",
+    "minimalist": "Minimalista",
+    "sporty": "Deportivo",
+    "streetwear": "Streetwear"
+  },
+  "occasion": {
+    "work": "Trabajo",
+    "indoors": "Interiores / Congresos",
+    "lunch": "Almuerzo",
+    "mall": "Centro comercial / Compras",
+    "park": "Parque / Aire libre",
+    "going_out": "Salir",
+    "dinner": "Cena",
+    "errands": "Diligencias",
+    "home": "En casa",
+    "travel": "Viaje",
+    "celebration": "Celebración",
+    "school": "Escuela"
+  },
+  "lifestyle": {
+    "office": "Oficina",
+    "remote work": "Trabajo remoto",
+    "parent": "Madre o padre",
+    "travel often": "Viajo seguido",
+    "gym": "Gimnasio",
+    "social events": "Eventos sociales"
+  },
+  "gender": {
+    "male": "Masculino",
+    "female": "Femenino",
+    "other": "Otro"
+  },
+  "ageRange": {
+    "18-24": "18-24",
+    "25-34": "25-34",
+    "35-44": "35-44",
+    "45-54": "45-54",
+    "55+": "55+"
+  },
+  "bodyShape": {
+    "slim": "Delgado",
+    "average": "Promedio",
+    "athletic": "Atlético",
+    "broad": "Ancho",
+    "full": "Robusto"
+  },
+  "skinTone": {
+    "fair": "Muy clara",
+    "light": "Clara",
+    "medium": "Media",
+    "olive": "Oliva",
+    "tan": "Morena",
+    "deep": "Oscura"
+  },
+  "undertone": {
+    "warm": "Cálido",
+    "cool": "Frío",
+    "neutral": "Neutro"
+  },
+  "hairColor": {
+    "black": "Negro",
+    "dark brown": "Castaño oscuro",
+    "brown": "Castaño",
+    "light brown": "Castaño claro",
+    "blonde": "Rubio",
+    "red": "Pelirrojo",
+    "gray": "Canoso",
+    "white": "Blanco"
+  },
+  "eyeColor": {
+    "brown": "Marrones",
+    "hazel": "Avellana",
+    "green": "Verdes",
+    "blue": "Azules",
+    "gray": "Grises"
+  },
+  "fit": {
+    "slim": "Entallado, ceñido al cuerpo",
+    "regular": "Regular, corte clásico",
+    "relaxed": "Holgado, más amplio"
+  },
+  "ageBand": {
+    "adult": "Adulto",
+    "teen": "Adolescente (13–17)",
+    "child": "Niño (4–12)",
+    "toddler": "Bebé (0–3)"
+  },
+  "colorSeason": {
+    "spring": "Primavera",
+    "summer": "Verano",
+    "autumn": "Otoño",
+    "winter": "Invierno"
+  }
+}

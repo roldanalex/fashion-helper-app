@@ -1,15 +1,17 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { Button } from "@/components/ui/button";
 
-export default function NotFound() {
+export default async function NotFound() {
+  const t = await getTranslations("nav");
   return (
     <main className="flex min-h-dvh flex-col items-center justify-center px-6 text-center">
-      <h1 className="text-3xl">Not in the wardrobe</h1>
+      <h1 className="text-3xl">{t("notFound.title")}</h1>
       <p className="mt-2 max-w-sm text-sm text-muted-foreground">
-        This page does not exist, or the piece it showed has been removed.
+        {t("notFound.body")}
       </p>
       <Button asChild className="mt-6">
-        <Link href="/today">Go to Today</Link>
+        <Link href="/today">{t("notFound.goToToday")}</Link>
       </Button>
     </main>
   );

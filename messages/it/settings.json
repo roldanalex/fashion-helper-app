@@ -1,0 +1,73 @@
+{
+  "meta": {
+    "title": "Impostazioni"
+  },
+  "page": {
+    "title": "Impostazioni",
+    "subtitle": "Il tuo profilo, le persone che vesti e il tuo account.",
+    "yourAccount": "il tuo account",
+    "yourFamily": "La tua famiglia"
+  },
+  "signedInAs": "Accesso effettuato come",
+  "language": {
+    "title": "Lingua",
+    "description": "L'app, la sua guida e tutto ciò che scrive lo stylist seguono la tua scelta."
+  },
+  "style": {
+    "title": "Stile e città",
+    "yourStyles": "I tuoi stili",
+    "formality": "Formalità preferita ({value}/10)",
+    "relaxed": "Rilassato",
+    "polished": "Curato",
+    "yourLifestyle": "Il tuo stile di vita",
+    "homeLocation": "Città di residenza",
+    "homePlaceholder": "Inizia a scrivere una città",
+    "save": "Salva stile e città"
+  },
+  "personal": {
+    "title": "La tua corporatura e i tuoi colori",
+    "description": "Facoltativo. Lo stylist li usa per favorire i colori che ti valorizzano vicino al viso e i tagli adatti alla tua corporatura, in Oggi, nella chat dello Stylist e in Acquisti. Vengono inviati a OpenAI solo per classificare i tuoi outfit, il peso non viene mai inviato e niente di tutto questo è mostrato ad altri.",
+    "save": "Salva corporatura e colori",
+    "clearAll": "Cancella tutto",
+    "unsaved": "Modifiche non salvate"
+  },
+  "people": {
+    "title": "Persone che vesti",
+    "description": "Aggiungi i tuoi figli, o un adulto senza email, e dai a ciascuno il proprio guardaroba e i propri outfit. Non accedono mai. Per i bambini, all'IA viene inviata solo la descrizione dei loro capi. Pianifica look per tutti insieme nella pagina Famiglia."
+  },
+  "family": {
+    "title": "Familiari con un account",
+    "description": "Invita l'altro genitore, o chiunque abbia un proprio account Aether, nella tua famiglia. Un gestore può aggiungere e modificare i capi dei bambini; un osservatore può solo guardare. Ognuno decide se la famiglia può vedere il suo guardaroba."
+  },
+  "units": {
+    "title": "Unità",
+    "description": "Ognuna si salva appena la scegli.",
+    "temperature": "Temperatura",
+    "temperatureExample": "Il meteo in Oggi, nei piani di viaggio e nei look di famiglia appare come {example}.",
+    "weight": "Peso",
+    "kilograms": "Chilogrammi (kg)",
+    "pounds": "Libbre (lb)",
+    "height": "Altezza",
+    "centimetres": "Centimetri (cm)",
+    "feetInches": "Piedi e pollici (ft, in)"
+  },
+  "toast": {
+    "styleSaved": "Stile e città salvati",
+    "personalSaved": "Corporatura e colori salvati",
+    "personalSavedDescription": "Le scelte di oggi e lo stylist li useranno dalla tua prossima richiesta.",
+    "personalCleared": "Corporatura e colori cancellati",
+    "undo": "Annulla"
+  },
+  "errors": {
+    "invalidSettings": "Impostazioni non valide",
+    "homeCity": "Inserisci la tua città",
+    "notSignedIn": "Accesso non effettuato",
+    "couldNotSaveSettings": "Impossibile salvare le impostazioni.",
+    "chooseTempUnit": "Scegli Celsius o Fahrenheit.",
+    "couldNotSaveTempUnit": "Impossibile salvare l'unità di temperatura.",
+    "checkDetails": "Controlla i tuoi dati",
+    "couldNotSaveDetails": "Impossibile salvare i tuoi dati. Riprova.",
+    "chooseMeasureUnits": "Scegli un'unità per il peso e una per l'altezza.",
+    "couldNotSaveUnits": "Impossibile salvare le unità."
+  }
+}

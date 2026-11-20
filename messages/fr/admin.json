@@ -1,0 +1,47 @@
+{
+  "meta": {
+    "title": "Admin"
+  },
+  "page": {
+    "title": "Admin",
+    "subtitle": "Décidez qui peut utiliser l'application, et gérez vos crédits API."
+  },
+  "pending": {
+    "title": "En attente d'accès",
+    "description": "Ces personnes se sont connectées avec Google mais ne peuvent pas encore utiliser l'application.",
+    "signedIn": "connecté le {date}",
+    "approve": "Approuver"
+  },
+  "invite": {
+    "title": "Inviter par e-mail",
+    "description": "Pré-approuvez quelqu'un : il entrera directement lors de sa première connexion avec Google.",
+    "emailLabel": "E-mail à inviter",
+    "grant": "Accorder l'accès"
+  },
+  "grants": {
+    "title": "Qui a accès",
+    "admin": "Admin",
+    "revoke": "Retirer",
+    "you": "vous",
+    "supabaseHint": "Vous pouvez aussi gérer cette liste dans Supabase → Table Editor → access_grants."
+  },
+  "revoke": {
+    "title": "Retirer l'accès de {email} ?",
+    "description": "Cette personne sera déconnectée à sa prochaine visite et verra la page d'attente. Sa garde-robe reste enregistrée, et vous pouvez lui rendre l'accès à tout moment.",
+    "keep": "Conserver l'accès",
+    "confirm": "Retirer l'accès"
+  },
+  "toast": {
+    "approved": "{email} approuvé",
+    "invited": "{email} invité",
+    "revoked": "Accès retiré pour {email}"
+  },
+  "errors": {
+    "adminsOnly": "Réservé aux admins",
+    "invalidEmail": "Cela ne ressemble pas à un e-mail",
+    "alreadyHasAccess": "A déjà accès",
+    "couldNotGrant": "Impossible d'accorder l'accès",
+    "cannotRevokeSelf": "Vous ne pouvez pas retirer votre propre accès",
+    "couldNotRevoke": "Impossible de retirer l'accès"
+  }
+}

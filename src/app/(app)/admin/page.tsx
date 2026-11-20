@@ -1,16 +1,21 @@
 import { redirect } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { PageHeader } from "@/components/shared/page-header";
 import { AdminClient, type PendingUser } from "@/components/admin/admin-client";
 import { createClient } from "@/lib/supabase/server";
 import { getAccess } from "@/lib/access";
 import type { AccessGrant } from "@/types/database";
 
-export const metadata = { title: "Admin" };
+export async function generateMetadata() {
+  const t = await getTranslations("admin");
+  return { title: t("meta.title") };
+}
 
 export default async function AdminPage() {
   const supabase = await createClient();
   const { user, isAdmin } = await getAccess(supabase);
   if (!user || !isAdmin) redirect("/today");
+  const t = await getTranslations("admin");
 
   const [{ data: grantData }, { data: profileData }] = await Promise.all([
     supabase.from("access_grants").select("*").order("created_at"),
@@ -30,8 +35,8 @@ export default async function AdminPage() {
   return (
     <main>
       <PageHeader
-        title="Admin"
-        subtitle="Decide who may use the app — and your API credits."
+        title={t("page.title")}
+        subtitle={t("page.subtitle")}
       />
       <div className="px-6 pb-10 md:px-10">
         <AdminClient

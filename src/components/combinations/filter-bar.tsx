@@ -22,6 +22,8 @@ import {
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { OCCASIONS, SEASONS } from "@/lib/constants";
+import { useTranslations } from "next-intl";
+import { useTaxonomy } from "@/i18n/taxonomy";
 
 export interface ItemOption {
   id: string;
@@ -57,6 +59,8 @@ export function FilterBar({
   watches?: ItemOption[];
   accessories?: ItemOption[];
 }) {
+  const t = useTranslations("outfits.filters");
+  const tx = useTaxonomy();
   const router = useRouter();
   const params = useSearchParams();
   const [sheetOpen, setSheetOpen] = useState(false);
@@ -77,12 +81,12 @@ export function FilterBar({
   }
 
   const itemFilters: { key: string; label: string; options: ItemOption[] }[] = [
-    { key: "top", label: "top", options: tops },
-    { key: "bottom", label: "bottom", options: bottoms },
-    { key: "shoes", label: "pair of shoes", options: shoes },
-    { key: "outerwear", label: "outerwear", options: outerwear },
-    { key: "watch", label: "watch", options: watches },
-    { key: "accessory", label: "accessory", options: accessories },
+    { key: "top", label: t("slot.top"), options: tops },
+    { key: "bottom", label: t("slot.bottom"), options: bottoms },
+    { key: "shoes", label: t("slot.shoes"), options: shoes },
+    { key: "outerwear", label: t("slot.outerwear"), options: outerwear },
+    { key: "watch", label: t("slot.watch"), options: watches },
+    { key: "accessory", label: t("slot.accessory"), options: accessories },
   ];
 
   // Active filters as removable chips (the default score 7+ is not a filter).
@@ -93,26 +97,26 @@ export function FilterBar({
     if (name) active.push({ key: f.key, label: name });
   }
   const occ = params.get("occasion");
-  if (occ) active.push({ key: "occasion", label: OCCASIONS.find((o) => o.value === occ)?.label ?? occ });
+  if (occ) active.push({ key: "occasion", label: tx("occasion", occ) });
   const season = params.get("season");
-  if (season) active.push({ key: "season", label: season[0].toUpperCase() + season.slice(1) });
+  if (season) active.push({ key: "season", label: tx("season", season) });
   const min = params.get("min");
-  if (min && min !== "7") active.push({ key: "min", label: `Score ${min}+` });
-  if (params.get("hidden") === "1") active.push({ key: "hidden", label: "Including hidden" });
+  if (min && min !== "7") active.push({ key: "min", label: t("scoreMin", { min }) });
+  if (params.get("hidden") === "1") active.push({ key: "hidden", label: t("includingHidden") });
 
   /** The controls themselves; stacked full-width in the sheet, inline on desktop. */
   const controls = (stacked: boolean) => (
     <div className={cn(stacked ? "flex flex-col gap-5" : "flex flex-wrap items-center gap-3")}>
-      {stacked && <p className="text-sm font-medium">Build around a piece</p>}
+      {stacked && <p className="text-sm font-medium">{t("buildAround")}</p>}
       {itemFilters.map(
         ({ key, label, options }) =>
           options.length > 0 && (
             <Select key={key} value={params.get(key) ?? "all"} onValueChange={(v) => setParam(key, v)}>
-              <SelectTrigger className={stacked ? "w-full" : "w-44"} aria-label={`Filter by ${label}`}>
-                <SelectValue placeholder={`Any ${label}`} />
+              <SelectTrigger className={stacked ? "w-full" : "w-44"} aria-label={t("filterBy", { label })}>
+                <SelectValue placeholder={t("any", { label })} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Any {label}</SelectItem>
+                <SelectItem value="all">{t("any", { label })}</SelectItem>
                 {options.map((o) => (
                   <SelectItem key={o.id} value={o.id}>
                     {o.name}
@@ -123,43 +127,43 @@ export function FilterBar({
           ),
       )}
 
-      {stacked && <p className="pt-2 text-sm font-medium">Occasion, season and score</p>}
+      {stacked && <p className="pt-2 text-sm font-medium">{t("occasionSeasonScore")}</p>}
       <Select value={params.get("occasion") ?? "all"} onValueChange={(v) => setParam("occasion", v)}>
-        <SelectTrigger className={stacked ? "w-full" : "w-40"} aria-label="Filter by occasion">
-          <SelectValue placeholder="Occasion" />
+        <SelectTrigger className={stacked ? "w-full" : "w-40"} aria-label={t("filterByOccasion")}>
+          <SelectValue placeholder={t("occasion")} />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">Any occasion</SelectItem>
+          <SelectItem value="all">{t("anyOccasion")}</SelectItem>
           {OCCASIONS.map((o) => (
             <SelectItem key={o.value} value={o.value}>
-              {o.label}
+              {tx("occasion", o.value)}
             </SelectItem>
           ))}
         </SelectContent>
       </Select>
 
       <Select value={params.get("season") ?? "all"} onValueChange={(v) => setParam("season", v)}>
-        <SelectTrigger className={stacked ? "w-full" : "w-36"} aria-label="Filter by season">
-          <SelectValue placeholder="Season" />
+        <SelectTrigger className={stacked ? "w-full" : "w-36"} aria-label={t("filterBySeason")}>
+          <SelectValue placeholder={t("season")} />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">Any season</SelectItem>
+          <SelectItem value="all">{t("anySeason")}</SelectItem>
           {SEASONS.map((s) => (
             <SelectItem key={s} value={s} className="capitalize">
-              {s}
+              {tx("season", s)}
             </SelectItem>
           ))}
         </SelectContent>
       </Select>
 
       <Select value={params.get("min") ?? "7"} onValueChange={(v) => setParam("min", v)}>
-        <SelectTrigger className={stacked ? "w-full" : "w-32"} aria-label="Minimum score">
-          <SelectValue placeholder="Score" />
+        <SelectTrigger className={stacked ? "w-full" : "w-32"} aria-label={t("minimumScore")}>
+          <SelectValue placeholder={t("score")} />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="7">Score 7+</SelectItem>
-          <SelectItem value="8">Score 8+</SelectItem>
-          <SelectItem value="9">Score 9+</SelectItem>
+          <SelectItem value="7">{t("scoreMin", { min: 7 })}</SelectItem>
+          <SelectItem value="8">{t("scoreMin", { min: 8 })}</SelectItem>
+          <SelectItem value="9">{t("scoreMin", { min: 9 })}</SelectItem>
         </SelectContent>
       </Select>
 
@@ -170,7 +174,7 @@ export function FilterBar({
           onCheckedChange={(v) => setParam("hidden", v ? "1" : "")}
         />
         <Label htmlFor={stacked ? "show-hidden-sheet" : "show-hidden"} className="text-sm text-muted-foreground">
-          Show hidden outfits
+          {t("showHidden")}
         </Label>
       </div>
     </div>
@@ -182,21 +186,21 @@ export function FilterBar({
       <div className="md:hidden">
         <Button variant="outline" className="gap-2" onClick={() => setSheetOpen(true)} aria-haspopup="dialog">
           <SlidersHorizontal aria-hidden />
-          Filters{active.length > 0 && ` (${active.length})`}
+          {active.length > 0 ? t("filtersCount", { count: active.length }) : t("filters")}
         </Button>
         <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
           <SheetContent side="bottom" className="rounded-t-2xl">
             <SheetHeader className="pb-0">
-              <SheetTitle className="font-serif text-xl">Filter outfits</SheetTitle>
-              <SheetDescription>Results update as you choose.</SheetDescription>
+              <SheetTitle className="font-serif text-xl">{t("sheetTitle")}</SheetTitle>
+              <SheetDescription>{t("sheetDescription")}</SheetDescription>
             </SheetHeader>
             <div className="px-4">{controls(true)}</div>
             <div className="sticky bottom-0 flex gap-2 border-t bg-popover p-4">
               <Button variant="ghost" className="flex-1" onClick={clearAll} disabled={active.length === 0}>
-                Clear all
+                {t("clearAll")}
               </Button>
               <Button className="flex-1" onClick={() => setSheetOpen(false)}>
-                Show outfits
+                {t("showOutfits")}
               </Button>
             </div>
           </SheetContent>
@@ -207,7 +211,7 @@ export function FilterBar({
       <div className="hidden md:block">{controls(false)}</div>
 
       {active.length > 0 && (
-        <ul className="flex flex-wrap gap-2" aria-label="Active filters">
+        <ul className="flex flex-wrap gap-2" aria-label={t("activeFilters")}>
           {active.map((f) => (
             <li key={f.key}>
               <button
@@ -217,7 +221,7 @@ export function FilterBar({
               >
                 {f.label}
                 <X className="size-3.5" aria-hidden />
-                <span className="sr-only">, remove filter</span>
+                <span className="sr-only">{t("removeFilter")}</span>
               </button>
             </li>
           ))}
@@ -228,7 +232,7 @@ export function FilterBar({
                 onClick={clearAll}
                 className="min-h-9 cursor-pointer px-2 text-sm text-muted-foreground underline-offset-4 hover:underline pointer-coarse:min-h-11"
               >
-                Clear all
+                {t("clearAll")}
               </button>
             </li>
           )}

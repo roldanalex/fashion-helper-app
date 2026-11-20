@@ -1,4 +1,4 @@
-export const APP_VERSION = "1.4.0";
+export const APP_VERSION = "1.5.2";
 export const APP_CREDIT = "Created by Alexis Roldan · 2026";
 
 export const CATEGORIES = [
@@ -192,8 +192,20 @@ export const OCCASIONS = [
   { value: "errands", label: "Errands", icon: "list-checks" },
   { value: "home", label: "At Home", icon: "house" },
   { value: "travel", label: "Travel", icon: "plane" },
+  { value: "celebration", label: "Celebration", icon: "party-popper" },
+  { value: "school", label: "School", icon: "school" },
 ] as const;
 export type Occasion = (typeof OCCASIONS)[number]["value"];
+
+/** Occasions offered only to Minors (and only to adults, respectively). */
+export const MINOR_ONLY_OCCASIONS: readonly Occasion[] = ["school"];
+export const ADULT_ONLY_OCCASIONS: readonly Occasion[] = ["work"];
+
+export function occasionsFor(isMinor: boolean) {
+  return OCCASIONS.filter((o) =>
+    isMinor ? !ADULT_ONLY_OCCASIONS.includes(o.value) : !MINOR_ONLY_OCCASIONS.includes(o.value),
+  );
+}
 
 /**
  * How each occasion maps onto the combination score columns.
@@ -213,6 +225,8 @@ export const OCCASION_WEIGHTS: Record<
   errands: { work: 0, daily: 1, formality: 0, oldMoney: 0 },
   home: { work: 0, daily: 1, formality: 0, oldMoney: 0 },
   travel: { work: 0.2, daily: 0.6, formality: 0.2, oldMoney: 0 },
+  celebration: { work: 0, daily: 0.2, formality: 0.5, oldMoney: 0.3 },
+  school: { work: 0, daily: 0.7, formality: 0.3, oldMoney: 0 },
 };
 
 /** One-line stylist hints per occasion, fed to the daily ranking prompt. */
@@ -230,6 +244,10 @@ export const OCCASION_HINTS: Record<Occasion, string> = {
   home: "A day at home; comfort with a little intention.",
   travel:
     "A travel day; comfortable for transit, presentable on arrival. A GMT or travel watch and easy-to-remove layers are natural choices.",
+  celebration:
+    "A celebration: a birthday, a wedding as a guest, a family photo. Dressed up and joyful, but comfortable enough to last the day.",
+  school:
+    "A school day; comfortable, practical and easy to move in, neat enough for class, and ready for the playground or PE.",
 };
 
 /** Combination generation tuning */
@@ -267,3 +285,25 @@ export const FORECAST_HORIZON_DAYS = 5;
 /** Conversation turns sent back to the model per request. */
 export const STYLIST_HISTORY_LIMIT = 16;
 export const STYLIST_MAX_MESSAGE_CHARS = 2000;
+
+/* ---------- People and Family looks (1.5.0) ---------- */
+
+/** People per Family, the Account's own person included (the database enforces it too). */
+export const FAMILY_MAX_PEOPLE = 8;
+/** A day counts as rainy above this chance of precipitation (%). */
+export const RAIN_PROB_THRESHOLD = 40;
+/** Outfits read per Person when planning a Family look. */
+export const FAMILY_OUTFIT_POOL = 300;
+/** Outfits per Person the Family planner considers, partial looks it keeps, looks it returns. */
+export const FAMILY_SHORTLIST = 15;
+export const FAMILY_BEAM_WIDTH = 50;
+export const FAMILY_LOOKS = 3;
+/** How much shared colour counts, per look mode. */
+export const FAMILY_COHESION_WEIGHT = { coordinated: 2, matching: 3, relaxed: 0.5 } as const;
+/** Two adults in near-identical colourways (not applied in matching mode). */
+export const FAMILY_CLONE_PENALTY = 0.75;
+/** Formality points two adults may differ by before a penalty; children get more leeway. */
+export const FAMILY_ADULT_FORMALITY_TOLERANCE = 2;
+export const FAMILY_CHILD_FORMALITY_TOLERANCE = 3;
+/** Sort bonus for a boosted Outfit in a Family look. */
+export const FAMILY_BOOST_BONUS = 0.3;

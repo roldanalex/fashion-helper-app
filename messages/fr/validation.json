@@ -1,0 +1,10 @@
+{
+  "heightRange": "La taille doit être comprise entre 100 et 250 cm (3 ft 3 in et 8 ft 2 in).",
+  "weightRange": "Le poids doit être compris entre 30 et 250 kg (66 et 551 lb).",
+  "styleRequired": "Choisissez au moins un style.",
+  "homeRequired": "Où habitez-vous ?",
+  "notesTooLong": "Limitez les notes à 300 caractères.",
+  "nameRequired": "Donnez-lui un prénom ou un surnom.",
+  "nameTooLong": "Limitez le prénom à 40 caractères.",
+  "guardianRequired": "Confirmez que vous êtes son parent ou son tuteur légal."
+}

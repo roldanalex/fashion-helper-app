@@ -1,0 +1,73 @@
+{
+  "meta": {
+    "title": "Settings"
+  },
+  "page": {
+    "title": "Settings",
+    "subtitle": "Your profile, the people you dress, and your account.",
+    "yourAccount": "your account",
+    "yourFamily": "Your family"
+  },
+  "signedInAs": "Signed in as",
+  "language": {
+    "title": "Language",
+    "description": "The app, its guide and everything the stylist writes follow your choice."
+  },
+  "style": {
+    "title": "Style and home",
+    "yourStyles": "Your styles",
+    "formality": "Preferred formality ({value}/10)",
+    "relaxed": "Relaxed",
+    "polished": "Polished",
+    "yourLifestyle": "Your lifestyle",
+    "homeLocation": "Home location",
+    "homePlaceholder": "Start typing a city",
+    "save": "Save style and home"
+  },
+  "personal": {
+    "title": "Your own build and colouring",
+    "description": "Optional. The stylist uses these to favour colours that flatter you near the face and cuts that suit your build, on Today, in the Stylist chat and in Shop. They are sent to OpenAI only to rank your outfits, weight is never sent, and nothing here is shown to anyone else.",
+    "save": "Save build and colouring",
+    "clearAll": "Clear all",
+    "unsaved": "Unsaved changes"
+  },
+  "people": {
+    "title": "People you dress",
+    "description": "Add your children, or an adult without an email, and give each of them their own wardrobe and outfits. They never sign in. For children, nothing but descriptions of their clothes is sent to the AI. Plan looks for everyone together on the Family page."
+  },
+  "family": {
+    "title": "Family members with an account",
+    "description": "Invite the other parent, or anyone with their own Aether account, into your family. A manager can add and edit the children's clothes; a viewer can only look. Each person decides whether the family sees their own wardrobe."
+  },
+  "units": {
+    "title": "Units",
+    "description": "Each one saves as soon as you pick it.",
+    "temperature": "Temperature",
+    "temperatureExample": "Weather on Today, in trip plans and family looks reads as {example}.",
+    "weight": "Weight",
+    "kilograms": "Kilograms (kg)",
+    "pounds": "Pounds (lb)",
+    "height": "Height",
+    "centimetres": "Centimetres (cm)",
+    "feetInches": "Feet and inches (ft, in)"
+  },
+  "toast": {
+    "styleSaved": "Style and home saved",
+    "personalSaved": "Build and colouring saved",
+    "personalSavedDescription": "Today's picks and the stylist use them from your next request.",
+    "personalCleared": "Build and colouring cleared",
+    "undo": "Undo"
+  },
+  "errors": {
+    "invalidSettings": "Invalid settings",
+    "homeCity": "Enter your home city",
+    "notSignedIn": "Not signed in",
+    "couldNotSaveSettings": "Could not save settings.",
+    "chooseTempUnit": "Choose Celsius or Fahrenheit.",
+    "couldNotSaveTempUnit": "Could not save the temperature unit.",
+    "checkDetails": "Check your details",
+    "couldNotSaveDetails": "Could not save your details. Please try again.",
+    "chooseMeasureUnits": "Choose a weight and a height unit.",
+    "couldNotSaveUnits": "Could not save the units."
+  }
+}

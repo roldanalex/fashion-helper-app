@@ -5,7 +5,7 @@ plans each morning, and it lays out the outfit: matched to your style, the
 occasion, and the weather where you are going.
 
 [![CI](https://github.com/roldanalex/fashion-helper-app/actions/workflows/ci.yml/badge.svg)](https://github.com/roldanalex/fashion-helper-app/actions/workflows/ci.yml)
-![Version](https://img.shields.io/badge/version-1.4.0-c9a45c)
+![Version](https://img.shields.io/badge/version-1.5.2-c9a45c)
 ![Next.js](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white)
@@ -16,7 +16,7 @@ occasion, and the weather where you are going.
 
 > Created by [**Alexis Roldan**](https://github.com/roldanalex) · 2026
 
-**Documentation:** [User guide](docs/USER-GUIDE.md) · [Onboarding site](public/welcome/) (served at `/welcome`) · [Changelog](CHANGELOG.md) · [Architecture diagram](docs/diagrams/architecture.drawio.png)
+**Documentation:** [User guide](docs/USER-GUIDE.md) · [Glossary](GLOSSARY.md) · [Decisions](docs/adr/) · [Onboarding site](public/welcome/) (served at `/welcome`) · [Changelog](CHANGELOG.md) · [Architecture diagram](docs/diagrams/architecture.drawio.png)
 
 ---
 
@@ -88,6 +88,10 @@ from your phone.
 | **Shopping gap analysis** | Tick the categories you are shopping for. The app counts how many new outfits one good piece would unlock and suggests specific items that pair with what you own. |
 | **Live status and readiness** | A banner tracks outfit generation in the background. If a batch is interrupted, one click rebuilds only what is missing. |
 | **Admin allowlist** | Grant or revoke access by email from the in-app `/admin` page. |
+| **People you dress** | Add children, or adults without an email, under your account. Each person has their own wardrobe, outfit table, daily picks, stylist conversation and shopping list; a person switcher changes who every page is about. Children never sign in, a parent or guardian vouches for them, and nothing about them reaches the AI except descriptions of their clothes. |
+| **Family link** | Invite another approved account (the other parent) as a manager or a viewer; each member decides whether the family sees their own wardrobe. Viewing widens through membership-checked database functions; editing never does. |
+| **Five languages** | English, Spanish, Brazilian Portuguese, French and Italian via `next-intl` (no URL prefixes; a cookie set by the language picker, then the browser). The AI writes in the chosen language, weather descriptions follow it, and the `/welcome` guide is served in it. Separate units for temperature, weight and height. |
+| **Family looks** | One outfit per person, each from their own table, chosen to work together for a celebration, a day out or a family photo: coordinated colours, one shared accent, or simply well dressed. A deterministic beam search balances occasion fit, palette cohesion and level of dress; one gpt-4o-mini call writes the note. |
 | **Phone-first shell** | Four tabs plus **More** in the thumb zone, 44px touch targets on touch screens, iPhone safe areas, undo on every reversible action, installable to the home screen (web app manifest). |
 | **Onboarding site** | A self-contained "why and how" page at `/welcome` with a value deck, a step-by-step guide with checkpoints, light and dark themes, and print-to-PDF. |
 
@@ -124,10 +128,17 @@ from your phone.
    Without this step every sign-in, including yours, lands on the "awaiting
    invitation" screen.
 
-**Upgrading?** From 1.3.x, run `0010_personal_fit.sql` only: it adds the fit
+**Upgrading?** From 1.5.1, run `0013_family_link_locale_units.sql` (language,
+units and the family link). From 1.5.0, run `0012_people_read_policy.sql` (fixes
+adding a person) and then `0013`. From 1.4.x, run `0011_people.sql` and then `0012`. `0011` it creates families and
+people, gives every account its own person and moves existing pieces, outfits,
+plans and suggestions to that person. No data is deleted; until it runs the app
+shows a "one database update to go" page. From 1.3.x, run `0010_personal_fit.sql`
+and then `0011_people.sql`. `0010` it adds the fit
 preference and style-notes columns and constrains `color_season`. The app keeps
-working before you run it, but saving build and colouring in Settings fails
-until you do. From 1.0.x, run `0008_accessories.sql`, `0009_watches.sql` and
+running for existing users before you run it, but saving build and colouring
+in Settings and finishing onboarding for a new user both fail until you do, so
+run it before deploying. From 1.0.x, run `0008_accessories.sql`, `0009_watches.sql` and
 `0010_personal_fit.sql`. From 1.1.x, run `0009` then `0010`: `0009` moves your
 existing watches from Accessories into the new Watches category and into the
 new watch slot of every outfit that had one.
@@ -306,6 +317,27 @@ Source: [`docs/diagrams/architecture.drawio`](docs/diagrams/architecture.drawio)
 - **Defence in depth.** Row-level security on every table, a private storage
   bucket with short-lived signed URLs, and `server-only` imports that make it
   a build error for API keys to reach the browser.
+- **Wardrobe data belongs to a Person, not an Account**
+  ([ADR 0001](docs/adr/0001-person-owns-wardrobe-data.md)). Composite foreign
+  keys make it impossible to store an outfit that mixes two people's clothes,
+  and every query on the wardrobe tables goes through one module,
+  `src/lib/wardrobe` (`openWardrobe(store, { personId, accountId })`), which
+  scopes by person and drops outfits with archived pieces. It has two
+  adapters, Supabase and in-memory; a test fails if a wardrobe table is
+  queried anywhere else.
+- **No personal data about a minor reaches the AI**
+  ([ADR 0002](docs/adr/0002-no-minor-personal-data-to-ai.md)). Every prompt
+  builds its "who is this for" text in one place, `promptSubject()` in
+  `src/lib/people/subject.ts`: adults get the personal-fit block, minors only
+  an alias ("Child A") and a coarse audience. OpenAI's API terms forbid
+  sending children's personal information without zero data retention.
+- **Translations are data, not code.** UI text lives in
+  `messages/<locale>/<namespace>.json` (`src/i18n/config.ts` lists the
+  languages and namespaces); stored values (categories, materials, occasions)
+  stay English in the database and are labelled through a generated
+  `taxonomy` namespace. A test fails if any language is missing a key or drops
+  a placeholder. AI prompts stay English and carry one line asking for the
+  answer in the user's language (`aiLanguageRule`).
 - **Personal fit ranks, it does not rescore.** Build and colouring shape
   ranking and explanations, not the stored scores: a combination's score says
   how the pieces work together, which does not change with the wearer, so
@@ -319,7 +351,9 @@ Source: [`docs/diagrams/architecture.drawio`](docs/diagrams/architecture.drawio)
 
 ### Data model
 
-Six tables, all behind Supabase row-level security. Watch and accessory
+Nine tables, all behind Supabase row-level security. Wardrobe rows belong to a
+person; an account's own person is its "self", and a family can add managed
+people who never sign in. Watch and accessory
 details live in a `jsonb` column on `clothing_items`. A combination has three
 required slots (top, bottom, shoes) and three optional ones (outerwear, watch,
 accessories). The uniqueness rule covers all six, so one base outfit may exist
@@ -327,13 +361,24 @@ once per watch or accessory variant.
 
 ```mermaid
 erDiagram
-    profiles ||--o{ clothing_items : owns
-    profiles ||--o{ daily_plans : plans
-    profiles ||--o{ shopping_suggestions : receives
+    profiles ||--|| people : "is (self)"
+    people ||--o{ daily_plans : plans
+    people ||--o{ shopping_suggestions : receives
     clothing_items ||--o{ combinations : "appears in"
     combinations |o--o{ daily_plans : "worn as"
     access_grants |o..o| profiles : "gates by email"
 
+    families ||--o{ people : includes
+    families ||--o{ family_members : "looked after by"
+    people ||--o{ clothing_items : owns
+    people {
+        uuid id PK
+        text kind "self · managed"
+        text display_name
+        text age_band "adult · teen · child · toddler"
+        bool is_minor
+        timestamptz guardian_attested_at
+    }
     profiles {
         uuid id PK
         text body_shape
@@ -405,7 +450,9 @@ src/
 └── stores/                 # Zustand (onboarding draft)
 public/welcome/             # Static onboarding site (index.html + aether_onboarding.json)
 docs/                       # User guide, screenshots, architecture diagram
-supabase/migrations/        # 10 SQL migrations: schema, RLS, storage, access control, accessories, watches, personal fit
+supabase/migrations/        # 13 SQL migrations: schema, RLS, storage, access control, accessories, watches, personal fit, people, family link + locale + units
+messages/<locale>/          # UI text per language and namespace (en is the source; others fall back to it)
+public/brand/               # Logo: aether-logo.svg (dark backgrounds), aether-logo-brass.svg (any background), aether-mark.svg
 .github/workflows/ci.yml    # Type-check, tests, build, secret scan
 ```
 
@@ -476,6 +523,13 @@ tests cover.
   approval server-side before spending API credits.
 - **Row-level security** on every table: users only ever read or write their
   own rows.
+- **Children are managed, never signed in.** A parent or legal guardian
+  creates a child's profile after confirming that role; the database keeps
+  only the minimum for minors (no height, body shape or notes) and refuses an
+  outfit that mixes people. Deleting a person removes their photos and every
+  row about them. Prompts identify minors only by alias. This is a product
+  decision informed by OpenAI's terms and the FTC's COPPA guidance, not legal
+  advice.
 - **Personal characteristics are optional and minimised.** Build and
   colouring can be skipped or cleared at any time. Weight is stored for the
   user's own reference but never sent to a model; the other traits go to
@@ -500,7 +554,8 @@ tests cover.
 | The stylist says it cannot place a destination | Give the city and country ("Porto, Portugal"); the geocoder takes the first match. |
 | A trip day shows "no forecast" | The free forecast reaches five days ahead. Tell the stylist the expected temperature, or let it estimate from the season. |
 | "No outfits yet" with pieces confirmed | Generation was interrupted. Use **Build outfits** on the Wardrobe tab. |
-| "Could not save your details" in Settings | Migration `0010` has not been run. Run `0010_personal_fit.sql` in the SQL Editor. |
+| "One database update to go" on every page | Migration `0011` has not been run. Run `0011_people.sql` in the SQL Editor. |
+| "Could not save your details" in Settings, or a new user cannot finish onboarding | Migration `0010` has not been run. Run `0010_personal_fit.sql` in the SQL Editor. |
 | Outfit generation times out on Vercel | Hobby tier function limit. Upgrade the plan or use the rebuild button, which resumes where it stopped. |
 | Local Google sign-in bounces to the landing page | Add `http://localhost:3000/auth/callback` to Supabase's redirect URLs. |
 
@@ -512,10 +567,12 @@ Built solo and used daily. Honest notes on what is not here yet:
   deterministic core only.
 - **Single-photo items.** One photo per piece; multi-angle photos are a
   candidate feature.
-- **Group looks.** Linking accounts so a family or a party can ask for a
-  coordinated look drawn from everyone's wardrobes. Planned as opt-in,
-  per-group sharing served through a membership-checked database function
-  rather than wider row-level security.
+- **Family link (1.6.0).** Invite the other parent's account into your family
+  as a manager, so both of you can edit the children's wardrobes, and share
+  your own wardrobe with the family if you choose. The data model and the
+  `Wardrobe` module are already built for it.
+- **Hand-over.** Move a grown child's profile, clothes and photos to their own
+  account.
 - **Saved trips.** A packing plan lives in the conversation on your device;
   saving named trips to the database, and ticking pieces off while packing,
   is the natural next step.

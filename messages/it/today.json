@@ -1,0 +1,62 @@
+{
+  "meta": {
+    "title": "Oggi"
+  },
+  "header": {
+    "titleFor": "Oggi per {name}",
+    "subtitle": "Raccontami i tuoi programmi: ti preparo l'outfit."
+  },
+  "weather": {
+    "summary": "{location}: {temp}, {condition}, pioggia {precip}%"
+  },
+  "errors": {
+    "generic": "Qualcosa è andato storto",
+    "personGone": "Questa persona non è più nel tuo account. Ricarica la pagina.",
+    "couldNotRecord": "Impossibile registrare l'outfit. Riprova.",
+    "occasionRequired": "Serve un'occasione valida",
+    "noLocation": "Non ho trovato quella destinazione. Prova con il nome di una città, o imposta la tua città in Impostazioni.",
+    "weatherFailed": "Il servizio meteo non risponde. Riprova tra poco."
+  },
+  "empty": {
+    "title": "Ancora nessun outfit",
+    "ready": "I tuoi capi ci sono: lo stylist deve solo intrecciarli in outfit.",
+    "notReady": "Lo stylist crea gli outfit da solo appena il tuo guardaroba ha i capi essenziali qui sotto.",
+    "goToWardrobe": "Vai al guardaroba"
+  },
+  "family": {
+    "title": "Uscite insieme?",
+    "body": "Pianifica un look di famiglia per tutti in una volta."
+  },
+  "form": {
+    "occasionLabel": "Cosa ti aspetta oggi?",
+    "whereLabel": "Dove? (facoltativo)",
+    "wherePlaceholder": "Casa, o inizia a scrivere una città",
+    "notesLabel": "Altro? (facoltativo)",
+    "notesPlaceholder": "es. riunione con un cliente, poi pranzo con i bambini",
+    "notesPlaceholderMinor": "es. educazione fisica nel pomeriggio, poi il parco (niente nomi, per favore)",
+    "submit": "Vesti la mia giornata",
+    "submitting": "Controllo il meteo…"
+  },
+  "live": {
+    "pending": "Controllo il meteo e scelgo gli outfit.",
+    "ready": "{count, plural, one {# outfit pronto.} other {# outfit pronti.}}",
+    "none": "Nessun outfit della tua tabella va bene per questa giornata."
+  },
+  "results": {
+    "heading": "Le scelte di oggi",
+    "fresh": "Nuovi suggerimenti",
+    "none": "Nella tua tabella non c'è niente di davvero adatto a questa giornata e a questo meteo. Qualche capo nuovo aprirebbe nuove strade: <link>scopri cosa comprare</link>."
+  },
+  "worn": {
+    "toast": "Preso nota, indossalo con stile",
+    "wearing": "Lo indosso",
+    "wearThis": "Indosso questo"
+  },
+  "card": {
+    "oldMoney": "Old money"
+  },
+  "location": {
+    "matchingPlaces": "Luoghi corrispondenti"
+  },
+  "fallbackExplanation": "Una combinazione solida e affidabile dalla tua tabella."
+}

@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ItemCard } from "@/components/wardrobe/item-card";
-import { CATEGORIES, CATEGORY_PLURAL_LABELS, type Category } from "@/lib/constants";
+import { CATEGORIES, type Category } from "@/lib/constants";
+import { useTaxonomy } from "@/i18n/taxonomy";
 import type { ClothingItem } from "@/types/database";
 
 const STORAGE_KEY = "aether:wardrobe-sections";
@@ -29,6 +30,7 @@ export function WardrobeGrid({
     items: items.filter((i) => i.category === category),
   })).filter((g) => g.items.length > 0);
 
+  const tx = useTaxonomy();
   const [open, setOpen] = useState<OpenMap>({});
 
   // Hydrate saved collapse state after mount to avoid SSR mismatch.
@@ -70,7 +72,7 @@ export function WardrobeGrid({
             >
               <span className="flex items-center gap-2.5">
                 <span className="font-serif text-xl">
-                  {CATEGORY_PLURAL_LABELS[category]}
+                  {tx("categoryPlural", category)}
                 </span>
                 <span className="rounded-full bg-secondary px-2 py-0.5 text-xs text-muted-foreground">
                   {categoryItems.length}

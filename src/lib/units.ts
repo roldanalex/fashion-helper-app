@@ -35,3 +35,32 @@ export const FAHRENHEIT_COUNTRIES = new Set([
 export function defaultUnitsForCountry(country: string | null | undefined): Units {
   return country && FAHRENHEIT_COUNTRIES.has(country.toUpperCase()) ? "imperial" : "metric";
 }
+
+/* ---------- Body measurements (1.5.2): each has its own unit ---------- */
+
+export type WeightUnit = "kg" | "lb";
+export type HeightUnit = "cm" | "ftin";
+
+export interface MeasureUnits {
+  weight: WeightUnit;
+  height: HeightUnit;
+}
+
+/** First guess from the country; the user can change each one in Settings. */
+export function defaultMeasuresForCountry(country: string | null | undefined): MeasureUnits {
+  const imperial = defaultUnitsForCountry(country) === "imperial";
+  return { weight: imperial ? "lb" : "kg", height: imperial ? "ftin" : "cm" };
+}
+
+/** Reads a profile's units, falling back to the temperature unit for rows from before 0013. */
+export function measuresFrom(profile: {
+  units?: Units | null;
+  weight_unit?: string | null;
+  height_unit?: string | null;
+} | null | undefined): MeasureUnits {
+  const imperial = profile?.units === "imperial";
+  return {
+    weight: profile?.weight_unit === "lb" || profile?.weight_unit === "kg" ? profile.weight_unit : imperial ? "lb" : "kg",
+    height: profile?.height_unit === "ftin" || profile?.height_unit === "cm" ? profile.height_unit : imperial ? "ftin" : "cm",
+  };
+}

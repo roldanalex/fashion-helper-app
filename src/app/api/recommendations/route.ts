@@ -1,10 +1,14 @@
 import { NextResponse } from "next/server";
+import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { requireApproved } from "@/lib/access";
 import { geocode, getTodayWeather, weatherFlags } from "@/lib/weather";
 import { rerankAndExplain } from "@/lib/ai/reranking";
 import { enrichCombinations } from "@/lib/combinations/enrich";
 import { seasonOf } from "@/lib/personal/client-profile";
+import { personSessionOr404 } from "@/lib/people/session";
+import { suitsWeather } from "@/lib/trips/weather-fit";
+import { aiLanguageRule } from "@/i18n/config";
 import { faceFitBonus } from "@/lib/personal/face-fit";
 import {
   MAX_DAILY_ACCESSORIES,
@@ -42,6 +46,7 @@ function isFresh(c: Combination): boolean {
 }
 
 export async function POST(request: Request) {
+  const t = await getTranslations("today");
   const supabase = await createClient();
   const { user, deny } = await requireApproved(supabase);
   if (deny) return deny;
@@ -51,6 +56,7 @@ export async function POST(request: Request) {
   const destination: string | undefined = body.destination?.trim() || undefined;
   const notes: string | undefined = body.notes?.trim() || undefined;
   const force: boolean = !!body.force;
+  const personId: string | undefined = typeof body.personId === "string" ? body.personId : undefined;
   // Verified coordinates from the autocomplete — used directly, no re-geocode.
   const destLat: number | undefined =
     typeof body.destLat === "number" ? body.destLat : undefined;
@@ -59,30 +65,25 @@ export async function POST(request: Request) {
 
   if (!occasion || !(occasion in OCCASION_WEIGHTS)) {
     return NextResponse.json(
-      { error: { code: "bad_request", message: "Valid occasion is required" } },
+      { error: { code: "bad_request", message: t("errors.occasionRequired") } },
       { status: 400 },
     );
   }
 
   const today = new Date().toISOString().slice(0, 10);
+  const { session, deny: notFound } = await personSessionOr404(supabase, user, personId);
+  if (notFound) return notFound;
+  const { wardrobe, active } = session;
 
   // Reuse today's stored plan — reloads cost zero AI calls.
   if (!force) {
-    const { data: existing } = await supabase
-      .from("daily_plans")
-      .select("*")
-      .eq("user_id", user.id)
-      .eq("plan_date", today)
-      .eq("occasion", occasion)
-      .maybeSingle();
+    const existing = await wardrobe.plan(today, occasion);
     if (existing?.recommendations?.length) {
       const picks = existing.recommendations as RankedRecommendation[];
-      const combos = await fetchCombosByIds(
-        supabase,
-        picks.map((r) => r.combination_id),
-      );
+      const combos = await wardrobe.outfitsByIds(picks.map((r) => r.combination_id));
       const enriched = await enrichCombinations(
         supabase,
+        wardrobe,
         withDailyAccessories(combos, picks),
       );
       return NextResponse.json({
@@ -94,13 +95,8 @@ export async function POST(request: Request) {
     }
   }
 
-  // Profile (home location + styles)
-  const { data: profile } = await supabase
-    .from("profiles")
-    // "*" also brings build and colouring (and keeps working before migration 0010).
-    .select("*")
-    .eq("id", user.id)
-    .single();
+  // The Family's home (from the Account) and the Person's own styles and traits.
+  const profile = session.accountProfile;
 
   // Resolve where the day happens
   let lat = profile?.home_lat;
@@ -137,8 +133,7 @@ export async function POST(request: Request) {
       {
         error: {
           code: "no_location",
-          message:
-            "I couldn't place that destination. Try a city name, or set your home location in Settings.",
+          message: t("errors.noLocation"),
         },
       },
       { status: 422 },
@@ -147,14 +142,14 @@ export async function POST(request: Request) {
 
   let weather: WeatherSnapshot;
   try {
-    weather = await getTodayWeather(lat, lon, locationName);
+    weather = await getTodayWeather(lat, lon, locationName, session.locale);
   } catch (err) {
     console.error("Weather fetch failed:", err);
     return NextResponse.json(
       {
         error: {
           code: "weather_failed",
-          message: "Couldn't reach the weather service. Try again shortly.",
+          message: t("errors.weatherFailed"),
         },
       },
       { status: 502 },
@@ -164,45 +159,26 @@ export async function POST(request: Request) {
   const flags = weatherFlags(weather);
 
   // Deterministic stage: filter + rank the combination table.
-  const { data: comboData } = await supabase
-    .from("combinations")
-    .select("*")
-    .eq("user_id", user.id)
-    .eq("hidden", false)
-    .overlaps("season_suitability", flags.seasonBands)
-    .order("overall_score", { ascending: false })
-    .limit(200);
-  let pool = (comboData ?? []) as Combination[];
+  let pool = await wardrobe.outfits({ seasonsAny: flags.seasonBands, limit: 200 });
 
   // Rain rule needs shoe materials.
   if (flags.rainy && pool.length > 0) {
     const shoeIds = [...new Set(pool.map((c) => c.shoes_id))];
-    const { data: shoesData } = await supabase
-      .from("clothing_items")
-      .select("id, material")
-      .in("id", shoeIds);
-    const badShoes = new Set(
-      (shoesData ?? [])
-        .filter((s) => s.material === "suede" || s.material === "canvas")
-        .map((s) => s.id),
-    );
-    pool = pool.filter((c) => !badShoes.has(c.shoes_id));
+    const shoesData = await wardrobe.pieces({ ids: shoeIds });
+    const shoesById = new Map(shoesData.map((p) => [p.id, p]));
+    pool = pool.filter((c) => suitsWeather(c, shoesById, { tempC: null, rainy: true }));
   }
 
   // Personal fit: a small bonus for colours that flatter near the face. It
   // only reorders close calls; thresholds still use the table's own scores.
-  const colorSeason = profile ? seasonOf(profile) : null;
+  const colorSeason = seasonOf(active.personal);
   const faceBonus = new Map<string, number>();
   if (colorSeason && pool.length > 0) {
     const faceIds = [
       ...new Set(pool.flatMap((c) => [c.top_id, c.outerwear_id]).filter(Boolean) as string[]),
     ];
-    const { data: faceItems } = await supabase
-      .from("clothing_items")
-      .select("id, color_hex")
-      .eq("user_id", user.id)
-      .in("id", faceIds);
-    const colorsById = new Map((faceItems ?? []).map((i) => [i.id as string, i]));
+    const faceItems = await wardrobe.pieces({ ids: faceIds });
+    const colorsById = new Map(faceItems.map((i) => [i.id, i]));
     for (const c of pool) faceBonus.set(c.id, faceFitBonus(c, colorsById, colorSeason));
   }
   const sortKey = (c: Combination) => occasionScore(c, occasion) + (faceBonus.get(c.id) ?? 0);
@@ -237,21 +213,14 @@ export async function POST(request: Request) {
 
   // Watch and accessory pools: every confirmed piece, so the stylist can pick
   // the right watch or belt for the day rather than the table's default.
-  const { data: poolData } = await supabase
-    .from("clothing_items")
-    .select("*")
-    .eq("user_id", user.id)
-    .in("category", ["watch", "accessory"])
-    .eq("archived", false)
-    .eq("ai_status", "confirmed");
-  const ownedExtras = (poolData ?? []) as ClothingItem[];
+  const ownedExtras = await wardrobe.pieces({ confirmed: true, categories: ["watch", "accessory"] });
   const watchPool = ownedExtras.filter((i) => i.category === "watch");
   const accessoryPool = ownedExtras.filter((i) => i.category === "accessory");
   const watchIds = new Set(watchPool.map((w) => w.id));
   const accessoryById = new Map(accessoryPool.map((a) => [a.id, a]));
 
   // LLM stage: one gpt-4o-mini call to rank, accessorize and explain.
-  const enrichedAll = await enrichCombinations(supabase, candidates);
+  const enrichedAll = await enrichCombinations(supabase, wardrobe, candidates);
   const itemsById = new Map<string, ClothingItem>();
   for (const e of enrichedAll)
     for (const s of e.slots) itemsById.set(s.item.id, s.item);
@@ -262,7 +231,7 @@ export async function POST(request: Request) {
       rank: i + 1,
       watch_id: c.watch_id,
       accessory_ids: c.accessory_ids,
-      explanation: c.notes ?? "A reliably strong combination from your table.",
+      explanation: c.notes ?? t("fallbackExplanation"),
     }));
 
   let picks: RankedRecommendation[];
@@ -275,8 +244,8 @@ export async function POST(request: Request) {
       weather,
       occasion,
       notes,
-      stylePreferences: profile?.style_preferences ?? [],
-      client: profile,
+      subject: active.subject,
+      languageRule: aiLanguageRule(session.locale),
     });
     const valid = new Map(candidates.map((c) => [c.id, c]));
     picks = result.picks
@@ -304,36 +273,22 @@ export async function POST(request: Request) {
   if (picks.length === 0) picks = fallbackPicks();
 
   // Persist the plan; mark combos as recommended for freshness tracking.
-  const { data: plan } = await supabase
-    .from("daily_plans")
-    .upsert(
-      {
-        user_id: user.id,
-        plan_date: today,
-        occasion,
-        destination: destination ?? null,
-        dest_lat: lat,
-        dest_lon: lon,
-        notes: notes ?? null,
-        weather,
-        recommendations: picks,
-      },
-      { onConflict: "user_id,plan_date,occasion" },
-    )
-    .select()
-    .single();
-
-  await supabase
-    .from("combinations")
-    .update({ last_recommended: new Date().toISOString() })
-    .in(
-      "id",
-      picks.map((p) => p.combination_id),
-    );
+  const plan = await wardrobe.savePlan({
+    plan_date: today,
+    occasion,
+    destination: destination ?? null,
+    dest_lat: lat,
+    dest_lon: lon,
+    notes: notes ?? null,
+    weather,
+    recommendations: picks,
+  });
+  await wardrobe.markRecommended(picks.map((p) => p.combination_id));
 
   const pickedSet = new Set(picks.map((p) => p.combination_id));
   const enrichedPicked = await enrichCombinations(
     supabase,
+    wardrobe,
     withDailyAccessories(
       candidates.filter((c) => pickedSet.has(c.id)),
       picks,
@@ -387,15 +342,6 @@ function withDailyAccessories(
         : c.accessory_ids,
     };
   });
-}
-
-async function fetchCombosByIds(
-  supabase: Awaited<ReturnType<typeof createClient>>,
-  ids: string[],
-): Promise<Combination[]> {
-  if (ids.length === 0) return [];
-  const { data } = await supabase.from("combinations").select("*").in("id", ids);
-  return (data ?? []) as Combination[];
 }
 
 function attachExplanations(

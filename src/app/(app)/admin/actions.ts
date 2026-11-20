@@ -2,18 +2,20 @@
 
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { getAccess } from "@/lib/access";
 
-const emailSchema = z.string().email("That doesn't look like an email");
+const emailSchema = z.string().email();
 
 export async function grantAccess(email: string) {
+  const t = await getTranslations("admin.errors");
   const supabase = await createClient();
   const { user, isAdmin } = await getAccess(supabase);
-  if (!user || !isAdmin) return { error: "Admins only" };
+  if (!user || !isAdmin) return { error: t("adminsOnly") };
 
   const parsed = emailSchema.safeParse(email.trim().toLowerCase());
-  if (!parsed.success) return { error: parsed.error.issues[0].message };
+  if (!parsed.success) return { error: t("invalidEmail") };
 
   // RLS ("Admins manage grants") is the backstop for this insert.
   const { error } = await supabase.from("access_grants").insert({
@@ -22,7 +24,7 @@ export async function grantAccess(email: string) {
   });
   if (error) {
     return {
-      error: error.code === "23505" ? "Already has access" : "Could not grant access",
+      error: error.code === "23505" ? t("alreadyHasAccess") : t("couldNotGrant"),
     };
   }
 
@@ -31,20 +33,21 @@ export async function grantAccess(email: string) {
 }
 
 export async function revokeAccess(email: string) {
+  const t = await getTranslations("admin.errors");
   const supabase = await createClient();
   const { user, isAdmin } = await getAccess(supabase);
-  if (!user || !isAdmin) return { error: "Admins only" };
+  if (!user || !isAdmin) return { error: t("adminsOnly") };
 
   const target = email.trim().toLowerCase();
   if (target === user.email?.toLowerCase()) {
-    return { error: "You can't revoke your own access" };
+    return { error: t("cannotRevokeSelf") };
   }
 
   const { error } = await supabase
     .from("access_grants")
     .delete()
     .eq("email", target);
-  if (error) return { error: "Could not revoke access" };
+  if (error) return { error: t("couldNotRevoke") };
 
   revalidatePath("/admin");
   return { ok: true };

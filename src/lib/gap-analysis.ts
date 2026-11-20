@@ -15,6 +15,7 @@ function makeProbe(category: Category, formality: number): ClothingItem {
   return {
     id: `probe-${category}`,
     user_id: "probe",
+    person_id: "probe",
     name: `probe ${category}`,
     category,
     subcategory: null,

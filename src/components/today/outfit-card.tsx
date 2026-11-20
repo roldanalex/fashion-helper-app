@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { Badge } from "@/components/ui/badge";
 import type { ClothingItem, Combination } from "@/types/database";
 
@@ -24,6 +25,7 @@ export function OutfitCard({
   outfit: Outfit;
   action?: React.ReactNode;
 }) {
+  const t = useTranslations("today");
   const { combination, slots, rank, explanation } = outfit;
 
   return (
@@ -34,7 +36,7 @@ export function OutfitCard({
           <Badge variant="secondary">{combination.overall_score.toFixed(1)} / 10</Badge>
           {combination.old_money_score != null &&
             combination.old_money_score >= 8 && (
-              <Badge className="bg-primary/15 text-primary">Old money</Badge>
+              <Badge className="bg-primary/15 text-primary">{t("card.oldMoney")}</Badge>
             )}
         </div>
         {action}

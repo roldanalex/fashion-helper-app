@@ -1,0 +1,17 @@
+{
+  "language": "Idioma",
+  "back": "Voltar",
+  "continue": "Continuar",
+  "skip": "Pular",
+  "saving": "Salvando…",
+  "optional": "opcional",
+  "tryAgain": "Tentar de novo",
+  "signOut": "Sair",
+  "continueWithGoogle": "Continuar com o Google",
+  "googleSignInFailed": "Não foi possível iniciar o login com o Google. Tente de novo.",
+  "units": {
+    "temperatureUnit": "Unidade de temperatura",
+    "celsius": "Celsius",
+    "fahrenheit": "Fahrenheit"
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "deselectHint": "Facoltativo. Tocca di nuovo un'opzione scelta per toglierla.",
+  "gender": "Genere",
+  "ageRange": "Fascia d'età",
+  "heightOptional": "Altezza (facoltativo)",
+  "feet": "Piedi",
+  "inches": "Pollici",
+  "heightCm": "Altezza in cm (facoltativo)",
+  "weightLb": "Peso in lb (facoltativo)",
+  "weightKg": "Peso in kg (facoltativo)",
+  "bodyShape": "Corporatura",
+  "bodyShapeHint": "Aiuta lo stylist a bilanciare le proporzioni. Il peso non viene mai inviato all'IA.",
+  "fit": "Che vestibilità preferisci?",
+  "skinTone": "Carnagione",
+  "undertone": "Sottotono",
+  "undertoneHelp": "Caldo: le vene sembrano più verdi e l'oro ti dona. Freddo: le vene sembrano più blu e l'argento ti dona. Neutro: entrambi, o non sei sicuro.",
+  "hairColor": "Colore dei capelli",
+  "eyeColor": "Colore degli occhi",
+  "styleNotes": "C'è altro che lo stylist dovrebbe sapere? (facoltativo)",
+  "styleNotesPlaceholder": "es. preferisco coprire le braccia; niente jeans skinny; soffro il caldo.",
+  "seasonEmpty": "Aggiungi sottotono, colore dei capelli o degli occhi e lo stylist capirà quali colori ti valorizzano vicino al viso.",
+  "yourSeason": "La tua stagione cromatica: <b>{season}</b>",
+  "nearTheFace": "Vicino al viso, {summary}.",
+  "seasonColours": "Colori {season}",
+  "season": {
+    "spring": {
+      "summary": "caldi, limpidi e chiari: avorio, cammello, blu navy caldo, corallo, verdi caldi e marroni dorati"
+    },
+    "summer": {
+      "summary": "freddi, morbidi e chiari: bianco morbido, grigio tortora, azzurro polvere e blu ardesia, rosa, lavanda e navy tenue"
+    },
+    "autumn": {
+      "summary": "caldi, intensi e smorzati: panna, cammello, oliva, ruggine, cioccolato, verde bosco e blu navy caldo"
+    },
+    "winter": {
+      "summary": "freddi, limpidi e ad alto contrasto: bianco puro, nero, antracite, blu navy pieno, bordeaux, smeraldo e toni ghiaccio"
+    }
+  },
+  "colors": {
+    "black": "nero",
+    "burgundy": "bordeaux",
+    "camel": "cammello",
+    "charcoal": "antracite",
+    "chocolate": "cioccolato",
+    "coral": "corallo",
+    "cream": "panna",
+    "crisp_white": "bianco puro",
+    "dove_grey": "grigio tortora",
+    "dusty_rose": "rosa antico",
+    "emerald": "smeraldo",
+    "forest_green": "verde bosco",
+    "fuchsia": "fucsia",
+    "golden_brown": "marrone dorato",
+    "icy_blue": "azzurro ghiaccio",
+    "ivory": "avorio",
+    "lavender": "lavanda",
+    "light_warm_grey": "grigio caldo chiaro",
+    "mustard": "senape",
+    "olive": "oliva",
+    "optic_white": "bianco ottico",
+    "orange": "arancione",
+    "powder_blue": "azzurro polvere",
+    "royal_blue": "blu royal",
+    "rust": "ruggine",
+    "sage": "salvia",
+    "silver_grey": "grigio argento",
+    "slate_blue": "blu ardesia",
+    "soft_navy": "navy tenue",
+    "soft_white": "bianco morbido",
+    "true_navy": "blu navy pieno",
+    "turquoise": "turchese",
+    "warm_green": "verde caldo",
+    "warm_navy": "blu navy caldo"
+  }
+}

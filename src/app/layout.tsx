@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Jost } from "next/font/google";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages, getTranslations } from "next-intl/server";
 import { Toaster } from "@/components/ui/sonner";
 import { Providers } from "@/components/shared/providers";
 import "./globals.css";
@@ -15,28 +17,30 @@ const jost = Jost({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: {
-    default: "Aether Wardrobe",
-    template: "%s · Aether Wardrobe",
-  },
-  description:
-    "Your personal AI stylist. Photograph your wardrobe, plan your day, and dress impeccably — whatever the weather.",
-  applicationName: "Aether Wardrobe",
-  appleWebApp: {
-    capable: true,
-    title: "Aether",
-    statusBarStyle: "black",
-  },
-  formatDetection: { telephone: false },
-  openGraph: {
-    type: "website",
-    siteName: "Aether Wardrobe",
-    title: "Aether Wardrobe",
-    description:
-      "Your personal AI stylist. Photograph your wardrobe, plan your day, and dress impeccably — whatever the weather.",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("landing");
+  const description = t("meta.description");
+  return {
+    title: {
+      default: "Aether Wardrobe",
+      template: "%s · Aether Wardrobe",
+    },
+    description,
+    applicationName: "Aether Wardrobe",
+    appleWebApp: {
+      capable: true,
+      title: "Aether",
+      statusBarStyle: "black",
+    },
+    formatDetection: { telephone: false },
+    openGraph: {
+      type: "website",
+      siteName: "Aether Wardrobe",
+      title: "Aether Wardrobe",
+      description,
+    },
+  };
+}
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -47,18 +51,21 @@ export const viewport: Viewport = {
   colorScheme: "dark",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const [locale, messages] = await Promise.all([getLocale(), getMessages()]);
   return (
     <html
-      lang="en"
+      lang={locale}
       className={`dark ${cormorant.variable} ${jost.variable} h-full antialiased`}
     >
       <body className="grain flex min-h-full flex-col">
-        <Providers>{children}</Providers>
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          <Providers>{children}</Providers>
+        </NextIntlClientProvider>
         <Toaster position="top-center" />
       </body>
     </html>

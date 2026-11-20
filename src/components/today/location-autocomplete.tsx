@@ -2,6 +2,7 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { Loader2, MapPin } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
@@ -37,6 +38,7 @@ export function LocationAutocomplete({
   /** A verified place was chosen. */
   onSelect: (result: LocationResult) => void;
 }) {
+  const t = useTranslations("today");
   const [results, setResults] = useState<LocationResult[]>([]);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -139,7 +141,7 @@ export function LocationAutocomplete({
       <ul
         id={listId}
         role="listbox"
-        aria-label="Matching places"
+        aria-label={t("location.matchingPlaces")}
         hidden={!open || results.length === 0}
         className="absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-md border bg-popover p-1 shadow-md"
       >

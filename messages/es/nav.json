@@ -1,0 +1,49 @@
+{
+  "today": "Hoy",
+  "stylist": "Estilista",
+  "wardrobe": "Armario",
+  "outfits": "Conjuntos",
+  "family": "Familia",
+  "shop": "Tienda",
+  "settings": "Ajustes",
+  "admin": "Administración",
+  "more": "Más",
+  "howItWorks": "Cómo funciona",
+  "welcome": "Bienvenida",
+  "awaitingInvitation": "Esperando invitación",
+  "mainLabel": "Principal",
+  "moreDescription": "Tienda, ajustes y ayuda",
+  "people": {
+    "listLabel": "Personas",
+    "you": "(tú)",
+    "dressing": "Vistiendo a",
+    "addPerson": "Agregar persona",
+    "sheetTitle": "¿A quién vestimos?",
+    "sheetDescription": "Armario, Conjuntos, Hoy, Estilista y Tienda siguen tu elección."
+  },
+  "generation": {
+    "woven": "{count, plural, one {Se tejió # conjunto nuevo en tu repertorio} other {Se tejieron # conjuntos nuevos en tu repertorio}}",
+    "failed": "No se pudieron crear algunos conjuntos: abre Armario y toca “Crear conjuntos” para reintentar",
+    "buildingFor": "Creando conjuntos para {names}…",
+    "and": " y ",
+    "styling": "Aether está estilizando tu armario, tejiendo combinaciones de conjuntos…"
+  },
+  "error": {
+    "title": "Un hilo suelto",
+    "body": "Esta página no cargó. Tu armario y tus conjuntos están a salvo. Inténtalo de nuevo y, si sigue pasando, cierra sesión y vuelve a entrar.",
+    "reference": "Referencia: {digest}"
+  },
+  "notFound": {
+    "title": "No está en el armario",
+    "body": "Esta página no existe, o la prenda que mostraba se eliminó.",
+    "goToToday": "Ir a Hoy"
+  },
+  "setupNeeded": {
+    "title": "Falta una actualización de la base de datos",
+    "body": "Aether 1.5.0 guarda los armarios por persona. Quien administra la app debe ejecutar la migración <code>0011_people.sql</code> en el SQL Editor de Supabase. No se ha perdido nada."
+  },
+  "pending": {
+    "title": "Esperando tu invitación",
+    "body": "Iniciaste sesión como <b>{email}</b>, pero esta cuenta aún no tiene acceso. Aether Wardrobe es solo por invitación: pide al propietario que apruebe tu correo y luego recarga esta página."
+  }
+}

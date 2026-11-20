@@ -1,0 +1,49 @@
+{
+  "today": "Oggi",
+  "stylist": "Stylist",
+  "wardrobe": "Guardaroba",
+  "outfits": "Outfit",
+  "family": "Famiglia",
+  "shop": "Acquisti",
+  "settings": "Impostazioni",
+  "admin": "Admin",
+  "more": "Altro",
+  "howItWorks": "Come funziona",
+  "welcome": "Benvenuto",
+  "awaitingInvitation": "In attesa di invito",
+  "mainLabel": "Principale",
+  "moreDescription": "Acquisti, impostazioni e aiuto",
+  "people": {
+    "listLabel": "Persone",
+    "you": "(tu)",
+    "dressing": "Stai vestendo",
+    "addPerson": "Aggiungi una persona",
+    "sheetTitle": "Chi vestiamo?",
+    "sheetDescription": "Guardaroba, Outfit, Oggi, Stylist e Acquisti seguono la tua scelta."
+  },
+  "generation": {
+    "woven": "{count, plural, one {# nuovo outfit aggiunto alla tua tabella} other {# nuovi outfit aggiunti alla tua tabella}}",
+    "failed": "Alcuni outfit non sono stati creati: apri Guardaroba e tocca «Crea outfit» per riprovare",
+    "buildingFor": "Creo gli outfit per {names}…",
+    "and": " e ",
+    "styling": "Aether sta studiando il tuo guardaroba e intreccia le combinazioni…"
+  },
+  "error": {
+    "title": "Un filo sciolto",
+    "body": "Questa pagina non si è caricata. Il tuo guardaroba e i tuoi outfit sono al sicuro. Riprova e, se continua a succedere, esci e accedi di nuovo.",
+    "reference": "Riferimento: {digest}"
+  },
+  "notFound": {
+    "title": "Non è nel guardaroba",
+    "body": "Questa pagina non esiste, oppure il capo che mostrava è stato rimosso.",
+    "goToToday": "Vai a Oggi"
+  },
+  "setupNeeded": {
+    "title": "Manca un aggiornamento del database",
+    "body": "Aether 1.5.0 salva un guardaroba per ogni persona. Chi gestisce l'app deve eseguire la migrazione <code>0011_people.sql</code> nell'SQL Editor di Supabase. Non è andato perso nulla."
+  },
+  "pending": {
+    "title": "In attesa del tuo invito",
+    "body": "Hai effettuato l'accesso come <b>{email}</b>, ma questo account non ha ancora l'accesso. Aether Wardrobe è solo su invito: chiedi al proprietario di approvare la tua email, poi aggiorna questa pagina."
+  }
+}

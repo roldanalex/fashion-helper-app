@@ -1,0 +1,68 @@
+{
+  "meta": {
+    "title": "Conjuntos"
+  },
+  "page": {
+    "title": "Conjuntos",
+    "titleFor": "Conjuntos de {name}",
+    "subtitle": "{count, plural, one {# combinación} other {# combinaciones}} que vale la pena usar",
+    "noMatchTitle": "Ningún conjunto coincide con estos filtros",
+    "noMatchBody": "Quita un filtro o baja la puntuación para ver más de tu repertorio.",
+    "emptyTitle": "Aún no hay combinaciones",
+    "emptyBody": "Confirma al menos una prenda superior, una inferior y un par de zapatos en tu armario, y los conjuntos se crearán solos.",
+    "goToWardrobe": "Ir al armario",
+    "showing": "Mostrando {shown} de {total}",
+    "showMore": "Mostrar más conjuntos"
+  },
+  "card": {
+    "unhidden": "El conjunto volvió a tu repertorio",
+    "hidden": "Conjunto oculto",
+    "hiddenDescription": "No se recomendará. Muestra los conjuntos ocultos para encontrarlo de nuevo.",
+    "undo": "Deshacer",
+    "boosted": "Destacado",
+    "hiddenBadge": "Oculto",
+    "resting": "En descanso",
+    "removeBoost": "Quitar destacado",
+    "boost": "Destacar combinación",
+    "unhide": "Mostrar combinación",
+    "hide": "Ocultar combinación"
+  },
+  "filters": {
+    "slot": {
+      "top": "prenda superior",
+      "bottom": "prenda inferior",
+      "shoes": "par de zapatos",
+      "outerwear": "abrigo",
+      "watch": "reloj",
+      "accessory": "accesorio"
+    },
+    "filterBy": "Filtrar por {label}",
+    "any": "Cualquier {label}",
+    "scoreMin": "Puntuación {min}+",
+    "includingHidden": "Incluye ocultos",
+    "buildAround": "Armar en torno a una prenda",
+    "occasionSeasonScore": "Ocasión, temporada y puntuación",
+    "filterByOccasion": "Filtrar por ocasión",
+    "occasion": "Ocasión",
+    "anyOccasion": "Cualquier ocasión",
+    "filterBySeason": "Filtrar por temporada",
+    "season": "Temporada",
+    "anySeason": "Cualquier temporada",
+    "minimumScore": "Puntuación mínima",
+    "score": "Puntuación",
+    "showHidden": "Mostrar conjuntos ocultos",
+    "filters": "Filtros",
+    "filtersCount": "Filtros ({count})",
+    "sheetTitle": "Filtrar conjuntos",
+    "sheetDescription": "Los resultados se actualizan al elegir.",
+    "clearAll": "Borrar todo",
+    "showOutfits": "Ver conjuntos",
+    "activeFilters": "Filtros activos",
+    "removeFilter": ", quitar filtro"
+  },
+  "errors": {
+    "notSignedIn": "No has iniciado sesión",
+    "couldNotUpdate": "No se pudo actualizar. Inténtalo de nuevo.",
+    "generationFailed": "No se pudieron generar los conjuntos. Puedes reintentar desde la página de la prenda."
+  }
+}

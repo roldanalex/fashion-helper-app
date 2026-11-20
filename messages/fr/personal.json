@@ -1,0 +1,75 @@
+{
+  "deselectHint": "Facultatif. Touchez à nouveau une option choisie pour l'effacer.",
+  "gender": "Genre",
+  "ageRange": "Tranche d'âge",
+  "heightOptional": "Taille (facultatif)",
+  "feet": "Pieds",
+  "inches": "Pouces",
+  "heightCm": "Taille en cm (facultatif)",
+  "weightLb": "Poids en lb (facultatif)",
+  "weightKg": "Poids en kg (facultatif)",
+  "bodyShape": "Morphologie",
+  "bodyShapeHint": "Aide le styliste à équilibrer les proportions. Le poids n'est jamais envoyé à l'IA.",
+  "fit": "Quelle coupe préférez-vous ?",
+  "skinTone": "Carnation",
+  "undertone": "Sous-ton",
+  "undertoneHelp": "Chaud : vos veines paraissent plutôt vertes et l'or vous flatte. Froid : vos veines paraissent plutôt bleues et l'argent vous flatte. Neutre : les deux, ou vous ne savez pas.",
+  "hairColor": "Couleur des cheveux",
+  "eyeColor": "Couleur des yeux",
+  "styleNotes": "Autre chose que le styliste devrait savoir ? (facultatif)",
+  "styleNotesPlaceholder": "ex. je préfère couvrir mes bras ; pas de jean skinny ; j'ai souvent chaud.",
+  "seasonEmpty": "Indiquez votre sous-ton, la couleur de vos cheveux ou de vos yeux, et le styliste déterminera les couleurs qui vous flattent près du visage.",
+  "yourSeason": "Votre saison colorimétrique : <b>{season}</b>",
+  "nearTheFace": "Près du visage : {summary}.",
+  "seasonColours": "Couleurs {season}",
+  "season": {
+    "spring": {
+      "summary": "chaudes, claires et lumineuses : ivoire, camel, marine chaud, corail, verts chauds et bruns dorés"
+    },
+    "summer": {
+      "summary": "froides, douces et claires : blanc doux, gris tourterelle, bleu poudre et bleu ardoise, rose, lavande et marine doux"
+    },
+    "autumn": {
+      "summary": "chaudes, riches et sourdes : crème, camel, olive, rouille, chocolat, vert forêt et marine chaud"
+    },
+    "winter": {
+      "summary": "froides, nettes et contrastées : blanc pur, noir, anthracite, vrai marine, bordeaux, émeraude et tons glacés"
+    }
+  },
+  "colors": {
+    "black": "noir",
+    "burgundy": "bordeaux",
+    "camel": "camel",
+    "charcoal": "anthracite",
+    "chocolate": "chocolat",
+    "coral": "corail",
+    "cream": "crème",
+    "crisp_white": "blanc pur",
+    "dove_grey": "gris tourterelle",
+    "dusty_rose": "vieux rose",
+    "emerald": "émeraude",
+    "forest_green": "vert forêt",
+    "fuchsia": "fuchsia",
+    "golden_brown": "brun doré",
+    "icy_blue": "bleu glacier",
+    "ivory": "ivoire",
+    "lavender": "lavande",
+    "light_warm_grey": "gris chaud clair",
+    "mustard": "moutarde",
+    "olive": "olive",
+    "optic_white": "blanc optique",
+    "orange": "orange",
+    "powder_blue": "bleu poudre",
+    "royal_blue": "bleu roi",
+    "rust": "rouille",
+    "sage": "vert sauge",
+    "silver_grey": "gris argent",
+    "slate_blue": "bleu ardoise",
+    "soft_navy": "marine doux",
+    "soft_white": "blanc doux",
+    "true_navy": "vrai marine",
+    "turquoise": "turquoise",
+    "warm_green": "vert chaud",
+    "warm_navy": "marine chaud"
+  }
+}

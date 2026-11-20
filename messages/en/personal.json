@@ -1,0 +1,75 @@
+{
+  "deselectHint": "Optional. Tap a chosen option again to clear it.",
+  "gender": "Gender",
+  "ageRange": "Age range",
+  "heightOptional": "Height (optional)",
+  "feet": "Feet",
+  "inches": "Inches",
+  "heightCm": "Height in cm (optional)",
+  "weightLb": "Weight in lb (optional)",
+  "weightKg": "Weight in kg (optional)",
+  "bodyShape": "Body shape",
+  "bodyShapeHint": "Helps the stylist balance proportions. Weight is never sent to the AI.",
+  "fit": "How do you like clothes to fit?",
+  "skinTone": "Skin tone",
+  "undertone": "Undertone",
+  "undertoneHelp": "Warm: veins look greener and gold flatters you. Cool: veins look bluer and silver flatters you. Neutral: both, or you are not sure.",
+  "hairColor": "Hair colour",
+  "eyeColor": "Eye colour",
+  "styleNotes": "Anything else the stylist should know? (optional)",
+  "styleNotesPlaceholder": "e.g. I prefer to cover my arms; no skinny jeans; I run warm.",
+  "seasonEmpty": "Add your undertone, hair or eye colour and the stylist will work out which colours flatter you near the face.",
+  "yourSeason": "Your colour season: <b>{season}</b>",
+  "nearTheFace": "Near the face, {summary}.",
+  "seasonColours": "{season} colours",
+  "season": {
+    "spring": {
+      "summary": "warm, clear and light: ivory, camel, warm navy, coral, warm greens and golden browns"
+    },
+    "summer": {
+      "summary": "cool, soft and light: soft white, dove grey, powder and slate blue, rose, lavender and soft navy"
+    },
+    "autumn": {
+      "summary": "warm, rich and muted: cream, camel, olive, rust, chocolate, forest green and warm navy"
+    },
+    "winter": {
+      "summary": "cool, clear and high-contrast: crisp white, black, charcoal, true navy, burgundy, emerald and icy tones"
+    }
+  },
+  "colors": {
+    "black": "black",
+    "burgundy": "burgundy",
+    "camel": "camel",
+    "charcoal": "charcoal",
+    "chocolate": "chocolate",
+    "coral": "coral",
+    "cream": "cream",
+    "crisp_white": "crisp white",
+    "dove_grey": "dove grey",
+    "dusty_rose": "dusty rose",
+    "emerald": "emerald",
+    "forest_green": "forest green",
+    "fuchsia": "fuchsia",
+    "golden_brown": "golden brown",
+    "icy_blue": "icy blue",
+    "ivory": "ivory",
+    "lavender": "lavender",
+    "light_warm_grey": "light warm grey",
+    "mustard": "mustard",
+    "olive": "olive",
+    "optic_white": "optic white",
+    "orange": "orange",
+    "powder_blue": "powder blue",
+    "royal_blue": "royal blue",
+    "rust": "rust",
+    "sage": "sage",
+    "silver_grey": "silver grey",
+    "slate_blue": "slate blue",
+    "soft_navy": "soft navy",
+    "soft_white": "soft white",
+    "true_navy": "true navy",
+    "turquoise": "turquoise",
+    "warm_green": "warm green",
+    "warm_navy": "warm navy"
+  }
+}

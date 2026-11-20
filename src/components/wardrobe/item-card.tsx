@@ -1,12 +1,15 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
+import { useTranslations } from "next-intl";
+import { useTaxonomy } from "@/i18n/taxonomy";
 import type { ClothingItem } from "@/types/database";
 
-const statusLabel: Record<string, { text: string; tone: string } | null> = {
-  pending: { text: "Analyzing…", tone: "bg-secondary text-secondary-foreground" },
-  tagged: { text: "Review tags", tone: "bg-primary/15 text-primary" },
-  failed: { text: "Needs retry", tone: "bg-destructive/20 text-[oklch(0.78_0.11_25)]" },
+/** `text` is a key under wardrobe.status. */
+const statusLabel: Record<string, { text: "pending" | "tagged" | "failed"; tone: string } | null> = {
+  pending: { text: "pending", tone: "bg-secondary text-secondary-foreground" },
+  tagged: { text: "tagged", tone: "bg-primary/15 text-primary" },
+  failed: { text: "failed", tone: "bg-destructive/20 text-[oklch(0.78_0.11_25)]" },
   confirmed: null,
 };
 
@@ -17,6 +20,8 @@ export function ItemCard({
   item: ClothingItem;
   imageUrl?: string;
 }) {
+  const t = useTranslations("wardrobe");
+  const tx = useTaxonomy();
   const status = statusLabel[item.ai_status];
 
   return (
@@ -38,7 +43,7 @@ export function ItemCard({
           <span
             className={`absolute left-2 top-2 rounded-full px-2 py-0.5 text-xs font-medium ${status.tone}`}
           >
-            {status.text}
+            {t(`status.${status.text}`)}
           </span>
         )}
       </div>
@@ -46,11 +51,11 @@ export function ItemCard({
         <p className="truncate text-sm font-medium">{item.name}</p>
         <div className="mt-1 flex items-center gap-1.5">
           <Badge variant="secondary" className="capitalize">
-            {item.subcategory ?? item.category}
+            {item.subcategory ? tx("subcategory", item.subcategory) : tx("category", item.category)}
           </Badge>
           {item.material && (
             <span className="text-xs capitalize text-muted-foreground">
-              {item.material}
+              {tx("material", item.material)}
             </span>
           )}
         </div>

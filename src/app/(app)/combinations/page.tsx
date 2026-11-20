@@ -6,11 +6,16 @@ import { PageHeader } from "@/components/shared/page-header";
 import { ComboCard } from "@/components/combinations/combo-card";
 import { FilterBar } from "@/components/combinations/filter-bar";
 import { enrichCombinations } from "@/lib/combinations/enrich";
-import { createClient } from "@/lib/supabase/server";
+import { personSession } from "@/lib/people/session";
+import { redirect } from "next/navigation";
 import { OCCASION_WEIGHTS, type Occasion } from "@/lib/constants";
 import type { Combination } from "@/types/database";
+import { getTranslations } from "next-intl/server";
 
-export const metadata = { title: "Outfits" };
+export async function generateMetadata() {
+  const t = await getTranslations("outfits");
+  return { title: t("meta.title") };
+}
 
 /** Cards per page; "Show more" adds another page. Keeps image signing and phones light. */
 const PAGE_SIZE = 24;
@@ -38,22 +43,17 @@ export default async function CombinationsPage({
   searchParams: Promise<Record<string, string | undefined>>;
 }) {
   const params = await searchParams;
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  const userId = user?.id ?? "";
+  const session = await personSession();
+  if (!session) redirect("/");
+  const { supabase, wardrobe, active } = session;
 
   // Confirmed pieces, to populate the "build around this item" filters.
-  const { data: itemRows } = await supabase
-    .from("clothing_items")
-    .select("id, name, category")
-    .eq("user_id", userId)
-    .eq("archived", false)
-    .eq("ai_status", "confirmed")
-    .in("category", ["top", "bottom", "shoes", "outerwear", "watch", "accessory"])
-    .order("name");
-  const items = itemRows ?? [];
+  const items = (
+    await wardrobe.pieces({
+      confirmed: true,
+      categories: ["top", "bottom", "shoes", "outerwear", "watch", "accessory"],
+    })
+  ).sort((a, b) => a.name.localeCompare(b.name));
   const tops = items.filter((i) => i.category === "top");
   const bottoms = items.filter((i) => i.category === "bottom");
   const shoes = items.filter((i) => i.category === "shoes");
@@ -61,27 +61,20 @@ export default async function CombinationsPage({
   const watches = items.filter((i) => i.category === "watch");
   const accessories = items.filter((i) => i.category === "accessory");
 
-  let query = supabase
-    .from("combinations")
-    .select("*")
-    .eq("user_id", userId)
-    .gte("overall_score", Number(params.min ?? 7))
-    .order("boosted", { ascending: false })
-    .order("overall_score", { ascending: false })
-    .limit(120);
-
-  if (params.hidden !== "1") query = query.eq("hidden", false);
-  if (params.season) query = query.contains("season_suitability", [params.season]);
-  if (params.top) query = query.eq("top_id", params.top);
-  if (params.bottom) query = query.eq("bottom_id", params.bottom);
-  if (params.shoes) query = query.eq("shoes_id", params.shoes);
-  if (params.outerwear) query = query.eq("outerwear_id", params.outerwear);
-  if (params.watch) query = query.eq("watch_id", params.watch);
-  if (params.accessory)
-    query = query.contains("accessory_ids", [params.accessory]);
-
-  const { data } = await query;
-  let combos = (data ?? []) as Combination[];
+  let combos = await wardrobe.outfits({
+    minScore: Number(params.min ?? 7),
+    includeHidden: params.hidden === "1",
+    seasonsAny: params.season ? [params.season] : undefined,
+    around: {
+      top: params.top,
+      bottom: params.bottom,
+      shoes: params.shoes,
+      outerwear: params.outerwear,
+      watch: params.watch,
+      accessory: params.accessory,
+    },
+    limit: 120,
+  });
 
   // Boosted first, then the most complete outfits (all five slots filled),
   // then by the occasion blend or overall score.
@@ -103,17 +96,18 @@ export default async function CombinationsPage({
     (k) => !!params[k],
   ) || (params.min !== undefined && params.min !== "7");
   const shown = Math.max(PAGE_SIZE, Math.min(Number(params.show) || PAGE_SIZE, 120));
-  const enriched = await enrichCombinations(supabase, combos.slice(0, shown));
+  const enriched = await enrichCombinations(supabase, wardrobe, combos.slice(0, shown));
   const moreParams = new URLSearchParams(
     Object.entries(params).filter((e): e is [string, string] => typeof e[1] === "string"),
   );
   moreParams.set("show", String(shown + PAGE_SIZE));
+  const t = await getTranslations("outfits.page");
 
   return (
     <main>
       <PageHeader
-        title="Outfits"
-        subtitle={`${combos.length} combinations worth wearing`}
+        title={active.isSelf ? t("title") : t("titleFor", { name: active.person.display_name })}
+        subtitle={t("subtitle", { count: combos.length })}
       />
 
       <div className="space-y-6 px-6 pb-10 md:px-10">
@@ -133,20 +127,19 @@ export default async function CombinationsPage({
             <Layers className="size-8 text-muted-foreground" aria-hidden />
             {filtered ? (
               <>
-                <h2 className="mt-4 font-serif text-2xl">No outfits match these filters</h2>
+                <h2 className="mt-4 font-serif text-2xl">{t("noMatchTitle")}</h2>
                 <p className="mt-2 max-w-sm text-sm text-muted-foreground">
-                  Remove a filter or lower the score to see more of your table.
+                  {t("noMatchBody")}
                 </p>
               </>
             ) : (
               <>
-                <h2 className="mt-4 font-serif text-2xl">No combinations yet</h2>
+                <h2 className="mt-4 font-serif text-2xl">{t("emptyTitle")}</h2>
                 <p className="mt-2 max-w-sm text-sm text-muted-foreground">
-                  Confirm at least a top, a bottom and a pair of shoes in your
-                  wardrobe, and outfits build themselves.
+                  {t("emptyBody")}
                 </p>
                 <Button asChild variant="outline" className="mt-6">
-                  <Link href="/wardrobe">Go to wardrobe</Link>
+                  <Link href="/wardrobe">{t("goToWardrobe")}</Link>
                 </Button>
               </>
             )}
@@ -166,11 +159,11 @@ export default async function CombinationsPage({
         {combos.length > shown && (
           <div className="flex flex-col items-center gap-2 pt-2">
             <p className="text-sm text-muted-foreground" aria-live="polite">
-              Showing {shown} of {combos.length}
+              {t("showing", { shown, total: combos.length })}
             </p>
             <Button asChild variant="outline">
               <Link href={`/combinations?${moreParams.toString()}`} scroll={false}>
-                Show more outfits
+                {t("showMore")}
               </Link>
             </Button>
           </div>

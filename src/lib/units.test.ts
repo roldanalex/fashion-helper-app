@@ -34,3 +34,18 @@ describe("units", () => {
     expect(defaultUnitsForCountry(null)).toBe("metric");
   });
 });
+
+describe("measure units", () => {
+  it("guesses from the country", async () => {
+    const { defaultMeasuresForCountry } = await import("@/lib/units");
+    expect(defaultMeasuresForCountry("US")).toEqual({ weight: "lb", height: "ftin" });
+    expect(defaultMeasuresForCountry("BR")).toEqual({ weight: "kg", height: "cm" });
+  });
+
+  it("reads each unit on its own, falling back to the temperature unit for old rows", async () => {
+    const { measuresFrom } = await import("@/lib/units");
+    expect(measuresFrom({ units: "imperial", weight_unit: "kg", height_unit: null })).toEqual({ weight: "kg", height: "ftin" });
+    expect(measuresFrom({ units: "metric" })).toEqual({ weight: "kg", height: "cm" });
+    expect(measuresFrom(null)).toEqual({ weight: "kg", height: "cm" });
+  });
+});

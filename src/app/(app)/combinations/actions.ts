@@ -1,25 +1,22 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createClient } from "@/lib/supabase/server";
+import { personSession } from "@/lib/people/session";
+import { getTranslations } from "next-intl/server";
 
 async function setFlag(
   combinationId: string,
   flag: "boosted" | "hidden",
   value: boolean,
 ) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) return { error: "Not signed in" };
+  const t = await getTranslations("outfits.errors");
+  const session = await personSession();
+  if (!session) return { error: t("notSignedIn") };
 
-  const { error } = await supabase
-    .from("combinations")
-    .update({ [flag]: value })
-    .eq("id", combinationId)
-    .eq("user_id", user.id);
-  if (error) return { error: "Could not update. Please try again." };
+  const ok = await session.wardrobe
+    .updateOutfit(combinationId, { [flag]: value })
+    .catch(() => false);
+  if (!ok) return { error: t("couldNotUpdate") };
 
   revalidatePath("/combinations");
   return { ok: true };

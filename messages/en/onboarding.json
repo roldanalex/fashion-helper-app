@@ -1,0 +1,31 @@
+{
+  "steps": {
+    "about": "About you",
+    "coloring": "Your colouring",
+    "style": "Your style",
+    "home": "Home base"
+  },
+  "stepOf": "Step {step} of {total}",
+  "optionalSuffix": " · optional",
+  "progressLabel": "Onboarding progress",
+  "privacy": "Every question here is optional. Your answers help the stylist pick colours and cuts that flatter you; they are sent to OpenAI only to rank your outfits and are never shown to anyone else. Edit them any time in Settings.",
+  "measureIn": "Measure in",
+  "metricUnits": "cm and kg",
+  "imperialUnits": "ft and lb",
+  "stylesLabel": "Styles you love (pick all that apply)",
+  "formalityLabel": "How dressed-up do you like to be? ({value}/10)",
+  "relaxed": "Relaxed",
+  "polished": "Polished",
+  "lifestyleLabel": "Your lifestyle (optional)",
+  "homeLabel": "Where are you based?",
+  "homePlaceholder": "Start typing a city",
+  "homeHelp": "Used to check your local weather each morning, and to choose °C or °F. You can set a different destination any day.",
+  "enterWardrobe": "Enter your wardrobe",
+  "errors": {
+    "completeStep": "Please complete this step",
+    "somethingMissing": "Something is missing",
+    "invalidProfile": "Invalid profile",
+    "notSignedIn": "Not signed in",
+    "couldNotSave": "Could not save your profile. Please try again."
+  }
+}

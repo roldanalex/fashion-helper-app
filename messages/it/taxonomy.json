@@ -1,0 +1,225 @@
+{
+  "category": {
+    "top": "Top",
+    "bottom": "Pantalone",
+    "outerwear": "Capospalla",
+    "shoes": "Scarpe",
+    "watch": "Orologio",
+    "accessory": "Accessorio"
+  },
+  "categoryPlural": {
+    "top": "Top",
+    "bottom": "Pantaloni",
+    "outerwear": "Capispalla",
+    "shoes": "Scarpe",
+    "watch": "Orologi",
+    "accessory": "Accessori"
+  },
+  "subcategory": {
+    "t-shirt": "T-shirt",
+    "v-neck": "Scollo a V",
+    "polo": "Polo",
+    "oxford shirt": "Camicia Oxford",
+    "button-down shirt": "Camicia button-down",
+    "dress shirt": "Camicia elegante",
+    "henley": "Henley",
+    "sweater": "Maglione",
+    "knit polo": "Polo in maglia",
+    "turtleneck": "Dolcevita",
+    "blouse": "Blusa",
+    "chinos": "Chino",
+    "dress trousers": "Pantaloni eleganti",
+    "jeans": "Jeans",
+    "shorts": "Bermuda",
+    "pleated trousers": "Pantaloni con pince",
+    "skirt": "Gonna",
+    "blazer": "Blazer",
+    "sport coat": "Giacca sportiva",
+    "overcoat": "Cappotto",
+    "trench coat": "Trench",
+    "cardigan": "Cardigan",
+    "quarter-zip": "Maglia con mezza zip",
+    "harrington jacket": "Giacca Harrington",
+    "field jacket": "Field jacket",
+    "loafers": "Mocassini",
+    "drivers": "Car shoe",
+    "oxfords": "Oxford",
+    "derbies": "Derby",
+    "boots": "Stivaletti",
+    "sneakers": "Sneaker",
+    "boat shoes": "Scarpe da barca",
+    "monk straps": "Monk strap",
+    "dress": "Elegante",
+    "sports": "Sportivo",
+    "diver": "Subacqueo",
+    "gmt": "GMT / viaggio",
+    "chronograph": "Cronografo",
+    "field": "Field",
+    "pilot": "Aviatore",
+    "belt": "Cintura",
+    "man bag": "Borsa da uomo",
+    "scarf": "Sciarpa",
+    "sunglasses": "Occhiali da sole",
+    "pocket square": "Pochette",
+    "hat": "Cappello"
+  },
+  "attribute": {
+    "dress": "Elegante",
+    "sports": "Sportivo",
+    "diver": "Subacqueo",
+    "gmt": "GMT / viaggio",
+    "chronograph": "Cronografo",
+    "field": "Field",
+    "pilot": "Aviatore",
+    "bracelet": "Bracciale in metallo",
+    "leather": "Cinturino in pelle",
+    "rubber": "Cinturino in caucciù",
+    "fabric": "Tessuto / NATO",
+    "silver": "Argento",
+    "gold": "Oro",
+    "rose gold": "Oro rosa",
+    "two-tone": "Bicolore"
+  },
+  "detailLabel": {
+    "Band": "Cinturino",
+    "Hardware tone": "Tono delle finiture",
+    "Buckle tone": "Tono della fibbia",
+    "Frame tone": "Tono della montatura"
+  },
+  "material": {
+    "cotton": "Cotone",
+    "pique": "Piqué",
+    "knit": "Maglia",
+    "wool": "Lana",
+    "merino": "Merino",
+    "cashmere": "Cashmere",
+    "linen": "Lino",
+    "denim": "Denim",
+    "leather": "Pelle",
+    "suede": "Scamosciato",
+    "silk": "Seta",
+    "tweed": "Tweed",
+    "corduroy": "Velluto a coste",
+    "canvas": "Tela",
+    "synthetic": "Sintetico",
+    "steel": "Acciaio",
+    "gold": "Oro",
+    "titanium": "Titanio",
+    "rubber": "Caucciù",
+    "nylon": "Nylon",
+    "acetate": "Acetato"
+  },
+  "pattern": {
+    "solid": "Tinta unita",
+    "striped": "Righe",
+    "plaid": "Scozzese",
+    "check": "Quadri",
+    "herringbone": "Spina di pesce",
+    "houndstooth": "Pied-de-poule",
+    "cable-knit": "Trecce",
+    "floral": "Floreale",
+    "printed": "Stampato"
+  },
+  "season": {
+    "spring": "Primavera",
+    "summer": "Estate",
+    "fall": "Autunno",
+    "winter": "Inverno"
+  },
+  "style": {
+    "old_money": "Old Money",
+    "classic": "Classico",
+    "smart_casual": "Smart Casual",
+    "minimalist": "Minimalista",
+    "sporty": "Sportivo",
+    "streetwear": "Streetwear"
+  },
+  "occasion": {
+    "work": "Lavoro",
+    "indoors": "Al chiuso / Conferenze",
+    "lunch": "Pranzo",
+    "mall": "Centro commerciale / Shopping",
+    "park": "Parco / All'aperto",
+    "going_out": "Serata fuori",
+    "dinner": "Cena",
+    "errands": "Commissioni",
+    "home": "A casa",
+    "travel": "Viaggio",
+    "celebration": "Festa",
+    "school": "Scuola"
+  },
+  "lifestyle": {
+    "office": "Ufficio",
+    "remote work": "Lavoro da remoto",
+    "parent": "Genitore",
+    "travel often": "Viaggio spesso",
+    "gym": "Palestra",
+    "social events": "Eventi sociali"
+  },
+  "gender": {
+    "male": "Uomo",
+    "female": "Donna",
+    "other": "Altro"
+  },
+  "ageRange": {
+    "18-24": "18-24",
+    "25-34": "25-34",
+    "35-44": "35-44",
+    "45-54": "45-54",
+    "55+": "55+"
+  },
+  "bodyShape": {
+    "slim": "Snella",
+    "average": "Media",
+    "athletic": "Atletica",
+    "broad": "Robusta",
+    "full": "Morbida"
+  },
+  "skinTone": {
+    "fair": "Molto chiara",
+    "light": "Chiara",
+    "medium": "Media",
+    "olive": "Olivastra",
+    "tan": "Ambrata",
+    "deep": "Scura"
+  },
+  "undertone": {
+    "warm": "Caldo",
+    "cool": "Freddo",
+    "neutral": "Neutro"
+  },
+  "hairColor": {
+    "black": "Neri",
+    "dark brown": "Castano scuro",
+    "brown": "Castani",
+    "light brown": "Castano chiaro",
+    "blonde": "Biondi",
+    "red": "Rossi",
+    "gray": "Grigi",
+    "white": "Bianchi"
+  },
+  "eyeColor": {
+    "brown": "Marroni",
+    "hazel": "Nocciola",
+    "green": "Verdi",
+    "blue": "Azzurri",
+    "gray": "Grigi"
+  },
+  "fit": {
+    "slim": "Slim, aderente al corpo",
+    "regular": "Regular, taglio classico",
+    "relaxed": "Comoda, più ampia"
+  },
+  "ageBand": {
+    "adult": "Adulto",
+    "teen": "Adolescente (13–17)",
+    "child": "Bambino (4–12)",
+    "toddler": "Primi anni (0–3)"
+  },
+  "colorSeason": {
+    "spring": "Primavera",
+    "summer": "Estate",
+    "autumn": "Autunno",
+    "winter": "Inverno"
+  }
+}

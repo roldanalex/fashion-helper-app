@@ -1,0 +1,68 @@
+{
+  "meta": {
+    "title": "Outfit"
+  },
+  "page": {
+    "title": "Outfit",
+    "titleFor": "Gli outfit di {name}",
+    "subtitle": "{count, plural, one {# combinazione} other {# combinazioni}} da indossare",
+    "noMatchTitle": "Nessun outfit corrisponde a questi filtri",
+    "noMatchBody": "Rimuovi un filtro o abbassa il punteggio per vedere più della tua tabella.",
+    "emptyTitle": "Ancora nessuna combinazione",
+    "emptyBody": "Conferma almeno un top, un pantalone e un paio di scarpe nel tuo guardaroba, e gli outfit si creano da soli.",
+    "goToWardrobe": "Vai al guardaroba",
+    "showing": "Visualizzati {shown} di {total}",
+    "showMore": "Mostra altri outfit"
+  },
+  "card": {
+    "unhidden": "Outfit di nuovo nella tua tabella",
+    "hidden": "Outfit nascosto",
+    "hiddenDescription": "Non verrà consigliato. Mostra gli outfit nascosti per ritrovarlo.",
+    "undo": "Annulla",
+    "boosted": "In evidenza",
+    "hiddenBadge": "Nascosto",
+    "resting": "A riposo",
+    "removeBoost": "Togli dall'evidenza",
+    "boost": "Metti in evidenza la combinazione",
+    "unhide": "Mostra la combinazione",
+    "hide": "Nascondi la combinazione"
+  },
+  "filters": {
+    "slot": {
+      "top": "top",
+      "bottom": "pantalone",
+      "shoes": "paio di scarpe",
+      "outerwear": "capospalla",
+      "watch": "orologio",
+      "accessory": "accessorio"
+    },
+    "filterBy": "Filtra per {label}",
+    "any": "Qualsiasi {label}",
+    "scoreMin": "Punteggio {min}+",
+    "includingHidden": "Nascosti inclusi",
+    "buildAround": "Costruisci attorno a un capo",
+    "occasionSeasonScore": "Occasione, stagione e punteggio",
+    "filterByOccasion": "Filtra per occasione",
+    "occasion": "Occasione",
+    "anyOccasion": "Qualsiasi occasione",
+    "filterBySeason": "Filtra per stagione",
+    "season": "Stagione",
+    "anySeason": "Qualsiasi stagione",
+    "minimumScore": "Punteggio minimo",
+    "score": "Punteggio",
+    "showHidden": "Mostra outfit nascosti",
+    "filters": "Filtri",
+    "filtersCount": "Filtri ({count})",
+    "sheetTitle": "Filtra gli outfit",
+    "sheetDescription": "I risultati si aggiornano mentre scegli.",
+    "clearAll": "Cancella tutto",
+    "showOutfits": "Mostra outfit",
+    "activeFilters": "Filtri attivi",
+    "removeFilter": ", rimuovi filtro"
+  },
+  "errors": {
+    "notSignedIn": "Accesso non effettuato",
+    "couldNotUpdate": "Impossibile aggiornare. Riprova.",
+    "generationFailed": "Creazione degli outfit non riuscita. Puoi riprovare dalla pagina del capo."
+  }
+}

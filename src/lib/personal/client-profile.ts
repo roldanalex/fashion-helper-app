@@ -23,6 +23,7 @@ export type PersonalProfile = Partial<
     | "style_notes"
     | "lifestyle_tags"
     | "units"
+    | "height_unit"
   >
 >;
 
@@ -68,7 +69,7 @@ export function describeClient(p: PersonalProfile | null | undefined): string {
   if (who) lines.push(`Client: ${who}.`);
 
   const build: string[] = [];
-  if (p.height_cm) build.push(formatHeight(p.height_cm, p.units ?? "metric"));
+  if (p.height_cm) build.push(formatHeight(p.height_cm, p.height_unit ?? p.units ?? "metric"));
   if (p.body_shape) build.push(`${p.body_shape} build`);
   if (build.length) {
     const advice = [

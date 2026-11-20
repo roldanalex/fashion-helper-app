@@ -5,6 +5,7 @@ import { combinationBatchSchema, type CombinationScore } from "@/lib/schemas";
 import { describeCandidate } from "@/lib/ai/describe";
 import { withRetry } from "@/lib/ai/retry";
 import type { Candidate } from "@/lib/combinations/candidates";
+import type { PromptSubject } from "@/lib/people/subject";
 
 /**
  * Score one batch of candidate combinations (text-only, gpt-4o-mini).
@@ -13,6 +14,10 @@ import type { Candidate } from "@/lib/combinations/candidates";
 export async function scoreCandidateBatch(
   batch: Candidate[],
   stylePreferences: string[],
+  /** Who the outfits are for; only the prompt-safe view (docs/adr/0002). */
+  subject?: PromptSubject,
+  /** aiLanguageRule(locale): the short stylist note comes back in the client's language. */
+  languageRule = "",
 ): Promise<CombinationScore[]> {
   const descriptors = batch.map((c, i) => describeCandidate(c, i)).join("\n\n");
   const styles = stylePreferences.length
@@ -28,7 +33,8 @@ export async function scoreCandidateBatch(
           role: "system",
           content: `You are a meticulous personal stylist scoring outfit combinations 0-10.
 The client's preferred styles: ${styles}.
-
+${subject?.audienceGuide ? `${subject.audienceGuide}
+` : ""}
 Scoring guide (decimals encouraged):
 - color_harmony_score: how well the palette works together.
 - old_money_score: quiet-luxury timelessness of the full look.
@@ -48,7 +54,7 @@ metals should agree (silver watch with a silver buckle); a watch or belt with
 the right hardware tone and formality is a small bonus to old_money_score and
 overall_score. An outfit with no watch is fine, just not a bonus.
 
-Score EVERY candidate, echoing its [index].`,
+Score EVERY candidate, echoing its [index].${languageRule ? `\n${languageRule} This applies to notes only.` : ""}`,
         },
         { role: "user", content: descriptors },
       ],

@@ -1,0 +1,30 @@
+{
+  "meta": {
+    "description": "Your personal AI stylist. Photograph your wardrobe, plan your day, and dress impeccably — whatever the weather."
+  },
+  "howItWorks": "How it works",
+  "signIn": "Sign in",
+  "eyebrow": "Your personal AI stylist",
+  "headline": "Dress impeccably, every single day.",
+  "lede": "Aether Wardrobe studies your clothes, your plans and the weather — then lays out the outfit. Quiet luxury, zero guesswork.",
+  "seeHowItWorks": "See how it works",
+  "footer": "Aether Wardrobe — woven with care.",
+  "features": {
+    "photograph": {
+      "title": "Photograph your wardrobe",
+      "body": "Snap each piece once. The AI reads the cut, color, pattern and material — pique, knit, wool — and files it perfectly."
+    },
+    "curated": {
+      "title": "Curated combinations",
+      "body": "Every new item is scored against everything you own. Only combinations worth wearing make the table."
+    },
+    "dressed": {
+      "title": "Dressed for the day",
+      "body": "Tell it where you're going — work, dinner, the park. It checks the weather there and picks what suits the occasion, and the colours that flatter you."
+    },
+    "grow": {
+      "title": "Grow with intention",
+      "body": "See exactly which purchase unlocks the most new outfits before you buy it. No more orphan pieces."
+    }
+  }
+}

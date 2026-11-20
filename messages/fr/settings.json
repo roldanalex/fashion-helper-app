@@ -1,0 +1,73 @@
+{
+  "meta": {
+    "title": "Réglages"
+  },
+  "page": {
+    "title": "Réglages",
+    "subtitle": "Votre profil, les personnes que vous habillez et votre compte.",
+    "yourAccount": "votre compte",
+    "yourFamily": "Votre famille"
+  },
+  "signedInAs": "Connecté en tant que",
+  "language": {
+    "title": "Langue",
+    "description": "L'application, son guide et tout ce qu'écrit le styliste suivent votre choix."
+  },
+  "style": {
+    "title": "Style et ville",
+    "yourStyles": "Vos styles",
+    "formality": "Niveau d'élégance préféré ({value}/10)",
+    "relaxed": "Décontracté",
+    "polished": "Soigné",
+    "yourLifestyle": "Votre mode de vie",
+    "homeLocation": "Ville de résidence",
+    "homePlaceholder": "Saisissez une ville",
+    "save": "Enregistrer style et ville"
+  },
+  "personal": {
+    "title": "Votre morphologie et votre colorimétrie",
+    "description": "Facultatif. Le styliste s'en sert pour privilégier les couleurs qui vous flattent près du visage et les coupes adaptées à votre morphologie, dans Aujourd'hui, le chat Styliste et Boutique. Ces données ne sont envoyées à OpenAI que pour classer vos tenues, le poids n'est jamais envoyé, et rien ici n'est montré à personne.",
+    "save": "Enregistrer morphologie et colorimétrie",
+    "clearAll": "Tout effacer",
+    "unsaved": "Modifications non enregistrées"
+  },
+  "people": {
+    "title": "Les personnes que vous habillez",
+    "description": "Ajoutez vos enfants, ou un adulte sans e-mail, et donnez à chacun sa propre garde-robe et ses tenues. Ils ne se connectent jamais. Pour les enfants, seule la description de leurs vêtements est envoyée à l'IA. Préparez des looks pour tous ensemble sur la page Famille."
+  },
+  "family": {
+    "title": "Membres de la famille avec un compte",
+    "description": "Invitez l'autre parent, ou toute personne ayant son propre compte Aether, dans votre famille. Un gestionnaire peut ajouter et modifier les vêtements des enfants ; un lecteur peut seulement consulter. Chacun décide si la famille voit sa propre garde-robe."
+  },
+  "units": {
+    "title": "Unités",
+    "description": "Chaque choix est enregistré immédiatement.",
+    "temperature": "Température",
+    "temperatureExample": "La météo dans Aujourd'hui, les voyages et les looks famille s'affiche ainsi : {example}.",
+    "weight": "Poids",
+    "kilograms": "Kilogrammes (kg)",
+    "pounds": "Livres (lb)",
+    "height": "Taille",
+    "centimetres": "Centimètres (cm)",
+    "feetInches": "Pieds et pouces (ft, in)"
+  },
+  "toast": {
+    "styleSaved": "Style et ville enregistrés",
+    "personalSaved": "Morphologie et colorimétrie enregistrées",
+    "personalSavedDescription": "Les choix d'Aujourd'hui et le styliste en tiendront compte dès votre prochaine demande.",
+    "personalCleared": "Morphologie et colorimétrie effacées",
+    "undo": "Annuler"
+  },
+  "errors": {
+    "invalidSettings": "Réglages non valides",
+    "homeCity": "Indiquez votre ville",
+    "notSignedIn": "Non connecté",
+    "couldNotSaveSettings": "Impossible d'enregistrer les réglages.",
+    "chooseTempUnit": "Choisissez Celsius ou Fahrenheit.",
+    "couldNotSaveTempUnit": "Impossible d'enregistrer l'unité de température.",
+    "checkDetails": "Vérifiez vos informations",
+    "couldNotSaveDetails": "Impossible d'enregistrer vos informations. Veuillez réessayer.",
+    "chooseMeasureUnits": "Choisissez une unité de poids et une unité de taille.",
+    "couldNotSaveUnits": "Impossible d'enregistrer les unités."
+  }
+}

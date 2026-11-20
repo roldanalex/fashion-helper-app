@@ -24,6 +24,12 @@ import {
 
 /* ---------- Profile / onboarding ---------- */
 
+/*
+ * Validation messages in these schemas are keys in messages/<locale>/validation.json,
+ * not English text. Show them with useValidationMessage() (client) or
+ * validationMessage() (server), which fall back to the raw text for anything else.
+ */
+
 /** "" and null both mean "prefer not to say". */
 const optionalEnum = <T extends readonly [string, ...string[]]>(values: T) =>
   z.preprocess((v) => (v === "" ? null : v), z.enum(values).nullable()).optional();
@@ -43,8 +49,8 @@ const optionalInt = (min: number, max: number, message: string) =>
 export const personalSchema = z.object({
   gender: optionalEnum(GENDERS),
   age_range: optionalEnum(AGE_RANGES),
-  height_cm: optionalInt(100, 250, "Height should be between 100 and 250 cm (3 ft 3 in and 8 ft 2 in)"),
-  weight_kg: optionalInt(30, 250, "Weight should be between 30 and 250 kg (66 and 551 lb)"),
+  height_cm: optionalInt(100, 250, "heightRange"),
+  weight_kg: optionalInt(30, 250, "weightRange"),
   body_shape: optionalEnum(BODY_SHAPES),
   skin_tone: optionalEnum(SKIN_TONES),
   skin_undertone: optionalEnum(SKIN_UNDERTONES),
@@ -54,7 +60,7 @@ export const personalSchema = z.object({
   style_notes: z
     .string()
     .trim()
-    .max(STYLE_NOTES_MAX, `Keep notes under ${STYLE_NOTES_MAX} characters`)
+    .max(STYLE_NOTES_MAX, "notesTooLong")
     .nullable()
     .optional(),
 });
@@ -65,9 +71,9 @@ export const profileSchema = personalSchema.extend({
   preferred_formality: z.number().int().min(1).max(10),
   style_preferences: z
     .array(z.enum(STYLE_PREFERENCES.map((s) => s.value) as [string, ...string[]]))
-    .min(1, "Pick at least one style"),
+    .min(1, "styleRequired"),
   lifestyle_tags: z.array(z.string()),
-  home_location: z.string().trim().min(2, "Where do you live?"),
+  home_location: z.string().trim().min(2, "homeRequired"),
 });
 
 export type ProfileInput = z.infer<typeof profileSchema>;

@@ -1,0 +1,68 @@
+{
+  "meta": {
+    "title": "Tenues"
+  },
+  "page": {
+    "title": "Tenues",
+    "titleFor": "Tenues de {name}",
+    "subtitle": "{count, plural, one {# association} other {# associations}} qui valent d'être portées",
+    "noMatchTitle": "Aucune tenue ne correspond à ces filtres",
+    "noMatchBody": "Retirez un filtre ou baissez le score pour voir davantage de votre table.",
+    "emptyTitle": "Pas encore d'associations",
+    "emptyBody": "Confirmez au moins un haut, un bas et une paire de chaussures dans votre garde-robe, et les tenues se créent toutes seules.",
+    "goToWardrobe": "Aller à la garde-robe",
+    "showing": "{shown} sur {total} affichées",
+    "showMore": "Afficher plus de tenues"
+  },
+  "card": {
+    "unhidden": "Tenue de retour dans votre table",
+    "hidden": "Tenue masquée",
+    "hiddenDescription": "Elle ne sera plus recommandée. Affichez les tenues masquées pour la retrouver.",
+    "undo": "Annuler",
+    "boosted": "Favorisée",
+    "hiddenBadge": "Masquée",
+    "resting": "Au repos",
+    "removeBoost": "Ne plus favoriser",
+    "boost": "Favoriser l'association",
+    "unhide": "Réafficher l'association",
+    "hide": "Masquer l'association"
+  },
+  "filters": {
+    "slot": {
+      "top": "haut",
+      "bottom": "bas",
+      "shoes": "paire de chaussures",
+      "outerwear": "veste ou manteau",
+      "watch": "montre",
+      "accessory": "accessoire"
+    },
+    "filterBy": "Filtrer par {label}",
+    "any": "{label} : tous",
+    "scoreMin": "Score {min}+",
+    "includingHidden": "Masquées incluses",
+    "buildAround": "Autour d'une pièce",
+    "occasionSeasonScore": "Occasion, saison et score",
+    "filterByOccasion": "Filtrer par occasion",
+    "occasion": "Occasion",
+    "anyOccasion": "Toutes les occasions",
+    "filterBySeason": "Filtrer par saison",
+    "season": "Saison",
+    "anySeason": "Toutes les saisons",
+    "minimumScore": "Score minimum",
+    "score": "Score",
+    "showHidden": "Afficher les tenues masquées",
+    "filters": "Filtres",
+    "filtersCount": "Filtres ({count})",
+    "sheetTitle": "Filtrer les tenues",
+    "sheetDescription": "Les résultats se mettent à jour au fil de vos choix.",
+    "clearAll": "Tout effacer",
+    "showOutfits": "Afficher les tenues",
+    "activeFilters": "Filtres actifs",
+    "removeFilter": ", retirer le filtre"
+  },
+  "errors": {
+    "notSignedIn": "Non connecté",
+    "couldNotUpdate": "Mise à jour impossible. Veuillez réessayer.",
+    "generationFailed": "La création des tenues a échoué. Vous pouvez réessayer depuis la page de la pièce."
+  }
+}

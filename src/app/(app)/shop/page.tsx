@@ -1,51 +1,40 @@
+import { redirect } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { PageHeader } from "@/components/shared/page-header";
 import { ShopClient } from "@/components/shop/shop-client";
 import { analyzeGaps } from "@/lib/gap-analysis";
-import { createClient } from "@/lib/supabase/server";
-import type { ClothingItem, ShoppingSuggestion } from "@/types/database";
+import { personSession } from "@/lib/people/session";
 
-export const metadata = { title: "Shop" };
+export async function generateMetadata() {
+  const t = await getTranslations("shop");
+  return { title: t("meta.title") };
+}
 
 export default async function ShopPage() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  const userId = user?.id ?? "";
+  const t = await getTranslations("shop");
+  const session = await personSession();
+  if (!session) redirect("/");
+  const { wardrobe, active } = session;
 
-  const [{ data: wardrobeData }, { data: profile }, { data: suggestionData }] =
-    await Promise.all([
-      supabase
-        .from("clothing_items")
-        .select("*")
-        .eq("user_id", userId)
-        .eq("archived", false)
-        .eq("ai_status", "confirmed"),
-      // Filter by id: admins can read every profile, so .single() alone would fail.
-      supabase.from("profiles").select("preferred_formality").eq("id", userId).single(),
-      supabase
-        .from("shopping_suggestions")
-        .select("*")
-        .eq("user_id", userId)
-        .in("status", ["suggested", "saved", "dismissed"])
-        .order("created_at", { ascending: false })
-        .limit(60),
-    ]);
-
-  const wardrobe = (wardrobeData ?? []) as ClothingItem[];
-  const gaps = analyzeGaps(wardrobe, profile?.preferred_formality ?? null);
+  const [pieces, suggestions] = await Promise.all([
+    wardrobe.pieces({ confirmed: true }),
+    wardrobe.suggestions(["suggested", "saved", "dismissed"]),
+  ]);
+  const gaps = analyzeGaps(pieces, active.formality);
 
   return (
     <main>
       <PageHeader
-        title="Shop"
-        subtitle="Grow your wardrobe with intention — every purchase scored by the outfits it unlocks."
+        title={active.isSelf ? t("meta.title") : t("header.titleFor", { name: active.person.display_name })}
+        subtitle={t("header.subtitle")}
       />
       <div className="px-6 pb-10 md:px-10">
         <ShopClient
+          key={active.person.id}
+          personId={active.person.id}
           gaps={gaps}
-          wardrobeCount={wardrobe.length}
-          suggestions={(suggestionData ?? []) as ShoppingSuggestion[]}
+          wardrobeCount={pieces.length}
+          suggestions={suggestions}
         />
       </div>
     </main>

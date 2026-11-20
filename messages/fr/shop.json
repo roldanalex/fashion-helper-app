@@ -1,0 +1,59 @@
+{
+  "meta": {
+    "title": "Boutique"
+  },
+  "header": {
+    "titleFor": "Boutique pour {name}",
+    "subtitle": "Enrichissez votre garde-robe avec intention : chaque achat est évalué selon les tenues qu'il débloque."
+  },
+  "categories": {
+    "top": "Chemises et polos",
+    "bottom": "Pantalons et shorts",
+    "outerwear": "Blazers et vestes",
+    "shoes": "Chaussures",
+    "watch": "Montres",
+    "accessory": "Accessoires"
+  },
+  "errors": {
+    "analysisFailed": "L'analyse a échoué",
+    "personGone": "Cette personne n'est plus sur votre compte. Rechargez la page.",
+    "couldNotUpdate": "Mise à jour impossible. Veuillez réessayer.",
+    "pickCategory": "Choisissez au moins une catégorie",
+    "tooFewItems": "Ajoutez d'abord quelques pièces pour que je sache sur quoi construire.",
+    "aiFailed": "Le personal shopper est indisponible. Réessayez dans un instant."
+  },
+  "toasts": {
+    "fresh": "Nouvelles suggestions de votre personal shopper",
+    "purchased": "Parfait : photographiez-la pour l'ajouter à votre garde-robe",
+    "undo": "Annuler",
+    "saved": "{name} enregistré",
+    "dismissed": "{name} écarté",
+    "restored": "{name} est de retour dans vos suggestions"
+  },
+  "gaps": {
+    "title": "Là où une pièce va le plus loin",
+    "subtitle": "Calculé à partir de votre vraie garde-robe : cochez ce que vous cherchez.",
+    "bestValue": "Meilleur choix",
+    "stats": "{owned} possédés · jusqu'à {unlocks} nouvelles tenues"
+  },
+  "actions": {
+    "consulting": "Consultation de votre shopper…",
+    "getSuggestions": "Obtenir des suggestions",
+    "tooFew": "Confirmez d'abord au moins {min} pièces dans votre garde-robe, pour que le shopper voie ce que vous avez déjà. Vous en avez {count}."
+  },
+  "suggestions": {
+    "title": "À ajouter",
+    "saved": "Enregistré",
+    "potentialOutfits": "tenues possibles",
+    "bought": "Je l'ai acheté",
+    "save": "Enregistrer",
+    "notForMe": "Pas pour moi"
+  },
+  "empty": {
+    "body": "Cochez les catégories qui vous intéressent et votre personal shopper vous proposera des pièces précises, chacune évaluée selon le nombre de nouvelles tenues qu'elle débloque."
+  },
+  "dismissed": {
+    "title": "Suggestions écartées ({count})",
+    "bringBack": "Récupérer"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "steps": {
+    "about": "À propos de vous",
+    "coloring": "Votre colorimétrie",
+    "style": "Votre style",
+    "home": "Votre ville"
+  },
+  "stepOf": "Étape {step} sur {total}",
+  "optionalSuffix": " · facultatif",
+  "progressLabel": "Progression de l'inscription",
+  "privacy": "Toutes les questions sont facultatives. Vos réponses aident le styliste à choisir les couleurs et les coupes qui vous flattent ; elles ne sont envoyées à OpenAI que pour classer vos tenues et ne sont jamais montrées à personne. Modifiez-les à tout moment dans Réglages.",
+  "measureIn": "Unités",
+  "metricUnits": "cm et kg",
+  "imperialUnits": "ft et lb",
+  "stylesLabel": "Les styles que vous aimez (plusieurs choix possibles)",
+  "formalityLabel": "Quel niveau d'élégance aimez-vous ? ({value}/10)",
+  "relaxed": "Décontracté",
+  "polished": "Soigné",
+  "lifestyleLabel": "Votre mode de vie (facultatif)",
+  "homeLabel": "Où habitez-vous ?",
+  "homePlaceholder": "Saisissez une ville",
+  "homeHelp": "Sert à consulter la météo locale chaque matin et à choisir °C ou °F. Vous pouvez indiquer une autre destination n'importe quel jour.",
+  "enterWardrobe": "Entrer dans votre garde-robe",
+  "errors": {
+    "completeStep": "Veuillez compléter cette étape",
+    "somethingMissing": "Il manque quelque chose",
+    "invalidProfile": "Profil non valide",
+    "notSignedIn": "Non connecté",
+    "couldNotSave": "Impossible d'enregistrer votre profil. Veuillez réessayer."
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "meta": {
+    "title": "Aujourd'hui"
+  },
+  "header": {
+    "titleFor": "Aujourd'hui pour {name}",
+    "subtitle": "Dites-moi votre programme, je compose la tenue."
+  },
+  "weather": {
+    "summary": "{location} : {temp}, {condition}, {precip} % de pluie"
+  },
+  "errors": {
+    "generic": "Une erreur s'est produite",
+    "personGone": "Cette personne n'est plus sur votre compte. Rechargez la page.",
+    "couldNotRecord": "Impossible d'enregistrer cette tenue. Veuillez réessayer.",
+    "occasionRequired": "Une occasion valide est requise",
+    "noLocation": "Je n'ai pas pu situer cette destination. Essayez un nom de ville, ou indiquez votre ville dans Réglages.",
+    "weatherFailed": "Impossible de joindre le service météo. Réessayez dans un instant."
+  },
+  "empty": {
+    "title": "Pas encore de tenues",
+    "ready": "Vos pièces sont là : le styliste n'a plus qu'à les assembler en tenues.",
+    "notReady": "Le styliste crée des tenues automatiquement dès que votre garde-robe contient les essentiels ci-dessous.",
+    "goToWardrobe": "Aller à la garde-robe"
+  },
+  "family": {
+    "title": "Vous sortez ensemble ?",
+    "body": "Préparez un look famille pour tout le monde d'un coup."
+  },
+  "form": {
+    "occasionLabel": "Qu'est-ce qui vous attend aujourd'hui ?",
+    "whereLabel": "Où ? (facultatif)",
+    "wherePlaceholder": "Chez vous, ou saisissez une ville",
+    "notesLabel": "Autre chose ? (facultatif)",
+    "notesPlaceholder": "ex. rendez-vous client, puis déjeuner avec les enfants",
+    "notesPlaceholderMinor": "ex. sport l'après-midi, puis le parc (sans prénoms, merci)",
+    "submit": "Habiller ma journée",
+    "submitting": "Vérification de la météo…"
+  },
+  "live": {
+    "pending": "Vérification de la météo et choix des tenues.",
+    "ready": "{count, plural, one {# tenue prête.} other {# tenues prêtes.}}",
+    "none": "Aucune tenue de votre table ne convient à cette journée."
+  },
+  "results": {
+    "heading": "Les choix du jour",
+    "fresh": "Nouvelles suggestions",
+    "none": "Rien dans votre table ne convient vraiment à cette journée et à cette météo. Quelques nouvelles pièces ouvriraient des possibilités : <link>voir quoi acheter ensuite</link>."
+  },
+  "worn": {
+    "toast": "C'est noté, portez-la bien",
+    "wearing": "Je la porte",
+    "wearThis": "Je porte celle-ci"
+  },
+  "card": {
+    "oldMoney": "Old money"
+  },
+  "location": {
+    "matchingPlaces": "Lieux correspondants"
+  },
+  "fallbackExplanation": "Une association solide et sûre de votre table."
+}

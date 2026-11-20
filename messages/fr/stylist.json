@@ -1,0 +1,90 @@
+{
+  "meta": {
+    "title": "Styliste"
+  },
+  "header": {
+    "titleFor": "Styliste pour {name}",
+    "subtitle": "Préparez la valise d'un voyage en une conversation, ou demandez ce qui va avec quoi."
+  },
+  "errors": {
+    "unavailable": "Le styliste est indisponible. Réessayez.",
+    "unavailableShortly": "Le styliste est indisponible pour le moment. Réessayez dans un instant.",
+    "messageRequired": "Un message est requis"
+  },
+  "starters": {
+    "lisbon": "Valise pour trois jours à Lisbonne : travail jeudi et vendredi, dîner vendredi soir, visites samedi.",
+    "chicago": "Un congrès de cinq jours à Chicago le mois prochain, bagage cabine uniquement. Est-ce possible avec une seule paire de chaussures ?",
+    "blazer": "Qu'est-ce qui va avec mon blazer marine pour un dîner vendredi ? J'aimerais porter les mocassins marron."
+  },
+  "empty": {
+    "title": "Le styliste a d'abord besoin de vos tenues",
+    "ready": "Vos pièces sont là. Dès que la table des tenues est prête, revenez préparer un voyage.",
+    "notReady": "Les valises sont préparées à partir de votre table de tenues, qui se crée toute seule une fois les essentiels ci-dessous confirmés.",
+    "goToWardrobe": "Aller à la garde-robe"
+  },
+  "intro": {
+    "lead": "Dites-moi où vous allez, pour combien de temps et ce que prévoient vos journées. Je proposerai une tenue par jour tirée de votre table, en gardant la valise légère.",
+    "hint": "Modifiez la ville et les dates selon votre voyage. Chaque tenue vient de votre table Tenues.",
+    "minorPrivacy": "Pour protéger la vie privée de {name}, le styliste ne le connaît que sous le nom « {alias} ». Merci de ne pas indiquer son prénom, son âge ou son école dans vos messages."
+  },
+  "chat": {
+    "replied": "Le styliste a répondu.",
+    "repliedWithCard": "Le styliste a répondu avec une fiche de plan.",
+    "cleared": "Conversation effacée",
+    "undo": "Annuler",
+    "startOver": "Recommencer",
+    "thinking": "Réflexion en cours…",
+    "noAnswer": "Le styliste n'a pas répondu.",
+    "tryAgain": "Réessayer"
+  },
+  "composer": {
+    "label": "Écrire au styliste",
+    "placeholder": "Où allez-vous, et à quoi ressemblent vos journées ?",
+    "stop": "Arrêter",
+    "send": "Envoyer"
+  },
+  "tools": {
+    "layingOut": "Organisation du voyage…",
+    "layingOutTo": "Organisation de {destination}…",
+    "tripNotOk": "Impossible d'organiser ce voyage pour l'instant",
+    "tripError": "Le planificateur n'a pas pu organiser ce voyage.",
+    "findingOutfits": "Recherche parmi vos tenues…",
+    "outfitsNotOk": "Impossible de trouver des tenues pour cela pour l'instant",
+    "outfitsError": "La recherche de tenues a échoué."
+  },
+  "weather": {
+    "noForecast": "pas de prévision",
+    "rain": "{precip} % de pluie",
+    "estimate": "estimation"
+  },
+  "cards": {
+    "looseFit": "approximatif",
+    "seeWhatWould": "Voir ce qui irait",
+    "oldMoney": "Old money"
+  },
+  "trip": {
+    "ariaLabel": "Plan de voyage pour {location}",
+    "dateRange": "Du {start} au {end}",
+    "packingHeading": "Valise pour {location}, du {start} au {end}",
+    "packingLine": "{name} (porté {count}×)",
+    "copied": "Liste copiée",
+    "copyFailed": "Copie impossible. Sélectionnez la liste et copiez-la à la main.",
+    "stats": {
+      "summary": "<b>{pieces, plural, one {# pièce} other {# pièces}}</b> pour {filled} tenues sur {total}",
+      "distinct": "({count} différentes)",
+      "shoes": "{count, plural, one {# paire} other {# paires}} de chaussures",
+      "outerwear": "{count} vestes ou manteaux",
+      "watches": "{count, plural, one {# montre} other {# montres}}"
+    },
+    "nothingSuits": "Rien dans votre table ne convient.",
+    "whatToPack": "À emporter",
+    "copyList": "Copier la liste",
+    "wornIn": "portée dans {count, plural, one {# tenue} other {# tenues}}"
+  },
+  "options": {
+    "ariaLabel": "Options de tenues",
+    "builtAround": "Autour de",
+    "nothingMatches": "Rien dans votre table ne correspond encore.",
+    "boosted": "Favorisée"
+  }
+}

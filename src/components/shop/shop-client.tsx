@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 import {
   Bookmark,
   Check,
@@ -17,31 +18,31 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
+import { useTaxonomy } from "@/i18n/taxonomy";
 import { updateSuggestionStatus } from "@/app/(app)/shop/actions";
 import type { CategoryGap } from "@/lib/gap-analysis";
 import type { ShoppingSuggestion } from "@/types/database";
-
-const CATEGORY_LABELS: Record<string, string> = {
-  top: "Shirts & polos",
-  bottom: "Pants & shorts",
-  outerwear: "Blazers & jackets",
-  shoes: "Shoes",
-  watch: "Watches",
-  accessory: "Accessories",
-};
 
 /** The shopper needs a few confirmed pieces to judge what is missing (see /api/shop/analyze). */
 const MIN_PIECES_FOR_SUGGESTIONS = 3;
 
 export function ShopClient({
+  personId,
   gaps,
   wardrobeCount,
   suggestions,
 }: {
+  /** The Active person. */
+  personId: string;
   gaps: CategoryGap[];
   wardrobeCount: number;
   suggestions: ShoppingSuggestion[];
 }) {
+  const t = useTranslations("shop");
+  const tx = useTaxonomy();
+  /** Shop's own plural labels (shop.categories.*), falling back to the taxonomy. */
+  const categoryLabel = (category: string) =>
+    t.has(`categories.${category}`) ? t(`categories.${category}`) : tx("categoryPlural", category);
   const tooFewPieces = wardrobeCount < MIN_PIECES_FOR_SUGGESTIONS;
   const router = useRouter();
   const [selected, setSelected] = useState<Set<string>>(new Set());
@@ -54,14 +55,14 @@ export function ShopClient({
       const res = await fetch("/api/shop/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ categories: [...selected] }),
+        body: JSON.stringify({ categories: [...selected], personId }),
       });
       const json = await res.json();
-      if (!res.ok) throw new Error(json.error?.message ?? "Analysis failed");
+      if (!res.ok) throw new Error(json.error?.message ?? t("errors.analysisFailed"));
       return json;
     },
     onSuccess: () => {
-      toast.success("Fresh suggestions from your personal shopper");
+      toast.success(t("toasts.fresh"));
       router.refresh();
     },
     onError: (err: Error) => toast.error(err.message),
@@ -82,21 +83,21 @@ export function ShopClient({
   ) {
     const previous = s.status;
     startTransition(async () => {
-      const res = await updateSuggestionStatus(s.id, status);
+      const res = await updateSuggestionStatus(s.id, status, personId);
       if (res?.error) {
         toast.error(res.error);
       } else if (status === "purchased") {
-        toast.success("Wonderful — photograph it to add it to your wardrobe", {
-          action: { label: "Undo", onClick: () => setStatus(s, previous) },
+        toast.success(t("toasts.purchased"), {
+          action: { label: t("toasts.undo"), onClick: () => setStatus(s, previous) },
         });
       } else if (status === "saved") {
-        toast.success(`Saved ${s.item_name}`);
+        toast.success(t("toasts.saved", { name: s.item_name }));
       } else if (status === "dismissed") {
-        toast.success(`Dismissed ${s.item_name}`, {
-          action: { label: "Undo", onClick: () => setStatus(s, previous) },
+        toast.success(t("toasts.dismissed", { name: s.item_name }), {
+          action: { label: t("toasts.undo"), onClick: () => setStatus(s, previous) },
         });
       } else {
-        toast.success(`${s.item_name} is back in your suggestions`);
+        toast.success(t("toasts.restored", { name: s.item_name }));
       }
       router.refresh();
     });
@@ -110,10 +111,9 @@ export function ShopClient({
   return (
     <div className="space-y-10">
       <section>
-        <h2 className="font-serif text-2xl">Where one piece goes furthest</h2>
+        <h2 className="font-serif text-2xl">{t("gaps.title")}</h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          Counted against your actual wardrobe — tick what you&apos;re shopping
-          for.
+          {t("gaps.subtitle")}
         </p>
         <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {gaps.map((gap) => (
@@ -129,22 +129,22 @@ export function ShopClient({
               <Checkbox
                 checked={selected.has(gap.category)}
                 onCheckedChange={() => toggle(gap.category)}
-                aria-label={CATEGORY_LABELS[gap.category]}
+                aria-label={categoryLabel(gap.category)}
                 className="mt-0.5"
               />
               <span className="min-w-0 flex-1">
                 <span className="flex items-center justify-between gap-2">
                   <span className="text-sm font-medium">
-                    {CATEGORY_LABELS[gap.category]}
+                    {categoryLabel(gap.category)}
                   </span>
                   {gap.bottleneck && (
                     <Badge className="bg-primary/15 text-primary">
-                      Best value
+                      {t("gaps.bestValue")}
                     </Badge>
                   )}
                 </span>
                 <span className="mt-1 block text-xs text-muted-foreground">
-                  {gap.owned} owned · up to {gap.unlocks} new outfits
+                  {t("gaps.stats", { owned: gap.owned, unlocks: gap.unlocks })}
                 </span>
                 <span className="mt-2 block h-1 overflow-hidden rounded-full bg-secondary" aria-hidden>
                   <span
@@ -166,25 +166,24 @@ export function ShopClient({
           {mutation.isPending ? (
             <>
               <Loader2 className="size-4 animate-spin" aria-hidden />
-              Consulting your shopper…
+              {t("actions.consulting")}
             </>
           ) : (
             <>
-              <Sparkles className="size-4" aria-hidden /> Get suggestions
+              <Sparkles className="size-4" aria-hidden /> {t("actions.getSuggestions")}
             </>
           )}
         </Button>
         {tooFewPieces && (
           <p className="mt-3 text-sm text-muted-foreground">
-            Confirm at least {MIN_PIECES_FOR_SUGGESTIONS} pieces in your wardrobe first,
-            so the shopper can see what you already own. You have {wardrobeCount}.
+            {t("actions.tooFew", { min: MIN_PIECES_FOR_SUGGESTIONS, count: wardrobeCount })}
           </p>
         )}
       </section>
 
       {open.length > 0 && (
         <section>
-          <h2 className="font-serif text-2xl">Worth adding</h2>
+          <h2 className="font-serif text-2xl">{t("suggestions.title")}</h2>
           <div className="mt-5 grid gap-4 md:grid-cols-2">
             {open.map((s) => (
               <article
@@ -196,7 +195,7 @@ export function ShopClient({
                     <h3 className="font-serif text-xl">{s.item_name}</h3>
                     <div className="mt-1 flex flex-wrap items-center gap-1.5">
                       <Badge variant="secondary" className="capitalize">
-                        {s.subcategory ?? s.category}
+                        {s.subcategory ? tx("subcategory", s.subcategory) : tx("category", s.category)}
                       </Badge>
                       {s.color_name && (
                         <span className="text-xs capitalize text-muted-foreground">
@@ -205,7 +204,7 @@ export function ShopClient({
                       )}
                       {s.status === "saved" && (
                         <Badge variant="outline" className="text-primary">
-                          Saved
+                          {t("suggestions.saved")}
                         </Badge>
                       )}
                     </div>
@@ -216,7 +215,7 @@ export function ShopClient({
                         +{s.estimated_new_combinations}
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        potential outfits
+                        {t("suggestions.potentialOutfits")}
                       </p>
                     </div>
                   )}
@@ -241,7 +240,7 @@ export function ShopClient({
                     disabled={pending}
                     onClick={() => setStatus(s, "purchased")}
                   >
-                    <Check className="size-3.5" aria-hidden /> I bought it
+                    <Check className="size-3.5" aria-hidden /> {t("suggestions.bought")}
                   </Button>
                   {s.status !== "saved" && (
                     <Button
@@ -251,7 +250,7 @@ export function ShopClient({
                       disabled={pending}
                       onClick={() => setStatus(s, "saved")}
                     >
-                      <Bookmark className="size-3.5" aria-hidden /> Save
+                      <Bookmark className="size-3.5" aria-hidden /> {t("suggestions.save")}
                     </Button>
                   )}
                   <Button
@@ -261,7 +260,7 @@ export function ShopClient({
                     disabled={pending}
                     onClick={() => setStatus(s, "dismissed")}
                   >
-                    <X className="size-3.5" aria-hidden /> Not for me
+                    <X className="size-3.5" aria-hidden /> {t("suggestions.notForMe")}
                   </Button>
                 </div>
               </article>
@@ -274,9 +273,7 @@ export function ShopClient({
         <div className="flex flex-col items-center rounded-xl border border-dashed py-16 text-center">
           <ShoppingBag className="size-8 text-muted-foreground" aria-hidden />
           <p className="mt-4 max-w-sm text-sm text-muted-foreground">
-            Tick the categories you&apos;re shopping for and your personal
-            shopper will suggest specific pieces — each scored by how many new
-            outfits it unlocks.
+            {t("empty.body")}
           </p>
         </div>
       )}
@@ -284,7 +281,7 @@ export function ShopClient({
       {dismissed.length > 0 && (
         <details className="rounded-xl border bg-card/40">
           <summary className="flex min-h-12 cursor-pointer items-center px-4 text-sm text-muted-foreground">
-            Dismissed suggestions ({dismissed.length})
+            {t("dismissed.title", { count: dismissed.length })}
           </summary>
           <ul className="divide-y border-t">
             {dismissed.map((s) => (
@@ -297,7 +294,7 @@ export function ShopClient({
                   disabled={pending}
                   onClick={() => setStatus(s, "suggested")}
                 >
-                  <RotateCcw className="size-3.5" aria-hidden /> Bring back
+                  <RotateCcw className="size-3.5" aria-hidden /> {t("dismissed.bringBack")}
                 </Button>
               </li>
             ))}

@@ -1,0 +1,59 @@
+{
+  "meta": {
+    "title": "Acquisti"
+  },
+  "header": {
+    "titleFor": "Acquisti per {name}",
+    "subtitle": "Fai crescere il tuo guardaroba con criterio: ogni acquisto è valutato in base agli outfit che sblocca."
+  },
+  "categories": {
+    "top": "Camicie e polo",
+    "bottom": "Pantaloni e bermuda",
+    "outerwear": "Blazer e giacche",
+    "shoes": "Scarpe",
+    "watch": "Orologi",
+    "accessory": "Accessori"
+  },
+  "errors": {
+    "analysisFailed": "Analisi non riuscita",
+    "personGone": "Questa persona non è più nel tuo account. Ricarica la pagina.",
+    "couldNotUpdate": "Impossibile aggiornare. Riprova.",
+    "pickCategory": "Scegli almeno una categoria",
+    "tooFewItems": "Aggiungi prima qualche capo, così so su cosa costruire.",
+    "aiFailed": "Il personal shopper non è disponibile. Riprova tra poco."
+  },
+  "toasts": {
+    "fresh": "Nuovi suggerimenti dal tuo personal shopper",
+    "purchased": "Ottimo: fotografalo per aggiungerlo al tuo guardaroba",
+    "undo": "Annulla",
+    "saved": "{name} salvato",
+    "dismissed": "{name} scartato",
+    "restored": "{name} è di nuovo tra i tuoi suggerimenti"
+  },
+  "gaps": {
+    "title": "Dove un capo rende di più",
+    "subtitle": "Calcolato sul tuo guardaroba reale: spunta ciò che stai cercando.",
+    "bestValue": "Miglior valore",
+    "stats": "{owned} posseduti · fino a {unlocks} nuovi outfit"
+  },
+  "actions": {
+    "consulting": "Consulto il tuo shopper…",
+    "getSuggestions": "Ricevi suggerimenti",
+    "tooFew": "Conferma prima almeno {min} capi nel tuo guardaroba, così lo shopper vede cosa possiedi già. Ne hai {count}."
+  },
+  "suggestions": {
+    "title": "Da aggiungere",
+    "saved": "Salvato",
+    "potentialOutfits": "outfit possibili",
+    "bought": "L'ho comprato",
+    "save": "Salva",
+    "notForMe": "Non fa per me"
+  },
+  "empty": {
+    "body": "Spunta le categorie che stai cercando e il tuo personal shopper ti suggerirà capi precisi, ognuno valutato in base a quanti nuovi outfit sblocca."
+  },
+  "dismissed": {
+    "title": "Suggerimenti scartati ({count})",
+    "bringBack": "Ripristina"
+  }
+}

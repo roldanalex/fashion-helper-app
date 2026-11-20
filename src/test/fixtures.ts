@@ -8,6 +8,7 @@ export function makeItem(overrides: Partial<ClothingItem> = {}): ClothingItem {
   return {
     id: overrides.id ?? `item-${counter}`,
     user_id: "user-1",
+    person_id: "person-1",
     name: overrides.name ?? `Item ${counter}`,
     category: "top",
     subcategory: null,
@@ -39,6 +40,7 @@ export function makeCombination(
   return {
     id: overrides.id ?? `combo-${counter}`,
     user_id: "user-1",
+    person_id: "person-1",
     top_id: "top-1",
     bottom_id: "bottom-1",
     outerwear_id: null,

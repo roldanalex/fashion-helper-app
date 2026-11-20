@@ -1,0 +1,30 @@
+{
+  "meta": {
+    "description": "Seu personal stylist com IA. Fotografe seu guarda-roupa, planeje seu dia e vista-se impecavelmente — faça o tempo que fizer."
+  },
+  "howItWorks": "Como funciona",
+  "signIn": "Entrar",
+  "eyebrow": "Seu personal stylist com IA",
+  "headline": "Vista-se impecavelmente, todos os dias.",
+  "lede": "O Aether Wardrobe estuda suas roupas, seus planos e o clima — e monta o look. Luxo discreto, zero adivinhação.",
+  "seeHowItWorks": "Veja como funciona",
+  "footer": "Aether Wardrobe — tecido com cuidado.",
+  "features": {
+    "photograph": {
+      "title": "Fotografe seu guarda-roupa",
+      "body": "Fotografe cada peça uma vez. A IA identifica corte, cor, estampa e material — piquet, tricô, lã — e cataloga tudo com perfeição."
+    },
+    "curated": {
+      "title": "Combinações selecionadas",
+      "body": "Cada peça nova é avaliada com tudo o que você tem. Só as combinações que valem a pena entram na tabela."
+    },
+    "dressed": {
+      "title": "Pronto para o dia",
+      "body": "Diga aonde você vai — trabalho, jantar, parque. Ele confere o clima lá e escolhe o que combina com a ocasião, nas cores que valorizam você."
+    },
+    "grow": {
+      "title": "Cresça com intenção",
+      "body": "Veja exatamente qual compra libera mais looks novos antes de comprar. Chega de peças órfãs."
+    }
+  }
+}

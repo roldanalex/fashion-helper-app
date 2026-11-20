@@ -1,0 +1,59 @@
+{
+  "meta": {
+    "title": "Loja"
+  },
+  "header": {
+    "titleFor": "Loja para {name}",
+    "subtitle": "Faça seu guarda-roupa crescer com intenção — cada compra avaliada pelos looks que ela libera."
+  },
+  "categories": {
+    "top": "Camisas e polos",
+    "bottom": "Calças e bermudas",
+    "outerwear": "Blazers e jaquetas",
+    "shoes": "Calçados",
+    "watch": "Relógios",
+    "accessory": "Acessórios"
+  },
+  "errors": {
+    "analysisFailed": "A análise falhou",
+    "personGone": "Essa pessoa não está mais na sua conta. Recarregue a página.",
+    "couldNotUpdate": "Não foi possível atualizar. Tente de novo.",
+    "pickCategory": "Escolha pelo menos uma categoria",
+    "tooFewItems": "Adicione algumas peças primeiro para eu saber de onde partir.",
+    "aiFailed": "O personal shopper está indisponível. Tente de novo daqui a pouco."
+  },
+  "toasts": {
+    "fresh": "Novas sugestões do seu personal shopper",
+    "purchased": "Ótimo — fotografe a peça para adicioná-la ao seu guarda-roupa",
+    "undo": "Desfazer",
+    "saved": "{name} salvo",
+    "dismissed": "{name} descartado",
+    "restored": "{name} voltou para as suas sugestões"
+  },
+  "gaps": {
+    "title": "Onde uma peça rende mais",
+    "subtitle": "Calculado com base no seu guarda-roupa real — marque o que você vai comprar.",
+    "bestValue": "Melhor escolha",
+    "stats": "{owned} no guarda-roupa · até {unlocks} looks novos"
+  },
+  "actions": {
+    "consulting": "Consultando seu personal shopper…",
+    "getSuggestions": "Ver sugestões",
+    "tooFew": "Confirme pelo menos {min} peças no seu guarda-roupa primeiro, para o personal shopper ver o que você já tem. Você tem {count}."
+  },
+  "suggestions": {
+    "title": "Vale a pena ter",
+    "saved": "Salvo",
+    "potentialOutfits": "looks possíveis",
+    "bought": "Comprei",
+    "save": "Salvar",
+    "notForMe": "Não é pra mim"
+  },
+  "empty": {
+    "body": "Marque as categorias que você quer comprar e seu personal shopper vai sugerir peças específicas — cada uma avaliada pela quantidade de looks novos que libera."
+  },
+  "dismissed": {
+    "title": "Sugestões descartadas ({count})",
+    "bringBack": "Trazer de volta"
+  }
+}

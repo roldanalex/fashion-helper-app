@@ -1,0 +1,111 @@
+{
+  "meta": {
+    "title": "Garde-robe",
+    "pieceTitle": "Pièce"
+  },
+  "page": {
+    "title": "Garde-robe",
+    "titleFor": "Garde-robe de {name}",
+    "catalogued": "{count, plural, one {# pièce cataloguée} other {# pièces cataloguées}}",
+    "subtitleEmpty": "Chaque pièce que vous possédez, joliment cataloguée.",
+    "emptyTitle": "Un placard vide",
+    "emptyBody": "Photographiez votre première pièce et le styliste commencera à construire votre table d'associations. Six à huit pièces suffisent pour de vraies tenues."
+  },
+  "item": {
+    "back": "Garde-robe"
+  },
+  "status": {
+    "pending": "Analyse…",
+    "tagged": "Vérifier les étiquettes",
+    "failed": "À relancer"
+  },
+  "readiness": {
+    "top": "Haut",
+    "bottom": "Bas",
+    "shoes": "Chaussures",
+    "outerwear": "Veste / manteau",
+    "watch": "Montre",
+    "accessories": "Accessoires",
+    "srMet": " : dans votre garde-robe",
+    "srOptional": " : facultatif, pas encore ajouté",
+    "srMissing": " : manquant",
+    "requiredNote": "Un haut, un bas et des chaussures sont requis. Veste ou manteau, montre et accessoires sont facultatifs ; ils ajoutent des couches et des finitions aux tenues.",
+    "notReady": "Confirmez au moins un haut, un bas et une paire de chaussures : c'est le minimum dont le styliste a besoin pour tisser une tenue. Les tenues se créent ensuite automatiquement à chaque pièce ajoutée.",
+    "pending": "{count, plural, one {# pièce attend encore} other {# pièces attendent encore}} ses tenues. Cela se fait d'habitude tout seul ; touchez pour terminer maintenant.",
+    "ready": "C'est prêt : le styliste a tissé des tenues à partir de votre garde-robe. Rendez-vous dans <b>Aujourd'hui</b> pour une recommandation."
+  },
+  "rebuild": {
+    "label": "Créer les tenues",
+    "couldNotStart": "Impossible de lancer la création",
+    "started": "C'est parti : le styliste crée vos tenues"
+  },
+  "tags": {
+    "name": "Nom",
+    "color": "Couleur",
+    "colorPlaceholder": "marine",
+    "colorSwatch": "Échantillon de couleur",
+    "category": "Catégorie",
+    "watchStyle": "Style de montre",
+    "type": "Type",
+    "material": "Matière",
+    "pattern": "Motif",
+    "seasons": "Saisons",
+    "formality": "Élégance ({value}/10)",
+    "oldMoney": "Esprit old money ({value}/10)",
+    "saveChanges": "Enregistrer",
+    "confirm": "Confirmer les étiquettes",
+    "reanalyze": "Réanalyser",
+    "archive": "Archiver",
+    "checkTags": "Vérifiez les étiquettes",
+    "saved": "Enregistré : création des associations de tenues…",
+    "reanalyzed": "Réanalysé : vérifiez les nouvelles étiquettes",
+    "reanalyzeFailed": "La réanalyse a échoué. Réessayez dans un instant.",
+    "archived": "{name} archivé",
+    "archivedDescription": "Ses tenues sont masquées jusqu'à ce que vous la récupériez.",
+    "undo": "Annuler",
+    "restored": "{name} restauré"
+  },
+  "upload": {
+    "trigger": "Ajouter",
+    "title": "Ajouter une pièce",
+    "titleFor": "Ajouter une pièce pour {name}",
+    "descriptionMinor": "Photographiez la pièce seule : personne ne la porte, et aucune étiquette nominative visible.",
+    "description": "Une photo nette, à plat ou sur un cintre, donne les meilleurs résultats.",
+    "changePhoto": "Changer de photo",
+    "choosePhoto": "Choisir une photo",
+    "previewAlt": "Vêtement sélectionné",
+    "tapToAdd": "Touchez pour ajouter une photo",
+    "takePhoto": "Prendre une photo",
+    "fromGallery": "Depuis la galerie",
+    "kindLabel": "Quel type de pièce est-ce ?",
+    "aboutLabel": "Décrivez-la au styliste (facultatif)",
+    "aboutPlaceholder": "ex. polo blanc en piqué, coupe ajustée, Lacoste",
+    "aboutHint": "Préciser la matière (piqué, maille, mérinos) rend l'étiquetage bien plus précis.",
+    "aboutHintMinor": " Décrivez la pièce, pas l'enfant : ni prénom, ni âge, ni nom d'école.",
+    "manualLabel": "Étiqueter moi-même",
+    "manualOn": "Vous indiquez couleur, type et matière ; la photo n'est pas envoyée à l'IA.",
+    "manualOff": "L'IA lit la photo et remplit les détails, que vous vérifiez ensuite.",
+    "upload": "Importer",
+    "uploadAnalyze": "Importer et analyser",
+    "needPhoto": "Ajoutez d'abord une photo de la pièce",
+    "preparing": "Préparation de la photo…",
+    "uploading": "Import en cours…",
+    "reading": "Lecture de la pièce…",
+    "photoSaved": "Photo enregistrée : ajoutez ses détails",
+    "analyzeFailed": "Importée, mais le styliste n'a pas pu la lire : vous pouvez la réanalyser depuis la page de la pièce.",
+    "analyzed": "Pièce analysée : vérifiez ses étiquettes",
+    "failed": "L'import a échoué. Veuillez réessayer."
+  },
+  "errors": {
+    "couldNotAdd": "Impossible d'ajouter la pièce. Veuillez réessayer.",
+    "personGone": "Cette personne n'est plus sur votre compte. Rechargez la page.",
+    "invalidTags": "Étiquettes non valides",
+    "couldNotSave": "Enregistrement impossible. Veuillez réessayer.",
+    "couldNotArchive": "Archivage impossible. Veuillez réessayer.",
+    "couldNotRestore": "Impossible de restaurer la pièce. Veuillez réessayer.",
+    "itemNotFound": "Pièce introuvable",
+    "couldNotReadPhoto": "Impossible de lire la photo",
+    "aiFailed": "Le styliste n'a pas pu lire cette photo. Essayez de la réanalyser."
+  },
+  "newPiece": "Nouvelle pièce"
+}

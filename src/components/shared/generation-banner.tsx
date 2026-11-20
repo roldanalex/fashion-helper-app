@@ -4,12 +4,16 @@ import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 import { Sparkles } from "lucide-react";
 
 interface StatusResponse {
   items: { id: string; name: string; combo_status: string }[];
   totalCombinations: number;
   generating: boolean;
+  /** Names of the People whose outfits are being built. */
+  building?: string[];
+  multiplePeople?: boolean;
 }
 
 /**
@@ -19,6 +23,7 @@ interface StatusResponse {
  * outfits are being woven; idle otherwise.
  */
 export function GenerationBanner() {
+  const t = useTranslations("nav");
   const router = useRouter();
   const prevTotal = useRef<number | null>(null);
   const wasGenerating = useRef(false);
@@ -43,15 +48,11 @@ export function GenerationBanner() {
           ? data.totalCombinations - prevTotal.current
           : 0;
       if (delta > 0) {
-        toast.success(
-          `Wove ${delta} new ${delta === 1 ? "outfit" : "outfits"} into your table`,
-        );
+        toast.success(t("generation.woven", { count: delta }));
       }
       const failed = data.items.filter((i) => i.combo_status === "failed");
       if (failed.length > 0) {
-        toast.error(
-          `Some outfits couldn't be built — open Wardrobe and tap "Build outfits" to retry`,
-        );
+        toast.error(t("generation.failed"));
       }
       router.refresh();
     }
@@ -61,7 +62,7 @@ export function GenerationBanner() {
       prevTotal.current = data.totalCombinations;
     }
     wasGenerating.current = data.generating;
-  }, [data, router]);
+  }, [data, router, t]);
 
   if (!data?.generating) return null;
 
@@ -78,7 +79,9 @@ export function GenerationBanner() {
       />
       <Sparkles className="size-4 animate-pulse" aria-hidden />
       <span className="relative font-medium">
-        Aether is styling your wardrobe — weaving outfit combinations…
+        {data.multiplePeople && data.building?.length
+          ? t("generation.buildingFor", { names: data.building.join(t("generation.and")) })
+          : t("generation.styling")}
       </span>
     </div>
   );

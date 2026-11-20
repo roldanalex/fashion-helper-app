@@ -4,7 +4,8 @@ import { openai } from "@ai-sdk/openai";
 import { rerankSchema, type RerankResult } from "@/lib/schemas";
 import { describeItem } from "@/lib/ai/describe";
 import { withRetry } from "@/lib/ai/retry";
-import { describeClient, PERSONAL_FIT_RULE, type PersonalProfile } from "@/lib/personal/client-profile";
+import { PERSONAL_FIT_RULE } from "@/lib/personal/client-profile";
+import type { PromptSubject } from "@/lib/people/subject";
 import {
   MAX_DAILY_ACCESSORIES,
   OCCASION_HINTS,
@@ -26,8 +27,8 @@ export async function rerankAndExplain({
   weather,
   occasion,
   notes,
-  stylePreferences,
-  client,
+  subject,
+  languageRule = "",
 }: {
   candidates: Combination[];
   itemsById: Map<string, ClothingItem>;
@@ -38,11 +39,12 @@ export async function rerankAndExplain({
   weather: WeatherSnapshot;
   occasion: Occasion;
   notes?: string | null;
-  stylePreferences: string[];
-  /** Build and colouring, when the client shared them. */
-  client?: PersonalProfile | null;
+  /** Who the outfits are for: the prompt-safe view only (docs/adr/0002). */
+  subject: PromptSubject;
+  /** aiLanguageRule(locale) */
+  languageRule?: string;
 }): Promise<RerankResult> {
-  const personal = describeClient(client);
+  const personal = subject.personalBlock;
   const describeCombo = (c: Combination) => {
     const slots: [string, string | null][] = [
       ["top", c.top_id],
@@ -93,7 +95,8 @@ Consider:
 - The weather: dress for comfort first (layers when cold, breathable when hot,
   sensible shoes when rain is likely).
 - The occasion and the client's own words about their plans.
-- Their preferred styles: ${stylePreferences.join(", ") || "smart casual"}.
+- ${subject.styleLine}${subject.audienceGuide ? `
+- ${subject.audienceGuide}` : ""}
 - Variety is a virtue, but never at the cost of appropriateness.
 ${personal ? `- The client themselves (below): among outfits that suit the day equally, prefer
   colours near the face that flatter them and cuts that suit their build.
@@ -113,13 +116,13 @@ when the day is bright and outdoors. If the pool is empty, return [].
 
 For each pick, write exactly two warm, concrete sentences explaining WHY —
 mention the weather, their plans and the watch or key accessory naturally, like
-a stylist laying clothes on the bed. Use the combination ids verbatim.`,
+a stylist laying clothes on the bed. Use the combination ids verbatim.${languageRule ? `\n${languageRule}` : ""}`,
         },
         {
           role: "user",
           content: `Today: ${occasion}${notes ? ` — "${notes}"` : ""}
 Occasion notes: ${OCCASION_HINTS[occasion]}
-Weather at destination (${weather.locationName}): ${weather.summary}, feels like ${weather.feelsLikeC}°C, humidity ${weather.humidity}%.
+Weather at destination${subject.isMinor ? "" : ` (${weather.locationName})`}: ${weather.summary}, feels like ${weather.feelsLikeC}°C, humidity ${weather.humidity}%.
 
 Watch pool:
 ${watchLines || "  (none)"}

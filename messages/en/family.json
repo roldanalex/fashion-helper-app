@@ -1,0 +1,91 @@
+{
+  "meta": {
+    "title": "Family"
+  },
+  "page": {
+    "title": "Family look",
+    "subtitle": "One outfit for each of you, from your own wardrobes, chosen to work together."
+  },
+  "modes": {
+    "coordinated": "Coordinated colours",
+    "matching": "One shared accent",
+    "relaxed": "Just dress well"
+  },
+  "missing": {
+    "no_outfits": "{name} has no outfits yet: add and confirm a top, a bottom and shoes for them.",
+    "no_weather_match": "{name} has nothing in their table for this weather."
+  },
+  "toast": {
+    "savedToday": "Saved {name}'s outfit for today",
+    "planned": "Planned {name}'s outfit for {date}"
+  },
+  "empty": {
+    "title": "Add the people you dress",
+    "description": "Add your children, or anyone without an email, under Settings → People. Each gets their own wardrobe, and this page dresses you all together for the same occasion.",
+    "addPerson": "Add a person"
+  },
+  "form": {
+    "who": "Who is going?",
+    "you": "(you)",
+    "noOutfits": "no outfits yet",
+    "occasion": "What's the occasion?",
+    "mode": "How should you look together?",
+    "when": "When?",
+    "where": "Where? (optional)",
+    "wherePlaceholder": "Home, or start typing a city",
+    "dressing": "Dressing everyone…",
+    "plan": "Plan our look"
+  },
+  "status": {
+    "choosing": "Choosing outfits for everyone.",
+    "ready": "{count, plural, one {# family look ready.} other {# family looks ready.}}"
+  },
+  "results": {
+    "title": "Your family looks",
+    "weather": "{place}: {temp}, {condition}, {rain}% rain",
+    "looseFits": "Nothing in {names}'s wardrobe is really made for this occasion, so these are the closest outfits.",
+    "and": " and ",
+    "none": "No family look fits this day yet. Try another occasion, or add a few pieces to the wardrobes listed above.",
+    "look": "Look {n}",
+    "palette": "Family palette",
+    "outfitOf": "{name}'s outfit",
+    "choosesOwn": "{name} chooses their own",
+    "plannedFor": "Planned for {name}",
+    "wear": "Wear this"
+  },
+  "plan": {
+    "notes": "Family look",
+    "explanation": "Chosen as part of a family look."
+  },
+  "errors": {
+    "couldNotPlan": "Could not plan the look",
+    "couldNotSaveOutfit": "Could not save that outfit.",
+    "notSignedIn": "Not signed in",
+    "notOnAccount": "That person is not on your account.",
+    "outfitGone": "That outfit is no longer in their table.",
+    "invalidEmail": "Enter a valid email address.",
+    "pickOccasion": "Pick an occasion",
+    "checkRequest": "Check the request",
+    "personNotFound": "Someone in this look is no longer on your account. Reload the page.",
+    "chooseWho": "Choose who the look is for"
+  },
+  "rpcErrors": {
+    "notManager": "Only the family's owner or a manager can invite people.",
+    "badRole": "Choose manager or viewer.",
+    "selfInvite": "That's your own email.",
+    "notApproved": "That email doesn't have access to Aether yet. Ask the admin to invite them first.",
+    "alreadyMember": "They're already in this family.",
+    "familyFull": "A family can have at most 8 members.",
+    "inviteNotFound": "That invite is no longer available.",
+    "ownerCannotLeave": "The owner can't leave their own family.",
+    "notOwner": "Only the family's owner can remove members."
+  },
+  "rpcFallback": {
+    "invite": "Could not send the invite. Please try again.",
+    "join": "Could not join the family. Please try again.",
+    "deleteInvite": "Could not remove the invite. Please try again.",
+    "leave": "Could not leave the family. Please try again.",
+    "remove": "Could not remove them. Please try again.",
+    "share": "Could not change sharing. Please try again."
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "heightRange": "Height should be between 100 and 250 cm (3 ft 3 in and 8 ft 2 in).",
+  "weightRange": "Weight should be between 30 and 250 kg (66 and 551 lb).",
+  "styleRequired": "Pick at least one style.",
+  "homeRequired": "Where do you live?",
+  "notesTooLong": "Keep notes under 300 characters.",
+  "nameRequired": "Give them a name or nickname.",
+  "nameTooLong": "Keep the name under 40 characters.",
+  "guardianRequired": "Confirm you are their parent or legal guardian."
+}

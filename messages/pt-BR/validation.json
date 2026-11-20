@@ -1,0 +1,10 @@
+{
+  "heightRange": "A altura deve ficar entre 100 e 250 cm (3 ft 3 in e 8 ft 2 in).",
+  "weightRange": "O peso deve ficar entre 30 e 250 kg (66 e 551 lb).",
+  "styleRequired": "Escolha pelo menos um estilo.",
+  "homeRequired": "Onde você mora?",
+  "notesTooLong": "Use menos de 300 caracteres nas observações.",
+  "nameRequired": "Dê um nome ou apelido.",
+  "nameTooLong": "Use menos de 40 caracteres no nome.",
+  "guardianRequired": "Confirme que você é mãe, pai ou responsável legal."
+}

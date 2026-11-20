@@ -1,0 +1,59 @@
+{
+  "meta": {
+    "title": "Tienda"
+  },
+  "header": {
+    "titleFor": "Tienda para {name}",
+    "subtitle": "Haz crecer tu armario con intención: cada compra se puntúa por los conjuntos que abre."
+  },
+  "categories": {
+    "top": "Camisas y polos",
+    "bottom": "Pantalones y shorts",
+    "outerwear": "Blazers y chaquetas",
+    "shoes": "Zapatos",
+    "watch": "Relojes",
+    "accessory": "Accesorios"
+  },
+  "errors": {
+    "analysisFailed": "El análisis falló",
+    "personGone": "Esa persona ya no está en tu cuenta. Recarga la página.",
+    "couldNotUpdate": "No se pudo actualizar. Inténtalo de nuevo.",
+    "pickCategory": "Elige al menos una categoría",
+    "tooFewItems": "Agrega primero algunas prendas para saber sobre qué construir.",
+    "aiFailed": "El asesor de compras no está disponible. Inténtalo en un momento."
+  },
+  "toasts": {
+    "fresh": "Nuevas sugerencias de tu asesor de compras",
+    "purchased": "Excelente: fotografíala para agregarla a tu armario",
+    "undo": "Deshacer",
+    "saved": "{name} guardado",
+    "dismissed": "{name} descartado",
+    "restored": "{name} volvió a tus sugerencias"
+  },
+  "gaps": {
+    "title": "Dónde una prenda rinde más",
+    "subtitle": "Calculado con tu armario real: marca lo que quieres comprar.",
+    "bestValue": "Mejor opción",
+    "stats": "{owned} en tu armario · hasta {unlocks} conjuntos nuevos"
+  },
+  "actions": {
+    "consulting": "Consultando a tu asesor…",
+    "getSuggestions": "Ver sugerencias",
+    "tooFew": "Confirma primero al menos {min} prendas en tu armario, para que el asesor vea lo que ya tienes. Tienes {count}."
+  },
+  "suggestions": {
+    "title": "Vale la pena sumar",
+    "saved": "Guardado",
+    "potentialOutfits": "conjuntos posibles",
+    "bought": "Lo compré",
+    "save": "Guardar",
+    "notForMe": "No es para mí"
+  },
+  "empty": {
+    "body": "Marca las categorías que quieres comprar y tu asesor de compras te sugerirá prendas concretas, cada una puntuada según cuántos conjuntos nuevos abre."
+  },
+  "dismissed": {
+    "title": "Sugerencias descartadas ({count})",
+    "bringBack": "Recuperar"
+  }
+}

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 import { ArrowUp, Loader2, MessageCircle, RotateCcw, Square } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -17,11 +18,8 @@ import type { StylistUIMessage } from "@/lib/trips/chat-types";
 
 const STORED_MESSAGES = 40;
 
-const STARTERS = [
-  "Pack for three days in Lisbon: work Thursday and Friday, dinner on Friday, sightseeing Saturday.",
-  "A five-day conference trip to Chicago next month, carry-on only. Can I do it with one pair of shoes?",
-  "What goes with my navy blazer for dinner on Friday? I'd like to wear the brown loafers.",
-];
+/** Example messages the user can send; text lives in stylist.starters.* */
+const STARTERS = ["lisbon", "chicago", "blazer"] as const;
 
 /** The client's calendar date, not the server's. */
 function localToday(): string {
@@ -32,14 +30,24 @@ function localToday(): string {
 
 export function StylistChat({
   userId,
+  personId,
+  alias,
   hasCombinations,
   readiness,
 }: {
+  /**
+   * For a Minor: the stylist only knows them by an alias ("Child A"); the
+   * name is put back on screen here, never sent (docs/adr/0002).
+   */
+  alias?: { alias: string; name: string };
   userId: string;
+  /** The Active person; each Person has their own conversation. */
+  personId: string;
   hasCombinations: boolean;
   readiness: WardrobeReadiness;
 }) {
-  const storageKey = `aether-stylist:${userId}`;
+  const t = useTranslations("stylist");
+  const storageKey = `aether-stylist:${userId}:${personId}`;
   const [input, setInput] = useState("");
   const [restored, setRestored] = useState(false);
   const [announcement, setAnnouncement] = useState("");
@@ -51,9 +59,9 @@ export function StylistChat({
     useChat<StylistUIMessage>({
       transport: new DefaultChatTransport({
         api: "/api/stylist/chat",
-        body: () => ({ today: localToday() }),
+        body: () => ({ today: localToday(), personId }),
       }),
-      onError: (err) => toast.error(err.message || "The stylist is unavailable. Try again."),
+      onError: (err) => toast.error(err.message || t("errors.unavailable")),
     });
 
   const busy = status === "submitted" || status === "streaming";
@@ -101,9 +109,9 @@ export function StylistChat({
       (p) => p.type === "tool-plan_trip" || p.type === "tool-find_outfits",
     );
     setAnnouncement(
-      `The stylist replied${hasCard ? " with a plan card" : ""}. ${text.slice(0, 400)}`,
+      `${hasCard ? t("chat.repliedWithCard") : t("chat.replied")} ${text.slice(0, 400)}`,
     );
-  }, [busy, status, messages]);
+  }, [busy, status, messages, t]);
 
   // Follow the reply as it streams.
   useEffect(() => {
@@ -123,8 +131,8 @@ export function StylistChat({
     setMessages([]);
     setInput("");
     textareaRef.current?.focus();
-    toast.success("Conversation cleared", {
-      action: { label: "Undo", onClick: () => setMessages(snapshot) },
+    toast.success(t("chat.cleared"), {
+      action: { label: t("chat.undo"), onClick: () => setMessages(snapshot) },
     });
   }
 
@@ -138,14 +146,14 @@ export function StylistChat({
       <div className="space-y-6 px-6 pb-10 md:px-10">
         <div className="flex flex-col items-center rounded-xl border border-dashed py-12 text-center">
           <MessageCircle className="size-8 text-muted-foreground" aria-hidden />
-          <h2 className="mt-4 font-serif text-2xl">The stylist needs your outfits first</h2>
+          <h2 className="mt-4 font-serif text-2xl">{t("empty.title")}</h2>
           <p className="mt-2 max-w-sm text-sm text-muted-foreground">
             {readiness.ready
-              ? "Your pieces are in. Once the outfit table is built, come back and plan a trip."
-              : "Trips are packed from your outfit table, which builds itself once you have confirmed the essentials below."}
+              ? t("empty.ready")
+              : t("empty.notReady")}
           </p>
           <Button asChild className="mt-6" variant="outline">
-            <Link href="/wardrobe">Go to wardrobe</Link>
+            <Link href="/wardrobe">{t("empty.goToWardrobe")}</Link>
           </Button>
         </div>
         <ReadinessBanner readiness={readiness} />
@@ -162,11 +170,10 @@ export function StylistChat({
         {messages.length === 0 ? (
           <div className="pt-2">
             <p className="max-w-xl font-serif text-xl leading-relaxed text-foreground/90 md:text-2xl">
-              Tell me where you are going, for how long, and what the days hold. I will
-              lay out one outfit per day from your own table and keep the suitcase small.
+              {t("intro.lead")}
             </p>
             <ul className="mt-6 grid gap-3 sm:grid-cols-3">
-              {STARTERS.map((s) => (
+              {STARTERS.map((k) => t(`starters.${k}`)).map((s) => (
                 <li key={s}>
                   <button
                     type="button"
@@ -179,8 +186,13 @@ export function StylistChat({
               ))}
             </ul>
             <p className="mt-4 text-xs text-muted-foreground">
-              Edit the city and dates to match your trip. Every outfit comes from your Outfits table.
+              {t("intro.hint")}
             </p>
+            {alias && (
+              <p className="mt-2 text-sm text-muted-foreground">
+                {t("intro.minorPrivacy", { name: alias.name, alias: alias.alias })}
+              </p>
+            )}
           </div>
         ) : (
           <>
@@ -191,25 +203,25 @@ export function StylistChat({
                 className="gap-1.5 text-muted-foreground"
                 onClick={startOver}
               >
-                <RotateCcw aria-hidden /> Start over
+                <RotateCcw aria-hidden /> {t("chat.startOver")}
               </Button>
             </div>
             <ol className="mt-2 space-y-7">
               {messages.map((message) => (
                 <li key={message.id}>
-                  <Message message={message} />
+                  <Message message={message} alias={alias} />
                 </li>
               ))}
               {awaitingReply && (
                 <li className="font-serif text-lg text-muted-foreground" aria-live="polite">
-                  <span className="animate-pulse">Thinking it through…</span>
+                  <span className="animate-pulse">{t("chat.thinking")}</span>
                 </li>
               )}
               {error && status === "error" && (
                 <li className="flex flex-wrap items-center gap-3 rounded-xl border border-dashed px-4 py-3 text-sm text-muted-foreground">
-                  The stylist did not answer.
+                  {t("chat.noAnswer")}
                   <Button variant="outline" size="sm" onClick={() => regenerate()}>
-                    Try again
+                    {t("chat.tryAgain")}
                   </Button>
                 </li>
               )}
@@ -232,7 +244,7 @@ export function StylistChat({
           }}
         >
           <label htmlFor="stylist-input" className="sr-only">
-            Message the stylist
+            {t("composer.label")}
           </label>
           <Textarea
             id="stylist-input"
@@ -246,7 +258,7 @@ export function StylistChat({
               }
             }}
             rows={1}
-            placeholder="Where to, and what are the days like?"
+            placeholder={t("composer.placeholder")}
             className="max-h-40 min-h-9 flex-1 pointer-coarse:min-h-11 resize-none border-0 bg-transparent px-2 py-1.5 shadow-none focus-visible:ring-0 dark:bg-transparent"
             disabled={busy}
           />
@@ -256,12 +268,12 @@ export function StylistChat({
               variant="outline"
               size="icon"
               onClick={() => stop()}
-              aria-label="Stop"
+              aria-label={t("composer.stop")}
             >
               <Square className="size-3.5 fill-current" aria-hidden />
             </Button>
           ) : (
-            <Button type="submit" size="icon" disabled={!input.trim()} aria-label="Send">
+            <Button type="submit" size="icon" disabled={!input.trim()} aria-label={t("composer.send")}>
               <ArrowUp aria-hidden />
             </Button>
           )}
@@ -271,7 +283,15 @@ export function StylistChat({
   );
 }
 
-function Message({ message }: { message: StylistUIMessage }) {
+function Message({
+  message,
+  alias,
+}: {
+  message: StylistUIMessage;
+  alias?: { alias: string; name: string };
+}) {
+  const t = useTranslations("stylist");
+  const named = (text: string) => (alias ? text.replaceAll(alias.alias, alias.name) : text);
   if (message.role === "user") {
     const text = message.parts
       .filter((p) => p.type === "text")
@@ -294,7 +314,7 @@ function Message({ message }: { message: StylistUIMessage }) {
             return part.text.trim() ? (
               <MessageText
                 key={i}
-                text={part.text}
+                text={named(part.text)}
                 className="max-w-prose font-serif text-lg leading-relaxed"
               />
             ) : null;
@@ -308,11 +328,9 @@ function Message({ message }: { message: StylistUIMessage }) {
                     className="inline-flex items-center gap-2 rounded-full border border-dashed px-3 py-1.5 text-sm text-muted-foreground"
                   >
                     <Loader2 className="size-3.5 animate-spin" aria-hidden />
-                    Laying out
                     {part.input && "destination" in part.input && part.input.destination
-                      ? ` ${part.input.destination}`
-                      : " the trip"}
-                    …
+                      ? t("tools.layingOutTo", { destination: part.input.destination })
+                      : t("tools.layingOut")}
                   </p>
                 );
               case "output-available":
@@ -323,13 +341,13 @@ function Message({ message }: { message: StylistUIMessage }) {
                     key={part.toolCallId}
                     className="inline-flex items-center gap-2 rounded-full border border-dashed px-3 py-1.5 text-sm text-muted-foreground"
                   >
-                    Couldn&apos;t lay this trip out yet
+                    {t("tools.tripNotOk")}
                   </p>
                 );
               case "output-error":
                 return (
                   <p key={part.toolCallId} className="text-sm text-muted-foreground">
-                    {part.errorText || "The planner could not lay this trip out."}
+                    {part.errorText || t("tools.tripError")}
                   </p>
                 );
             }
@@ -345,7 +363,7 @@ function Message({ message }: { message: StylistUIMessage }) {
                     className="inline-flex items-center gap-2 rounded-full border border-dashed px-3 py-1.5 text-sm text-muted-foreground"
                   >
                     <Loader2 className="size-3.5 animate-spin" aria-hidden />
-                    Looking through your outfits…
+                    {t("tools.findingOutfits")}
                   </p>
                 );
               case "output-available":
@@ -356,13 +374,13 @@ function Message({ message }: { message: StylistUIMessage }) {
                     key={part.toolCallId}
                     className="inline-flex items-center gap-2 rounded-full border border-dashed px-3 py-1.5 text-sm text-muted-foreground"
                   >
-                    Couldn&apos;t pull outfits for that yet
+                    {t("tools.outfitsNotOk")}
                   </p>
                 );
               case "output-error":
                 return (
                   <p key={part.toolCallId} className="text-sm text-muted-foreground">
-                    {part.errorText || "The outfit lookup failed."}
+                    {part.errorText || t("tools.outfitsError")}
                   </p>
                 );
             }

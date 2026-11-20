@@ -6,6 +6,12 @@ import type { WeatherSnapshot } from "@/types/database";
 const GEO_URL = "https://api.openweathermap.org/geo/1.0/direct";
 const FORECAST_URL = "https://api.openweathermap.org/data/2.5/forecast";
 
+/** OpenWeatherMap language codes for the app's locales ("&lang=…", or nothing for English). */
+const OWM_LANG: Record<string, string> = { es: "es", "pt-BR": "pt_br", fr: "fr", it: "it" };
+function owmLang(locale?: string): string {
+  return locale && OWM_LANG[locale] ? `&lang=${OWM_LANG[locale]}` : "";
+}
+
 function apiKey() {
   const key = process.env.OPENWEATHER_API_KEY;
   if (!key) throw new Error("OPENWEATHER_API_KEY is not set");
@@ -63,8 +69,10 @@ export async function getTodayWeather(
   lat: number,
   lon: number,
   locationName: string,
+  /** App locale; the weather description comes back in that language. */
+  locale?: string,
 ): Promise<WeatherSnapshot> {
-  const url = `${FORECAST_URL}?lat=${lat}&lon=${lon}&units=metric&cnt=8&appid=${apiKey()}`;
+  const url = `${FORECAST_URL}?lat=${lat}&lon=${lon}&units=metric&cnt=8${owmLang(locale)}&appid=${apiKey()}`;
   const res = await fetch(url, { next: { revalidate: 1800 } });
   if (!res.ok) throw new Error(`Weather fetch failed (${res.status})`);
   const data: { list: ForecastSlice[] } = await res.json();
@@ -98,6 +106,7 @@ function summarizeSlices(used: ForecastSlice[], locationName: string): WeatherSn
     precipProb,
     humidity,
     condition,
+    label: description,
     summary: `${Math.round(tempC)}°C, ${description}, ${precipProb}% chance of rain`,
     locationName,
   };
@@ -113,8 +122,9 @@ export async function getTripForecast(
   lat: number,
   lon: number,
   locationName: string,
+  locale?: string,
 ): Promise<Record<string, WeatherSnapshot>> {
-  const url = `${FORECAST_URL}?lat=${lat}&lon=${lon}&units=metric&cnt=40&appid=${apiKey()}`;
+  const url = `${FORECAST_URL}?lat=${lat}&lon=${lon}&units=metric&cnt=40${owmLang(locale)}&appid=${apiKey()}`;
   const res = await fetch(url, { next: { revalidate: 1800 } });
   if (!res.ok) throw new Error(`Forecast fetch failed (${res.status})`);
   const data: { list: ForecastSlice[]; city?: { timezone?: number } } =

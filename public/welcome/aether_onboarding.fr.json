@@ -1,0 +1,1039 @@
+{
+  "meta": {
+    "app": "Aether Wardrobe",
+    "what": "Votre styliste personnel pour les vêtements que votre famille possède déjà",
+    "storage_key": "aether-wardrobe-onboarding",
+    "favicon_emoji": "🧵",
+    "theme": {
+      "accent": "#957331",
+      "accent_soft": "#C9A45C",
+      "secondary": "#5B7C99",
+      "bg": "#16140F",
+      "animation": {
+        "type": "wardrobe",
+        "intensity": "medium",
+        "speed": "normal"
+      },
+      "motif": "none",
+      "glow_strength": 0.45,
+      "radius": "14px",
+      "font_family": "DM Sans"
+    },
+    "tagline": [
+      "Une photo, une fois.",
+      "Toute la famille habillée.",
+      "Prêt en une minute."
+    ],
+    "tagline_colors": [
+      "text",
+      "accent_soft",
+      "secondary_tint"
+    ],
+    "subtitle": "Aether Wardrobe transforme les vêtements que vous possédez déjà en tenues qui fonctionnent, et choisit la bonne pour votre journée et la météo là où vous allez. Il fait de même pour vos enfants et toute personne que vous habillez, et compose des looks pour toute la famille. Il n'invente jamais de vêtements que vous n'avez pas, et il explique chacun de ses choix.",
+    "app_url": "/",
+    "owner": "Alexis Roldan · Aether Wardrobe",
+    "last_reviewed": "2026-11-20",
+    "authoritative_sources": [
+      "Guide utilisateur Aether Wardrobe (docs/USER-GUIDE.md)",
+      "Notes de version (CHANGELOG.md)"
+    ],
+    "disclaimer": "Aether Wardrobe est un assistant de style. Les suggestions reposent sur les étiquettes que vous confirmez et sur une prévision météo ; fiez-vous à votre propre jugement pour les codes vestimentaires, la sécurité et le confort. Vos photos restent privées et liées à votre compte.",
+    "est_minutes_guide": 15,
+    "title": "Comment fonctionne Aether Wardrobe",
+    "favicon": "/welcome/assets/favicon.svg",
+    "brand": {
+      "logo_src": "/welcome/assets/aether-logo.svg",
+      "logo_alt": "Aether Wardrobe",
+      "logo_height": 40
+    },
+    "lang": "fr",
+    "ui": {
+      "all_pages": "Toutes les pages d'accueil",
+      "source": "Source",
+      "source_missing": "MANQUANTE — à ajouter",
+      "video_unsupported": "Votre navigateur ne peut pas lire cette vidéo.",
+      "video_missing": "Vidéo non configurée — ajoutez <code>src</code> ou <code>embed_url</code>.",
+      "open_in_stream": "Ouvrir dans Stream",
+      "video": "Vidéo",
+      "powered_by": "Propulsé par",
+      "previous_section": "Section précédente",
+      "print_title": "Imprimer / enregistrer en PDF (toutes les sections du guide)",
+      "print_label": "Imprimer ou enregistrer en PDF",
+      "start": "Commencer la prise en main",
+      "reset_title": "Réinitialiser la progression",
+      "reset_confirm": "Réinitialiser votre progression dans ce navigateur ?",
+      "theme_title": "Basculer thème sombre / clair",
+      "theme_label": "Basculer entre thème sombre et clair",
+      "why": "Pourquoi {app} ?",
+      "see_why": "Découvrir pourquoi",
+      "chapter": "Chapitre {n}",
+      "approx_minutes": "Environ {n} minutes · ",
+      "chapters": "Chapitres",
+      "your_progress": "Votre progression",
+      "sections_complete": "{n} sur {m} sections terminées",
+      "saved_here": "Enregistré dans ce navigateur uniquement",
+      "confirmed": "Confirmé",
+      "about_minute": "Environ {n} minute",
+      "about_minutes": "Environ {n} minutes",
+      "checkpoint": "Point de validation",
+      "n_confirmed": "{n} / 1 confirmé",
+      "owner": "Responsable : ",
+      "last_reviewed": "Dernière révision : ",
+      "sources": "Sources de référence : ",
+      "steps": "Étapes",
+      "practical": "Guides pratiques",
+      "previous": "‹ Précédent",
+      "next": "Suivant ›"
+    }
+  },
+  "why": {
+    "scroll_hint": "Découvrir pourquoi",
+    "chapters": [
+      {
+        "id": "problem",
+        "kicker": "LE PROBLÈME",
+        "nav_label": "Le problème",
+        "headline": "Un placard plein et rien à se mettre : c'est un problème de tri, pas d'achats.",
+        "intro": "La plupart d'entre nous portent un cinquième de ce qu'ils possèdent. Le reste n'est pas mauvais, il est simplement mal associé : la chemise qui irait si bien avec le chino beige ne le croise jamais, parce que personne n'a le temps d'essayer toutes les combinaisons avant une réunion à 9 h.",
+        "blocks": [
+          {
+            "type": "principles",
+            "items": [
+              {
+                "title": "La question du matin en cache trois",
+                "text": "Qu'est-ce qui convient à l'occasion, qu'est-ce qui convient à la météo sur place, et qu'est-ce que je n'ai pas porté depuis un moment ?"
+              },
+              {
+                "title": "Les conseils génériques ne connaissent pas votre placard",
+                "text": "Les articles et les assistants conversationnels suggèrent des vêtements que vous n'avez pas. La réponse utile se construit à partir de vos vraies pièces."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "value",
+        "kicker": "CE QUE VOUS Y GAGNEZ",
+        "nav_label": "Ce que vous y gagnez",
+        "headline": "Toutes les tenues qui fonctionnent, notées une fois, prêtes chaque matin.",
+        "intro": "Vous photographiez chaque pièce une seule fois. Ensuite, l'application s'occupe des associations, des notes et du choix quotidien ; vous n'avez qu'à confirmer.",
+        "blocks": [
+          {
+            "type": "stats",
+            "items": [
+              {
+                "label": "QUALITÉ DE LA TABLE",
+                "value": "7.0+",
+                "unit": "note minimale",
+                "text": "Seules les tenues qu'un styliste noterait 7 sur 10 ou plus sont conservées. Les associations faibles sont écartées avant même que vous les voyiez.",
+                "source": "Conception de la table des combinaisons, garantie par une contrainte en base de données ; README, oct. 2026"
+              },
+              {
+                "label": "SÉLECTION DU JOUR",
+                "value": "5–7",
+                "unit": "tenues classées",
+                "text": "Chaque demande renvoie cinq à sept tenues, chacune accompagnée de deux phrases expliquant pourquoi elle convient à la journée.",
+                "source": "Notes de la version 1.1.0, oct. 2026"
+              },
+              {
+                "label": "PAR DEMANDE",
+                "value": "1",
+                "unit": "appel à l'IA",
+                "text": "La recommandation du jour utilise un seul petit appel au modèle ; le gros du travail a été fait à l'ajout de la pièce.",
+                "source": "Notes d'architecture, README, oct. 2026"
+              },
+              {
+                "label": "PAR PIÈCE",
+                "value": "~1–3¢",
+                "unit": "pour cataloguer",
+                "text": "Coût estimé du modèle pour étiqueter une pièce et noter ses tenues ; ensuite, quelques fractions de centime par demande quotidienne.",
+                "source": "Estimation technique dans le README, oct. 2026"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "how",
+        "kicker": "COMMENT ÇA MARCHE",
+        "nav_label": "Comment ça marche",
+        "headline": "Six étapes, d'une photo à la tenue du jour.",
+        "intro": "Un seul modèle, du début à la fin. Les trois premières étapes ont lieu une fois par pièce ; les trois dernières, chaque jour. L'onglet Styliste réutilise la même table pour préparer une valise.",
+        "blocks": [
+          {
+            "type": "lifecycle",
+            "items": [
+              {
+                "title": "Profil",
+                "text": "Un assistant en quatre étapes : morphologie, carnation, préférences de style et ville de résidence. Morphologie et carnation sont facultatives et déterminent votre saison colorimétrique."
+              },
+              {
+                "title": "Photographier",
+                "text": "Une photo par pièce, depuis votre galerie ou l'appareil photo du téléphone."
+              },
+              {
+                "title": "Confirmer les étiquettes",
+                "text": "L'IA lit la coupe, la couleur, la matière et le niveau de formalité. Vous corrigez ce qui est inexact."
+              },
+              {
+                "title": "La table se construit",
+                "text": "Le moteur associe la pièce à tout ce que vous possédez et ne garde que les tenues notées 7 ou plus."
+              },
+              {
+                "title": "Ma tenue du jour",
+                "text": "Choisissez l'occasion et votre destination. La météo sur place filtre la table et un seul appel classe la sélection."
+              },
+              {
+                "title": "Porter et suivre",
+                "text": "Indiquez ce que vous avez porté. Les looks récents se reposent une semaine pour que les suggestions restent variées."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "features",
+        "kicker": "LES ONGLETS",
+        "nav_label": "Les onglets",
+        "headline": "Cinq espaces, chacun avec un rôle précis.",
+        "intro": "Sur ordinateur, toutes les sections sont dans la barre latérale. Sur téléphone, Aujourd'hui, Styliste, Garde-robe et Tenues sont à portée de pouce en bas de l'écran ; Plus regroupe Famille, Boutique et Réglages.",
+        "blocks": [
+          {
+            "type": "capabilities",
+            "items": [
+              {
+                "category": "GARDE-ROBE",
+                "badge": "catalogue",
+                "title": "Tout ce que vous possédez, étiqueté",
+                "text": "Classé par catégorie, avec type, matière, motif, saisons, formalité et note old money pour chaque pièce. Les montres ont leur propre catégorie, classées par style, avec bracelet et teinte du métal."
+              },
+              {
+                "category": "TENUES",
+                "badge": "la table",
+                "title": "Toutes les combinaisons qui valent d'être portées",
+                "text": "Filtrez par haut, bas, chaussures, vêtement d'extérieur, montre ou accessoire, par occasion, saison ou note minimale. Mettez en avant vos favorites, masquez les ratées."
+              },
+              {
+                "category": "AUJOURD'HUI",
+                "badge": "quotidien",
+                "title": "Ma tenue du jour",
+                "text": "Dix occasions, une destination facultative avec saisie automatique de la ville, des notes libres. Cinq à sept tenues classées, avec la bonne montre pour la journée."
+              },
+              {
+                "category": "BOUTIQUE",
+                "badge": "analyse des manques",
+                "title": "Quoi acheter ensuite",
+                "text": "Compte combien de nouvelles tenues une bonne pièce débloquerait dans chaque catégorie, puis nomme des articles précis qui s'accordent avec ce que vous avez."
+              },
+              {
+                "category": "RÉGLAGES",
+                "badge": "profil",
+                "title": "Votre profil et vos unités",
+                "text": "Mettez à jour morphologie, carnation, coupe, styles et ville de résidence ; tout alimente les consignes de l'IA. Effacez votre morphologie et votre carnation quand vous le souhaitez."
+              },
+              {
+                "category": "ACCÈS",
+                "badge": "sur invitation",
+                "title": "Comptes autorisés",
+                "text": "Connexion avec Google. Un administrateur accorde l'accès par e-mail, si bien qu'aucun appel payant à l'IA n'est lancé pour un compte inconnu."
+              },
+              {
+                "category": "FAMILLE",
+                "badge": "nouveau",
+                "title": "Toute la famille, habillée ensemble",
+                "text": "Ajoutez vos enfants ou toute personne sans e-mail, donnez à chacun sa propre garde-robe et composez un seul look pour tous : couleurs coordonnées, un accent commun, ou simplement bien habillés. Les enfants ne se connectent jamais et rien les concernant n'est transmis à l'IA."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "family",
+        "kicker": "FAMILLE",
+        "nav_label": "Famille",
+        "headline": "Habillez ensemble tous ceux dont vous prenez soin.",
+        "intro": "Ajoutez vos enfants, ou un adulte sans e-mail, sous votre propre compte. Chaque personne a sa garde-robe et ses tenues, et un seul geste compose un look pour tout le monde.",
+        "blocks": [
+          {
+            "type": "capabilities",
+            "items": [
+              {
+                "category": "PERSONNES",
+                "badge": "nouveau",
+                "title": "Une garde-robe par personne",
+                "text": "Choisissez en haut de la page qui vous habillez. Garde-robe, Tenues, Aujourd'hui, Styliste et Boutique suivent, et une tenue ne mélange jamais les vêtements de deux personnes."
+              },
+              {
+                "category": "LOOK DE FAMILLE",
+                "badge": "nouveau",
+                "title": "Un look pour l'occasion",
+                "text": "Choisissez qui vient, l'occasion et l'allure que vous souhaitez ensemble. Vous obtenez jusqu'à trois looks, une tenue par personne, avec une palette commune et une note expliquant pourquoi cela fonctionne."
+              },
+              {
+                "category": "CONFIDENTIALITÉ",
+                "badge": "enfants",
+                "title": "Les enfants restent protégés",
+                "text": "Les enfants ne se connectent jamais. L'IA ne voit que la description de leurs vêtements et ne les connaît que sous le nom « Enfant A ». Supprimez une personne et tout ce qui la concerne disparaît."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "trust",
+        "kicker": "CONFIANCE",
+        "nav_label": "Confiance",
+        "headline": "D'abord des règles fixes, puis un seul petit appel à l'IA.",
+        "intro": "La table des combinaisons est la seule source de vérité. L'IA n'invente jamais de tenue au moment de la recommandation ; elle étiquette, note et explique ce que le moteur a déjà validé.",
+        "blocks": [
+          {
+            "type": "layers",
+            "summary": [
+              "Vous confirmez chaque étiquette.",
+              "Le code construit chaque association.",
+              "L'IA ne fait que noter et expliquer."
+            ],
+            "items": [
+              {
+                "kicker": "01 · VOUS",
+                "title": "Maître des faits",
+                "text": "Vos notes l'emportent sur la supposition du modèle.",
+                "bullets": [
+                  "Les étiquettes sont modifiables avant toute construction",
+                  "Votre description prime sur ce que voit le modèle de vision",
+                  "Archivez une pièce et elle quitte toutes les tenues"
+                ]
+              },
+              {
+                "kicker": "02 · MOTEUR",
+                "title": "Construit les candidates",
+                "text": "Du code pur, sans modèle, sans coût.",
+                "bullets": [
+                  "Formalité à trois points d'écart au plus",
+                  "Les saisons doivent se recouper",
+                  "Couleurs discordantes rejetées",
+                  "Une montre, une ceinture, des métaux assortis"
+                ]
+              },
+              {
+                "kicker": "03 · IA",
+                "title": "Note et explique",
+                "text": "De petits appels groupés, une sortie structurée.",
+                "bullets": [
+                  "Note douze candidates par appel",
+                  "Ne garde que 7,0 et plus",
+                  "Classe la sélection du jour et rédige deux phrases pour chacune"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "who",
+        "kicker": "POUR QUI",
+        "nav_label": "Pour qui",
+        "headline": "Ce que cela change pour vous.",
+        "intro": "Pensé pour une garde-robe quiet luxury, et chaque style que vous choisissez change la façon dont les tenues sont notées.",
+        "blocks": [
+          {
+            "type": "roles",
+            "items": [
+              {
+                "role": "Professionnel pressé",
+                "text": "Choisissez « Travail » ou « Intérieur / Conférences », touchez une fois, portez la première proposition. Moins d'une minute."
+              },
+              {
+                "role": "Parent",
+                "text": "Ajoutez les enfants, photographiez leurs vêtements une fois, et préparez l'anniversaire ou la photo de famille d'un seul coup. Rien les concernant n'est transmis à l'IA, hormis leurs vêtements."
+              },
+              {
+                "role": "Grand voyageur",
+                "text": "Saisissez la ville où vous vous envolez. La météo sur place guide la tenue, et la montre GMT est du voyage."
+              },
+              {
+                "role": "Collectionneur",
+                "text": "Les montres ont leur propre catégorie et leur place dans chaque tenue. Chacune est étiquetée par style, bracelet et teinte du métal : les métaux s'accordent et la montre habillée part au dîner."
+              },
+              {
+                "role": "Acheteur réfléchi",
+                "text": "Boutique montre quelle catégorie fait goulot d'étranglement et quelle pièce précise débloquerait le plus de nouvelles tenues."
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "cta": {
+      "kicker": "AVANT DE COMMENCER",
+      "headline": "Faites travailler votre garde-robe.",
+      "intro": "Le guide prend environ 15 minutes et va de la première connexion à votre première journée stylée : votre profil, l'ajout de pièces, la table Tenues, Aujourd'hui, le Styliste, Boutique et l'habillage de votre famille. Cochez chaque point de validation au fil de l'eau ; votre progression est enregistrée dans ce navigateur uniquement.",
+      "button": "Commencer le guide"
+    }
+  },
+  "guide": {
+    "title": "Guide Aether Wardrobe",
+    "tree": [
+      {
+        "section": "welcome",
+        "label": "Commencez ici"
+      },
+      {
+        "section": "signin",
+        "label": "Se connecter et créer son profil"
+      },
+      {
+        "label": "Constituer votre garde-robe",
+        "children": [
+          {
+            "section": "add-piece",
+            "label": "Ajouter une pièce"
+          },
+          {
+            "section": "review-tags",
+            "label": "Vérifier les étiquettes"
+          },
+          {
+            "section": "accessories",
+            "label": "Montres et accessoires"
+          }
+        ]
+      },
+      {
+        "section": "outfits",
+        "label": "La table Tenues"
+      },
+      {
+        "label": "Aujourd'hui",
+        "children": [
+          {
+            "section": "today",
+            "label": "Ma tenue du jour"
+          },
+          {
+            "section": "occasions",
+            "label": "Choisir l'occasion"
+          },
+          {
+            "section": "wear",
+            "label": "La porter et varier"
+          }
+        ]
+      },
+      {
+        "section": "stylist",
+        "label": "Styliste : préparer une valise"
+      },
+      {
+        "section": "shop",
+        "label": "Boutique : quoi acheter ensuite",
+        "optional": true
+      },
+      {
+        "section": "family",
+        "label": "Habiller votre famille",
+        "optional": true
+      }
+    ],
+    "practical_guides": [
+      {
+        "section": "photos",
+        "label": "Des photos bien étiquetées"
+      },
+      {
+        "section": "faq",
+        "label": "Quand quelque chose cloche"
+      }
+    ],
+    "sections": {
+      "welcome": {
+        "kicker": "COMMENCEZ ICI",
+        "title": "Quinze minutes jusqu'à votre première journée stylée",
+        "intro": "Ce guide suit l'ordre dans lequel vous utiliserez l'application : vous connecter, vous présenter, ajouter quelques pièces, laisser la table se construire, demander la tenue du jour, puis ajouter les personnes que vous habillez. Cochez le point de validation à la fin de chaque section ; votre progression est enregistrée dans ce navigateur uniquement.",
+        "minutes": 1,
+        "chips": [
+          "Sur invitation",
+          "Téléphone ou ordinateur",
+          "Vos photos restent privées"
+        ],
+        "blocks": [
+          {
+            "type": "glance",
+            "title": "En bref",
+            "items": [
+              {
+                "label": "Ce qu'il vous faut",
+                "text": "Un compte Google auquel l'accès a été accordé, et votre téléphone ou un dossier de photos."
+              },
+              {
+                "label": "Garde-robe minimale",
+                "text": "Les tenues apparaissent dès que vous avez confirmé au moins un haut, un bas et une paire de chaussures. Vêtements d'extérieur et accessoires sont facultatifs mais complètent les looks. Avec cinq à dix pièces, cela devient intéressant."
+              },
+              {
+                "label": "Ce qui tourne en arrière-plan",
+                "text": "Après la confirmation d'une pièce, le moteur note ses tenues pendant une minute ou deux. Un bandeau indique la progression ; vous pouvez continuer à ajouter."
+              },
+              {
+                "label": "Où trouver de l'aide",
+                "html": "Le <b>guide utilisateur</b> du dépôt et les <b>notes de version</b>. Dans l'application, chaque écran vide vous indique quoi faire ensuite."
+              }
+            ]
+          },
+          {
+            "type": "required",
+            "title": "Confirmez les étiquettes avant d'attendre des tenues.",
+            "text": "Une pièce encore en « À vérifier » ne figure dans aucune tenue. La table n'utilise que les pièces que vous avez confirmées."
+          }
+        ],
+        "checkpoint": "J'ai compris que les tenues sont construites uniquement à partir des pièces dont j'ai confirmé les étiquettes."
+      },
+      "signin": {
+        "kicker": "PREMIERS PAS",
+        "title": "Se connecter et créer son profil",
+        "intro": "L'accès se fait sur invitation. Une fois votre e-mail sur la liste autorisée, la connexion Google vous mène directement à un assistant de profil en quatre étapes qui personnalise toutes les suggestions suivantes.",
+        "minutes": 3,
+        "blocks": [
+          {
+            "type": "steps",
+            "items": [
+              {
+                "title": "Ouvrez l'application et choisissez Continuer avec Google",
+                "text": "Utilisez le compte Google dont l'e-mail a été invité. Si vous arrivez sur une page « en attente », votre e-mail n'est pas encore sur la liste ; demandez à la personne qui vous a invité."
+              },
+              {
+                "title": "Étape 1 de l'assistant : à propos de vous (facultatif)",
+                "text": "Genre, tranche d'âge, taille et poids (cm et kg ou ft et lb), silhouette et coupe préférée. Ces informations orientent les coupes et proportions que privilégie le styliste. Le poids n'est jamais envoyé à l'IA. Passez l'étape si vous préférez."
+              },
+              {
+                "title": "Étape 2 : votre carnation (facultatif)",
+                "text": "Teint, sous-ton, couleur des cheveux et des yeux déterminent votre saison colorimétrique (Printemps, Été, Automne ou Hiver), présentée avec les couleurs qui vous flattent près du visage. Aujourd'hui et le Styliste les favorisent légèrement quand deux choix se valent ; Boutique les suggère."
+              },
+              {
+                "title": "Étape 3 : votre style",
+                "text": "Choisissez un ou plusieurs styles (Old Money, Classique, Smart Casual, Minimaliste, Sport, Streetwear) et votre niveau de formalité habituel sur une échelle de 1 à 10. Ils figurent dans chaque consigne de notation."
+              },
+              {
+                "title": "Étape 4 : votre ville de résidence",
+                "text": "Commencez à taper et choisissez dans la liste. Elle sert de météo par défaut chaque fois que vous n'indiquez pas de destination dans l'onglet Aujourd'hui."
+              }
+            ]
+          },
+          {
+            "type": "note",
+            "html": "Vous pouvez tout modifier plus tard dans <b>Réglages</b>. Les tenues déjà notées gardent leur note ; les nouvelles pièces sont notées selon le profil mis à jour."
+          }
+        ],
+        "checkpoint": "J'ai terminé l'assistant de profil et je vois l'onglet Garde-robe."
+      },
+      "add-piece": {
+        "kicker": "GARDE-ROBE",
+        "title": "Ajouter une pièce",
+        "intro": "Une photo par pièce. L'application la compresse dans votre navigateur, la stocke en privé et l'envoie au modèle de vision, qui remplit les étiquettes pour que vous les vérifiiez.",
+        "minutes": 2,
+        "blocks": [
+          {
+            "type": "steps",
+            "items": [
+              {
+                "title": "Touchez Ajouter une pièce",
+                "text": "Dans l'onglet Garde-robe. Sur téléphone, vous pouvez prendre la photo directement avec l'appareil ; sur ordinateur, choisissez un fichier."
+              },
+              {
+                "title": "Choisissez la catégorie",
+                "text": "Haut, bas, vêtement d'extérieur, chaussures ou accessoire. C'est la seule étiquette que l'IA ne modifiera pas : choisissez-la bien ici."
+              },
+              {
+                "title": "Décrivez ce que la photo ne montre pas",
+                "text": "Facultatif, mais précieux : « coton piqué », « mérinos », « Tudor Black Bay GMT sur bracelet acier ». Vos mots font foi, surtout pour la matière."
+              },
+              {
+                "title": "Validez et patientez quelques secondes",
+                "text": "La pièce est envoyée et analysée, puis vous arrivez sur sa page pour vérifier les étiquettes."
+              }
+            ]
+          },
+          {
+            "type": "glance",
+            "title": "Ce que l'IA lit sur la photo",
+            "items": [
+              {
+                "label": "Identité",
+                "text": "Un nom court, le type (polo, chino, mocassins, montre GMT), la couleur principale et sa valeur hexadécimale."
+              },
+              {
+                "label": "Tissu",
+                "text": "Matière et motif. Difficiles à voir en photo, c'est donc votre description qui l'emporte."
+              },
+              {
+                "label": "Usage",
+                "text": "Les saisons adaptées, la formalité de 1 à 10 et une note old money de 1 à 10."
+              },
+              {
+                "label": "Détails des accessoires",
+                "text": "Pour les montres : style (en guise de type), bracelet et teinte du métal. Pour les ceintures, lunettes de soleil et sacs : teinte du métal."
+              }
+            ]
+          }
+        ],
+        "checkpoint": "J'ai ajouté au moins une pièce et atteint sa page de vérification des étiquettes."
+      },
+      "review-tags": {
+        "kicker": "GARDE-ROBE",
+        "title": "Vérifier les étiquettes",
+        "intro": "Chaque pièce arrive d'abord en « À vérifier ». Corrigez ce que le modèle a mal lu, puis confirmez. C'est la confirmation qui lance la création des tenues.",
+        "minutes": 2,
+        "blocks": [
+          {
+            "type": "steps",
+            "items": [
+              {
+                "title": "Vérifiez le nom et la couleur",
+                "text": "La pastille de couleur doit correspondre à la couleur dominante. Pour une montre, c'est la couleur du cadran."
+              },
+              {
+                "title": "Vérifiez le type et la matière",
+                "text": "Les types proposés dépendent de la catégorie. Pour les accessoires, la matière inclut désormais acier, or, titane, caoutchouc, nylon et acétate."
+              },
+              {
+                "title": "Réglez saisons, formalité et note old money",
+                "text": "Formalité : 1 pour une tenue de sport, 5 smart casual, 8 tenue d'affaires, 10 smoking. Old money : coupes intemporelles, matières naturelles, couleurs sourdes, pas de logos tapageurs."
+              },
+              {
+                "title": "Confirmez les étiquettes",
+                "text": "Le bouton en bas de page. Une notification confirme que la création des tenues a commencé ; le bandeau général affiche la progression."
+              }
+            ]
+          },
+          {
+            "type": "note",
+            "html": "<b>Réanalyser</b> interroge à nouveau le modèle de vision, utile après avoir ajouté une description. <b>Archiver</b> retire la pièce de toutes les tenues sans supprimer la photo."
+          }
+        ],
+        "checkpoint": "J'ai confirmé les étiquettes d'une pièce et vu le bandeau de création."
+      },
+      "accessories": {
+        "kicker": "GARDE-ROBE",
+        "title": "Montres et accessoires",
+        "intro": "Les montres forment une catégorie à part, avec leur propre place dans chaque tenue. Le type d'une montre est son style, complété du bracelet et de la teinte du métal. Ceintures, lunettes de soleil et sacs portent une teinte de métal que le moteur accorde à la montre. Le styliste du jour choisit la bonne montre pour la journée.",
+        "minutes": 2,
+        "chips": [
+          "Style de montre",
+          "Bracelet",
+          "Teinte du métal"
+        ],
+        "blocks": [
+          {
+            "type": "glance",
+            "title": "Les étiquettes en plus sur une montre",
+            "items": [
+              {
+                "label": "Style de montre",
+                "text": "La ligne Type d'une montre : habillée, sport, plongée, GMT / voyage, chronographe, terrain ou aviateur. Les GMT et montres de sport accompagnent les voyages et les journées actives ; les montres habillées, le travail, les dîners et les événements."
+              },
+              {
+                "label": "Bracelet",
+                "text": "Bracelet métal, bracelet cuir, bracelet caoutchouc ou tissu / NATO."
+              },
+              {
+                "label": "Teinte du métal",
+                "text": "Argent (acier), or, or rose ou bicolore. Le moteur privilégie une boucle de ceinture assortie à la montre."
+              },
+              {
+                "label": "Formalité et old money",
+                "text": "Une montre habillée sur cuir obtient 8 à 9 en formalité et 9 à 10 en old money ; une montre de sport classique en acier, 6 à 7 et 7 à 8 ; une lunette colorée ou un bracelet caoutchouc retire un point."
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "html": "<b>Exemple.</b> Une Tudor Black Bay GMT sur bracelet acier s'étiquette <i>Montre · GMT · acier · bracelet · argent</i>, formalité 6, old money 7. Une TAG Heuer Carrera à cadran bleu s'étiquette <i>Montre · sport · acier · bracelet · argent</i>, formalité 7, old money 8. Un jour de voyage, le styliste prend la GMT ; pour un dîner, la Carrera."
+          },
+          {
+            "type": "note",
+            "html": "Une nouvelle montre entre dans toutes les tenues qui lui conviennent ; les autres nouvelles pièces reçoivent la montre la mieux adaptée parmi les vôtres. Filtrez par montre dans l'onglet Tenues pour voir tout ce qui va avec l'une d'elles."
+          }
+        ],
+        "checkpoint": "J'ai étiqueté une montre avec son style, son bracelet et la teinte de son métal."
+      },
+      "outfits": {
+        "kicker": "TENUES",
+        "title": "La table Tenues",
+        "intro": "Toutes les combinaisons notées 7,0 ou plus : d'abord les looks mis en avant, puis les tenues les plus complètes (les cinq emplacements remplis), puis par note. C'est le réservoir dans lequel puise l'onglet Aujourd'hui ; le soigner ici améliore chaque matin.",
+        "minutes": 2,
+        "aside": {
+          "kicker": "BONNE HABITUDE",
+          "title": "Trois en avant, trois masquées",
+          "text": "Les tenues mises en avant remontent en tête de chaque demande quotidienne. Les tenues masquées ne reviennent jamais. Dix minutes de tri vous servent pendant des semaines."
+        },
+        "blocks": [
+          {
+            "type": "steps",
+            "items": [
+              {
+                "title": "Partez d'une pièce",
+                "text": "Les premiers menus filtrent sur un haut, un bas, une paire de chaussures, un vêtement d'extérieur, une montre ou un accessoire. « Toute montre → Tudor GMT » affiche toutes les tenues qui fonctionnent avec cette montre."
+              },
+              {
+                "title": "Filtrez par occasion, saison et note",
+                "text": "L'occasion trie selon un mélange des notes travail, quotidien, formalité et old money. Note 7+, 8+ ou 9+ fixe le seuil."
+              },
+              {
+                "title": "Mettre en avant ou masquer",
+                "text": "L'étoile met en avant ; l'œil masque. Afficher les masquées révèle ce que vous avez mis de côté."
+              },
+              {
+                "title": "Lisez la note du styliste",
+                "text": "Une phrase par tenue issue de la notation, réutilisée ensuite pour expliquer le choix dans l'onglet Aujourd'hui."
+              }
+            ]
+          },
+          {
+            "type": "note",
+            "html": "Un badge <b>Au repos</b> signifie que la tenue a été recommandée ou portée au cours des sept derniers jours. Elle reste dans la table ; elle attend simplement son tour."
+          }
+        ],
+        "checkpoint": "Je sais filtrer la table Tenues par pièce et j'ai mis en avant ou masqué au moins une tenue."
+      },
+      "today": {
+        "kicker": "AUJOURD'HUI",
+        "title": "Ma tenue du jour",
+        "intro": "La demande quotidienne. Choisissez l'occasion, éventuellement votre destination et une note sur votre programme, puis touchez Ma tenue du jour. Un seul appel à l'IA classe les cinq à sept meilleures tenues et choisit les accessoires du jour.",
+        "minutes": 2,
+        "blocks": [
+          {
+            "type": "steps",
+            "items": [
+              {
+                "title": "Qu'est-ce qui vous attend aujourd'hui ?",
+                "text": "Choisissez une occasion. Travail est sélectionné par défaut."
+              },
+              {
+                "title": "Où ? (facultatif)",
+                "text": "Commencez à taper une ville et choisissez-la dans la liste ; c'est la météo sur place qui est utilisée. Laissez vide et votre ville de résidence est prise par défaut."
+              },
+              {
+                "title": "Autre chose ? (facultatif)",
+                "text": "Un texte libre que lit le styliste : « rendez-vous client, puis déjeuner avec les enfants », « conférence toute la journée, longue marche ensuite »."
+              },
+              {
+                "title": "Découvrez la sélection",
+                "text": "Chaque carte montre les pièces, dont la montre et la ceinture choisies pour aujourd'hui, une note et deux phrases d'explication. « Nouvelles suggestions » relance la demande."
+              }
+            ]
+          },
+          {
+            "type": "glance",
+            "title": "Ce qui se passe derrière le bouton",
+            "items": [
+              {
+                "label": "Météo",
+                "text": "La prévision du jour à destination : température, ressenti, risque de pluie. Les chaussures en daim et en toile sont écartées les jours de pluie."
+              },
+              {
+                "label": "Filtrage",
+                "text": "La table est filtrée par tranche de saison et triée selon le mélange de l'occasion, tenues mises en avant et inédites en premier."
+              },
+              {
+                "label": "Classement",
+                "text": "Un seul petit appel au modèle classe cinq à sept propositions et choisit les accessoires parmi tout ce que vous possédez."
+              },
+              {
+                "label": "Mémoire",
+                "text": "Le plan est enregistré pour la journée et l'occasion : recharger la page ne coûte rien."
+              }
+            ]
+          }
+        ],
+        "checkpoint": "J'ai demandé la tenue du jour et reçu une liste classée."
+      },
+      "occasions": {
+        "kicker": "AUJOURD'HUI",
+        "title": "Choisir l'occasion",
+        "intro": "L'occasion détermine le tri de la table et ce que l'on dit au styliste de votre journée. Choisissez la plus proche et mettez les nuances dans les notes.",
+        "minutes": 1,
+        "blocks": [
+          {
+            "type": "tabs",
+            "label": "Parcourir les occasions",
+            "items": [
+              {
+                "label": "Travail et intérieur",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "html": "<b>Travail</b> s'appuie sur la note travail avec une touche de formalité : soigné, business casual ou plus.<br><br><b>Intérieur / Conférences</b> est pensé pour les journées climatisées. La météo ne compte que pour le trajet : le styliste privilégie des couches que l'on retire à l'intérieur et le confort pour de longues heures assis ou debout."
+                  }
+                ]
+              },
+              {
+                "label": "Repas et soirées",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "html": "<b>Déjeuner</b> : en journée, détendu mais soigné, avec un clin d'œil au style old money.<br><br><b>Dîner</b> : élégant et réfléchi ; <b>Sortie</b> ajoute de la présence et du raffinement pour la soirée."
+                  }
+                ]
+              },
+              {
+                "label": "En vadrouille",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "html": "<b>Centre commercial / Shopping</b>, <b>Parc / Plein air</b> et <b>Courses</b> s'appuient tous sur la note quotidien : chaussures confortables, couches faciles, météo d'abord.<br><br><b>À la maison</b>, c'est le confort avec un peu d'intention."
+                  }
+                ]
+              },
+              {
+                "label": "Voyage",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "html": "<b>Voyage</b> équilibre travail et quotidien : confortable pendant le trajet, présentable à l'arrivée. Une montre GMT ou de voyage et des couches faciles à retirer s'imposent naturellement. Saisissez la ville de destination pour que la météo soit celle de votre arrivée."
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "checkpoint": "Je sais quelle occasion choisir pour une journée de conférence et pour un déjeuner."
+      },
+      "wear": {
+        "kicker": "AUJOURD'HUI",
+        "title": "La porter et varier",
+        "intro": "Indiquer à l'application ce que vous avez porté est la seule habitude qui évite les suggestions répétitives.",
+        "minutes": 1,
+        "blocks": [
+          {
+            "type": "steps",
+            "items": [
+              {
+                "title": "Touchez Je porte cette tenue",
+                "text": "Sur la carte choisie. Chaque pièce, y compris la montre et la ceinture du jour, met à jour son nombre de ports et la date du dernier port."
+              },
+              {
+                "title": "Laissez-la se reposer",
+                "text": "Cette tenue est marquée comme recommandée et se repose sept jours. Les autres tenues remontent entre-temps."
+              },
+              {
+                "title": "Redemandez quand vos plans changent",
+                "text": "Chaque occasion a son propre plan pour la journée. Passer de Travail à Dîner relance une demande ; Nouvelles suggestions relance la même occasion."
+              }
+            ]
+          }
+        ],
+        "checkpoint": "J'ai marqué une tenue comme portée."
+      },
+      "stylist": {
+        "kicker": "STYLISTE",
+        "title": "Préparer une valise en une conversation",
+        "intro": "L'onglet Styliste est une conversation avec votre styliste personnel. Dites où vous allez, pour combien de temps et ce que prévoient vos journées : il propose une tenue par jour et par occasion, tirée de votre propre table Tenues, choisie pour que les pièces se répètent et que la valise reste légère.",
+        "minutes": 3,
+        "chips": [
+          "Séjours d'un jour ou plus",
+          "Uniquement des tenues de votre table",
+          "Ajustez avec vos mots"
+        ],
+        "aside": {
+          "kicker": "BONNE HABITUDE",
+          "title": "Préparez le week-end à l'avance",
+          "text": "Demandez quelques jours avant de partir : la météo couvre une plus grande partie du séjour, et vous avez le temps d'ajouter une pièce manquante."
+        },
+        "blocks": [
+          {
+            "type": "steps",
+            "items": [
+              {
+                "title": "Dites où et quand",
+                "text": "Une ville (avec le pays si le nom prête à confusion) et les dates, ou « ce week-end », « de jeudi à dimanche »."
+              },
+              {
+                "title": "Décrivez les journées",
+                "text": "« Travail jeudi et vendredi, dîner vendredi, visites samedi. » Une tenue est prévue par occasion mentionnée. Ajoutez vos contraintes dans la foulée : bagage cabine seulement, une seule paire de chaussures, pas de blazer."
+              },
+              {
+                "title": "Lisez le récapitulatif",
+                "text": "Une carte affiche la météo par jour, les tenues de chaque jour sous forme de pastilles de couleur qui renvoient aux pièces, et une liste de bagages indiquant combien de fois chaque pièce est portée. Copier la liste place une version à cocher dans le presse-papiers."
+              },
+              {
+                "title": "Nommez vos pièces",
+                "text": "« Prends le blazer marine vendredi », « Je veux emporter la GMT ». Les pièces nommées sont intégrées partout où la table le permet, et la carte précise quand l'une d'elles ne peut pas être portée."
+              },
+              {
+                "title": "Affinez, ou demandez une seule tenue",
+                "text": "« Fais-le avec une seule paire de chaussures », « ajoute un dîner samedi ». Pour une seule occasion, « qu'est-ce qui va avec mon blazer pour le dîner de vendredi ? » renvoie les meilleures tenues de la table autour de cette pièce, avec les explications du styliste."
+              }
+            ]
+          },
+          {
+            "type": "glance",
+            "title": "Comment le plan est établi",
+            "items": [
+              {
+                "label": "Météo",
+                "text": "Lue jour par jour à destination. Cinq jours à l'avance ; au-delà, une température estimée est utilisée et la carte le signale."
+              },
+              {
+                "label": "Filtrage",
+                "text": "Chaque jour et chaque occasion sont filtrés par tranche de saison, pluie et mélange de l'occasion, exactement comme dans Aujourd'hui."
+              },
+              {
+                "label": "Bagages",
+                "text": "Un planificateur à règles fixes privilégie les tenues qui partagent des pièces et évite le même look deux jours de suite. Le modèle ne fait qu'expliquer."
+              },
+              {
+                "label": "Honnête",
+                "text": "Un jour sans tenue adaptée est signalé, avec un renvoi vers Boutique. Une limite de chaussures assouplie est mentionnée dans les réserves."
+              }
+            ]
+          }
+        ],
+        "checkpoint": "J'ai demandé un plan de voyage au styliste et lu la carte récapitulative."
+      },
+      "shop": {
+        "kicker": "BOUTIQUE",
+        "title": "Quoi acheter ensuite",
+        "intro": "Plutôt que des conseils d'achat génériques, l'application mesure votre vraie garde-robe : pour chaque catégorie, elle compte combien de nouvelles tenues une bonne pièce neutre débloquerait, puis suggère des articles précis qui s'accordent avec ce que vous avez déjà.",
+        "minutes": 2,
+        "blocks": [
+          {
+            "type": "steps",
+            "items": [
+              {
+                "title": "Cochez les catégories qui vous intéressent",
+                "text": "Une ou plusieurs. La catégorie goulot d'étranglement est celle où une seule nouvelle pièce débloque le plus de tenues."
+              },
+              {
+                "title": "Lisez les suggestions",
+                "text": "Chacune nomme une pièce concrète (« Blazer marine en hopsack »), son allure, et les pièces de votre garde-robe avec lesquelles elle irait."
+              },
+              {
+                "title": "Enregistrer, écarter ou marquer comme acheté",
+                "text": "Les articles achetés vous rappellent de photographier et d'ajouter la vraie pièce ; la suggestion elle-même n'entre jamais dans une tenue."
+              }
+            ]
+          },
+          {
+            "type": "note",
+            "html": "Boutique a besoin d'au moins trois pièces confirmées pour avoir de quoi travailler."
+          }
+        ],
+        "checkpoint": "J'ai lancé une analyse d'achats pour au moins une catégorie."
+      },
+      "photos": {
+        "kicker": "GUIDE PRATIQUE",
+        "title": "Des photos bien étiquetées",
+        "intro": "Le modèle de vision est bon, mais une photo nette et une ligne de description donnent les bonnes étiquettes du premier coup.",
+        "minutes": 1,
+        "blocks": [
+          {
+            "type": "principles",
+            "items": [
+              {
+                "title": "Une pièce, à plat, qui remplit le cadre",
+                "text": "Sur un lit, au sol ou sur un cintre, à la lumière du jour. Personne, et aucun autre vêtement dans le champ."
+              },
+              {
+                "title": "La vraie couleur avant la jolie lumière",
+                "text": "Les lampes chaudes changent le marine en noir. Photographiez près d'une fenêtre."
+              },
+              {
+                "title": "Dites ce que l'appareil ne voit pas",
+                "text": "La matière (piqué, mérinos, daim), la marque et le modèle pour les montres, et tout détail inhabituel de la coupe."
+              },
+              {
+                "title": "Montres : cadran vers le haut, bracelet bien droit",
+                "text": "Sous cet angle, le modèle lit la lunette, la couleur du cadran et le type de bracelet."
+              }
+            ]
+          }
+        ],
+        "checkpoint": "Je sais quoi écrire dans la description pour une montre ou une maille."
+      },
+      "faq": {
+        "kicker": "GUIDE PRATIQUE",
+        "title": "Quand quelque chose cloche",
+        "intro": "Les questions les plus fréquentes et quoi faire.",
+        "minutes": 2,
+        "blocks": [
+          {
+            "type": "tabs",
+            "label": "Choisissez un symptôme",
+            "items": [
+              {
+                "label": "Pas encore de tenues",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "html": "Il vous faut au moins un haut, un bas et une paire de chaussures confirmés. Le bandeau de préparation de l'onglet Aujourd'hui indique ce qui manque. Si les pièces sont confirmées mais que la table est vide, la création a peut-être été interrompue : utilisez <b>Créer les tenues</b> dans l'onglet Garde-robe ; seul ce qui manque est complété."
+                  }
+                ]
+              },
+              {
+                "label": "Rien ne va aujourd'hui",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "html": "La table n'avait rien pour cette saison et cette occasion avec une note de 6,5 ou plus. Essayez une autre occasion, assouplissez le filtre Note dans l'onglet Tenues pour voir ce qui s'en approche, ou laissez l'onglet Boutique vous dire quelle pièce débloquerait le plus de tenues."
+                  }
+                ]
+              },
+              {
+                "label": "Étiquettes erronées",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "html": "Ouvrez la pièce, corrigez les étiquettes et touchez <b>Enregistrer</b>. Ses tenues sont reconstruites. Pour une matière ou un style de montre récalcitrant, ajoutez une description et touchez <b>Réanalyser</b>."
+                  }
+                ]
+              },
+              {
+                "label": "Ça semble lent",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "html": "Confirmer une pièce note jusqu'à 120 tenues candidates par lots, ce qui peut prendre une minute ou deux sur une grande garde-robe ; le bandeau affiche la progression et vous pouvez continuer. La demande Aujourd'hui attend le service météo et un appel au modèle, en général quelques secondes."
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "checkpoint": "Je sais où se trouvent le bandeau de préparation et Créer les tenues."
+      },
+      "family": {
+        "kicker": "FAMILLE",
+        "title": "Habiller votre famille",
+        "intro": "Ajoutez vos enfants, ou un adulte sans e-mail, sous votre compte. Chaque personne a sa garde-robe et ses tenues, et la page Famille habille tout le monde ensemble pour la même occasion.",
+        "minutes": 3,
+        "blocks": [
+          {
+            "type": "steps",
+            "items": [
+              {
+                "title": "Ajoutez une personne",
+                "text": "Réglages → Personnes que vous habillez → Ajouter une personne : un prénom ou un surnom, son âge, ses styles et son goût pour les tenues habillées. Pour toute personne de moins de 18 ans, vous confirmez en être le parent ou le tuteur légal."
+              },
+              {
+                "title": "Changez la personne que vous habillez",
+                "text": "« Vous habillez : … » sous le logo (ou la barre en haut sur téléphone). Garde-robe, Tenues, Aujourd'hui, Styliste et Boutique suivent votre choix ; ajoutez ses pièces comme d'habitude."
+              },
+              {
+                "title": "Composez un look de famille",
+                "text": "Dans Famille, cochez qui vient, choisissez l'occasion (Célébration couvre anniversaires, mariages et photos de famille), le jour, le lieu et l'allure commune. Vous obtenez jusqu'à trois looks, une tenue par personne, tirée de vos propres garde-robes. Touchez Planifier notre look."
+              },
+              {
+                "title": "Portez-le",
+                "text": "« Porter cette tenue » sous chaque personne place sa tenue en tête du plan de la journée ; pour aujourd'hui, elle compte aussi comme portée."
+              }
+            ]
+          },
+          {
+            "type": "note",
+            "html": "Les enfants ne se connectent jamais. Rien concernant un enfant n'est envoyé à l'IA, hormis la description de ses vêtements : le styliste ne le connaît que sous le nom « Enfant A », et l'application réaffiche son prénom à l'écran."
+          }
+        ],
+        "checkpoint": "J'ai ajouté une personne et composé un look de famille."
+      }
+    }
+  }
+}

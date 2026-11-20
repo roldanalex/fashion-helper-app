@@ -1,6 +1,6 @@
 import "server-only";
 import { faceFitBonus } from "@/lib/personal/face-fit";
-import type { SupabaseClient } from "@supabase/supabase-js";
+import type { Wardrobe } from "@/lib/wardrobe";
 import { geocode, getTripForecast, locationLabel } from "@/lib/weather";
 import {
   combinationItemIds,
@@ -8,7 +8,7 @@ import {
   planPacking,
   type PackSlot,
 } from "@/lib/trips/pack";
-import { tempToSeasonBands } from "@/lib/weather-bands";
+import { isRainy, suitsWeather } from "@/lib/trips/weather-fit";
 import { expandDateRange, isIsoDate } from "@/lib/trips/dates";
 import type {
   FindOutfitsInput,
@@ -38,10 +38,9 @@ const CATEGORY_ORDER = new Map(CATEGORIES.map((c, i) => [c, i]));
  * combination table, and return a compact plan for the card and the model.
  */
 export async function planTrip(
-  supabase: SupabaseClient,
-  userId: string,
+  wardrobe: Wardrobe,
   input: PlanTripInput,
-  personal: { colorSeason?: string | null } = {},
+  personal: { colorSeason?: string | null; locale?: string } = {},
 ): Promise<PlanTripResult> {
   if (!isIsoDate(input.start_date) || !isIsoDate(input.end_date)) {
     return { ok: false, reason: "Dates must be YYYY-MM-DD; resolve them from today's date and call again." };
@@ -71,7 +70,7 @@ export async function planTrip(
   // Weather: the forecast where it reaches, the model's climate estimate after.
   let forecast: Record<string, WeatherSnapshot> = {};
   try {
-    forecast = await getTripForecast(geo.lat, geo.lon, locationName);
+    forecast = await getTripForecast(geo.lat, geo.lon, locationName, personal.locale);
   } catch (err) {
     console.error("Trip forecast failed:", err);
     notes.push("The weather service did not answer, so the plan uses the expected temperature instead of a forecast.");
@@ -146,23 +145,10 @@ export async function planTrip(
   }
 
   // The table and the wardrobe
-  const [{ data: comboData }, { data: itemData }] = await Promise.all([
-    supabase
-      .from("combinations")
-      .select("*")
-      .eq("user_id", userId)
-      .eq("hidden", false)
-      .order("overall_score", { ascending: false })
-      .limit(1000),
-    supabase
-      .from("clothing_items")
-      .select("*")
-      .eq("user_id", userId)
-      .eq("archived", false)
-      .eq("ai_status", "confirmed"),
+  const [combinations, items] = await Promise.all([
+    wardrobe.outfits({ limit: 1000 }),
+    wardrobe.pieces({ confirmed: true }),
   ]);
-  const combinations = (comboData ?? []) as Combination[];
-  const items = (itemData ?? []) as ClothingItem[];
   const itemsById = new Map(items.map((i) => [i.id, i]));
 
   const slots: PackSlot[] = days.flatMap((day) =>
@@ -273,35 +259,24 @@ function summarize(item: ClothingItem): TripItemSummary {
  * at a place and date. No AI in here; the stylist narrates what comes back.
  */
 export async function findOutfits(
-  supabase: SupabaseClient,
-  userId: string,
+  wardrobe: Wardrobe,
   input: FindOutfitsInput,
-  personal: { colorSeason?: string | null } = {},
+  personal: {
+    colorSeason?: string | null;
+    locale?: string;
+    /** The Family's home, used when no place is named. */
+    home?: { home_location: string | null; home_lat: number | null; home_lon: number | null } | null;
+  } = {},
 ): Promise<FindOutfitsResult> {
   const notes: string[] = [];
   const limit = input.limit ?? 5;
 
-  const [{ data: comboData }, { data: itemData }, { data: profile }] = await Promise.all([
-    supabase
-      .from("combinations")
-      .select("*")
-      .eq("user_id", userId)
-      .eq("hidden", false)
-      .order("overall_score", { ascending: false })
-      .limit(1000),
-    supabase
-      .from("clothing_items")
-      .select("*")
-      .eq("user_id", userId)
-      .eq("archived", false)
-      .eq("ai_status", "confirmed"),
-    supabase
-      .from("profiles")
-      .select("home_location, home_lat, home_lon")
-      .eq("id", userId)
-      .single(),
+  const [comboData, itemData] = await Promise.all([
+    wardrobe.outfits({ limit: 1000 }),
+    wardrobe.pieces({ confirmed: true }),
   ]);
-  const itemsById = new Map(((itemData ?? []) as ClothingItem[]).map((i) => [i.id, i]));
+  const profile = personal.home ?? null;
+  const itemsById = new Map(itemData.map((i) => [i.id, i]));
 
   const required = (input.require_item_ids ?? []).filter((id) => itemsById.has(id));
   const unknown = (input.require_item_ids ?? []).filter((id) => !itemsById.has(id));
@@ -342,7 +317,7 @@ export async function findOutfits(
         locationName = locationLabel(geo);
       }
       if (lat != null && lon != null) {
-        const forecast = await getTripForecast(lat, lon, locationName ?? "there");
+        const forecast = await getTripForecast(lat, lon, locationName ?? "there", personal.locale);
         const snap = forecast[weather.date];
         if (snap) {
           weather = {
@@ -366,20 +341,14 @@ export async function findOutfits(
     }
   }
 
-  const bands = weather.tempC == null ? null : new Set(tempToSeasonBands(weather.tempC));
-  const rainy = (weather.precipProb ?? 0) > 40;
+  const dayWeather = { tempC: weather.tempC, rainy: isRainy(weather.precipProb) };
 
   const pool = ((comboData ?? []) as Combination[])
     .map((combo) => ({ combo, itemIds: combinationItemIds(combo) }))
     .filter(({ combo, itemIds }) => {
       if (itemIds.some((id) => !itemsById.has(id) || excluded.has(id))) return false;
       if (!required.every((id) => itemIds.includes(id))) return false;
-      if (bands && !combo.season_suitability.some((s) => bands.has(s))) return false;
-      if (rainy) {
-        const m = itemsById.get(combo.shoes_id)?.material;
-        if (m === "suede" || m === "canvas") return false;
-      }
-      return true;
+      return suitsWeather(combo, itemsById, dayWeather);
     });
 
   if (pool.length === 0) {

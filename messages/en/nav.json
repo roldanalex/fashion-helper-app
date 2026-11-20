@@ -1,0 +1,49 @@
+{
+  "today": "Today",
+  "stylist": "Stylist",
+  "wardrobe": "Wardrobe",
+  "outfits": "Outfits",
+  "family": "Family",
+  "shop": "Shop",
+  "settings": "Settings",
+  "admin": "Admin",
+  "more": "More",
+  "howItWorks": "How it works",
+  "welcome": "Welcome",
+  "awaitingInvitation": "Awaiting invitation",
+  "mainLabel": "Main",
+  "moreDescription": "Shop, settings and help",
+  "people": {
+    "listLabel": "People",
+    "you": "(you)",
+    "dressing": "Dressing",
+    "addPerson": "Add a person",
+    "sheetTitle": "Who are we dressing?",
+    "sheetDescription": "Wardrobe, Outfits, Today, Stylist and Shop follow your choice."
+  },
+  "generation": {
+    "woven": "{count, plural, one {Wove # new outfit into your table} other {Wove # new outfits into your table}}",
+    "failed": "Some outfits couldn't be built — open Wardrobe and tap \"Build outfits\" to retry",
+    "buildingFor": "Building outfits for {names}…",
+    "and": " and ",
+    "styling": "Aether is styling your wardrobe — weaving outfit combinations…"
+  },
+  "error": {
+    "title": "A loose thread",
+    "body": "This page did not load. Your wardrobe and outfits are safe. Try again, and if it keeps happening, sign out and back in.",
+    "reference": "Reference: {digest}"
+  },
+  "notFound": {
+    "title": "Not in the wardrobe",
+    "body": "This page does not exist, or the piece it showed has been removed.",
+    "goToToday": "Go to Today"
+  },
+  "setupNeeded": {
+    "title": "One database update to go",
+    "body": "Aether 1.5.0 stores wardrobes per person. Whoever runs the app needs to run the migration <code>0011_people.sql</code> in the Supabase SQL Editor. Nothing has been lost."
+  },
+  "pending": {
+    "title": "Awaiting your invitation",
+    "body": "You're signed in as <b>{email}</b>, but this account hasn't been granted access yet. Aether Wardrobe is invitation-only — ask the owner to approve your email, then refresh this page."
+  }
+}

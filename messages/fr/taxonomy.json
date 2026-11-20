@@ -1,0 +1,225 @@
+{
+  "category": {
+    "top": "Haut",
+    "bottom": "Bas",
+    "outerwear": "Veste / manteau",
+    "shoes": "Chaussures",
+    "watch": "Montre",
+    "accessory": "Accessoire"
+  },
+  "categoryPlural": {
+    "top": "Hauts",
+    "bottom": "Bas",
+    "outerwear": "Vestes et manteaux",
+    "shoes": "Chaussures",
+    "watch": "Montres",
+    "accessory": "Accessoires"
+  },
+  "subcategory": {
+    "t-shirt": "T-shirt",
+    "v-neck": "Col V",
+    "polo": "Polo",
+    "oxford shirt": "Chemise Oxford",
+    "button-down shirt": "Chemise button-down",
+    "dress shirt": "Chemise habillée",
+    "henley": "Henley",
+    "sweater": "Pull",
+    "knit polo": "Polo en maille",
+    "turtleneck": "Col roulé",
+    "blouse": "Chemisier",
+    "chinos": "Chino",
+    "dress trousers": "Pantalon de costume",
+    "jeans": "Jean",
+    "shorts": "Short",
+    "pleated trousers": "Pantalon à pinces",
+    "skirt": "Jupe",
+    "blazer": "Blazer",
+    "sport coat": "Veste sport",
+    "overcoat": "Pardessus",
+    "trench coat": "Trench",
+    "cardigan": "Cardigan",
+    "quarter-zip": "Pull camionneur",
+    "harrington jacket": "Blouson Harrington",
+    "field jacket": "Field jacket",
+    "loafers": "Mocassins",
+    "drivers": "Mocassins de conduite",
+    "oxfords": "Richelieus",
+    "derbies": "Derbies",
+    "boots": "Bottines",
+    "sneakers": "Baskets",
+    "boat shoes": "Chaussures bateau",
+    "monk straps": "Chaussures à boucle",
+    "dress": "Habillée",
+    "sports": "Sport",
+    "diver": "Plongée",
+    "gmt": "GMT / voyage",
+    "chronograph": "Chronographe",
+    "field": "Field",
+    "pilot": "Aviateur",
+    "belt": "Ceinture",
+    "man bag": "Sacoche",
+    "scarf": "Écharpe",
+    "sunglasses": "Lunettes de soleil",
+    "pocket square": "Pochette",
+    "hat": "Chapeau"
+  },
+  "attribute": {
+    "dress": "Habillée",
+    "sports": "Sport",
+    "diver": "Plongée",
+    "gmt": "GMT / voyage",
+    "chronograph": "Chronographe",
+    "field": "Field",
+    "pilot": "Aviateur",
+    "bracelet": "Bracelet métal",
+    "leather": "Bracelet cuir",
+    "rubber": "Bracelet caoutchouc",
+    "fabric": "Tissu / NATO",
+    "silver": "Argent",
+    "gold": "Or",
+    "rose gold": "Or rose",
+    "two-tone": "Bicolore"
+  },
+  "detailLabel": {
+    "Band": "Bracelet",
+    "Hardware tone": "Teinte des finitions",
+    "Buckle tone": "Teinte de la boucle",
+    "Frame tone": "Teinte de la monture"
+  },
+  "material": {
+    "cotton": "Coton",
+    "pique": "Piqué",
+    "knit": "Maille",
+    "wool": "Laine",
+    "merino": "Mérinos",
+    "cashmere": "Cachemire",
+    "linen": "Lin",
+    "denim": "Denim",
+    "leather": "Cuir",
+    "suede": "Daim",
+    "silk": "Soie",
+    "tweed": "Tweed",
+    "corduroy": "Velours côtelé",
+    "canvas": "Toile",
+    "synthetic": "Synthétique",
+    "steel": "Acier",
+    "gold": "Or",
+    "titanium": "Titane",
+    "rubber": "Caoutchouc",
+    "nylon": "Nylon",
+    "acetate": "Acétate"
+  },
+  "pattern": {
+    "solid": "Uni",
+    "striped": "Rayé",
+    "plaid": "Tartan",
+    "check": "À carreaux",
+    "herringbone": "Chevrons",
+    "houndstooth": "Pied-de-poule",
+    "cable-knit": "Torsadé",
+    "floral": "Fleuri",
+    "printed": "Imprimé"
+  },
+  "season": {
+    "spring": "Printemps",
+    "summer": "Été",
+    "fall": "Automne",
+    "winter": "Hiver"
+  },
+  "style": {
+    "old_money": "Old Money",
+    "classic": "Classique",
+    "smart_casual": "Smart casual",
+    "minimalist": "Minimaliste",
+    "sporty": "Sportswear",
+    "streetwear": "Streetwear"
+  },
+  "occasion": {
+    "work": "Travail",
+    "indoors": "Intérieur / Conférences",
+    "lunch": "Déjeuner",
+    "mall": "Centre commercial / Shopping",
+    "park": "Parc / Plein air",
+    "going_out": "Sortie",
+    "dinner": "Dîner",
+    "errands": "Courses",
+    "home": "À la maison",
+    "travel": "Voyage",
+    "celebration": "Fête",
+    "school": "École"
+  },
+  "lifestyle": {
+    "office": "Bureau",
+    "remote work": "Télétravail",
+    "parent": "Parent",
+    "travel often": "Voyage souvent",
+    "gym": "Salle de sport",
+    "social events": "Événements mondains"
+  },
+  "gender": {
+    "male": "Homme",
+    "female": "Femme",
+    "other": "Autre"
+  },
+  "ageRange": {
+    "18-24": "18-24",
+    "25-34": "25-34",
+    "35-44": "35-44",
+    "45-54": "45-54",
+    "55+": "55+"
+  },
+  "bodyShape": {
+    "slim": "Mince",
+    "average": "Moyenne",
+    "athletic": "Athlétique",
+    "broad": "Carrure large",
+    "full": "Ronde"
+  },
+  "skinTone": {
+    "fair": "Très claire",
+    "light": "Claire",
+    "medium": "Moyenne",
+    "olive": "Olive",
+    "tan": "Mate",
+    "deep": "Foncée"
+  },
+  "undertone": {
+    "warm": "Chaud",
+    "cool": "Froid",
+    "neutral": "Neutre"
+  },
+  "hairColor": {
+    "black": "Noirs",
+    "dark brown": "Brun foncé",
+    "brown": "Bruns",
+    "light brown": "Châtain",
+    "blonde": "Blonds",
+    "red": "Roux",
+    "gray": "Gris",
+    "white": "Blancs"
+  },
+  "eyeColor": {
+    "brown": "Marron",
+    "hazel": "Noisette",
+    "green": "Verts",
+    "blue": "Bleus",
+    "gray": "Gris"
+  },
+  "fit": {
+    "slim": "Ajustée, près du corps",
+    "regular": "Regular, coupe classique",
+    "relaxed": "Ample, plus d'aisance"
+  },
+  "ageBand": {
+    "adult": "Adulte",
+    "teen": "Ado (13–17)",
+    "child": "Enfant (4–12)",
+    "toddler": "Tout-petit (0–3)"
+  },
+  "colorSeason": {
+    "spring": "Printemps",
+    "summer": "Été",
+    "autumn": "Automne",
+    "winter": "Hiver"
+  }
+}

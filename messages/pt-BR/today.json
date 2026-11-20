@@ -1,0 +1,62 @@
+{
+  "meta": {
+    "title": "Hoje"
+  },
+  "header": {
+    "titleFor": "Hoje para {name}",
+    "subtitle": "Conte seus planos — eu monto o look."
+  },
+  "weather": {
+    "summary": "{location}: {temp}, {condition}, {precip}% de chuva"
+  },
+  "errors": {
+    "generic": "Algo deu errado",
+    "personGone": "Essa pessoa não está mais na sua conta. Recarregue a página.",
+    "couldNotRecord": "Não foi possível registrar esse look. Tente de novo.",
+    "occasionRequired": "Escolha uma ocasião válida",
+    "noLocation": "Não consegui encontrar esse destino. Tente o nome de uma cidade ou defina sua cidade em Configurações.",
+    "weatherFailed": "Não foi possível acessar o serviço de clima. Tente de novo daqui a pouco."
+  },
+  "empty": {
+    "title": "Ainda sem looks",
+    "ready": "Suas peças já estão aqui — o estilista só precisa combiná-las em looks.",
+    "notReady": "O estilista monta looks automaticamente quando seu guarda-roupa tiver o essencial abaixo.",
+    "goToWardrobe": "Ir para o Guarda-roupa"
+  },
+  "family": {
+    "title": "Vão sair juntos?",
+    "body": "Planeje um look em família para todos de uma vez."
+  },
+  "form": {
+    "occasionLabel": "O que o dia reserva?",
+    "whereLabel": "Onde? (opcional)",
+    "wherePlaceholder": "Em casa, ou digite uma cidade",
+    "notesLabel": "Mais alguma coisa? (opcional)",
+    "notesPlaceholder": "ex.: reunião com cliente, depois almoço com as crianças",
+    "notesPlaceholderMinor": "ex.: educação física à tarde, depois parque (sem nomes, por favor)",
+    "submit": "Montar meu dia",
+    "submitting": "Conferindo o clima…"
+  },
+  "live": {
+    "pending": "Conferindo o clima e escolhendo looks.",
+    "ready": "{count, plural, one {# look pronto.} other {# looks prontos.}}",
+    "none": "Nenhum look da sua tabela serve para este dia."
+  },
+  "results": {
+    "heading": "Sugestões de hoje",
+    "fresh": "Sugestões novas",
+    "none": "Nada na sua tabela combina bem com este dia e este clima. Algumas peças novas abririam caminho —<link>veja o que comprar a seguir</link>."
+  },
+  "worn": {
+    "toast": "Anotado — bom uso",
+    "wearing": "Vestindo",
+    "wearThis": "Vou usar este"
+  },
+  "card": {
+    "oldMoney": "Old money"
+  },
+  "location": {
+    "matchingPlaces": "Lugares encontrados"
+  },
+  "fallbackExplanation": "Uma combinação sempre certeira da sua tabela."
+}

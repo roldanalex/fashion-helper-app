@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { toggleBoost, toggleHide } from "@/app/(app)/combinations/actions";
 import { FRESHNESS_DAYS } from "@/lib/constants";
+import { useTranslations } from "next-intl";
 import type { ClothingItem, Combination } from "@/types/database";
 
 interface Slot {
@@ -25,6 +26,7 @@ export function ComboCard({
   combination: Combination;
   slots: Slot[];
 }) {
+  const t = useTranslations("outfits.card");
   const router = useRouter();
   const [pending, startTransition] = useTransition();
 
@@ -44,7 +46,7 @@ export function ComboCard({
   function unhide() {
     update(async () => {
       const res = await toggleHide(combination.id, false);
-      if (!res?.error) toast.success("Outfit back in your table");
+      if (!res?.error) toast.success(t("unhidden"));
       return res;
     });
   }
@@ -53,10 +55,10 @@ export function ComboCard({
     update(async () => {
       const res = await toggleHide(combination.id, true);
       if (!res?.error) {
-        toast.success("Outfit hidden", {
-          description: "It will not be recommended. Show hidden outfits to find it again.",
+        toast.success(t("hidden"), {
+          description: t("hiddenDescription"),
           action: {
-            label: "Undo",
+            label: t("undo"),
             onClick: () => update(() => toggleHide(combination.id, false)),
           },
         });
@@ -100,13 +102,13 @@ export function ComboCard({
         <div className="flex items-center gap-1.5">
           <Badge variant="secondary">{combination.overall_score.toFixed(1)}</Badge>
           {combination.boosted && (
-            <Badge className="bg-primary/15 text-primary">Boosted</Badge>
+            <Badge className="bg-primary/15 text-primary">{t("boosted")}</Badge>
           )}
           {combination.hidden ? (
-            <Badge variant="outline">Hidden</Badge>
+            <Badge variant="outline">{t("hiddenBadge")}</Badge>
           ) : resting ? (
             <Badge variant="outline" className="text-muted-foreground">
-              Resting
+              {t("resting")}
             </Badge>
           ) : null}
         </div>
@@ -114,7 +116,7 @@ export function ComboCard({
           <Button
             variant="ghost"
             size="icon"
-            aria-label={combination.boosted ? "Remove boost" : "Boost combination"}
+            aria-label={combination.boosted ? t("removeBoost") : t("boost")}
             disabled={pending}
             onClick={() => update(() => toggleBoost(combination.id, !combination.boosted))}
           >
@@ -131,7 +133,7 @@ export function ComboCard({
           <Button
             variant="ghost"
             size="icon"
-            aria-label={combination.hidden ? "Unhide combination" : "Hide combination"}
+            aria-label={combination.hidden ? t("unhide") : t("hide")}
             disabled={pending}
             onClick={() => (combination.hidden ? unhide() : hide())}
           >

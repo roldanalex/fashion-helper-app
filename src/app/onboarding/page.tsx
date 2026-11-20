@@ -2,8 +2,12 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getAccess } from "@/lib/access";
 import { OnboardingWizard } from "@/components/onboarding/wizard";
+import { getTranslations } from "next-intl/server";
 
-export const metadata = { title: "Welcome" };
+export async function generateMetadata() {
+  const t = await getTranslations("nav");
+  return { title: t("welcome") };
+}
 
 export default async function OnboardingPage() {
   const supabase = await createClient();

@@ -1,4 +1,5 @@
 import { Check, Plus, X } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { RebuildOutfitsButton } from "@/components/wardrobe/rebuild-outfits-button";
 import type { WardrobeReadiness } from "@/lib/combinations/readiness";
@@ -12,6 +13,7 @@ function Requirement({
   met: boolean;
   optional?: boolean;
 }) {
+  const t = useTranslations("wardrobe.readiness");
   return (
     <span
       className={cn(
@@ -32,7 +34,7 @@ function Requirement({
       )}
       {label}
       <span className="sr-only">
-        {met ? ": in your wardrobe" : optional ? ": optional, not added yet" : ": missing"}
+        {met ? t("srMet") : optional ? t("srOptional") : t("srMissing")}
       </span>
     </span>
   );
@@ -53,42 +55,39 @@ export function ReadinessBanner({ readiness }: { readiness: WardrobeReadiness })
     ready,
     pendingCount,
   } = readiness;
+  const t = useTranslations("wardrobe.readiness");
 
   return (
     <div className="rounded-xl border bg-card p-5">
       <div className="flex flex-wrap items-center gap-2">
-        <Requirement label="Top" met={hasTop} />
-        <Requirement label="Bottom" met={hasBottom} />
-        <Requirement label="Shoes" met={hasShoes} />
+        <Requirement label={t("top")} met={hasTop} />
+        <Requirement label={t("bottom")} met={hasBottom} />
+        <Requirement label={t("shoes")} met={hasShoes} />
         <span className="mx-1 hidden h-4 w-px bg-border sm:inline-block" aria-hidden />
-        <Requirement label="Outerwear" met={hasOuterwear} optional />
-        <Requirement label="Watch" met={hasWatch} optional />
-        <Requirement label="Accessories" met={hasAccessory} optional />
+        <Requirement label={t("outerwear")} met={hasOuterwear} optional />
+        <Requirement label={t("watch")} met={hasWatch} optional />
+        <Requirement label={t("accessories")} met={hasAccessory} optional />
       </div>
       <p className="mt-2 text-xs text-muted-foreground">
-        Top, bottom and shoes are required. Outerwear, a watch and accessories are
-        optional; they add layers and finishing touches to outfits.
+        {t("requiredNote")}
       </p>
 
       {!ready ? (
         <p className="mt-3 text-sm text-muted-foreground">
-          Confirm at least a top, a bottom and a pair of shoes — that&apos;s the
-          minimum the stylist needs before it can weave an outfit. Outfits then
-          build automatically as you add each piece.
+          {t("notReady")}
         </p>
       ) : pendingCount > 0 ? (
         <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
           <p className="text-sm text-muted-foreground">
-            {pendingCount} {pendingCount === 1 ? "piece" : "pieces"} still need
-            outfits built. This usually happens on its own — tap to finish now.
+            {t("pending", { count: pendingCount })}
           </p>
           <RebuildOutfitsButton size="sm" />
         </div>
       ) : (
         <p className="mt-3 text-sm text-muted-foreground">
-          You&apos;re set — the stylist has woven outfits from your wardrobe.
-          Head to <span className="text-foreground">Today</span> for a
-          recommendation.
+          {t.rich("ready", {
+            b: (chunks) => <span className="text-foreground">{chunks}</span>,
+          })}
         </p>
       )}
     </div>

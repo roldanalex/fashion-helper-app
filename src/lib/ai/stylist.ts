@@ -1,7 +1,10 @@
 import "server-only";
-import { describeClient, PERSONAL_FIT_RULE, seasonOf, type PersonalProfile } from "@/lib/personal/client-profile";
+import { PERSONAL_FIT_RULE, seasonOf } from "@/lib/personal/client-profile";
 import { tool } from "ai";
-import type { SupabaseClient } from "@supabase/supabase-js";
+import type { Wardrobe } from "@/lib/wardrobe";
+import type { PersonContext, AccountProfile } from "@/lib/people/context";
+import { occasionsFor } from "@/lib/constants";
+import { aiLanguageRule } from "@/i18n/config";
 import { describeItem } from "@/lib/ai/describe";
 import { findOutfits, planTrip } from "@/lib/trips/plan";
 import {
@@ -13,11 +16,10 @@ import {
 import { addDays } from "@/lib/trips/dates";
 import {
   FORECAST_HORIZON_DAYS,
-  OCCASIONS,
   OCCASION_HINTS,
   TRIP_MAX_DAYS,
 } from "@/lib/constants";
-import type { ClothingItem, Profile } from "@/types/database";
+import type { ClothingItem } from "@/types/database";
 
 /**
  * The chat is the one place a stronger model earns its keep: it has to map
@@ -31,15 +33,17 @@ export const STYLIST_MODEL = process.env.STYLIST_MODEL || "gpt-5.5";
 export const STYLIST_REASONING_EFFORT = "low" as const;
 
 export interface StylistContext {
-  supabase: SupabaseClient;
-  userId: string;
+  /** The Active person's Wardrobe; tools read only from it. */
+  wardrobe: Wardrobe;
   /** The client's local date, YYYY-MM-DD. */
   today: string;
-  wardrobe: ClothingItem[];
-  profile:
-    | (Pick<Profile, "style_preferences" | "preferred_formality" | "home_location" | "units"> &
-        PersonalProfile)
-    | null;
+  /** Confirmed pieces, listed in the prompt by id. */
+  pieces: ClothingItem[];
+  person: PersonContext;
+  /** The Family's home and temperature unit. */
+  account: AccountProfile | null;
+  /** The language on screen; replies come back in it. */
+  locale: string;
 }
 
 /** Tools the stylist may call. The planner does the choosing; the model narrates. */
@@ -51,8 +55,9 @@ export function stylistTools(ctx: StylistContext) {
       inputSchema: planTripInputSchema,
       execute: async (input) => {
         try {
-          return await planTrip(ctx.supabase, ctx.userId, input, {
-            colorSeason: ctx.profile ? seasonOf(ctx.profile) : null,
+          return await planTrip(ctx.wardrobe, input, {
+            colorSeason: seasonOf(ctx.person.personal),
+            locale: ctx.locale,
           });
         } catch (err) {
           console.error("plan_trip failed:", err);
@@ -73,8 +78,10 @@ export function stylistTools(ctx: StylistContext) {
       inputSchema: findOutfitsInputSchema,
       execute: async (input) => {
         try {
-          return await findOutfits(ctx.supabase, ctx.userId, input, {
-            colorSeason: ctx.profile ? seasonOf(ctx.profile) : null,
+          return await findOutfits(ctx.wardrobe, input, {
+            colorSeason: seasonOf(ctx.person.personal),
+            locale: ctx.locale,
+            home: ctx.account,
           });
         } catch (err) {
           console.error("find_outfits failed:", err);
@@ -93,15 +100,16 @@ export function stylistTools(ctx: StylistContext) {
 }
 
 export function buildStylistSystemPrompt(ctx: StylistContext): string {
-  const personalBlock = describeClient(ctx.profile);
+  // Only the prompt-safe view of the Person (docs/adr/0002).
+  const subject = ctx.person.subject;
+  const personalBlock = subject.personalBlock;
   const horizonEnd = addDays(ctx.today, FORECAST_HORIZON_DAYS - 1);
-  const styles = ctx.profile?.style_preferences?.join(", ") || "smart casual";
-  const wardrobeLines = ctx.wardrobe
+  const wardrobeLines = ctx.pieces
     .slice()
     .sort((a, b) => a.category.localeCompare(b.category) || a.name.localeCompare(b.name))
     .map((i) => `${i.id} | ${i.category}${i.subcategory ? `/${i.subcategory}` : ""} | ${describeItem(i)}`)
     .join("\n");
-  const occasionLines = OCCASIONS.map(
+  const occasionLines = occasionsFor(subject.isMinor).map(
     (o) => `- ${o.value} (${o.label}): ${OCCASION_HINTS[o.value]}`,
   ).join("\n");
 
@@ -181,15 +189,16 @@ Warm, concrete, unhurried, never gushing. Plain prose in short paragraphs.
 No markdown at all: no headings, no bullet lists, no bold, no tables, no
 emoji. After a tool call, never restate the outfits or the packing list;
 the card does that. Keep replies under 120 words unless the client asks for
-detail. ${ctx.profile?.units === "imperial" ? "The client reads temperatures in °F: tool results and the forecast are in °C, so convert before you mention a number, and never show °C." : "Temperatures in °C."}
+detail. ${ctx.account?.units === "imperial" ? "The client reads temperatures in °F: tool results and the forecast are in °C, so convert before you mention a number, and never show °C." : "Temperatures in °C."}
 
 # The client
-Styles: ${styles}. Preferred formality: ${ctx.profile?.preferred_formality ?? 5}/10.
-Home: ${ctx.profile?.home_location ?? "not set"}. Today: ${ctx.today}.
+${subject.isMinor ? `You are dressing a family member the parent calls "${subject.alias}". ${subject.audienceGuide} Speak to the parent; refer to the child only as "${subject.alias}", never guess their name, age or looks, and do not ask for them.
+` : ""}${subject.styleLine}
+${subject.isMinor ? "" : `Home: ${ctx.account?.home_location ?? "not set"}. `}Today: ${ctx.today}.
 ${personalBlock ? `${personalBlock}
 ${PERSONAL_FIT_RULE} The tools already favour flattering near-face colours; when you explain a pick, you may say why its colours or cut suit the client.` : "The client has not shared their build or colouring; do not ask unless they bring it up."}
 
-# Occasions (use these values in plan_trip)
+${aiLanguageRule(ctx.locale) ? `# Language\n${aiLanguageRule(ctx.locale)} Tool inputs (ids, dates, occasion values) stay in English.\n\n` : ""}# Occasions (use these values in plan_trip)
 ${occasionLines}
 
 # Wardrobe (id | category/type | description with formality F and old-money OM)

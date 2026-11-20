@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useLinkStatus } from "next/link";
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 import {
   BookOpen,
   CalendarDays,
@@ -15,11 +16,18 @@ import {
   ShieldCheck,
   Shirt,
   ShoppingBag,
+  Users,
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { APP_CREDIT, APP_VERSION } from "@/lib/constants";
 import { GenerationBanner } from "@/components/shared/generation-banner";
+import { AetherLogo } from "@/components/shared/aether-logo";
+import {
+  MobilePersonBar,
+  SidebarPersonSwitcher,
+  type PersonOption,
+} from "@/components/people/person-switcher";
 import {
   Sheet,
   SheetContent,
@@ -28,23 +36,25 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 
+/** `label` is a key in the nav namespace. */
 type NavItem = { href: string; label: string; icon: LucideIcon };
 
 /** Everyday destinations: the mobile tab bar shows these plus "More". */
 const primaryNavItems: NavItem[] = [
-  { href: "/today", label: "Today", icon: CalendarDays },
-  { href: "/stylist", label: "Stylist", icon: MessageCircle },
-  { href: "/wardrobe", label: "Wardrobe", icon: Shirt },
-  { href: "/combinations", label: "Outfits", icon: Layers },
+  { href: "/today", label: "today", icon: CalendarDays },
+  { href: "/stylist", label: "stylist", icon: MessageCircle },
+  { href: "/wardrobe", label: "wardrobe", icon: Shirt },
+  { href: "/combinations", label: "outfits", icon: Layers },
 ];
 
 /** Less frequent destinations: in the sidebar on desktop, in "More" on mobile. */
 const secondaryNavItems: NavItem[] = [
-  { href: "/shop", label: "Shop", icon: ShoppingBag },
-  { href: "/settings", label: "Settings", icon: Settings },
+  { href: "/family", label: "family", icon: Users },
+  { href: "/shop", label: "shop", icon: ShoppingBag },
+  { href: "/settings", label: "settings", icon: Settings },
 ];
 
-const adminNavItem: NavItem = { href: "/admin", label: "Admin", icon: ShieldCheck };
+const adminNavItem: NavItem = { href: "/admin", label: "admin", icon: ShieldCheck };
 
 function isActive(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
@@ -63,10 +73,17 @@ function NavIcon({ icon: Icon, className }: { icon: LucideIcon; className?: stri
 export function AppShell({
   children,
   isAdmin = false,
+  people = [],
+  activeId = "",
 }: {
   children: React.ReactNode;
   isAdmin?: boolean;
+  /** Everyone this Account dresses; the switcher shows when there are two or more. */
+  people?: PersonOption[];
+  activeId?: string;
 }) {
+  const t = useTranslations("nav");
+  const showSwitcher = people.length > 1;
   const pathname = usePathname();
   const [moreOpen, setMoreOpen] = useState(false);
   const moreItems = isAdmin ? [...secondaryNavItems, adminNavItem] : secondaryNavItems;
@@ -79,11 +96,12 @@ export function AppShell({
       <aside className="sticky top-0 hidden h-dvh w-56 flex-col border-r bg-sidebar px-3 py-6 md:flex">
         <Link
           href="/today"
-          className="rounded-md px-3 font-serif text-lg tracking-wide focus-visible:outline-2 focus-visible:outline-primary"
+          className="rounded-md px-2 focus-visible:outline-2 focus-visible:outline-primary"
         >
-          Aether <span className="text-primary">Wardrobe</span>
+          <AetherLogo className="h-11" />
         </Link>
-        <nav className="mt-8 flex flex-col gap-1" aria-label="Main">
+        {showSwitcher && <SidebarPersonSwitcher people={people} activeId={activeId} />}
+        <nav className={cn("flex flex-col gap-1", showSwitcher ? "mt-6" : "mt-8")} aria-label={t("mainLabel")}>
           {allItems.map(({ href, label, icon }) => {
             const active = isActive(pathname, href);
             return (
@@ -99,7 +117,7 @@ export function AppShell({
                 )}
               >
                 <NavIcon icon={icon} className="size-4" />
-                {label}
+                {t(label)}
               </Link>
             );
           })}
@@ -110,7 +128,7 @@ export function AppShell({
             className="inline-flex min-h-9 items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
             <BookOpen className="size-4" aria-hidden />
-            How it works
+            {t("howItWorks")}
           </Link>
           <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
             v{APP_VERSION}
@@ -122,6 +140,7 @@ export function AppShell({
 
       {/* Content. Bottom padding clears the tab bar and the iOS home indicator. */}
       <div className="flex min-w-0 flex-1 flex-col pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-0">
+        {showSwitcher && <MobilePersonBar people={people} activeId={activeId} />}
         <GenerationBanner />
         {children}
         <footer className="mt-auto px-6 pb-4 pt-10 text-center text-xs text-muted-foreground md:hidden">
@@ -131,7 +150,7 @@ export function AppShell({
 
       {/* Mobile bottom tab bar: four destinations plus More, all in the thumb zone. */}
       <nav
-        aria-label="Main"
+        aria-label={t("mainLabel")}
         className="fixed inset-x-0 bottom-0 z-40 border-t bg-background/95 backdrop-blur md:hidden"
       >
         <div className="grid grid-cols-5 pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]">
@@ -148,7 +167,7 @@ export function AppShell({
                 )}
               >
                 <NavIcon icon={icon} className="size-5" />
-                {label}
+                {t(label)}
               </Link>
             );
           })}
@@ -163,7 +182,7 @@ export function AppShell({
             )}
           >
             <Ellipsis className="size-5" aria-hidden />
-            More
+            {t("more")}
           </button>
         </div>
       </nav>
@@ -171,13 +190,13 @@ export function AppShell({
       <Sheet open={moreOpen} onOpenChange={setMoreOpen}>
         <SheetContent side="bottom" className="rounded-t-2xl md:hidden">
           <SheetHeader className="pb-0">
-            <SheetTitle className="font-serif text-xl">More</SheetTitle>
+            <SheetTitle className="font-serif text-xl">{t("more")}</SheetTitle>
             <SheetDescription className="sr-only">
-              Shop, settings and help
+              {t("moreDescription")}
             </SheetDescription>
           </SheetHeader>
-          <nav aria-label="More" className="flex flex-col px-2 pb-4">
-            {[...moreItems, { href: "/welcome", label: "How it works", icon: BookOpen }].map(
+          <nav aria-label={t("more")} className="flex flex-col px-2 pb-4">
+            {[...moreItems, { href: "/welcome", label: "howItWorks", icon: BookOpen }].map(
               ({ href, label, icon: Icon }) => {
                 const active = isActive(pathname, href);
                 return (
@@ -192,7 +211,7 @@ export function AppShell({
                     )}
                   >
                     <Icon className="size-5 text-muted-foreground" aria-hidden />
-                    {label}
+                    {t(label)}
                   </Link>
                 );
               },

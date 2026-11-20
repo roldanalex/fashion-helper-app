@@ -1,0 +1,90 @@
+{
+  "meta": {
+    "title": "Estilista"
+  },
+  "header": {
+    "titleFor": "Estilista para {name}",
+    "subtitle": "Prepara la maleta para un viaje en una sola conversación, o pregunta qué va con qué."
+  },
+  "errors": {
+    "unavailable": "El estilista no está disponible. Inténtalo de nuevo.",
+    "unavailableShortly": "El estilista no está disponible ahora. Inténtalo en un momento.",
+    "messageRequired": "Escribe un mensaje"
+  },
+  "starters": {
+    "lisbon": "Prepara mi maleta para tres días en Lisboa: trabajo el jueves y el viernes, cena el viernes y turismo el sábado.",
+    "chicago": "Un viaje de cinco días a un congreso en Chicago el mes que viene, solo equipaje de mano. ¿Me alcanza con un par de zapatos?",
+    "blazer": "¿Qué va con mi blazer azul marino para cenar el viernes? Me gustaría usar los mocasines marrones."
+  },
+  "empty": {
+    "title": "El estilista primero necesita tus conjuntos",
+    "ready": "Tus prendas ya están. Cuando tu repertorio de conjuntos esté listo, vuelve y planea un viaje.",
+    "notReady": "Las maletas se preparan con tu repertorio de conjuntos, que se crea solo cuando confirmes lo esencial de abajo.",
+    "goToWardrobe": "Ir al armario"
+  },
+  "intro": {
+    "lead": "Dime adónde vas, por cuánto tiempo y qué harás cada día. Te propondré un conjunto por día de tu propio repertorio y mantendré la maleta ligera.",
+    "hint": "Cambia la ciudad y las fechas según tu viaje. Cada conjunto sale de tu repertorio de Conjuntos.",
+    "minorPrivacy": "Para proteger la privacidad de {name}, el estilista solo lo conoce como “{alias}”. Por favor, no escribas su nombre, edad ni escuela en tus mensajes."
+  },
+  "chat": {
+    "replied": "El estilista respondió.",
+    "repliedWithCard": "El estilista respondió con una tarjeta de plan.",
+    "cleared": "Conversación borrada",
+    "undo": "Deshacer",
+    "startOver": "Empezar de nuevo",
+    "thinking": "Pensándolo…",
+    "noAnswer": "El estilista no respondió.",
+    "tryAgain": "Reintentar"
+  },
+  "composer": {
+    "label": "Escribe al estilista",
+    "placeholder": "¿Adónde vas y cómo serán los días?",
+    "stop": "Detener",
+    "send": "Enviar"
+  },
+  "tools": {
+    "layingOut": "Organizando el viaje…",
+    "layingOutTo": "Organizando {destination}…",
+    "tripNotOk": "Aún no se pudo organizar este viaje",
+    "tripError": "El planificador no pudo organizar este viaje.",
+    "findingOutfits": "Revisando tus conjuntos…",
+    "outfitsNotOk": "Aún no se pudieron encontrar conjuntos para eso",
+    "outfitsError": "Falló la búsqueda de conjuntos."
+  },
+  "weather": {
+    "noForecast": "sin pronóstico",
+    "rain": "{precip}% de lluvia",
+    "estimate": "estimado"
+  },
+  "cards": {
+    "looseFit": "aproximado",
+    "seeWhatWould": "Ver qué lo lograría",
+    "oldMoney": "Old money"
+  },
+  "trip": {
+    "ariaLabel": "Plan de viaje a {location}",
+    "dateRange": "Del {start} al {end}",
+    "packingHeading": "Maleta para {location}, del {start} al {end}",
+    "packingLine": "{name} (se usa {count}×)",
+    "copied": "Lista de equipaje copiada",
+    "copyFailed": "No se pudo copiar. Selecciona la lista y cópiala a mano.",
+    "stats": {
+      "summary": "<b>{pieces, plural, one {# prenda} other {# prendas}}</b> para {filled} de {total} conjuntos",
+      "distinct": "({count} distintas)",
+      "shoes": "{count, plural, one {# par} other {# pares}} de zapatos",
+      "outerwear": "{count} de abrigo",
+      "watches": "{count, plural, one {# reloj} other {# relojes}}"
+    },
+    "nothingSuits": "Nada en tu repertorio va con esto.",
+    "whatToPack": "Qué llevar",
+    "copyList": "Copiar lista",
+    "wornIn": "se usa en {count, plural, one {# conjunto} other {# conjuntos}}"
+  },
+  "options": {
+    "ariaLabel": "Opciones de conjunto",
+    "builtAround": "Armado en torno a",
+    "nothingMatches": "Aún no hay nada en tu repertorio que combine con esto.",
+    "boosted": "Destacado"
+  }
+}

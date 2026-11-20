@@ -1,0 +1,47 @@
+{
+  "meta": {
+    "title": "Administración"
+  },
+  "page": {
+    "title": "Administración",
+    "subtitle": "Decide quién puede usar la app, y tus créditos de API."
+  },
+  "pending": {
+    "title": "Esperando acceso",
+    "description": "Estas personas iniciaron sesión con Google, pero aún no pueden usar la app.",
+    "signedIn": "inició sesión el {date}",
+    "approve": "Aprobar"
+  },
+  "invite": {
+    "title": "Invitar por correo",
+    "description": "Aprueba a alguien por adelantado: entrará directamente la primera vez que inicie sesión con Google.",
+    "emailLabel": "Correo a invitar",
+    "grant": "Dar acceso"
+  },
+  "grants": {
+    "title": "Quién tiene acceso",
+    "admin": "Admin",
+    "revoke": "Revocar",
+    "you": "tú",
+    "supabaseHint": "También puedes gestionar esta lista en Supabase → Table Editor → access_grants."
+  },
+  "revoke": {
+    "title": "¿Revocar el acceso de {email}?",
+    "description": "Se cerrará su sesión en su próxima visita y verá la página de espera. Su armario queda guardado y puedes volver a darle acceso cuando quieras.",
+    "keep": "Mantener acceso",
+    "confirm": "Revocar acceso"
+  },
+  "toast": {
+    "approved": "{email} aprobado",
+    "invited": "{email} invitado",
+    "revoked": "Acceso revocado a {email}"
+  },
+  "errors": {
+    "adminsOnly": "Solo administradores",
+    "invalidEmail": "Eso no parece un correo",
+    "alreadyHasAccess": "Ya tiene acceso",
+    "couldNotGrant": "No se pudo dar acceso",
+    "cannotRevokeSelf": "No puedes revocar tu propio acceso",
+    "couldNotRevoke": "No se pudo revocar el acceso"
+  }
+}

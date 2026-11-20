@@ -1,0 +1,225 @@
+{
+  "category": {
+    "top": "Top",
+    "bottom": "Bottom",
+    "outerwear": "Outerwear",
+    "shoes": "Shoes",
+    "watch": "Watch",
+    "accessory": "Accessory"
+  },
+  "categoryPlural": {
+    "top": "Tops",
+    "bottom": "Bottoms",
+    "outerwear": "Outerwear",
+    "shoes": "Shoes",
+    "watch": "Watches",
+    "accessory": "Accessories"
+  },
+  "subcategory": {
+    "t-shirt": "T-shirt",
+    "v-neck": "V-neck",
+    "polo": "Polo",
+    "oxford shirt": "Oxford shirt",
+    "button-down shirt": "Button-down shirt",
+    "dress shirt": "Dress shirt",
+    "henley": "Henley",
+    "sweater": "Sweater",
+    "knit polo": "Knit polo",
+    "turtleneck": "Turtleneck",
+    "blouse": "Blouse",
+    "chinos": "Chinos",
+    "dress trousers": "Dress trousers",
+    "jeans": "Jeans",
+    "shorts": "Shorts",
+    "pleated trousers": "Pleated trousers",
+    "skirt": "Skirt",
+    "blazer": "Blazer",
+    "sport coat": "Sport coat",
+    "overcoat": "Overcoat",
+    "trench coat": "Trench coat",
+    "cardigan": "Cardigan",
+    "quarter-zip": "Quarter-zip",
+    "harrington jacket": "Harrington jacket",
+    "field jacket": "Field jacket",
+    "loafers": "Loafers",
+    "drivers": "Drivers",
+    "oxfords": "Oxfords",
+    "derbies": "Derbies",
+    "boots": "Boots",
+    "sneakers": "Sneakers",
+    "boat shoes": "Boat shoes",
+    "monk straps": "Monk straps",
+    "dress": "Dress",
+    "sports": "Sports",
+    "diver": "Diver",
+    "gmt": "GMT / travel",
+    "chronograph": "Chronograph",
+    "field": "Field",
+    "pilot": "Pilot",
+    "belt": "Belt",
+    "man bag": "Man bag",
+    "scarf": "Scarf",
+    "sunglasses": "Sunglasses",
+    "pocket square": "Pocket square",
+    "hat": "Hat"
+  },
+  "attribute": {
+    "dress": "Dress",
+    "sports": "Sports",
+    "diver": "Diver",
+    "gmt": "GMT / travel",
+    "chronograph": "Chronograph",
+    "field": "Field",
+    "pilot": "Pilot",
+    "bracelet": "Metal bracelet",
+    "leather": "Leather strap",
+    "rubber": "Rubber strap",
+    "fabric": "Fabric / NATO",
+    "silver": "Silver",
+    "gold": "Gold",
+    "rose gold": "Rose gold",
+    "two-tone": "Two-tone"
+  },
+  "detailLabel": {
+    "Band": "Band",
+    "Hardware tone": "Hardware tone",
+    "Buckle tone": "Buckle tone",
+    "Frame tone": "Frame tone"
+  },
+  "material": {
+    "cotton": "Cotton",
+    "pique": "Pique",
+    "knit": "Knit",
+    "wool": "Wool",
+    "merino": "Merino",
+    "cashmere": "Cashmere",
+    "linen": "Linen",
+    "denim": "Denim",
+    "leather": "Leather",
+    "suede": "Suede",
+    "silk": "Silk",
+    "tweed": "Tweed",
+    "corduroy": "Corduroy",
+    "canvas": "Canvas",
+    "synthetic": "Synthetic",
+    "steel": "Steel",
+    "gold": "Gold",
+    "titanium": "Titanium",
+    "rubber": "Rubber",
+    "nylon": "Nylon",
+    "acetate": "Acetate"
+  },
+  "pattern": {
+    "solid": "Solid",
+    "striped": "Striped",
+    "plaid": "Plaid",
+    "check": "Check",
+    "herringbone": "Herringbone",
+    "houndstooth": "Houndstooth",
+    "cable-knit": "Cable-knit",
+    "floral": "Floral",
+    "printed": "Printed"
+  },
+  "season": {
+    "spring": "Spring",
+    "summer": "Summer",
+    "fall": "Fall",
+    "winter": "Winter"
+  },
+  "style": {
+    "old_money": "Old Money",
+    "classic": "Classic",
+    "smart_casual": "Smart Casual",
+    "minimalist": "Minimalist",
+    "sporty": "Sporty",
+    "streetwear": "Streetwear"
+  },
+  "occasion": {
+    "work": "Work",
+    "indoors": "Indoors / Conferences",
+    "lunch": "Lunch",
+    "mall": "Mall / Shopping",
+    "park": "Park / Outdoors",
+    "going_out": "Going Out",
+    "dinner": "Dinner",
+    "errands": "Errands",
+    "home": "At Home",
+    "travel": "Travel",
+    "celebration": "Celebration",
+    "school": "School"
+  },
+  "lifestyle": {
+    "office": "Office",
+    "remote work": "Remote work",
+    "parent": "Parent",
+    "travel often": "Travel often",
+    "gym": "Gym",
+    "social events": "Social events"
+  },
+  "gender": {
+    "male": "Male",
+    "female": "Female",
+    "other": "Other"
+  },
+  "ageRange": {
+    "18-24": "18-24",
+    "25-34": "25-34",
+    "35-44": "35-44",
+    "45-54": "45-54",
+    "55+": "55+"
+  },
+  "bodyShape": {
+    "slim": "Slim",
+    "average": "Average",
+    "athletic": "Athletic",
+    "broad": "Broad",
+    "full": "Full"
+  },
+  "skinTone": {
+    "fair": "Fair",
+    "light": "Light",
+    "medium": "Medium",
+    "olive": "Olive",
+    "tan": "Tan",
+    "deep": "Deep"
+  },
+  "undertone": {
+    "warm": "Warm",
+    "cool": "Cool",
+    "neutral": "Neutral"
+  },
+  "hairColor": {
+    "black": "Black",
+    "dark brown": "Dark brown",
+    "brown": "Brown",
+    "light brown": "Light brown",
+    "blonde": "Blonde",
+    "red": "Red",
+    "gray": "Gray",
+    "white": "White"
+  },
+  "eyeColor": {
+    "brown": "Brown",
+    "hazel": "Hazel",
+    "green": "Green",
+    "blue": "Blue",
+    "gray": "Gray"
+  },
+  "fit": {
+    "slim": "Slim, close to the body",
+    "regular": "Regular, classic cut",
+    "relaxed": "Relaxed, roomier"
+  },
+  "ageBand": {
+    "adult": "Adult",
+    "teen": "Teen (13–17)",
+    "child": "Child (4–12)",
+    "toddler": "Toddler (0–3)"
+  },
+  "colorSeason": {
+    "spring": "Spring",
+    "summer": "Summer",
+    "autumn": "Autumn",
+    "winter": "Winter"
+  }
+}

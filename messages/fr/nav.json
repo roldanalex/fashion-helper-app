@@ -1,0 +1,49 @@
+{
+  "today": "Aujourd'hui",
+  "stylist": "Styliste",
+  "wardrobe": "Garde-robe",
+  "outfits": "Tenues",
+  "family": "Famille",
+  "shop": "Boutique",
+  "settings": "Réglages",
+  "admin": "Admin",
+  "more": "Plus",
+  "howItWorks": "Comment ça marche",
+  "welcome": "Bienvenue",
+  "awaitingInvitation": "En attente d'invitation",
+  "mainLabel": "Principal",
+  "moreDescription": "Boutique, réglages et aide",
+  "people": {
+    "listLabel": "Personnes",
+    "you": "(vous)",
+    "dressing": "On habille",
+    "addPerson": "Ajouter une personne",
+    "sheetTitle": "Qui habillons-nous ?",
+    "sheetDescription": "Garde-robe, Tenues, Aujourd'hui, Styliste et Boutique suivent votre choix."
+  },
+  "generation": {
+    "woven": "{count, plural, one {# nouvelle tenue tissée dans votre table} other {# nouvelles tenues tissées dans votre table}}",
+    "failed": "Certaines tenues n'ont pas pu être créées : ouvrez Garde-robe et touchez « Créer les tenues » pour réessayer",
+    "buildingFor": "Création des tenues pour {names}…",
+    "and": " et ",
+    "styling": "Aether met en scène votre garde-robe et tisse des associations de tenues…"
+  },
+  "error": {
+    "title": "Un fil décousu",
+    "body": "Cette page ne s'est pas chargée. Votre garde-robe et vos tenues sont en sécurité. Réessayez, et si cela se reproduit, déconnectez-vous puis reconnectez-vous.",
+    "reference": "Référence : {digest}"
+  },
+  "notFound": {
+    "title": "Introuvable dans la garde-robe",
+    "body": "Cette page n'existe pas, ou la pièce qu'elle affichait a été supprimée.",
+    "goToToday": "Aller à Aujourd'hui"
+  },
+  "setupNeeded": {
+    "title": "Encore une mise à jour de la base de données",
+    "body": "Aether 1.5.0 enregistre une garde-robe par personne. La personne qui gère l'application doit exécuter la migration <code>0011_people.sql</code> dans le SQL Editor de Supabase. Rien n'a été perdu."
+  },
+  "pending": {
+    "title": "En attente de votre invitation",
+    "body": "Vous êtes connecté en tant que <b>{email}</b>, mais ce compte n'a pas encore reçu d'accès. Aether Wardrobe fonctionne sur invitation : demandez au propriétaire d'approuver votre e-mail, puis actualisez cette page."
+  }
+}

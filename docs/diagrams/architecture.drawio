@@ -9,7 +9,7 @@
         <mxCell id="title" value="Aether Wardrobe · System architecture" style="text;html=1;align=left;verticalAlign=middle;fontSize=26;fontStyle=1;fontColor=#C9A45C;" vertex="1" parent="1">
           <mxGeometry x="40" y="20" width="700" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="meta" value="v1.3.0 · Last updated 2026-10-26 · Alexis Roldan · Deployment view: who talks to whom, and what never leaves the server" style="text;html=1;align=left;verticalAlign=middle;fontSize=14;fontColor=#8A8378;" vertex="1" parent="1">
+        <mxCell id="meta" value="v1.5.0 · Last updated 2026-11-20 · Alexis Roldan · Deployment view: who talks to whom, and what never leaves the server" style="text;html=1;align=left;verticalAlign=middle;fontSize=14;fontColor=#8A8378;" vertex="1" parent="1">
           <mxGeometry x="40" y="58" width="900" height="30" as="geometry" />
         </mxCell>
 
@@ -99,10 +99,10 @@
         <mxCell id="vercel-title" value="Vercel · Next.js 16 app" style="text;html=1;align=left;verticalAlign=middle;fontSize=16;fontStyle=1;fontColor=#C9A45C;" vertex="1" parent="1">
           <mxGeometry x="370" y="150" width="280" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="vercel-pages" value="&lt;b&gt;App Router pages&lt;/b&gt;&lt;br&gt;Today · Stylist · Wardrobe · Outfits · Shop · Settings · Admin · /welcome" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeColor=#C9A45C;strokeWidth=1;fillColor=#FBF6EA;fontColor=#1E1C18;" vertex="1" parent="1">
+        <mxCell id="vercel-pages" value="&lt;b&gt;App Router pages&lt;/b&gt;&lt;br&gt;Today · Stylist · Wardrobe · Outfits · Family · Shop · Settings · Admin · /welcome&lt;br&gt;&lt;font color=&quot;#8A8378&quot;&gt;Every page dresses the Active person&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeColor=#C9A45C;strokeWidth=1;fillColor=#FBF6EA;fontColor=#1E1C18;" vertex="1" parent="1">
           <mxGeometry x="370" y="190" width="270" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="vercel-api" value="&lt;b&gt;API routes&lt;/b&gt;&lt;br&gt;tag · generate · recommend · shop · stylist chat (streaming)&lt;br&gt;Every route checks the allowlist first" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeColor=#C9A45C;strokeWidth=1;fillColor=#FBF6EA;fontColor=#1E1C18;" vertex="1" parent="1">
+        <mxCell id="vercel-api" value="&lt;b&gt;API routes&lt;/b&gt;&lt;br&gt;tag · generate · recommend · shop · stylist chat (streaming) · family look&lt;br&gt;Every route checks the allowlist first&lt;br&gt;&lt;font color=&quot;#8A8378&quot;&gt;Wardrobe module scopes every query to one person · minors reach the AI only as aliases&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeColor=#C9A45C;strokeWidth=1;fillColor=#FBF6EA;fontColor=#1E1C18;" vertex="1" parent="1">
           <mxGeometry x="370" y="265" width="270" height="65" as="geometry" />
         </mxCell>
         <mxCell id="vercel-proxy" value="&lt;b&gt;proxy.ts middleware&lt;/b&gt;&lt;br&gt;Refreshes the Supabase session, guards routes" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeColor=#C9A45C;strokeWidth=1;fillColor=#FBF6EA;fontColor=#1E1C18;" vertex="1" parent="1">
@@ -119,7 +119,7 @@
         <mxCell id="supabase-auth" value="&lt;b&gt;Auth&lt;/b&gt; · Google OAuth, access allowlist" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeColor=#5B7C99;strokeWidth=1;fillColor=#EEF3F7;fontColor=#1E1C18;" vertex="1" parent="1">
           <mxGeometry x="850" y="185" width="300" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="supabase-db" value="&lt;b&gt;Postgres&lt;/b&gt; · 6 tables, row-level security, combinations table" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeColor=#5B7C99;strokeWidth=1;fillColor=#EEF3F7;fontColor=#1E1C18;" vertex="1" parent="1">
+        <mxCell id="supabase-db" value="&lt;b&gt;Postgres&lt;/b&gt; · 9 tables · row-level security per person · families and people · outfits never mix people" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeColor=#5B7C99;strokeWidth=1;fillColor=#EEF3F7;fontColor=#1E1C18;" vertex="1" parent="1">
           <mxGeometry x="850" y="235" width="300" height="40" as="geometry" />
         </mxCell>
         <mxCell id="supabase-storage" value="&lt;b&gt;Storage&lt;/b&gt; · private wardrobe bucket, short-lived signed URLs" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeColor=#5B7C99;strokeWidth=1;fillColor=#EEF3F7;fontColor=#1E1C18;" vertex="1" parent="1">
@@ -127,7 +127,7 @@
         </mxCell>
 
         <!-- External AI and weather -->
-        <mxCell id="openai" value="&lt;b&gt;OpenAI&lt;/b&gt;&lt;br&gt;gpt-4o vision: tagging&lt;br&gt;gpt-4o-mini: scoring, ranking, shopping, stylist chat" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeColor=#C9A45C;strokeWidth=2;fillColor=#FBF6EA;fontColor=#1E1C18;" vertex="1" parent="1">
+        <mxCell id="openai" value="&lt;b&gt;OpenAI&lt;/b&gt;&lt;br&gt;gpt-4o vision: tagging&lt;br&gt;gpt-4o-mini: scoring, ranking, shopping, family notes&lt;br&gt;gpt-5.5: stylist chat" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeColor=#C9A45C;strokeWidth=2;fillColor=#FBF6EA;fontColor=#1E1C18;" vertex="1" parent="1">
           <mxGeometry x="820" y="360" width="360" height="70" as="geometry" />
         </mxCell>
         <mxCell id="weather" value="&lt;b&gt;OpenWeatherMap&lt;/b&gt;&lt;br&gt;Forecast at the destination (today, or day by day for a trip) · city autocomplete" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;strokeColor=#C9A45C;strokeWidth=2;fillColor=#FBF6EA;fontColor=#1E1C18;" vertex="1" parent="1">

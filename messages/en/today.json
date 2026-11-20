@@ -1,0 +1,62 @@
+{
+  "meta": {
+    "title": "Today"
+  },
+  "header": {
+    "titleFor": "Today for {name}",
+    "subtitle": "Tell me your plans — I'll lay out the outfit."
+  },
+  "weather": {
+    "summary": "{location}: {temp}, {condition}, {precip}% rain"
+  },
+  "errors": {
+    "generic": "Something went wrong",
+    "personGone": "That person is no longer on your account. Reload the page.",
+    "couldNotRecord": "Could not record that outfit. Please try again.",
+    "occasionRequired": "Valid occasion is required",
+    "noLocation": "I couldn't place that destination. Try a city name, or set your home location in Settings.",
+    "weatherFailed": "Couldn't reach the weather service. Try again shortly."
+  },
+  "empty": {
+    "title": "No outfits yet",
+    "ready": "Your pieces are in — the stylist just needs to weave them into outfits.",
+    "notReady": "The stylist builds outfits automatically once your wardrobe has the essentials below.",
+    "goToWardrobe": "Go to wardrobe"
+  },
+  "family": {
+    "title": "Going out together?",
+    "body": "Plan a family look for everyone at once."
+  },
+  "form": {
+    "occasionLabel": "What does today hold?",
+    "whereLabel": "Where? (optional)",
+    "wherePlaceholder": "Home, or start typing a city",
+    "notesLabel": "Anything else? (optional)",
+    "notesPlaceholder": "e.g. client meeting, then lunch with the kids",
+    "notesPlaceholderMinor": "e.g. PE in the afternoon, then the park (no names, please)",
+    "submit": "Style my day",
+    "submitting": "Checking the weather…"
+  },
+  "live": {
+    "pending": "Checking the weather and choosing outfits.",
+    "ready": "{count, plural, one {# outfit ready.} other {# outfits ready.}}",
+    "none": "No outfit in your table fits this day."
+  },
+  "results": {
+    "heading": "Today's picks",
+    "fresh": "Fresh suggestions",
+    "none": "Nothing in your table quite fits this day and weather. A few new pieces would open things up —<link>see what to buy next</link>."
+  },
+  "worn": {
+    "toast": "Noted — wear it well",
+    "wearing": "Wearing it",
+    "wearThis": "I'll wear this"
+  },
+  "card": {
+    "oldMoney": "Old money"
+  },
+  "location": {
+    "matchingPlaces": "Matching places"
+  },
+  "fallbackExplanation": "A reliably strong combination from your table."
+}

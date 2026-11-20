@@ -1,12 +1,14 @@
 "use client";
 
 import { RadioGroup } from "radix-ui";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import type { Units } from "@/lib/units";
 
-const OPTIONS: { value: Units; symbol: string; name: string }[] = [
-  { value: "metric", symbol: "°C", name: "Celsius" },
-  { value: "imperial", symbol: "°F", name: "Fahrenheit" },
+/** `name` is a key under common.units. */
+const OPTIONS: { value: Units; symbol: string; name: "celsius" | "fahrenheit" }[] = [
+  { value: "metric", symbol: "°C", name: "celsius" },
+  { value: "imperial", symbol: "°F", name: "fahrenheit" },
 ];
 
 /**
@@ -27,12 +29,13 @@ export function UnitSwitch({
   className?: string;
   "aria-labelledby"?: string;
 }) {
+  const t = useTranslations("common.units");
   return (
     <RadioGroup.Root
       value={value}
       onValueChange={(v) => onChange(v as Units)}
       orientation="horizontal"
-      aria-label={labelledBy ? undefined : "Temperature unit"}
+      aria-label={labelledBy ? undefined : t("temperatureUnit")}
       aria-labelledby={labelledBy}
       className={cn(
         "inline-flex shrink-0 items-center rounded-full border bg-muted/40 p-0.5",
@@ -43,8 +46,8 @@ export function UnitSwitch({
         <RadioGroup.Item
           key={o.value}
           value={o.value}
-          aria-label={o.name}
-          title={o.name}
+          aria-label={t(o.name)}
+          title={t(o.name)}
           className={cn(
             // after: widens the hit area to ~44px tall without changing the look
             "relative cursor-pointer rounded-full font-medium tabular-nums text-muted-foreground outline-none transition-colors duration-200 after:absolute after:inset-x-0 after:-inset-y-2 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=checked]:hover:text-primary-foreground",
@@ -56,7 +59,7 @@ export function UnitSwitch({
           ) : (
             <>
               {o.symbol}
-              <span className="ml-1.5 font-normal">{o.name}</span>
+              <span className="ml-1.5 font-normal">{t(o.name)}</span>
             </>
           )}
         </RadioGroup.Item>

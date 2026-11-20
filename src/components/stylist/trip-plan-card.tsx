@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { toast } from "sonner";
+import { useLocale, useTranslations } from "next-intl";
 import {
   CloudRain,
   CloudSun,
@@ -13,13 +14,31 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { formatTripDate } from "@/lib/trips/dates";
 import { formatTemp, formatTempRange } from "@/lib/units";
 import { useUnits } from "@/components/shared/units-provider";
-import { CATEGORIES, CATEGORY_PLURAL_LABELS, OCCASIONS } from "@/lib/constants";
+import { CATEGORIES } from "@/lib/constants";
+import { useTaxonomy } from "@/i18n/taxonomy";
 import type { TripDayPlan, TripItemSummary, TripPlan } from "@/lib/trips/schema";
 
-const OCCASION_LABEL = new Map<string, string>(OCCASIONS.map((o) => [o.value, o.label]));
+type Translate = (key: string, values?: Record<string, string | number>) => string;
+type FormatDate = (date: string, withYear?: boolean) => string;
+
+/**
+ * "Tue 3 Nov" for a YYYY-MM-DD in the viewer's language, independent of their
+ * timezone. English keeps the British day-month order.
+ */
+export function useTripDate(): FormatDate {
+  const locale = useLocale();
+  const tag = locale === "en" ? "en-GB" : locale;
+  return (date, withYear = false) =>
+    new Date(`${date}T12:00:00Z`).toLocaleDateString(tag, {
+      weekday: "short",
+      day: "numeric",
+      month: "short",
+      ...(withYear ? { year: "numeric" } : {}),
+      timeZone: "UTC",
+    });
+}
 
 function weatherIcon(w: TripDayPlan["weather"]): LucideIcon {
   if (w.tempC == null) return HelpCircle;
@@ -40,13 +59,25 @@ function Swatch({ item, className }: { item: TripItemSummary; className?: string
 }
 
 /** Plain-text packing list for the clipboard. */
-function packingText(plan: TripPlan): string {
-  const lines = [`Packing for ${plan.location_name}, ${formatTripDate(plan.start_date)} to ${formatTripDate(plan.end_date)}`, ""];
+function packingText(
+  plan: TripPlan,
+  t: Translate,
+  categoryLabel: (category: string) => string,
+  formatTripDate: FormatDate,
+): string {
+  const lines = [
+    t("trip.packingHeading", {
+      location: plan.location_name,
+      start: formatTripDate(plan.start_date),
+      end: formatTripDate(plan.end_date),
+    }),
+    "",
+  ];
   for (const category of CATEGORIES) {
     const rows = plan.packing.filter((p) => plan.items[p.item_id]?.category === category);
     if (!rows.length) continue;
-    lines.push(CATEGORY_PLURAL_LABELS[category]);
-    for (const r of rows) lines.push(`  [ ] ${plan.items[r.item_id].name} (worn ${r.uses}×)`);
+    lines.push(categoryLabel(category));
+    for (const r of rows) lines.push(`  [ ] ${t("trip.packingLine", { name: plan.items[r.item_id].name, count: r.uses })}`);
     lines.push("");
   }
   return lines.join("\n").trimEnd();
@@ -55,38 +86,51 @@ function packingText(plan: TripPlan): string {
 export function TripPlanCard({ plan }: { plan: TripPlan }) {
   const { stats } = plan;
   const { units } = useUnits();
+  const t = useTranslations("stylist");
+  const tx = useTaxonomy();
+  const formatTripDate = useTripDate();
   const sameYear = plan.start_date.slice(0, 4) === plan.end_date.slice(0, 4);
 
   async function copyList() {
     try {
-      await navigator.clipboard.writeText(packingText(plan));
-      toast.success("Packing list copied");
+      await navigator.clipboard.writeText(
+        packingText(plan, (k, v) => t(k, v), (c) => tx("categoryPlural", c), formatTripDate),
+      );
+      toast.success(t("trip.copied"));
     } catch {
-      toast.error("Couldn't copy. Select the list and copy it by hand.");
+      toast.error(t("trip.copyFailed"));
     }
   }
 
   return (
     <section
       className="overflow-hidden rounded-xl border bg-card"
-      aria-label={`Trip plan for ${plan.location_name}`}
+      aria-label={t("trip.ariaLabel", { location: plan.location_name })}
     >
       <header className="border-b px-5 pb-4 pt-5">
         <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
           <h3 className="font-serif text-2xl leading-tight">{plan.location_name}</h3>
           <p className="text-sm text-muted-foreground">
-            {formatTripDate(plan.start_date, !sameYear)}
-            {plan.start_date !== plan.end_date && <> to {formatTripDate(plan.end_date, !sameYear)}</>}
+            {plan.start_date !== plan.end_date
+              ? t("trip.dateRange", {
+                  start: formatTripDate(plan.start_date, !sameYear),
+                  end: formatTripDate(plan.end_date, !sameYear),
+                })
+              : formatTripDate(plan.start_date, !sameYear)}
           </p>
         </div>
         <p className="mt-2 text-sm text-muted-foreground">
-          <span className="font-medium text-foreground">{stats.distinct_items} pieces</span> for{" "}
-          {stats.slots_filled} of {stats.slots_total} outfits
-          {stats.outfits < stats.slots_filled && <> ({stats.outfits} distinct)</>}
+          {t.rich("trip.stats.summary", {
+            pieces: stats.distinct_items,
+            filled: stats.slots_filled,
+            total: stats.slots_total,
+            b: (chunks) => <span className="font-medium text-foreground">{chunks}</span>,
+          })}
+          {stats.outfits < stats.slots_filled && <> {t("trip.stats.distinct", { count: stats.outfits })}</>}
           {" · "}
-          {stats.shoes} {stats.shoes === 1 ? "pair" : "pairs"} of shoes
-          {stats.outerwear > 0 && <> · {stats.outerwear} outerwear</>}
-          {stats.watches > 0 && <> · {stats.watches} {stats.watches === 1 ? "watch" : "watches"}</>}
+          {t("trip.stats.shoes", { count: stats.shoes })}
+          {stats.outerwear > 0 && <> · {t("trip.stats.outerwear", { count: stats.outerwear })}</>}
+          {stats.watches > 0 && <> · {t("trip.stats.watches", { count: stats.watches })}</>}
         </p>
       </header>
 
@@ -102,15 +146,15 @@ export function TripPlanCard({ plan }: { plan: TripPlan }) {
                 <p className="inline-flex items-center gap-1.5 text-sm text-muted-foreground">
                   <Icon className="size-4 text-primary" aria-hidden />
                   {w.tempC == null ? (
-                    "no forecast"
+                    t("weather.noForecast")
                   ) : (
                     <>
                       {formatTemp(w.tempC, units)}
                       {w.tempMinC != null && w.tempMaxC != null && (
                         <span className="text-xs"> ({formatTempRange(w.tempMinC, w.tempMaxC, units)})</span>
                       )}
-                      {w.precipProb != null && <>, {w.precipProb}% rain</>}
-                      {w.source === "estimate" && <span className="text-xs"> · estimate</span>}
+                      {w.precipProb != null && <>, {t("weather.rain", { precip: w.precipProb })}</>}
+                      {w.source === "estimate" && <span className="text-xs"> · {t("weather.estimate")}</span>}
                     </>
                   )}
                 </p>
@@ -123,7 +167,7 @@ export function TripPlanCard({ plan }: { plan: TripPlan }) {
                   return (
                     <li key={`${slot.occasion}-${i}`} className="grid gap-x-4 gap-y-1 sm:grid-cols-[8.5rem_1fr]">
                       <p className="text-sm text-muted-foreground">
-                        {OCCASION_LABEL.get(slot.occasion) ?? slot.occasion}
+                        {tx("occasion", slot.occasion)}
                       </p>
                       {slot.combination_id ? (
                         <div className="min-w-0">
@@ -140,7 +184,7 @@ export function TripPlanCard({ plan }: { plan: TripPlan }) {
                             ))}
                             {slot.fit === "relaxed" && (
                               <span className="rounded-full border border-dashed px-2 py-0.5 text-xs text-muted-foreground">
-                                loose fit
+                                {t("cards.looseFit")}
                               </span>
                             )}
                           </div>
@@ -150,9 +194,9 @@ export function TripPlanCard({ plan }: { plan: TripPlan }) {
                         </div>
                       ) : (
                         <p className="text-sm text-muted-foreground">
-                          Nothing in your table suits this.{" "}
+                          {t("trip.nothingSuits")}{" "}
                           <Link href="/shop" className="text-primary underline-offset-4 hover:underline">
-                            See what would
+                            {t("cards.seeWhatWould")}
                           </Link>
                         </p>
                       )}
@@ -169,9 +213,9 @@ export function TripPlanCard({ plan }: { plan: TripPlan }) {
       {plan.packing.length > 0 && (
         <div className="border-t bg-background/40 px-5 pb-5 pt-4">
           <div className="flex items-center justify-between gap-3">
-            <h4 className="font-serif text-xl">What to pack</h4>
+            <h4 className="font-serif text-xl">{t("trip.whatToPack")}</h4>
             <Button variant="ghost" size="sm" className="gap-1.5 text-muted-foreground" onClick={copyList}>
-              <Copy aria-hidden /> Copy list
+              <Copy aria-hidden /> {t("trip.copyList")}
             </Button>
           </div>
           <dl className="mt-3 space-y-3">
@@ -181,7 +225,7 @@ export function TripPlanCard({ plan }: { plan: TripPlan }) {
               return (
                 <div key={category} className="grid gap-x-4 gap-y-1 sm:grid-cols-[8.5rem_1fr]">
                   <dt className="text-sm text-muted-foreground">
-                    {CATEGORY_PLURAL_LABELS[category]} <span className="text-xs">({rows.length})</span>
+                    {tx("categoryPlural", category)} <span className="text-xs">({rows.length})</span>
                   </dt>
                   <dd className="flex flex-wrap gap-2">
                     {rows.map((r) => {
@@ -196,7 +240,7 @@ export function TripPlanCard({ plan }: { plan: TripPlan }) {
                           {it.name}
                           <span className="text-xs text-muted-foreground">
                             <span aria-hidden>×{r.uses}</span>
-                            <span className="sr-only">, worn in {r.uses} {r.uses === 1 ? "outfit" : "outfits"}</span>
+                            <span className="sr-only">, {t("trip.wornIn", { count: r.uses })}</span>
                           </span>
                         </Link>
                       );

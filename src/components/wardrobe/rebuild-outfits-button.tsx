@@ -5,6 +5,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Loader2, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 
 /**
  * Kicks off the smart fill-gaps build, then wakes the app-wide
@@ -12,30 +13,38 @@ import { Button } from "@/components/ui/button";
  * Fire-and-forget: the banner reports completion, surviving navigation.
  */
 export function RebuildOutfitsButton({
-  label = "Build outfits",
+  label,
   size = "default",
   variant = "default",
+  personId,
 }: {
+  /** The Person whose outfits to build. */
+  personId?: string;
   label?: string;
   size?: "default" | "sm" | "lg";
   variant?: "default" | "outline";
 }) {
+  const t = useTranslations("wardrobe.rebuild");
   const queryClient = useQueryClient();
   const [starting, setStarting] = useState(false);
 
   async function build() {
     setStarting(true);
     try {
-      const res = await fetch("/api/combinations/build", { method: "POST" });
+      const res = await fetch("/api/combinations/build", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ personId }),
+      });
       if (!res.ok) {
         const body = await res.json().catch(() => null);
-        throw new Error(body?.error?.message ?? "Could not start the build");
+        throw new Error(body?.error?.message ?? t("couldNotStart"));
       }
-      toast.success("On it — the stylist is building your outfits");
+      toast.success(t("started"));
       // Wake the status banner so it starts polling immediately.
       queryClient.invalidateQueries({ queryKey: ["combination-status"] });
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Could not start the build");
+      toast.error(err instanceof Error ? err.message : t("couldNotStart"));
     } finally {
       setStarting(false);
     }
@@ -48,7 +57,7 @@ export function RebuildOutfitsButton({
       ) : (
         <Sparkles className="size-4" aria-hidden />
       )}
-      {label}
+      {label ?? t("label")}
     </Button>
   );
 }

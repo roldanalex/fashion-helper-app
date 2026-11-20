@@ -49,7 +49,14 @@ export interface Profile {
   home_location: string | null;
   home_lat: number | null;
   home_lon: number | null;
+  /** Temperature unit: metric = °C, imperial = °F. */
   units: "metric" | "imperial";
+  /** kg | lb (0013); null on rows that predate it. */
+  weight_unit: "kg" | "lb" | null;
+  /** cm | ftin (0013). */
+  height_unit: "cm" | "ftin" | null;
+  /** App and AI language (0013). */
+  locale: string;
   onboarded_at: string | null;
   created_at: string;
 }
@@ -57,6 +64,8 @@ export interface Profile {
 export interface ClothingItem {
   id: string;
   user_id: string;
+  /** The Person this row belongs to (0011). user_id is the Account that created it. */
+  person_id: string;
   name: string;
   category: Category;
   subcategory: string | null;
@@ -82,6 +91,8 @@ export interface ClothingItem {
 export interface Combination {
   id: string;
   user_id: string;
+  /** The Person this row belongs to (0011). user_id is the Account that created it. */
+  person_id: string;
   top_id: string;
   bottom_id: string;
   outerwear_id: string | null;
@@ -110,7 +121,10 @@ export interface WeatherSnapshot {
   tempMaxC: number;
   precipProb: number;
   humidity: number;
+  /** OpenWeatherMap's main group ("Rain"): always English, used for logic. */
   condition: string;
+  /** The description in the user's language ("lluvia ligera"), for display. */
+  label?: string;
   summary: string;
   locationName: string;
 }
@@ -128,6 +142,8 @@ export interface RankedRecommendation {
 export interface DailyPlan {
   id: string;
   user_id: string;
+  /** The Person this row belongs to (0011). user_id is the Account that created it. */
+  person_id: string;
   plan_date: string;
   occasion: string;
   destination: string | null;
@@ -143,6 +159,8 @@ export interface DailyPlan {
 export interface ShoppingSuggestion {
   id: string;
   user_id: string;
+  /** The Person this row belongs to (0011). user_id is the Account that created it. */
+  person_id: string;
   category: Category;
   subcategory: string | null;
   item_name: string;
@@ -151,5 +169,53 @@ export interface ShoppingSuggestion {
   color_name: string | null;
   estimated_new_combinations: number | null;
   status: SuggestionStatus;
+  created_at: string;
+}
+
+/* ---------- People and Families (0011) ---------- */
+
+export type AgeBand = "adult" | "teen" | "child" | "toddler";
+export type PersonKind = "self" | "managed";
+export type FamilyRole = "owner" | "manager" | "viewer";
+
+export interface Family {
+  id: string;
+  name: string;
+  created_by: string;
+  created_at: string;
+}
+
+export interface FamilyMember {
+  family_id: string;
+  user_id: string;
+  role: FamilyRole;
+  joined_at: string;
+}
+
+/** Someone whose clothes are catalogued (see GLOSSARY.md). */
+export interface Person {
+  id: string;
+  family_id: string;
+  kind: PersonKind;
+  /** Set for a self Person; null for a Managed person. */
+  account_user_id: string | null;
+  display_name: string;
+  age_band: AgeBand;
+  is_minor: boolean;
+  /** Managed people only: a self Person's style and traits live on profiles. */
+  style_preferences: string[];
+  preferred_formality: number | null;
+  gender: string | null;
+  skin_tone: string | null;
+  skin_undertone: string | null;
+  hair_color: string | null;
+  eye_color: string | null;
+  color_season: string | null;
+  height_cm: number | null;
+  body_shape: string | null;
+  fit_preference: string | null;
+  style_notes: string | null;
+  guardian_attested_at: string | null;
+  created_by: string | null;
   created_at: string;
 }

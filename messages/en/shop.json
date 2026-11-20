@@ -1,0 +1,59 @@
+{
+  "meta": {
+    "title": "Shop"
+  },
+  "header": {
+    "titleFor": "Shop for {name}",
+    "subtitle": "Grow your wardrobe with intention — every purchase scored by the outfits it unlocks."
+  },
+  "categories": {
+    "top": "Shirts & polos",
+    "bottom": "Pants & shorts",
+    "outerwear": "Blazers & jackets",
+    "shoes": "Shoes",
+    "watch": "Watches",
+    "accessory": "Accessories"
+  },
+  "errors": {
+    "analysisFailed": "Analysis failed",
+    "personGone": "That person is no longer on your account. Reload the page.",
+    "couldNotUpdate": "Could not update. Please try again.",
+    "pickCategory": "Pick at least one category",
+    "tooFewItems": "Add at least a few pieces first so I know what to build on.",
+    "aiFailed": "The personal shopper is unavailable. Try again shortly."
+  },
+  "toasts": {
+    "fresh": "Fresh suggestions from your personal shopper",
+    "purchased": "Wonderful — photograph it to add it to your wardrobe",
+    "undo": "Undo",
+    "saved": "Saved {name}",
+    "dismissed": "Dismissed {name}",
+    "restored": "{name} is back in your suggestions"
+  },
+  "gaps": {
+    "title": "Where one piece goes furthest",
+    "subtitle": "Counted against your actual wardrobe — tick what you're shopping for.",
+    "bestValue": "Best value",
+    "stats": "{owned} owned · up to {unlocks} new outfits"
+  },
+  "actions": {
+    "consulting": "Consulting your shopper…",
+    "getSuggestions": "Get suggestions",
+    "tooFew": "Confirm at least {min} pieces in your wardrobe first, so the shopper can see what you already own. You have {count}."
+  },
+  "suggestions": {
+    "title": "Worth adding",
+    "saved": "Saved",
+    "potentialOutfits": "potential outfits",
+    "bought": "I bought it",
+    "save": "Save",
+    "notForMe": "Not for me"
+  },
+  "empty": {
+    "body": "Tick the categories you're shopping for and your personal shopper will suggest specific pieces — each scored by how many new outfits it unlocks."
+  },
+  "dismissed": {
+    "title": "Dismissed suggestions ({count})",
+    "bringBack": "Bring back"
+  }
+}

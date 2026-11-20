@@ -1,40 +1,52 @@
 {
   "meta": {
     "app": "Aether Wardrobe",
-    "what": "Your personal AI stylist · photograph once, dress well every day",
+    "what": "Your personal stylist for the clothes your family already owns",
     "storage_key": "aether-wardrobe-onboarding",
     "favicon_emoji": "🧵",
     "theme": {
-      "accent": "#C9A45C",
-      "accent_soft": "#E2C27E",
+      "accent": "#957331",
+      "accent_soft": "#C9A45C",
       "secondary": "#5B7C99",
       "bg": "#16140F",
-      "motif": "rings",
-      "motif_opacity": 0.07,
-      "glow_strength": 0.5,
+      "animation": {
+        "type": "wardrobe",
+        "intensity": "medium",
+        "speed": "normal"
+      },
+      "motif": "none",
+      "glow_strength": 0.45,
       "radius": "14px",
       "font_family": "DM Sans"
     },
     "tagline": [
       "Photograph once.",
-      "Confirm the tags.",
-      "Get dressed in a minute."
+      "Dress the whole family.",
+      "Ready in a minute."
     ],
     "tagline_colors": [
       "text",
       "accent_soft",
       "secondary_tint"
     ],
-    "subtitle": "Aether Wardrobe catalogues the clothes you already own, builds every outfit that genuinely works from them, and each morning picks the ones that suit your plans and the weather where you are going. It never invents clothes you do not have, and it explains every choice like a stylist laying pieces on the bed.",
+    "subtitle": "Aether Wardrobe turns the clothes you already own into outfits that work, and picks the right one for your day and the weather where you are going. It does the same for your children and anyone else you dress, and plans looks for the whole family. It never invents clothes you do not have, and it explains every choice.",
     "app_url": "/",
     "owner": "Alexis Roldan · Aether Wardrobe",
-    "last_reviewed": "2026-11-19",
+    "last_reviewed": "2026-11-20",
     "authoritative_sources": [
       "Aether Wardrobe user guide (docs/USER-GUIDE.md)",
       "Release notes (CHANGELOG.md)"
     ],
     "disclaimer": "Aether Wardrobe is a styling assistant. Suggestions are based on the tags you confirm and a weather forecast; use your own judgement for dress codes, safety and comfort. Your photos stay private to your account.",
-    "est_minutes_guide": 15
+    "est_minutes_guide": 15,
+    "title": "How Aether Wardrobe works",
+    "favicon": "/welcome/assets/favicon.svg",
+    "brand": {
+      "logo_src": "/welcome/assets/aether-logo.svg",
+      "logo_alt": "Aether Wardrobe",
+      "logo_height": 40
+    },
+    "lang": "en"
   },
   "why": {
     "scroll_hint": "See why",
@@ -145,8 +157,8 @@
         "id": "features",
         "kicker": "THE TABS",
         "nav_label": "The tabs",
-        "headline": "Four places to go, each with one job.",
-        "intro": "The app shell shows the same four tabs on desktop and phone.",
+        "headline": "Five places to go, each with one job.",
+        "intro": "On a computer every section sits in the sidebar. On a phone, Today, Stylist, Wardrobe and Outfits are one tap away at the bottom; More holds Family, Shop and Settings.",
         "blocks": [
           {
             "type": "capabilities",
@@ -186,6 +198,44 @@
                 "badge": "invite only",
                 "title": "Allowlisted accounts",
                 "text": "Sign in with Google. An administrator grants access by email, so no paid AI call runs for an unknown account."
+              },
+              {
+                "category": "FAMILY",
+                "badge": "new",
+                "title": "The whole family, dressed together",
+                "text": "Add your children or anyone without an email, give each their own wardrobe, and plan one look for everyone: coordinated colours, a shared accent, or simply well dressed. Children never sign in and nothing about them reaches the AI."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "family",
+        "kicker": "FAMILY",
+        "nav_label": "Family",
+        "headline": "Dress everyone you look after, together.",
+        "intro": "Add your children, or an adult without an email, under your own account. Each person gets their own wardrobe and outfits, and one tap plans a look for everyone.",
+        "blocks": [
+          {
+            "type": "capabilities",
+            "items": [
+              {
+                "category": "PEOPLE",
+                "badge": "new",
+                "title": "A wardrobe per person",
+                "text": "Switch who you are dressing at the top of the page. Wardrobe, Outfits, Today, Stylist and Shop follow, and outfits never mix two people's clothes."
+              },
+              {
+                "category": "FAMILY LOOK",
+                "badge": "new",
+                "title": "One look for the occasion",
+                "text": "Choose who is going, the occasion and how you want to look together. You get up to three looks, one outfit each, with a shared palette and a note on why it works."
+              },
+              {
+                "category": "PRIVACY",
+                "badge": "children",
+                "title": "Children stay private",
+                "text": "Children never sign in. The AI sees only descriptions of their clothes and knows them as 'Child A'. Delete a person and everything about them goes."
               }
             ]
           }
@@ -246,7 +296,7 @@
         "kicker": "WHO IT IS FOR",
         "nav_label": "Who it is for",
         "headline": "What it means for you.",
-        "intro": "The app was built for a quiet-luxury, old-money wardrobe, but every style preference in the profile changes how outfits are scored.",
+        "intro": "Built for a quiet-luxury wardrobe, and every style you choose changes how outfits are scored.",
         "blocks": [
           {
             "type": "roles",
@@ -254,6 +304,10 @@
               {
                 "role": "Busy professional",
                 "text": "Pick 'Work' or 'Indoors / Conferences', tap once, wear the first pick. Under a minute."
+              },
+              {
+                "role": "Parent",
+                "text": "Add the children, photograph their clothes once, and plan the birthday or the family photo in one go. Nothing about them reaches the AI except their clothes."
               },
               {
                 "role": "Frequent traveller",
@@ -274,8 +328,8 @@
     ],
     "cta": {
       "kicker": "BEFORE YOU BEGIN",
-      "headline": "Now put your wardrobe to work.",
-      "intro": "The guide walks you from first sign-in to your first styled day: profile, adding pieces, reviewing tags, the Outfits table, Today, and what to buy next.",
+      "headline": "Put your wardrobe to work.",
+      "intro": "The guide takes about 15 minutes and goes from first sign-in to your first styled day: your profile, adding pieces, the Outfits table, Today, the Stylist, Shop and dressing your family. Tick each checkpoint as you go; your progress is saved in this browser only.",
       "button": "Start the guide"
     }
   },
@@ -336,6 +390,11 @@
         "section": "shop",
         "label": "Shop: what to buy next",
         "optional": true
+      },
+      {
+        "section": "family",
+        "label": "Dressing your family",
+        "optional": true
       }
     ],
     "practical_guides": [
@@ -352,7 +411,7 @@
       "welcome": {
         "kicker": "START HERE",
         "title": "Fifteen minutes to your first styled day",
-        "intro": "This guide follows the order you will actually use the app: sign in, tell it about you, add a handful of pieces, let the table build, then ask for today's outfit. Tick the checkpoint at the end of each section; your progress is saved in this browser only.",
+        "intro": "This guide follows the order you will use the app: sign in, tell it about you, add a handful of pieces, let the table build, ask for today's outfit, and then add the people you dress. Tick the checkpoint at the end of each section; your progress is saved in this browser only.",
         "minutes": 1,
         "chips": [
           "Invite only",
@@ -902,6 +961,40 @@
           }
         ],
         "checkpoint": "I know where the readiness banner and Build outfits are."
+      },
+      "family": {
+        "kicker": "FAMILY",
+        "title": "Dressing your family",
+        "intro": "Add your children, or an adult without an email, under your account. Each person gets their own wardrobe and outfits, and the Family page dresses everyone together for the same occasion.",
+        "minutes": 3,
+        "blocks": [
+          {
+            "type": "steps",
+            "items": [
+              {
+                "title": "Add a person",
+                "text": "Settings → People you dress → Add a person: a name or nickname, their age, styles and how dressed-up they like to be. For anyone under 18 you confirm you are their parent or legal guardian."
+              },
+              {
+                "title": "Switch who you are dressing",
+                "text": "'Dressing: …' under the logo (or the bar at the top on a phone). Wardrobe, Outfits, Today, Stylist and Shop follow your choice; add their pieces as usual."
+              },
+              {
+                "title": "Plan a family look",
+                "text": "On Family, tick who is going, pick the occasion (Celebration covers birthdays, weddings and family photos), the day, the place and how to look together. You get up to three looks, one outfit each from your own wardrobes."
+              },
+              {
+                "title": "Wear it",
+                "text": "'Wear this' under each person puts their outfit first in that day's plan; for today it also counts as worn."
+              }
+            ]
+          },
+          {
+            "type": "note",
+            "html": "Children never sign in. Nothing about a child is sent to the AI except descriptions of their clothes: the stylist knows them only as 'Child A', and the app puts their name back on screen."
+          }
+        ],
+        "checkpoint": "I have added a person and planned a family look."
       }
     }
   }

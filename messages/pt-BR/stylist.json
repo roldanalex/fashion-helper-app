@@ -1,0 +1,90 @@
+{
+  "meta": {
+    "title": "Estilista"
+  },
+  "header": {
+    "titleFor": "Estilista para {name}",
+    "subtitle": "Monte a mala de uma viagem numa só conversa, ou pergunte o que combina com o quê."
+  },
+  "errors": {
+    "unavailable": "O estilista está indisponível. Tente de novo.",
+    "unavailableShortly": "O estilista está indisponível agora. Tente de novo daqui a pouco.",
+    "messageRequired": "Escreva uma mensagem"
+  },
+  "starters": {
+    "lisbon": "Monte a mala para três dias em Lisboa: trabalho na quinta e na sexta, jantar na sexta, passeio no sábado.",
+    "chicago": "Uma viagem de cinco dias para um congresso em Chicago no mês que vem, só com mala de mão. Dá para ir com um par de sapatos só?",
+    "blazer": "O que combina com meu blazer marinho para jantar na sexta? Quero usar o mocassim marrom."
+  },
+  "empty": {
+    "title": "O estilista precisa dos seus looks primeiro",
+    "ready": "Suas peças já estão aqui. Quando a tabela de looks estiver montada, volte e planeje uma viagem.",
+    "notReady": "As malas são montadas a partir da sua tabela de looks, que se monta sozinha quando você confirma o essencial abaixo.",
+    "goToWardrobe": "Ir para o Guarda-roupa"
+  },
+  "intro": {
+    "lead": "Conte aonde você vai, por quanto tempo e como serão os dias. Vou montar um look por dia a partir da sua própria tabela e manter a mala pequena.",
+    "hint": "Edite a cidade e as datas de acordo com a sua viagem. Todos os looks vêm da sua tabela em Looks.",
+    "minorPrivacy": "Para proteger a privacidade de {name}, o estilista só conhece essa pessoa como “{alias}”. Não digite nome, idade ou escola nas suas mensagens."
+  },
+  "chat": {
+    "replied": "O estilista respondeu.",
+    "repliedWithCard": "O estilista respondeu com um plano.",
+    "cleared": "Conversa apagada",
+    "undo": "Desfazer",
+    "startOver": "Recomeçar",
+    "thinking": "Pensando com calma…",
+    "noAnswer": "O estilista não respondeu.",
+    "tryAgain": "Tentar de novo"
+  },
+  "composer": {
+    "label": "Mensagem para o estilista",
+    "placeholder": "Para onde, e como serão os dias?",
+    "stop": "Parar",
+    "send": "Enviar"
+  },
+  "tools": {
+    "layingOut": "Planejando a viagem…",
+    "layingOutTo": "Planejando {destination}…",
+    "tripNotOk": "Ainda não deu para planejar esta viagem",
+    "tripError": "O planejador não conseguiu montar esta viagem.",
+    "findingOutfits": "Olhando seus looks…",
+    "outfitsNotOk": "Ainda não deu para encontrar looks para isso",
+    "outfitsError": "A busca de looks falhou."
+  },
+  "weather": {
+    "noForecast": "sem previsão",
+    "rain": "{precip}% de chuva",
+    "estimate": "estimativa"
+  },
+  "cards": {
+    "looseFit": "aproximado",
+    "seeWhatWould": "Veja o que serviria",
+    "oldMoney": "Old money"
+  },
+  "trip": {
+    "ariaLabel": "Plano de viagem para {location}",
+    "dateRange": "{start} a {end}",
+    "packingHeading": "Mala para {location}, de {start} a {end}",
+    "packingLine": "{name} (usado {count}×)",
+    "copied": "Lista da mala copiada",
+    "copyFailed": "Não foi possível copiar. Selecione a lista e copie manualmente.",
+    "stats": {
+      "summary": "<b>{pieces, plural, one {# peça} other {# peças}}</b> para {filled} de {total} looks",
+      "distinct": "({count} diferentes)",
+      "shoes": "{count, plural, one {# par} other {# pares}} de calçados",
+      "outerwear": "{count} agasalhos",
+      "watches": "{count, plural, one {# relógio} other {# relógios}}"
+    },
+    "nothingSuits": "Nada na sua tabela serve para isso.",
+    "whatToPack": "O que levar",
+    "copyList": "Copiar lista",
+    "wornIn": "usado em {count, plural, one {# look} other {# looks}}"
+  },
+  "options": {
+    "ariaLabel": "Opções de look",
+    "builtAround": "Montado a partir de",
+    "nothingMatches": "Nada na sua tabela combina com isso ainda.",
+    "boosted": "Destacado"
+  }
+}

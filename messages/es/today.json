@@ -1,0 +1,62 @@
+{
+  "meta": {
+    "title": "Hoy"
+  },
+  "header": {
+    "titleFor": "Hoy para {name}",
+    "subtitle": "Cuéntame tus planes y te propongo el conjunto."
+  },
+  "weather": {
+    "summary": "{location}: {temp}, {condition}, {precip}% de lluvia"
+  },
+  "errors": {
+    "generic": "Algo salió mal",
+    "personGone": "Esa persona ya no está en tu cuenta. Recarga la página.",
+    "couldNotRecord": "No se pudo registrar ese conjunto. Inténtalo de nuevo.",
+    "occasionRequired": "Elige una ocasión válida",
+    "noLocation": "No encontré ese destino. Prueba con el nombre de una ciudad o indica tu ciudad en Ajustes.",
+    "weatherFailed": "No se pudo consultar el clima. Inténtalo en un momento."
+  },
+  "empty": {
+    "title": "Aún no hay conjuntos",
+    "ready": "Tus prendas ya están: el estilista solo tiene que tejerlas en conjuntos.",
+    "notReady": "El estilista crea conjuntos automáticamente cuando tu armario tiene lo esencial de abajo.",
+    "goToWardrobe": "Ir al armario"
+  },
+  "family": {
+    "title": "¿Salen juntos?",
+    "body": "Planea un look familiar para todos a la vez."
+  },
+  "form": {
+    "occasionLabel": "¿Qué tienes hoy?",
+    "whereLabel": "¿Dónde? (opcional)",
+    "wherePlaceholder": "Casa, o empieza a escribir una ciudad",
+    "notesLabel": "¿Algo más? (opcional)",
+    "notesPlaceholder": "p. ej., reunión con un cliente y luego almuerzo con los niños",
+    "notesPlaceholderMinor": "p. ej., educación física por la tarde y luego el parque (sin nombres, por favor)",
+    "submit": "Vísteme hoy",
+    "submitting": "Consultando el clima…"
+  },
+  "live": {
+    "pending": "Consultando el clima y eligiendo conjuntos.",
+    "ready": "{count, plural, one {# conjunto listo.} other {# conjuntos listos.}}",
+    "none": "Ningún conjunto de tu repertorio va con este día."
+  },
+  "results": {
+    "heading": "Sugerencias de hoy",
+    "fresh": "Nuevas sugerencias",
+    "none": "Nada en tu repertorio va del todo con este día y este clima. Unas pocas prendas nuevas abrirían opciones: <link>mira qué comprar después</link>."
+  },
+  "worn": {
+    "toast": "Anotado, que lo disfrutes",
+    "wearing": "Lo llevas puesto",
+    "wearThis": "Me pongo este"
+  },
+  "card": {
+    "oldMoney": "Old money"
+  },
+  "location": {
+    "matchingPlaces": "Lugares que coinciden"
+  },
+  "fallbackExplanation": "Una combinación sólida y fiable de tu repertorio."
+}

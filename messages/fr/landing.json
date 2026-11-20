@@ -1,0 +1,30 @@
+{
+  "meta": {
+    "description": "Votre styliste personnel IA. Photographiez votre garde-robe, planifiez votre journée et soyez impeccable, quelle que soit la météo."
+  },
+  "howItWorks": "Comment ça marche",
+  "signIn": "Se connecter",
+  "eyebrow": "Votre styliste personnel IA",
+  "headline": "Soyez impeccable, chaque jour.",
+  "lede": "Aether Wardrobe étudie vos vêtements, votre programme et la météo, puis compose la tenue. Luxe discret, zéro hésitation.",
+  "seeHowItWorks": "Voir comment ça marche",
+  "footer": "Aether Wardrobe — tissé avec soin.",
+  "features": {
+    "photograph": {
+      "title": "Photographiez votre garde-robe",
+      "body": "Une photo par pièce, une seule fois. L'IA lit la coupe, la couleur, le motif et la matière (piqué, maille, laine) et la classe parfaitement."
+    },
+    "curated": {
+      "title": "Des associations choisies",
+      "body": "Chaque nouvelle pièce est évaluée face à tout ce que vous possédez. Seules les associations qui valent d'être portées entrent dans la table."
+    },
+    "dressed": {
+      "title": "Habillé pour la journée",
+      "body": "Dites-lui où vous allez : bureau, dîner, parc. Il vérifie la météo sur place et choisit ce qui convient à l'occasion, dans les couleurs qui vous flattent."
+    },
+    "grow": {
+      "title": "Grandir avec intention",
+      "body": "Voyez quel achat débloque le plus de nouvelles tenues avant de l'acheter. Fini les pièces orphelines."
+    }
+  }
+}

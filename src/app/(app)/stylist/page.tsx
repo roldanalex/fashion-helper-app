@@ -1,37 +1,38 @@
+import { redirect } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { PageHeader } from "@/components/shared/page-header";
 import { StylistChat } from "@/components/stylist/stylist-chat";
-import { createClient } from "@/lib/supabase/server";
-import { getWardrobeReadiness } from "@/lib/combinations/readiness";
+import { personSession } from "@/lib/people/session";
 
-export const metadata = { title: "Stylist" };
+export async function generateMetadata() {
+  const t = await getTranslations("stylist");
+  return { title: t("meta.title") };
+}
 
 export default async function StylistPage() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  const [{ count }, { data: items }] = await Promise.all([
-    supabase
-      .from("combinations")
-      .select("*", { count: "exact", head: true })
-      .eq("hidden", false),
-    supabase
-      .from("clothing_items")
-      .select("category, ai_status, archived, combo_status")
-      .eq("archived", false)
-      .eq("ai_status", "confirmed"),
-  ]);
+  const t = await getTranslations("stylist");
+  const session = await personSession();
+  if (!session) redirect("/");
+  const { wardrobe, active, user } = session;
+  const [count, readiness] = await Promise.all([wardrobe.outfitCount(), wardrobe.readiness()]);
 
   return (
     <main className="flex flex-1 flex-col">
       <PageHeader
-        title="Stylist"
-        subtitle="Pack for a trip in one conversation, or ask what goes with what."
+        title={active.isSelf ? t("meta.title") : t("header.titleFor", { name: active.person.display_name })}
+        subtitle={t("header.subtitle")}
       />
       <StylistChat
-        userId={user?.id ?? "anonymous"}
-        hasCombinations={(count ?? 0) > 0}
-        readiness={getWardrobeReadiness(items ?? [])}
+        key={active.person.id}
+        userId={user.id}
+        personId={active.person.id}
+        alias={
+          active.isMinor
+            ? { alias: active.subject.alias, name: active.person.display_name }
+            : undefined
+        }
+        hasCombinations={count > 0}
+        readiness={readiness}
       />
     </main>
   );

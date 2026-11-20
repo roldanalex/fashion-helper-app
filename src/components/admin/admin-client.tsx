@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 import { Check, Loader2, ShieldCheck, UserPlus, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -34,6 +35,7 @@ export function AdminClient({
   pending: PendingUser[];
   ownEmail: string;
 }) {
+  const t = useTranslations("admin");
   const router = useRouter();
   const [busy, startTransition] = useTransition();
   const [newEmail, setNewEmail] = useState("");
@@ -53,9 +55,9 @@ export function AdminClient({
     <div className="max-w-2xl space-y-10">
       {pending.length > 0 && (
         <section>
-          <h2 className="font-serif text-2xl">Waiting for access</h2>
+          <h2 className="font-serif text-2xl">{t("pending.title")}</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            These people signed in with Google but can&apos;t use the app yet.
+            {t("pending.description")}
           </p>
           <div className="mt-4 divide-y rounded-xl border bg-card">
             {pending.map((p) => (
@@ -66,16 +68,16 @@ export function AdminClient({
                 <div>
                   <p className="text-sm font-medium">{p.email}</p>
                   <p className="text-xs text-muted-foreground">
-                    signed in {new Date(p.created_at).toLocaleDateString()}
+                    {t("pending.signedIn", { date: new Date(p.created_at).toLocaleDateString() })}
                   </p>
                 </div>
                 <Button
                   size="sm"
                   className="gap-1.5"
                   disabled={busy}
-                  onClick={() => run(() => grantAccess(p.email), `Approved ${p.email}`)}
+                  onClick={() => run(() => grantAccess(p.email), t("toast.approved", { email: p.email }))}
                 >
-                  <Check className="size-3.5" aria-hidden /> Approve
+                  <Check className="size-3.5" aria-hidden /> {t("pending.approve")}
                 </Button>
               </div>
             ))}
@@ -84,22 +86,21 @@ export function AdminClient({
       )}
 
       <section>
-        <h2 className="font-serif text-2xl">Invite by email</h2>
+        <h2 className="font-serif text-2xl">{t("invite.title")}</h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          Pre-approve someone — they&apos;ll get straight in the first time they
-          sign in with Google.
+          {t("invite.description")}
         </p>
         <form
           className="mt-4 flex flex-col gap-2 sm:flex-row"
           onSubmit={(e) => {
             e.preventDefault();
             if (!newEmail.trim()) return;
-            run(() => grantAccess(newEmail), `Invited ${newEmail.trim().toLowerCase()}`);
+            run(() => grantAccess(newEmail), t("toast.invited", { email: newEmail.trim().toLowerCase() }));
           }}
         >
           <div className="flex-1">
             <Label htmlFor="invite-email" className="sr-only">
-              Email to invite
+              {t("invite.emailLabel")}
             </Label>
             <Input
               id="invite-email"
@@ -117,13 +118,13 @@ export function AdminClient({
             ) : (
               <UserPlus className="size-4" aria-hidden />
             )}
-            Grant access
+            {t("invite.grant")}
           </Button>
         </form>
       </section>
 
       <section>
-        <h2 className="font-serif text-2xl">Who has access</h2>
+        <h2 className="font-serif text-2xl">{t("grants.title")}</h2>
         <div className="mt-4 divide-y rounded-xl border bg-card">
           {grants.map((g) => (
             <div
@@ -134,7 +135,7 @@ export function AdminClient({
                 <p className="text-sm font-medium">{g.email}</p>
                 {g.role === "admin" && (
                   <Badge className="gap-1 bg-primary/15 text-primary">
-                    <ShieldCheck className="size-3" aria-hidden /> Admin
+                    <ShieldCheck className="size-3" aria-hidden /> {t("grants.admin")}
                   </Badge>
                 )}
               </div>
@@ -146,33 +147,30 @@ export function AdminClient({
                   disabled={busy}
                   onClick={() => setRevokeTarget(g.email)}
                 >
-                  <X className="size-3.5" aria-hidden /> Revoke
+                  <X className="size-3.5" aria-hidden /> {t("grants.revoke")}
                 </Button>
               ) : (
-                <span className="text-xs text-muted-foreground">you</span>
+                <span className="text-xs text-muted-foreground">{t("grants.you")}</span>
               )}
             </div>
           ))}
         </div>
         <p className="mt-3 text-xs text-muted-foreground">
-          You can also manage this list in Supabase → Table Editor →
-          access_grants.
+          {t("grants.supabaseHint")}
         </p>
       </section>
 
       <Dialog open={revokeTarget !== null} onOpenChange={(o) => !o && setRevokeTarget(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Revoke access for {revokeTarget}?</DialogTitle>
+            <DialogTitle>{t("revoke.title", { email: revokeTarget ?? "" })}</DialogTitle>
             <DialogDescription>
-              They will be signed out of the app on their next visit and see the
-              waiting page. Their wardrobe stays saved, and you can grant access again
-              at any time.
+              {t("revoke.description")}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <DialogClose asChild>
-              <Button variant="outline">Keep access</Button>
+              <Button variant="outline">{t("revoke.keep")}</Button>
             </DialogClose>
             <Button
               variant="destructive"
@@ -180,10 +178,10 @@ export function AdminClient({
               onClick={() => {
                 const email = revokeTarget;
                 setRevokeTarget(null);
-                if (email) run(() => revokeAccess(email), `Revoked ${email}`);
+                if (email) run(() => revokeAccess(email), t("toast.revoked", { email }));
               }}
             >
-              Revoke access
+              {t("revoke.confirm")}
             </Button>
           </DialogFooter>
         </DialogContent>

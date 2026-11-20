@@ -1,0 +1,111 @@
+{
+  "meta": {
+    "title": "Guarda-roupa",
+    "pieceTitle": "Peça"
+  },
+  "page": {
+    "title": "Guarda-roupa",
+    "titleFor": "Guarda-roupa de {name}",
+    "catalogued": "{count, plural, one {# peça catalogada} other {# peças catalogadas}}",
+    "subtitleEmpty": "Cada peça que você tem, lindamente catalogada.",
+    "emptyTitle": "Um armário vazio",
+    "emptyBody": "Fotografe sua primeira peça e o estilista começa a montar sua tabela de combinações. De seis a oito peças já liberam looks de verdade."
+  },
+  "item": {
+    "back": "Guarda-roupa"
+  },
+  "status": {
+    "pending": "Analisando…",
+    "tagged": "Revisar tags",
+    "failed": "Tentar de novo"
+  },
+  "readiness": {
+    "top": "Parte de cima",
+    "bottom": "Parte de baixo",
+    "shoes": "Calçados",
+    "outerwear": "Agasalho",
+    "watch": "Relógio",
+    "accessories": "Acessórios",
+    "srMet": ": no seu guarda-roupa",
+    "srOptional": ": opcional, ainda não adicionado",
+    "srMissing": ": faltando",
+    "requiredNote": "Parte de cima, parte de baixo e calçados são obrigatórios. Agasalho, relógio e acessórios são opcionais; eles acrescentam camadas e acabamento aos looks.",
+    "notReady": "Confirme pelo menos uma parte de cima, uma de baixo e um par de calçados — é o mínimo de que o estilista precisa para montar um look. Depois, os looks se montam automaticamente a cada peça que você adiciona.",
+    "pending": "{count, plural, one {# peça ainda precisa} other {# peças ainda precisam}} ter os looks montados. Isso costuma acontecer sozinho — toque para terminar agora.",
+    "ready": "Tudo pronto — o estilista montou looks com o seu guarda-roupa. Vá para <b>Hoje</b> para receber uma sugestão."
+  },
+  "rebuild": {
+    "label": "Montar looks",
+    "couldNotStart": "Não foi possível começar a montagem",
+    "started": "Pode deixar — o estilista está montando seus looks"
+  },
+  "tags": {
+    "name": "Nome",
+    "color": "Cor",
+    "colorPlaceholder": "marinho",
+    "colorSwatch": "Amostra de cor",
+    "category": "Categoria",
+    "watchStyle": "Estilo do relógio",
+    "type": "Tipo",
+    "material": "Material",
+    "pattern": "Estampa",
+    "seasons": "Estações",
+    "formality": "Formalidade ({value}/10)",
+    "oldMoney": "Nota old money ({value}/10)",
+    "saveChanges": "Salvar alterações",
+    "confirm": "Confirmar tags",
+    "reanalyze": "Analisar de novo",
+    "archive": "Arquivar",
+    "checkTags": "Confira as tags",
+    "saved": "Salvo — gerando combinações de looks…",
+    "reanalyzed": "Analisado de novo — revise as novas tags",
+    "reanalyzeFailed": "A nova análise falhou. Tente de novo em instantes.",
+    "archived": "{name} arquivado",
+    "archivedDescription": "Os looks com esta peça ficam ocultos até você trazê-la de volta.",
+    "undo": "Desfazer",
+    "restored": "{name} restaurado"
+  },
+  "upload": {
+    "trigger": "Adicionar peça",
+    "title": "Adicionar uma peça",
+    "titleFor": "Adicionar uma peça para {name}",
+    "descriptionMinor": "Fotografe só a peça: ninguém vestindo e nenhuma etiqueta com nome à vista.",
+    "description": "Uma foto nítida numa superfície plana ou num cabide funciona melhor.",
+    "changePhoto": "Trocar foto",
+    "choosePhoto": "Escolher uma foto",
+    "previewAlt": "Peça de roupa selecionada",
+    "tapToAdd": "Toque para adicionar a foto",
+    "takePhoto": "Tirar foto",
+    "fromGallery": "Da galeria",
+    "kindLabel": "Que tipo de peça é?",
+    "aboutLabel": "Conte ao estilista sobre ela (opcional)",
+    "aboutPlaceholder": "ex.: polo branca de piquet, slim, da Lacoste",
+    "aboutHint": "Mencionar o material — piquet, tricô, merino — deixa as tags muito mais precisas.",
+    "aboutHintMinor": " Descreva a peça, não a criança: sem nomes, idades ou nome da escola.",
+    "manualLabel": "Preencher as tags eu mesmo",
+    "manualOn": "Você preenche cor, tipo e material; a foto não é enviada à IA.",
+    "manualOff": "A IA lê a foto e preenche os detalhes para você conferir.",
+    "upload": "Enviar",
+    "uploadAnalyze": "Enviar e analisar",
+    "needPhoto": "Adicione primeiro uma foto da peça",
+    "preparing": "Preparando a foto…",
+    "uploading": "Enviando…",
+    "reading": "Lendo a peça…",
+    "photoSaved": "Foto salva — adicione os detalhes",
+    "analyzeFailed": "Enviada, mas o estilista não conseguiu ler — você pode analisar de novo na página da peça.",
+    "analyzed": "Peça analisada — revise as tags",
+    "failed": "O envio falhou. Tente de novo."
+  },
+  "errors": {
+    "couldNotAdd": "Não foi possível adicionar a peça. Tente de novo.",
+    "personGone": "Essa pessoa não está mais na sua conta. Recarregue a página.",
+    "invalidTags": "Tags inválidas",
+    "couldNotSave": "Não foi possível salvar. Tente de novo.",
+    "couldNotArchive": "Não foi possível arquivar. Tente de novo.",
+    "couldNotRestore": "Não foi possível restaurar a peça. Tente de novo.",
+    "itemNotFound": "Peça não encontrada",
+    "couldNotReadPhoto": "Não foi possível ler a foto",
+    "aiFailed": "O estilista não conseguiu ler esta foto. Tente analisar de novo."
+  },
+  "newPiece": "Nova peça"
+}

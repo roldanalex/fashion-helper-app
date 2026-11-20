@@ -1,0 +1,91 @@
+{
+  "meta": {
+    "title": "Famille"
+  },
+  "page": {
+    "title": "Look famille",
+    "subtitle": "Une tenue pour chacun, tirée de sa propre garde-robe, choisie pour aller ensemble."
+  },
+  "modes": {
+    "coordinated": "Couleurs coordonnées",
+    "matching": "Un accent commun",
+    "relaxed": "Simplement bien habillés"
+  },
+  "missing": {
+    "no_outfits": "{name} n'a pas encore de tenues : ajoutez et confirmez un haut, un bas et des chaussures.",
+    "no_weather_match": "{name} n'a rien dans sa table pour cette météo."
+  },
+  "toast": {
+    "savedToday": "Tenue de {name} enregistrée pour aujourd'hui",
+    "planned": "Tenue de {name} prévue pour le {date}"
+  },
+  "empty": {
+    "title": "Ajoutez les personnes que vous habillez",
+    "description": "Ajoutez vos enfants, ou toute personne sans e-mail, dans Réglages → Personnes. Chacun a sa propre garde-robe, et cette page vous habille tous ensemble pour la même occasion.",
+    "addPerson": "Ajouter une personne"
+  },
+  "form": {
+    "who": "Qui vient ?",
+    "you": "(vous)",
+    "noOutfits": "pas encore de tenues",
+    "occasion": "Quelle est l'occasion ?",
+    "mode": "Quel look commun ?",
+    "when": "Quand ?",
+    "where": "Où ? (facultatif)",
+    "wherePlaceholder": "Chez vous, ou saisissez une ville",
+    "dressing": "On habille tout le monde…",
+    "plan": "Préparer notre look"
+  },
+  "status": {
+    "choosing": "Choix des tenues pour tout le monde.",
+    "ready": "{count, plural, one {# look famille prêt.} other {# looks famille prêts.}}"
+  },
+  "results": {
+    "title": "Vos looks famille",
+    "weather": "{place} : {temp}, {condition}, {rain} % de pluie",
+    "looseFits": "Rien dans la garde-robe de {names} n'est vraiment fait pour cette occasion : voici les tenues les plus proches.",
+    "and": " et ",
+    "none": "Aucun look famille ne convient encore à cette journée. Essayez une autre occasion, ou ajoutez quelques pièces aux garde-robes citées plus haut.",
+    "look": "Look {n}",
+    "palette": "Palette familiale",
+    "outfitOf": "Tenue de {name}",
+    "choosesOwn": "{name} choisit sa tenue",
+    "plannedFor": "Prévu pour {name}",
+    "wear": "Porter ceci"
+  },
+  "plan": {
+    "notes": "Look famille",
+    "explanation": "Choisi dans le cadre d'un look famille."
+  },
+  "errors": {
+    "couldNotPlan": "Impossible de préparer le look",
+    "couldNotSaveOutfit": "Impossible d'enregistrer cette tenue.",
+    "notSignedIn": "Non connecté",
+    "notOnAccount": "Cette personne n'est pas sur votre compte.",
+    "outfitGone": "Cette tenue n'est plus dans sa table.",
+    "invalidEmail": "Saisissez une adresse e-mail valide.",
+    "pickOccasion": "Choisissez une occasion",
+    "checkRequest": "Vérifiez la demande",
+    "personNotFound": "Une personne de ce look n'est plus sur votre compte. Rechargez la page.",
+    "chooseWho": "Choisissez pour qui est le look"
+  },
+  "rpcErrors": {
+    "notManager": "Seul le propriétaire de la famille ou un gestionnaire peut inviter des personnes.",
+    "badRole": "Choisissez gestionnaire ou lecteur.",
+    "selfInvite": "C'est votre propre e-mail.",
+    "notApproved": "Cet e-mail n'a pas encore accès à Aether. Demandez d'abord à l'admin de l'inviter.",
+    "alreadyMember": "Cette personne fait déjà partie de cette famille.",
+    "familyFull": "Une famille compte au maximum 8 membres.",
+    "inviteNotFound": "Cette invitation n'est plus disponible.",
+    "ownerCannotLeave": "Le propriétaire ne peut pas quitter sa propre famille.",
+    "notOwner": "Seul le propriétaire de la famille peut retirer des membres."
+  },
+  "rpcFallback": {
+    "invite": "Impossible d'envoyer l'invitation. Veuillez réessayer.",
+    "join": "Impossible de rejoindre la famille. Veuillez réessayer.",
+    "deleteInvite": "Impossible de supprimer l'invitation. Veuillez réessayer.",
+    "leave": "Impossible de quitter la famille. Veuillez réessayer.",
+    "remove": "Impossible de retirer cette personne. Veuillez réessayer.",
+    "share": "Impossible de modifier le partage. Veuillez réessayer."
+  }
+}

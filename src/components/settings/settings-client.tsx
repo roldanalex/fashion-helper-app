@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -16,10 +17,15 @@ import {
 } from "@/components/personal/personal-fields";
 import { LocationAutocomplete } from "@/components/today/location-autocomplete";
 import { SignOutButton } from "@/components/shared/sign-out-button";
+import { LanguagePicker } from "@/components/shared/language-picker";
+import { PeopleManager, type ManagedPersonView } from "@/components/people/people-manager";
+import { FamilyManager } from "@/components/people/family-manager";
+import type { FamilyView, InviteForMe } from "@/lib/families/overview";
 import { UnitSwitch } from "@/components/shared/unit-switch";
 import { useUnits } from "@/components/shared/units-provider";
 import { formatTemp } from "@/lib/units";
 import { STYLE_PREFERENCES } from "@/lib/constants";
+import { useTaxonomy } from "@/i18n/taxonomy";
 import { clearPersonal, updatePersonal, updateSettings } from "@/app/(app)/settings/actions";
 import type { Profile } from "@/types/database";
 
@@ -68,11 +74,22 @@ function Section({
 export function SettingsClient({
   profile,
   email,
+  managedPeople,
+  families,
+  invites,
+  familyChoices,
 }: {
   profile: Profile;
   email: string;
+  managedPeople: ManagedPersonView[];
+  families: FamilyView[];
+  invites: InviteForMe[];
+  /** Families this Account may add people to. */
+  familyChoices: { id: string; name: string }[];
 }) {
-  const { units, setUnits } = useUnits();
+  const t = useTranslations("settings");
+  const tx = useTaxonomy();
+  const { units, setUnits, measures, setMeasures } = useUnits();
 
   // Style and home
   const [savingStyle, startStyle] = useTransition();
@@ -101,7 +118,7 @@ export function SettingsClient({
         home_location: location,
       });
       if (res?.error) toast.error(res.error);
-      else toast.success("Style and home saved");
+      else toast.success(t("toast.styleSaved"));
     });
   }
 
@@ -111,8 +128,8 @@ export function SettingsClient({
       if (res?.error) toast.error(res.error);
       else {
         setPersonalDirty(false);
-        toast.success("Build and colouring saved", {
-          description: "Today's picks and the stylist use them from your next request.",
+        toast.success(t("toast.personalSaved"), {
+          description: t("toast.personalSavedDescription"),
         });
       }
     });
@@ -132,9 +149,9 @@ export function SettingsClient({
       });
       setPersonalDirty(false);
       setResetKey((k) => k + 1);
-      toast.success("Build and colouring cleared", {
+      toast.success(t("toast.personalCleared"), {
         action: {
-          label: "Undo",
+          label: t("toast.undo"),
           onClick: () =>
             startPersonal(async () => {
               const undo = await updatePersonal(previous);
@@ -152,14 +169,22 @@ export function SettingsClient({
   return (
     <div className="max-w-xl space-y-12">
       <section className="rounded-xl border bg-card p-6">
-        <p className="text-sm text-muted-foreground">Signed in as</p>
+        <p className="text-sm text-muted-foreground">{t("signedInAs")}</p>
         <p className="mt-1 break-all font-medium">{email}</p>
       </section>
 
-      <Section id="style-heading" title="Style and home">
+      <Section
+        id="language-heading"
+        title={t("language.title")}
+        description={t("language.description")}
+      >
+        <LanguagePicker id="language" className="w-full sm:w-72" />
+      </Section>
+
+      <Section id="style-heading" title={t("style.title")}>
         <ChipGroup
-          label="Your styles"
-          options={STYLE_PREFERENCES}
+          label={t("style.yourStyles")}
+          options={STYLE_PREFERENCES.map((s) => ({ value: s.value, label: tx("style", s.value) }))}
           value={styles}
           onChange={(v) => setStyles(v as string[])}
           multiple
@@ -167,7 +192,7 @@ export function SettingsClient({
 
         <div>
           <Label id="formality-label" className="text-sm font-medium">
-            Preferred formality ({formality}/10)
+            {t("style.formality", { value: formality })}
           </Label>
           <Slider
             className="mt-3"
@@ -179,24 +204,24 @@ export function SettingsClient({
             aria-labelledby="formality-label"
           />
           <div className="mt-2 flex justify-between text-xs text-muted-foreground" aria-hidden>
-            <span>Relaxed</span>
-            <span>Polished</span>
+            <span>{t("style.relaxed")}</span>
+            <span>{t("style.polished")}</span>
           </div>
         </div>
 
         <ChipGroup
-          label="Your lifestyle"
-          options={LIFESTYLE_TAGS}
+          label={t("style.yourLifestyle")}
+          options={LIFESTYLE_TAGS.map((v) => ({ value: v, label: tx("lifestyle", v) }))}
           value={lifestyle}
           onChange={(v) => setLifestyle(v as string[])}
           multiple
         />
 
         <div className="space-y-2">
-          <Label htmlFor="home">Home location</Label>
+          <Label htmlFor="home">{t("style.homeLocation")}</Label>
           <LocationAutocomplete
             id="home"
-            placeholder="Start typing a city"
+            placeholder={t("style.homePlaceholder")}
             value={location}
             onChange={setLocation}
             onSelect={(r) => setLocation(r.label)}
@@ -205,7 +230,7 @@ export function SettingsClient({
 
         <Button onClick={saveStyle} disabled={savingStyle} className="gap-2">
           {savingStyle && <Loader2 className="size-4 animate-spin" aria-hidden />}
-          Save style and home
+          {t("style.save")}
         </Button>
       </Section>
 
@@ -213,14 +238,14 @@ export function SettingsClient({
 
       <Section
         id="personal-heading"
-        title="Your build and colouring"
-        description="Optional. The stylist uses these to favour colours that flatter you near the face and cuts that suit your build, on Today, in the Stylist chat and in Shop. They are sent to OpenAI only to rank your outfits, weight is never sent, and nothing here is shown to anyone else."
+        title={t("personal.title")}
+        description={t("personal.description")}
       >
         <BuildFields
-          key={`${units}-${resetKey}`}
+          key={`${measures.weight}-${measures.height}-${resetKey}`}
           draft={personal}
           set={patchPersonal}
-          units={units}
+          measures={measures}
         />
         <ColoringFields draft={personal} set={patchPersonal} />
         <StyleNotesField
@@ -230,14 +255,14 @@ export function SettingsClient({
         <div className="flex flex-wrap items-center gap-3">
           <Button onClick={savePersonal} disabled={savingPersonal || !personalDirty} className="gap-2">
             {savingPersonal && <Loader2 className="size-4 animate-spin" aria-hidden />}
-            Save build and colouring
+            {t("personal.save")}
           </Button>
           <Button variant="ghost" onClick={forgetPersonal} disabled={savingPersonal} className="text-muted-foreground">
-            Clear all
+            {t("personal.clearAll")}
           </Button>
           {personalDirty && (
             <span className="text-sm text-muted-foreground" role="status">
-              Unsaved changes
+              {t("personal.unsaved")}
             </span>
           )}
         </div>
@@ -245,18 +270,58 @@ export function SettingsClient({
 
       <Separator />
 
-      <Section id="units-heading" title="Temperature">
+      <div id="people" className="scroll-mt-16">
+        <Section
+          id="people-heading"
+          title={t("people.title")}
+          description={t("people.description")}
+        >
+          <PeopleManager people={managedPeople} units={measures.height} familyChoices={familyChoices} />
+        </Section>
+      </div>
+
+      <Separator />
+
+      <div id="family" className="scroll-mt-16">
+        <Section
+          id="family-heading"
+          title={t("family.title")}
+          description={t("family.description")}
+        >
+          <FamilyManager families={families} invites={invites} />
+        </Section>
+      </div>
+
+      <Separator />
+
+      <Section id="units-heading" title={t("units.title")} description={t("units.description")}>
         <div className="space-y-3">
-          <span id="units-label" className="sr-only">
-            Temperature unit
+          <span id="units-label" className="text-sm font-medium">
+            {t("units.temperature")}
           </span>
           <UnitSwitch value={units} onChange={setUnits} aria-labelledby="units-label" />
           <p className="text-sm text-muted-foreground">
-            Weather on Today and in trip plans reads as {formatTemp(21, units)}, and height and
-            weight above use {units === "imperial" ? "feet and pounds" : "centimetres and kilograms"}.
-            Saves as soon as you pick.
+            {t("units.temperatureExample", { example: formatTemp(21, units) })}
           </p>
         </div>
+        <ChipGroup
+          label={t("units.weight")}
+          options={[
+            { value: "kg", label: t("units.kilograms") },
+            { value: "lb", label: t("units.pounds") },
+          ]}
+          value={measures.weight}
+          onChange={(v) => setMeasures({ weight: v as "kg" | "lb" })}
+        />
+        <ChipGroup
+          label={t("units.height")}
+          options={[
+            { value: "cm", label: t("units.centimetres") },
+            { value: "ftin", label: t("units.feetInches") },
+          ]}
+          value={measures.height}
+          onChange={(v) => setMeasures({ height: v as "cm" | "ftin" })}
+        />
       </Section>
 
       <Separator />

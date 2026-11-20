@@ -1,0 +1,47 @@
+{
+  "meta": {
+    "title": "Admin"
+  },
+  "page": {
+    "title": "Admin",
+    "subtitle": "Decide who may use the app — and your API credits."
+  },
+  "pending": {
+    "title": "Waiting for access",
+    "description": "These people signed in with Google but can't use the app yet.",
+    "signedIn": "signed in {date}",
+    "approve": "Approve"
+  },
+  "invite": {
+    "title": "Invite by email",
+    "description": "Pre-approve someone — they'll get straight in the first time they sign in with Google.",
+    "emailLabel": "Email to invite",
+    "grant": "Grant access"
+  },
+  "grants": {
+    "title": "Who has access",
+    "admin": "Admin",
+    "revoke": "Revoke",
+    "you": "you",
+    "supabaseHint": "You can also manage this list in Supabase → Table Editor → access_grants."
+  },
+  "revoke": {
+    "title": "Revoke access for {email}?",
+    "description": "They will be signed out of the app on their next visit and see the waiting page. Their wardrobe stays saved, and you can grant access again at any time.",
+    "keep": "Keep access",
+    "confirm": "Revoke access"
+  },
+  "toast": {
+    "approved": "Approved {email}",
+    "invited": "Invited {email}",
+    "revoked": "Revoked {email}"
+  },
+  "errors": {
+    "adminsOnly": "Admins only",
+    "invalidEmail": "That doesn't look like an email",
+    "alreadyHasAccess": "Already has access",
+    "couldNotGrant": "Could not grant access",
+    "cannotRevokeSelf": "You can't revoke your own access",
+    "couldNotRevoke": "Could not revoke access"
+  }
+}

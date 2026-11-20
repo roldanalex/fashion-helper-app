@@ -1,0 +1,1039 @@
+{
+  "meta": {
+    "app": "Aether Wardrobe",
+    "what": "Seu personal stylist para as roupas que sua família já tem",
+    "storage_key": "aether-wardrobe-onboarding",
+    "favicon_emoji": "🧵",
+    "theme": {
+      "accent": "#957331",
+      "accent_soft": "#C9A45C",
+      "secondary": "#5B7C99",
+      "bg": "#16140F",
+      "animation": {
+        "type": "wardrobe",
+        "intensity": "medium",
+        "speed": "normal"
+      },
+      "motif": "none",
+      "glow_strength": 0.45,
+      "radius": "14px",
+      "font_family": "DM Sans"
+    },
+    "tagline": [
+      "Fotografe uma vez.",
+      "Vista a família toda.",
+      "Pronto em um minuto."
+    ],
+    "tagline_colors": [
+      "text",
+      "accent_soft",
+      "secondary_tint"
+    ],
+    "subtitle": "O Aether Wardrobe transforma as roupas que você já tem em looks que funcionam e escolhe o certo para o seu dia e para o clima de onde você vai estar. Ele faz o mesmo pelos seus filhos e por qualquer pessoa que você veste, e planeja looks para a família toda. Ele nunca inventa roupas que você não tem e explica cada escolha.",
+    "app_url": "/",
+    "owner": "Alexis Roldan · Aether Wardrobe",
+    "last_reviewed": "2026-11-20",
+    "authoritative_sources": [
+      "Guia do usuário do Aether Wardrobe (docs/USER-GUIDE.md)",
+      "Notas de versão (CHANGELOG.md)"
+    ],
+    "disclaimer": "O Aether Wardrobe é um assistente de estilo. As sugestões se baseiam nas tags que você confirma e na previsão do tempo; use seu próprio bom senso quanto a dress code, segurança e conforto. Suas fotos ficam privadas na sua conta.",
+    "est_minutes_guide": 15,
+    "title": "Como o Aether Wardrobe funciona",
+    "favicon": "/welcome/assets/favicon.svg",
+    "brand": {
+      "logo_src": "/welcome/assets/aether-logo.svg",
+      "logo_alt": "Aether Wardrobe",
+      "logo_height": 40
+    },
+    "lang": "pt-BR",
+    "ui": {
+      "all_pages": "Todas as páginas de onboarding",
+      "source": "Fonte",
+      "source_missing": "FALTANDO — adicione uma",
+      "video_unsupported": "Seu navegador não consegue reproduzir este vídeo.",
+      "video_missing": "Vídeo não configurado — adicione <code>src</code> ou <code>embed_url</code>.",
+      "open_in_stream": "Abrir no Stream",
+      "video": "Vídeo",
+      "powered_by": "Desenvolvido por",
+      "previous_section": "Seção anterior",
+      "print_title": "Imprimir / salvar como PDF (todas as seções do guia)",
+      "print_label": "Imprimir ou salvar como PDF",
+      "start": "Começar o onboarding",
+      "reset_title": "Zerar progresso",
+      "reset_confirm": "Zerar o progresso do onboarding neste navegador?",
+      "theme_title": "Alternar tema escuro / claro",
+      "theme_label": "Alternar entre tema escuro e claro",
+      "why": "Por que o {app}?",
+      "see_why": "Veja por quê",
+      "chapter": "Capítulo {n}",
+      "approx_minutes": "Aproximadamente {n} minutos · ",
+      "chapters": "Capítulos",
+      "your_progress": "Seu progresso",
+      "sections_complete": "{n} de {m} seções concluídas",
+      "saved_here": "Salvo apenas neste navegador",
+      "confirmed": "Confirmado",
+      "about_minute": "Cerca de {n} minuto",
+      "about_minutes": "Cerca de {n} minutos",
+      "checkpoint": "Checkpoint de conclusão",
+      "n_confirmed": "{n} / 1 confirmado",
+      "owner": "Responsável: ",
+      "last_reviewed": "Última revisão: ",
+      "sources": "Fontes oficiais: ",
+      "steps": "Passos",
+      "practical": "Guias práticos",
+      "previous": "‹ Anterior",
+      "next": "Próximo ›"
+    }
+  },
+  "why": {
+    "scroll_hint": "Veja por quê",
+    "chapters": [
+      {
+        "id": "problem",
+        "kicker": "O PROBLEMA",
+        "nav_label": "O problema",
+        "headline": "Armário cheio e nada para vestir é um problema de combinação, não de compras.",
+        "intro": "A maioria das pessoas usa um quinto do que tem. O resto não está errado, só não tem par: a camisa que ficaria ótima com a chino cáqui nunca se encontra com ela, porque ninguém tem tempo de testar todas as combinações antes de uma reunião às 9h.",
+        "blocks": [
+          {
+            "type": "principles",
+            "items": [
+              {
+                "title": "A pergunta do dia, na verdade, são três",
+                "text": "O que combina com a ocasião, o que combina com o clima do destino e o que eu não uso há algum tempo?"
+              },
+              {
+                "title": "Conselho genérico não conhece o seu armário",
+                "text": "Artigos e assistentes de chat sugerem roupas que você não tem. A resposta útil é montada com as suas peças de verdade."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "value",
+        "kicker": "O QUE VOCÊ GANHA",
+        "nav_label": "O que você ganha",
+        "headline": "Todo look que funciona, avaliado uma vez, pronto toda manhã.",
+        "intro": "Você fotografa cada peça uma única vez. A partir daí, o app combina, dá as notas e faz a escolha do dia, e você só confirma.",
+        "blocks": [
+          {
+            "type": "stats",
+            "items": [
+              {
+                "label": "QUALIDADE DA TABELA",
+                "value": "7.0+",
+                "unit": "nota mínima",
+                "text": "Só ficam os looks que um stylist avalia com 7 ou mais de 10. Combinações fracas são descartadas antes de chegar a você.",
+                "source": "Design da tabela de combinações, garantido por uma verificação no banco de dados; README, out. 2026"
+              },
+              {
+                "label": "ESCOLHAS DO DIA",
+                "value": "5–7",
+                "unit": "looks ranqueados",
+                "text": "Cada pedido retorna de cinco a sete looks, cada um com duas frases sobre por que combina com o dia.",
+                "source": "Notas da versão 1.1.0, out. 2026"
+              },
+              {
+                "label": "POR PEDIDO",
+                "value": "1",
+                "unit": "chamada de IA",
+                "text": "A recomendação do dia usa uma chamada pequena ao modelo; o trabalho pesado foi feito quando a peça foi adicionada.",
+                "source": "Notas de arquitetura, README, out. 2026"
+              },
+              {
+                "label": "POR PEÇA",
+                "value": "~1–3¢",
+                "unit": "para catalogar",
+                "text": "Custo estimado do modelo para marcar uma peça e avaliar seus looks; depois, frações de centavo por pedido diário.",
+                "source": "Estimativa de engenharia no README, out. 2026"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "how",
+        "kicker": "COMO FUNCIONA",
+        "nav_label": "Como funciona",
+        "headline": "Seis passos de uma foto ao look de hoje.",
+        "intro": "Um único modelo, do começo ao fim. Os três primeiros passos acontecem uma vez por peça; os três últimos, todos os dias. A aba Estilista usa a mesma tabela para montar a mala de uma viagem.",
+        "blocks": [
+          {
+            "type": "lifecycle",
+            "items": [
+              {
+                "title": "Perfil",
+                "text": "Um assistente em quatro passos: corpo, coloração, preferências de estilo e cidade. Corpo e coloração são opcionais e definem a sua estação de cores."
+              },
+              {
+                "title": "Fotografar",
+                "text": "Uma foto por peça, da sua galeria ou da câmera do celular."
+              },
+              {
+                "title": "Confirmar tags",
+                "text": "A IA identifica corte, cor, material e formalidade. Você corrige o que estiver errado."
+              },
+              {
+                "title": "Tabela montada",
+                "text": "O motor combina a peça com tudo o que você tem e mantém só os looks com nota 7 ou mais."
+              },
+              {
+                "title": "Montar meu dia",
+                "text": "Escolha a ocasião e para onde você vai. A previsão do tempo de lá filtra a tabela e uma chamada ranqueia as sugestões."
+              },
+              {
+                "title": "Usar e registrar",
+                "text": "Marque o que você usou. Looks usados recentemente descansam por uma semana para as sugestões continuarem variadas."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "features",
+        "kicker": "AS ABAS",
+        "nav_label": "As abas",
+        "headline": "Cinco lugares para ir, cada um com uma função.",
+        "intro": "No computador, todas as seções ficam na barra lateral. No celular, Hoje, Estilista, Guarda-roupa e Looks estão a um toque, na parte de baixo; em Mais ficam Família, Loja e Configurações.",
+        "blocks": [
+          {
+            "type": "capabilities",
+            "items": [
+              {
+                "category": "GUARDA-ROUPA",
+                "badge": "catálogo",
+                "title": "Tudo o que você tem, com tags",
+                "text": "Agrupado por categoria, com tipo, material, estampa, estações, formalidade e nota old money em cada peça. Relógios têm categoria própria, classificados por estilo, com pulseira e tom do metal."
+              },
+              {
+                "category": "LOOKS",
+                "badge": "a tabela",
+                "title": "Toda combinação que vale a pena usar",
+                "text": "Filtre por uma parte de cima, parte de baixo, sapato, casaco, relógio ou acessório, por ocasião, estação ou nota mínima. Destaque os favoritos, oculte os que não funcionam."
+              },
+              {
+                "category": "HOJE",
+                "badge": "diário",
+                "title": "Montar meu dia",
+                "text": "Dez ocasiões, um destino opcional com preenchimento automático de cidade e observações livres. De cinco a sete looks ranqueados, com o relógio certo para o dia."
+              },
+              {
+                "category": "LOJA",
+                "badge": "análise de lacunas",
+                "title": "O que comprar em seguida",
+                "text": "Conta quantos looks novos uma boa peça liberaria em cada categoria e depois sugere itens específicos que combinam com o que você tem."
+              },
+              {
+                "category": "CONFIGURAÇÕES",
+                "badge": "perfil",
+                "title": "Seu perfil e unidades",
+                "text": "Atualize corpo, coloração, caimento, estilos e cidade; tudo isso alimenta os prompts. Apague seus dados de corpo e coloração quando quiser."
+              },
+              {
+                "category": "ACESSO",
+                "badge": "só por convite",
+                "title": "Contas autorizadas",
+                "text": "Entre com o Google. Um administrador libera o acesso por e-mail, então nenhuma chamada paga de IA roda para uma conta desconhecida."
+              },
+              {
+                "category": "FAMÍLIA",
+                "badge": "novo",
+                "title": "A família toda, vestida em conjunto",
+                "text": "Adicione seus filhos ou qualquer pessoa sem e-mail, dê a cada um o próprio guarda-roupa e planeje um look para todos: cores coordenadas, um detalhe em comum ou simplesmente todos bem vestidos. As crianças nunca fazem login e nada sobre elas chega à IA."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "family",
+        "kicker": "FAMÍLIA",
+        "nav_label": "Família",
+        "headline": "Vista todas as pessoas de quem você cuida, em conjunto.",
+        "intro": "Adicione seus filhos, ou um adulto sem e-mail, na sua própria conta. Cada pessoa tem o próprio guarda-roupa e os próprios looks, e um toque planeja um look para todos.",
+        "blocks": [
+          {
+            "type": "capabilities",
+            "items": [
+              {
+                "category": "PESSOAS",
+                "badge": "novo",
+                "title": "Um guarda-roupa por pessoa",
+                "text": "Troque quem você está vestindo no topo da página. Guarda-roupa, Looks, Hoje, Estilista e Loja acompanham a escolha, e os looks nunca misturam roupas de duas pessoas."
+              },
+              {
+                "category": "LOOK DA FAMÍLIA",
+                "badge": "novo",
+                "title": "Um look para a ocasião",
+                "text": "Escolha quem vai, a ocasião e como vocês querem ficar juntos. Você recebe até três looks, uma roupa para cada pessoa, com uma paleta em comum e uma nota sobre por que funciona."
+              },
+              {
+                "category": "PRIVACIDADE",
+                "badge": "crianças",
+                "title": "As crianças ficam protegidas",
+                "text": "As crianças nunca fazem login. A IA vê apenas descrições das roupas delas e as conhece como 'Criança A'. Exclua uma pessoa e tudo sobre ela vai junto."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "trust",
+        "kicker": "CONFIANÇA",
+        "nav_label": "Confiança",
+        "headline": "Primeiro o código determinístico, por último uma pequena chamada de IA.",
+        "intro": "A tabela de combinações é a única fonte da verdade. A IA nunca inventa um look na hora da recomendação; ela marca, avalia e explica o que o motor já aprovou.",
+        "blocks": [
+          {
+            "type": "layers",
+            "summary": [
+              "Você confirma cada tag.",
+              "O código monta cada combinação.",
+              "A IA só avalia e explica."
+            ],
+            "items": [
+              {
+                "kicker": "01 · VOCÊ",
+                "title": "Dono dos fatos",
+                "text": "Suas anotações valem mais que o palpite do modelo.",
+                "bullets": [
+                  "As tags podem ser editadas antes de qualquer coisa ser montada",
+                  "Sua descrição prevalece sobre o que o modelo de visão enxerga",
+                  "Arquive uma peça e ela sai de todos os looks"
+                ]
+              },
+              {
+                "kicker": "02 · MOTOR",
+                "title": "Monta as candidatas",
+                "text": "Código puro, sem modelo, sem custo.",
+                "bullets": [
+                  "Formalidade com até três pontos de diferença",
+                  "As estações precisam coincidir",
+                  "Cores que brigam são rejeitadas",
+                  "Um relógio, um cinto, metais combinando"
+                ]
+              },
+              {
+                "kicker": "03 · IA",
+                "title": "Avalia e explica",
+                "text": "Chamadas pequenas em lote, com saída estruturada.",
+                "bullets": [
+                  "Avalia doze candidatas por chamada",
+                  "Mantém só as com 7.0 ou mais",
+                  "Ranqueia as sugestões do dia e escreve duas frases para cada uma"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "who",
+        "kicker": "PARA QUEM É",
+        "nav_label": "Para quem é",
+        "headline": "O que isso significa para você.",
+        "intro": "Feito para um guarda-roupa quiet luxury, e cada estilo que você escolhe muda a forma como os looks são avaliados.",
+        "blocks": [
+          {
+            "type": "roles",
+            "items": [
+              {
+                "role": "Profissional ocupado",
+                "text": "Escolha 'Trabalho' ou 'Ambientes internos / Conferências', toque uma vez e vista a primeira sugestão. Menos de um minuto."
+              },
+              {
+                "role": "Mãe ou pai",
+                "text": "Adicione as crianças, fotografe as roupas delas uma vez e planeje o aniversário ou a foto de família de uma só vez. Nada sobre elas chega à IA, só as roupas."
+              },
+              {
+                "role": "Quem viaja muito",
+                "text": "Digite a cidade para onde você vai voar. A previsão de lá define o look, e o relógio GMT vai junto."
+              },
+              {
+                "role": "Colecionador",
+                "text": "Relógios têm categoria e espaço próprios no look. Cada um é marcado com estilo, pulseira e tom do metal, para os metais combinarem e o relógio social ir ao jantar."
+              },
+              {
+                "role": "Comprador criterioso",
+                "text": "A Loja mostra qual categoria é o gargalo e qual peça específica liberaria mais looks novos."
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "cta": {
+      "kicker": "ANTES DE COMEÇAR",
+      "headline": "Coloque seu guarda-roupa para trabalhar.",
+      "intro": "O guia leva cerca de 15 minutos e vai do primeiro login ao seu primeiro dia com look montado: seu perfil, adicionar peças, a tabela de Looks, Hoje, o Estilista, a Loja e vestir sua família. Marque cada checkpoint ao longo do caminho; seu progresso fica salvo apenas neste navegador.",
+      "button": "Começar o guia"
+    }
+  },
+  "guide": {
+    "title": "Guia do Aether Wardrobe",
+    "tree": [
+      {
+        "section": "welcome",
+        "label": "Comece aqui"
+      },
+      {
+        "section": "signin",
+        "label": "Entre e configure seu perfil"
+      },
+      {
+        "label": "Monte seu guarda-roupa",
+        "children": [
+          {
+            "section": "add-piece",
+            "label": "Adicione uma peça"
+          },
+          {
+            "section": "review-tags",
+            "label": "Revise as tags"
+          },
+          {
+            "section": "accessories",
+            "label": "Relógios e acessórios"
+          }
+        ]
+      },
+      {
+        "section": "outfits",
+        "label": "A tabela de Looks"
+      },
+      {
+        "label": "Hoje",
+        "children": [
+          {
+            "section": "today",
+            "label": "Montar meu dia"
+          },
+          {
+            "section": "occasions",
+            "label": "Escolhendo a ocasião"
+          },
+          {
+            "section": "wear",
+            "label": "Use e mantenha tudo variado"
+          }
+        ]
+      },
+      {
+        "section": "stylist",
+        "label": "Estilista: monte a mala de uma viagem"
+      },
+      {
+        "section": "shop",
+        "label": "Loja: o que comprar em seguida",
+        "optional": true
+      },
+      {
+        "section": "family",
+        "label": "Vestindo sua família",
+        "optional": true
+      }
+    ],
+    "practical_guides": [
+      {
+        "section": "photos",
+        "label": "Fotos que geram boas tags"
+      },
+      {
+        "section": "faq",
+        "label": "Quando algo parece errado"
+      }
+    ],
+    "sections": {
+      "welcome": {
+        "kicker": "COMECE AQUI",
+        "title": "Quinze minutos até o seu primeiro dia com look montado",
+        "intro": "Este guia segue a ordem em que você vai usar o app: entrar, contar sobre você, adicionar algumas peças, deixar a tabela ser montada, pedir o look de hoje e depois adicionar as pessoas que você veste. Marque o checkpoint no fim de cada seção; seu progresso fica salvo apenas neste navegador.",
+        "minutes": 1,
+        "chips": [
+          "Só por convite",
+          "Celular ou computador",
+          "Suas fotos ficam privadas"
+        ],
+        "blocks": [
+          {
+            "type": "glance",
+            "title": "Visão geral",
+            "items": [
+              {
+                "label": "Do que você precisa",
+                "text": "Uma conta Google com acesso liberado e seu celular ou uma pasta de fotos."
+              },
+              {
+                "label": "Guarda-roupa mínimo",
+                "text": "Os looks aparecem quando você confirma pelo menos uma parte de cima, uma parte de baixo e um par de sapatos. Casacos e acessórios são opcionais, mas completam os looks. Com cinco a dez peças já fica interessante."
+              },
+              {
+                "label": "O que roda em segundo plano",
+                "text": "Depois que você confirma uma peça, o motor avalia os looks dela por um ou dois minutos. Um banner mostra o progresso; você pode continuar adicionando."
+              },
+              {
+                "label": "Onde conseguir ajuda",
+                "html": "O <b>guia do usuário</b> no repositório e as <b>notas de versão</b>. No app, toda tela vazia diz o que fazer em seguida."
+              }
+            ]
+          },
+          {
+            "type": "required",
+            "title": "Confirme as tags antes de esperar looks.",
+            "text": "Uma peça que ainda está em 'Revisar tags' não entra em nenhum look. A tabela só usa peças que você confirmou."
+          }
+        ],
+        "checkpoint": "Entendi que os looks são montados apenas com peças cujas tags eu confirmei."
+      },
+      "signin": {
+        "kicker": "ENTRANDO",
+        "title": "Entre e configure seu perfil",
+        "intro": "O acesso é por convite. Quando seu e-mail estiver na lista de autorizados, o login com o Google leva você direto a um assistente de perfil em quatro passos que personaliza todas as sugestões seguintes.",
+        "minutes": 3,
+        "blocks": [
+          {
+            "type": "steps",
+            "items": [
+              {
+                "title": "Abra o app e escolha Continuar com o Google",
+                "text": "Use a conta Google do e-mail que foi convidado. Se você cair em uma página de 'pendente', seu e-mail ainda não está na lista de autorizados; fale com quem convidou você."
+              },
+              {
+                "title": "Passo 1 do assistente: sobre você (opcional)",
+                "text": "Gênero, faixa etária, altura e peso (cm e kg ou ft e lb), tipo de corpo e o caimento que você prefere. Isso orienta os cortes e as proporções que o stylist favorece. O peso nunca é enviado à IA. Pule o passo se preferir."
+              },
+              {
+                "title": "Passo 2: sua coloração (opcional)",
+                "text": "Tom de pele, subtom, cor do cabelo e dos olhos definem sua estação de cores (Primavera, Verão, Outono ou Inverno), com as cores que valorizam você perto do rosto. Hoje e o Estilista dão um pequeno bônus a essas cores nos casos de empate; a Loja as sugere."
+              },
+              {
+                "title": "Passo 3: seu estilo",
+                "text": "Escolha um ou mais estilos (Old Money, Clássico, Smart Casual, Minimalista, Esportivo, Streetwear) e sua formalidade habitual em uma escala de 1 a 10. Eles aparecem em todos os prompts de avaliação."
+              },
+              {
+                "title": "Passo 4: sua cidade",
+                "text": "Comece a digitar e escolha na lista. Ela é usada para o clima sempre que você não informar um destino na aba Hoje."
+              }
+            ]
+          },
+          {
+            "type": "note",
+            "html": "Você pode mudar tudo isso depois em <b>Configurações</b>. Looks já avaliados mantêm suas notas; peças novas são avaliadas com o perfil atualizado."
+          }
+        ],
+        "checkpoint": "Concluí o assistente de perfil e estou vendo a aba Guarda-roupa."
+      },
+      "add-piece": {
+        "kicker": "GUARDA-ROUPA",
+        "title": "Adicione uma peça",
+        "intro": "Uma foto por peça. O app comprime a imagem no seu navegador, guarda de forma privada e envia ao modelo de visão, que preenche as tags para você revisar.",
+        "minutes": 2,
+        "blocks": [
+          {
+            "type": "steps",
+            "items": [
+              {
+                "title": "Toque em Adicionar peça",
+                "text": "Na aba Guarda-roupa. No celular, você pode tirar a foto direto com a câmera; no computador, escolha um arquivo."
+              },
+              {
+                "title": "Escolha a categoria",
+                "text": "Parte de cima, parte de baixo, casaco, sapatos ou acessório. É a única tag que a IA não substitui, então acerte aqui."
+              },
+              {
+                "title": "Descreva o que a foto não mostra",
+                "text": "Opcional, mas vale a pena: 'algodão piquet', 'merino', 'Tudor Black Bay GMT com pulseira de aço'. Suas palavras são tratadas como verdade, principalmente quanto ao material."
+              },
+              {
+                "title": "Envie e aguarde alguns segundos",
+                "text": "A peça é enviada e analisada, e você vai para a página dela para revisar as tags."
+              }
+            ]
+          },
+          {
+            "type": "glance",
+            "title": "O que a IA identifica na foto",
+            "items": [
+              {
+                "label": "Identidade",
+                "text": "Um nome curto, o tipo (polo, chino, mocassim, relógio GMT), a cor principal e seu valor hex."
+              },
+              {
+                "label": "Tecido",
+                "text": "Material e estampa. Difíceis de ver em fotos, por isso sua descrição prevalece."
+              },
+              {
+                "label": "Adequação",
+                "text": "As estações em que funciona, formalidade de 1 a 10 e uma nota old money de 1 a 10."
+              },
+              {
+                "label": "Detalhes de acessórios",
+                "text": "Para relógios: estilo (como tipo), pulseira e tom do metal. Para cintos, óculos de sol e bolsas: tom do metal."
+              }
+            ]
+          }
+        ],
+        "checkpoint": "Adicionei pelo menos uma peça e cheguei à página de revisão das tags."
+      },
+      "review-tags": {
+        "kicker": "GUARDA-ROUPA",
+        "title": "Revise as tags",
+        "intro": "Toda peça entra primeiro em 'Revisar tags'. Corrija o que o modelo errou e confirme. É a confirmação que dispara a geração de looks.",
+        "minutes": 2,
+        "blocks": [
+          {
+            "type": "steps",
+            "items": [
+              {
+                "title": "Confira nome e cor",
+                "text": "A amostra de cor deve corresponder à cor predominante. Em um relógio, é a cor do mostrador."
+              },
+              {
+                "title": "Confira tipo e material",
+                "text": "As opções de tipo dependem da categoria. O material agora inclui aço, ouro, titânio, borracha, nylon e acetato para acessórios."
+              },
+              {
+                "title": "Defina estações, formalidade e nota old money",
+                "text": "Formalidade: 1 é roupa de academia, 5 smart casual, 8 social, 10 black tie. Old money: cortes atemporais, tecidos naturais, cores sóbrias, nada de logos chamativos."
+              },
+              {
+                "title": "Confirmar tags",
+                "text": "O botão no fim da página. Um aviso confirma que a geração de looks começou; o banner do app mostra o progresso."
+              }
+            ]
+          },
+          {
+            "type": "note",
+            "html": "<b>Reanalisar</b> consulta o modelo de visão de novo, útil depois de você adicionar uma descrição. <b>Arquivar</b> tira a peça de todos os looks sem apagar a foto."
+          }
+        ],
+        "checkpoint": "Confirmei as tags de uma peça e vi o banner de geração."
+      },
+      "accessories": {
+        "kicker": "GUARDA-ROUPA",
+        "title": "Relógios e acessórios",
+        "intro": "Relógios têm categoria própria e um espaço próprio em cada look. O tipo de um relógio é o seu estilo, além da pulseira e do tom do metal. Cintos, óculos de sol e bolsas têm um tom de metal que o motor combina com o relógio. O stylist do dia escolhe o relógio certo para o dia.",
+        "minutes": 2,
+        "chips": [
+          "Estilo do relógio",
+          "Pulseira",
+          "Tom do metal"
+        ],
+        "blocks": [
+          {
+            "type": "glance",
+            "title": "As opções extras de um relógio",
+            "items": [
+              {
+                "label": "Estilo do relógio",
+                "text": "A linha Tipo de um relógio: social, esportivo, mergulho, GMT / viagem, cronógrafo, field ou aviador. Relógios GMT e esportivos vão para dias de viagem e atividade; os sociais, para trabalho, jantar e eventos."
+              },
+              {
+                "label": "Pulseira",
+                "text": "Pulseira de metal, de couro, de borracha ou de tecido / NATO."
+              },
+              {
+                "label": "Tom do metal",
+                "text": "Prata (aço), dourado, ouro rosé ou bicolor. O motor prefere uma fivela de cinto que combine com o relógio."
+              },
+              {
+                "label": "Formalidade e old money",
+                "text": "Um relógio social com pulseira de couro tem formalidade 8 a 9 e old money 9 a 10; um esportivo clássico de aço, 6 a 7 e 7 a 8; um bisel colorido ou pulseira de borracha tira um ponto."
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "html": "<b>Exemplo.</b> Um Tudor Black Bay GMT com pulseira de aço recebe as tags <i>Relógio · GMT · aço · pulseira de metal · prata</i>, formalidade 6, old money 7. Um TAG Heuer Carrera de mostrador azul recebe <i>Relógio · esportivo · aço · pulseira de metal · prata</i>, formalidade 7, old money 8. Em um dia de viagem o stylist escolhe o GMT; em um jantar, o Carrera."
+          },
+          {
+            "type": "note",
+            "html": "Um relógio novo entra em todos os looks em que combina; as outras peças novas recebem o relógio seu que melhor se encaixa. Filtre por relógio na aba Looks para ver tudo o que funciona com um deles."
+          }
+        ],
+        "checkpoint": "Marquei um relógio com seu estilo, pulseira e tom do metal."
+      },
+      "outfits": {
+        "kicker": "LOOKS",
+        "title": "A tabela de Looks",
+        "intro": "Todas as combinações com nota 7.0 ou mais: primeiro os looks destacados, depois os mais completos (os cinco espaços preenchidos) e então por nota. Pense nela como a base de onde a aba Hoje tira as sugestões; organizá-la aqui melhora todas as manhãs.",
+        "minutes": 2,
+        "aside": {
+          "kicker": "BOM HÁBITO",
+          "title": "Destaque três, oculte três",
+          "text": "Looks destacados sobem para o topo de todo pedido diário. Os ocultos nunca voltam. Dez minutos de curadoria rendem por semanas."
+        },
+        "blocks": [
+          {
+            "type": "steps",
+            "items": [
+              {
+                "title": "Monte em torno de uma peça",
+                "text": "Os primeiros menus filtram por uma parte de cima, uma parte de baixo, um par de sapatos, um casaco, um relógio ou um acessório. 'Qualquer relógio → Tudor GMT' mostra todos os looks que funcionam com esse relógio."
+              },
+              {
+                "title": "Filtre por ocasião, estação e nota",
+                "text": "Ocasião reordena por uma mistura das notas de trabalho, dia a dia, formalidade e old money. Nota 7+, 8+ ou 9+ define o mínimo."
+              },
+              {
+                "title": "Destaque ou oculte",
+                "text": "A estrela destaca; o olho oculta. Mostrar ocultos revela o que você deixou de lado."
+              },
+              {
+                "title": "Leia a nota do stylist",
+                "text": "Uma frase por look, vinda da avaliação, usada depois para explicar a sugestão na aba Hoje."
+              }
+            ]
+          },
+          {
+            "type": "note",
+            "html": "O selo <b>Em descanso</b> significa que o look foi recomendado ou usado nos últimos sete dias. Ele continua na tabela; só espera a vez dele."
+          }
+        ],
+        "checkpoint": "Consigo filtrar a tabela de Looks por uma peça e já destaquei ou ocultei pelo menos um look."
+      },
+      "today": {
+        "kicker": "HOJE",
+        "title": "Montar meu dia",
+        "intro": "O pedido do dia. Escolha a ocasião e, se quiser, para onde você vai e uma observação sobre seus planos, e toque em Montar meu dia. Uma chamada de IA ranqueia os cinco a sete melhores looks e escolhe os acessórios do dia.",
+        "minutes": 2,
+        "blocks": [
+          {
+            "type": "steps",
+            "items": [
+              {
+                "title": "O que você tem hoje?",
+                "text": "Escolha uma ocasião. Trabalho é o padrão."
+              },
+              {
+                "title": "Onde? (opcional)",
+                "text": "Comece a digitar uma cidade e escolha na lista; a previsão de lá é usada. Deixe em branco e sua cidade é usada."
+              },
+              {
+                "title": "Mais alguma coisa? (opcional)",
+                "text": "Texto livre que o stylist lê: 'reunião com cliente, depois almoço com as crianças', 'conferência o dia todo, caminhada longa depois'."
+              },
+              {
+                "title": "Leia as sugestões",
+                "text": "Cada card mostra as peças, incluindo o relógio e o cinto escolhidos para hoje, uma nota e duas frases explicando por quê. 'Novas sugestões' pede de novo."
+              }
+            ]
+          },
+          {
+            "type": "glance",
+            "title": "O que acontece por trás do botão",
+            "items": [
+              {
+                "label": "Clima",
+                "text": "A previsão de hoje no destino: temperatura, sensação térmica, chance de chuva. Sapatos de camurça e lona saem em dias de chuva."
+              },
+              {
+                "label": "Filtro",
+                "text": "A tabela é filtrada pela faixa de estação e ordenada pela mistura da ocasião, com looks destacados e não usados recentemente primeiro."
+              },
+              {
+                "label": "Ranking",
+                "text": "Uma pequena chamada ao modelo ranqueia de cinco a sete sugestões e escolhe acessórios entre tudo o que você tem."
+              },
+              {
+                "label": "Memória",
+                "text": "O plano fica salvo para o dia e a ocasião, então recarregar não custa nada."
+              }
+            ]
+          }
+        ],
+        "checkpoint": "Pedi o look de hoje e recebi uma lista ranqueada."
+      },
+      "occasions": {
+        "kicker": "HOJE",
+        "title": "Escolhendo a ocasião",
+        "intro": "A ocasião decide como a tabela é ordenada e o que o stylist sabe sobre o dia. Escolha a mais próxima e coloque os detalhes nas observações.",
+        "minutes": 1,
+        "blocks": [
+          {
+            "type": "tabs",
+            "label": "Veja as ocasiões",
+            "items": [
+              {
+                "label": "Trabalho e ambientes internos",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "html": "<b>Trabalho</b> se apoia na nota de trabalho com um toque de formalidade: alinhado, esporte fino ou acima.<br><br><b>Ambientes internos / Conferências</b> é para dias com ar-condicionado. O clima só importa no trajeto, então o stylist favorece camadas fáceis de tirar e conforto para longas horas sentado e em pé."
+                  }
+                ]
+              },
+              {
+                "label": "Refeições e noites",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "html": "<b>Almoço</b> é diurno e descontraído, mas arrumado, com um aceno ao old money.<br><br><b>Jantar</b> é mais elegante e pensado; <b>Sair à noite</b> acrescenta presença e acabamento para a noite."
+                  }
+                ]
+              },
+              {
+                "label": "Na rua",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "html": "<b>Shopping / Compras</b>, <b>Parque / Ao ar livre</b> e <b>Resolver coisas na rua</b> se apoiam na nota de dia a dia: sapatos confortáveis, camadas práticas, clima em primeiro lugar.<br><br><b>Em casa</b> é conforto com um pouco de intenção."
+                  }
+                ]
+              },
+              {
+                "label": "Viagem",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "html": "<b>Viagem</b> equilibra trabalho e dia a dia: confortável no trajeto, apresentável na chegada. Um relógio GMT ou de viagem e camadas fáceis de tirar são escolhas naturais. Digite a cidade de destino para que a previsão seja a do lugar onde você vai chegar."
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "checkpoint": "Sei qual ocasião escolher para um dia de conferência e para um almoço."
+      },
+      "wear": {
+        "kicker": "HOJE",
+        "title": "Use e mantenha tudo variado",
+        "intro": "Contar ao app o que você usou é o único hábito que impede as sugestões de se repetirem.",
+        "minutes": 1,
+        "blocks": [
+          {
+            "type": "steps",
+            "items": [
+              {
+                "title": "Toque em Vou usar este",
+                "text": "No card que você escolheu. Cada peça dele, incluindo o relógio e o cinto do dia, atualiza a contagem de usos e a data do último uso."
+              },
+              {
+                "title": "Deixe descansar",
+                "text": "Esse look é marcado como recomendado e descansa por sete dias. Enquanto isso, outros looks sobem."
+              },
+              {
+                "title": "Peça de novo quando os planos mudarem",
+                "text": "Cada ocasião tem seu próprio plano para o dia. Trocar de Trabalho para Jantar faz um novo pedido; Novas sugestões pede de novo para a mesma ocasião."
+              }
+            ]
+          }
+        ],
+        "checkpoint": "Marquei um look como usado."
+      },
+      "stylist": {
+        "kicker": "ESTILISTA",
+        "title": "Monte a mala de uma viagem em uma conversa",
+        "intro": "A aba Estilista é um chat com seu personal stylist. Diga para onde você vai, por quanto tempo e o que os dias reservam, e ele monta um look por dia e ocasião a partir da sua própria tabela de Looks, escolhidos para que as peças se repitam e a mala fique pequena.",
+        "minutes": 3,
+        "chips": [
+          "Viagens de um dia ou mais",
+          "Looks só da sua tabela",
+          "Ajuste com palavras simples"
+        ],
+        "aside": {
+          "kicker": "BOM HÁBITO",
+          "title": "Planeje no fim de semana anterior",
+          "text": "Peça alguns dias antes de viajar: a previsão cobre mais dias da viagem e ainda dá tempo de adicionar uma peça que falta."
+        },
+        "blocks": [
+          {
+            "type": "steps",
+            "items": [
+              {
+                "title": "Diga onde e quando",
+                "text": "Uma cidade (com o país, se o nome for ambíguo) e as datas, ou 'este fim de semana', 'de quinta a domingo'."
+              },
+              {
+                "title": "Descreva os dias",
+                "text": "'Trabalho na quinta e na sexta, jantar na sexta, passeio no sábado.' É planejado um look para cada ocasião que você mencionar. Inclua restrições na mesma frase: só bagagem de mão, um par de sapatos, sem blazer."
+              },
+              {
+                "title": "Leia o resumo",
+                "text": "Um card mostra a previsão de cada dia, os looks de cada dia como amostras de cor que levam às peças e uma lista de bagagem com quantas vezes cada peça é usada. Copiar lista coloca uma versão com caixas de seleção na área de transferência."
+              },
+              {
+                "title": "Cite suas peças",
+                "text": "'Use o blazer azul-marinho na sexta', 'quero levar o GMT'. As peças citadas entram onde a tabela permitir, e o card avisa quando uma não pode ser usada."
+              },
+              {
+                "title": "Ajuste, ou peça um único look",
+                "text": "'Faça com um par de sapatos só', 'adicione um jantar no sábado'. Para uma única ocasião, 'o que combina com meu blazer para o jantar de sexta?' traz os melhores looks da tabela em torno dele, com os motivos do stylist."
+              }
+            ]
+          },
+          {
+            "type": "glance",
+            "title": "Como o plano é feito",
+            "items": [
+              {
+                "label": "Previsão",
+                "text": "Consultada dia a dia no destino. Cinco dias à frente; dias mais distantes usam uma temperatura estimada, e o card avisa."
+              },
+              {
+                "label": "Filtro",
+                "text": "Cada dia e ocasião é filtrado por faixa de estação, chuva e mistura da ocasião, exatamente como em Hoje."
+              },
+              {
+                "label": "Mala",
+                "text": "Um planejador determinístico prefere looks que compartilham peças e evita o mesmo look dois dias seguidos. O modelo só explica."
+              },
+              {
+                "label": "Transparente",
+                "text": "Um dia sem look adequado é sinalizado e indica a Loja. Um limite de sapatos flexibilizado aparece nas ressalvas."
+              }
+            ]
+          }
+        ],
+        "checkpoint": "Pedi ao stylist um plano de viagem e li o card de resumo."
+      },
+      "shop": {
+        "kicker": "LOJA",
+        "title": "O que comprar em seguida",
+        "intro": "Em vez de conselhos genéricos de compras, o app analisa o seu guarda-roupa real: para cada categoria, conta quantos looks novos uma boa peça neutra liberaria e depois sugere itens específicos que combinam com o que você já tem.",
+        "minutes": 2,
+        "blocks": [
+          {
+            "type": "steps",
+            "items": [
+              {
+                "title": "Marque as categorias que você quer comprar",
+                "text": "Uma ou várias. A categoria gargalo é aquela em que uma única peça nova libera mais looks."
+              },
+              {
+                "title": "Leia as sugestões",
+                "text": "Cada uma cita uma peça concreta ('Blazer azul-marinho de hopsack'), como ela é e com quais peças suas combinaria."
+              },
+              {
+                "title": "Salve, descarte ou marque como comprada",
+                "text": "Itens comprados são um lembrete para fotografar e adicionar a peça real; a sugestão em si nunca entra em um look."
+              }
+            ]
+          },
+          {
+            "type": "note",
+            "html": "A Loja precisa de pelo menos três peças confirmadas para ter uma base."
+          }
+        ],
+        "checkpoint": "Fiz uma análise de compras para pelo menos uma categoria."
+      },
+      "photos": {
+        "kicker": "GUIA PRÁTICO",
+        "title": "Fotos que geram boas tags",
+        "intro": "O modelo de visão é bom, mas uma foto limpa e uma linha de descrição acertam as tags logo na primeira vez.",
+        "minutes": 1,
+        "blocks": [
+          {
+            "type": "principles",
+            "items": [
+              {
+                "title": "Uma peça, esticada, ocupando o quadro",
+                "text": "Na cama, no chão ou no cabide, com luz natural. Sem pessoas nem outras roupas na foto."
+              },
+              {
+                "title": "Cor real acima de luz bonita",
+                "text": "Luz amarelada transforma azul-marinho em preto. Fotografe perto de uma janela."
+              },
+              {
+                "title": "Diga o que a câmera não vê",
+                "text": "Material (piquet, merino, camurça), marca e modelo dos relógios e qualquer detalhe incomum do corte."
+              },
+              {
+                "title": "Relógios: mostrador para cima, pulseira esticada",
+                "text": "Desse ângulo, o modelo lê o bisel, a cor do mostrador e o tipo de pulseira."
+              }
+            ]
+          }
+        ],
+        "checkpoint": "Sei o que escrever na descrição de um relógio ou de uma malha."
+      },
+      "faq": {
+        "kicker": "GUIA PRÁTICO",
+        "title": "Quando algo parece errado",
+        "intro": "As dúvidas mais comuns e o que fazer.",
+        "minutes": 2,
+        "blocks": [
+          {
+            "type": "tabs",
+            "label": "Escolha um sintoma",
+            "items": [
+              {
+                "label": "Ainda sem looks",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "html": "Você precisa de pelo menos uma parte de cima, uma parte de baixo e um par de sapatos confirmados. O banner de prontidão na aba Hoje lista o que falta. Se as peças estão confirmadas mas a tabela está vazia, a geração pode ter sido interrompida: use <b>Montar looks</b> na aba Guarda-roupa; ele preenche só o que falta."
+                  }
+                ]
+              },
+              {
+                "label": "Nada serve hoje",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "html": "A tabela não tinha nada para esta estação e ocasião com nota 6.5 ou mais. Tente outra ocasião, afrouxe o filtro de Nota na aba Looks para ver o que chega perto, ou deixe a aba Loja dizer qual peça liberaria mais."
+                  }
+                ]
+              },
+              {
+                "label": "Tags erradas",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "html": "Abra a peça, corrija as opções e toque em <b>Salvar alterações</b>. Os looks dela são refeitos. Para um material ou estilo de relógio teimoso, adicione uma descrição e toque em <b>Reanalisar</b>."
+                  }
+                ]
+              },
+              {
+                "label": "Parece lento",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "html": "Confirmar uma peça avalia até 120 looks candidatos em lotes, o que pode levar um ou dois minutos em um guarda-roupa grande; o banner mostra o progresso e você pode continuar usando o app. O pedido de Hoje espera o serviço de clima e uma chamada ao modelo, normalmente alguns segundos."
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "checkpoint": "Sei onde ficam o banner de prontidão e o Montar looks."
+      },
+      "family": {
+        "kicker": "FAMÍLIA",
+        "title": "Vestindo sua família",
+        "intro": "Adicione seus filhos, ou um adulto sem e-mail, na sua conta. Cada pessoa tem o próprio guarda-roupa e os próprios looks, e a página Família veste todos juntos para a mesma ocasião.",
+        "minutes": 3,
+        "blocks": [
+          {
+            "type": "steps",
+            "items": [
+              {
+                "title": "Adicione uma pessoa",
+                "text": "Configurações → Pessoas que você veste → Adicionar pessoa: um nome ou apelido, a idade, os estilos e o quanto ela gosta de se arrumar. Para menores de 18 anos, você confirma que é a mãe, o pai ou o responsável legal."
+              },
+              {
+                "title": "Troque quem você está vestindo",
+                "text": "'Vestindo: …' abaixo do logo (ou a barra no topo, no celular). Guarda-roupa, Looks, Hoje, Estilista e Loja acompanham sua escolha; adicione as peças da pessoa como de costume."
+              },
+              {
+                "title": "Planeje um look da família",
+                "text": "Em Família, marque quem vai, escolha a ocasião (Celebração cobre aniversários, casamentos e fotos de família), o dia, o lugar e como vocês querem ficar juntos. Você recebe até três looks, uma roupa para cada pessoa, tirada dos próprios guarda-roupas."
+              },
+              {
+                "title": "Use",
+                "text": "'Usar este' abaixo de cada pessoa coloca o look dela em primeiro lugar no plano daquele dia; para hoje, também conta como usado."
+              }
+            ]
+          },
+          {
+            "type": "note",
+            "html": "As crianças nunca fazem login. Nada sobre uma criança é enviado à IA além das descrições das roupas: o stylist só a conhece como 'Criança A', e o app coloca o nome dela de volta na tela."
+          }
+        ],
+        "checkpoint": "Adicionei uma pessoa e planejei um look da família."
+      }
+    }
+  }
+}

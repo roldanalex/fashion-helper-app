@@ -1,7 +1,9 @@
 "use server";
 
+import { validationMessage } from "@/i18n/validation-server";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { geocode } from "@/lib/weather";
 import { STYLE_PREFERENCES } from "@/lib/constants";
@@ -13,21 +15,23 @@ const settingsSchema = z.object({
     .array(z.enum(STYLE_PREFERENCES.map((s) => s.value) as [string, ...string[]]))
     .min(1),
   preferred_formality: z.number().int().min(1).max(10),
-  home_location: z.string().trim().min(2, "Enter your home city"),
+  home_location: z.string().trim().min(2),
   lifestyle_tags: z.array(z.string().max(40)).max(12).optional(),
 });
 
 export async function updateSettings(input: unknown) {
+  const t = await getTranslations("settings.errors");
   const parsed = settingsSchema.safeParse(input);
   if (!parsed.success) {
-    return { error: parsed.error.issues[0]?.message ?? "Invalid settings" };
+    const issue = parsed.error.issues[0];
+    return { error: issue?.path[0] === "home_location" ? t("homeCity") : t("invalidSettings") };
   }
 
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return { error: "Not signed in" };
+  if (!user) return { error: t("notSignedIn") };
 
   let home_lat: number | null = null;
   let home_lon: number | null = null;
@@ -49,7 +53,7 @@ export async function updateSettings(input: unknown) {
     .from("profiles")
     .update({ ...parsed.data, home_location, home_lat, home_lon })
     .eq("id", user.id);
-  if (error) return { error: "Could not save settings." };
+  if (error) return { error: t("couldNotSaveSettings") };
 
   revalidatePath("/settings");
   return { ok: true };
@@ -59,20 +63,21 @@ const unitsSchema = z.enum(["metric", "imperial"]);
 
 /** Temperature unit, saved the moment the user picks it (Settings or the Today weather chip). */
 export async function updateUnits(input: unknown) {
+  const t = await getTranslations("settings.errors");
   const parsed = unitsSchema.safeParse(input);
-  if (!parsed.success) return { error: "Choose Celsius or Fahrenheit." };
+  if (!parsed.success) return { error: t("chooseTempUnit") };
 
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return { error: "Not signed in" };
+  if (!user) return { error: t("notSignedIn") };
 
   const { error } = await supabase
     .from("profiles")
     .update({ units: parsed.data })
     .eq("id", user.id);
-  if (error) return { error: "Could not save the temperature unit." };
+  if (error) return { error: t("couldNotSaveTempUnit") };
 
   revalidatePath("/", "layout");
   return { ok: true };
@@ -84,16 +89,17 @@ export async function updateUnits(input: unknown) {
  * these shape ranking and the stylist's choices, not the stored table.
  */
 export async function updatePersonal(input: unknown) {
+  const t = await getTranslations("settings.errors");
   const parsed = personalSchema.safeParse(input);
   if (!parsed.success) {
-    return { error: parsed.error.issues[0]?.message ?? "Check your details" };
+    return { error: await validationMessage(parsed.error.issues[0]?.message, t("checkDetails")) };
   }
 
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return { error: "Not signed in" };
+  if (!user) return { error: t("notSignedIn") };
 
   const d = parsed.data;
   const row = {
@@ -115,7 +121,7 @@ export async function updatePersonal(input: unknown) {
   if (error) {
     // Most likely cause: migration 0010 has not been run yet.
     console.error("updatePersonal failed:", error.message);
-    return { error: "Could not save your details. Please try again." };
+    return { error: t("couldNotSaveDetails") };
   }
 
   revalidatePath("/settings");
@@ -137,4 +143,31 @@ export async function clearPersonal() {
     fit_preference: null,
     style_notes: null,
   });
+}
+
+const measuresSchema = z.object({ weight: z.enum(["kg", "lb"]), height: z.enum(["cm", "ftin"]) });
+
+/** Weight and height units, saved the moment the user picks them. */
+export async function updateMeasureUnits(input: unknown) {
+  const t = await getTranslations("settings.errors");
+  const parsed = measuresSchema.safeParse(input);
+  if (!parsed.success) return { error: t("chooseMeasureUnits") };
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { error: t("notSignedIn") };
+
+  const { error } = await supabase
+    .from("profiles")
+    .update({ weight_unit: parsed.data.weight, height_unit: parsed.data.height })
+    .eq("id", user.id);
+  if (error) {
+    console.error("updateMeasureUnits failed (has migration 0013 been run?):", error.message);
+    return { error: t("couldNotSaveUnits") };
+  }
+
+  revalidatePath("/", "layout");
+  return { ok: true };
 }

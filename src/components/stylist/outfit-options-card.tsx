@@ -2,14 +2,13 @@
 
 import Link from "next/link";
 import { CloudRain, CloudSun, Snowflake, Sun } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Badge } from "@/components/ui/badge";
-import { formatTripDate } from "@/lib/trips/dates";
+import { useTripDate } from "@/components/stylist/trip-plan-card";
 import { formatTemp } from "@/lib/units";
 import { useUnits } from "@/components/shared/units-provider";
-import { OCCASIONS } from "@/lib/constants";
+import { useTaxonomy } from "@/i18n/taxonomy";
 import type { OutfitOptions, TripItemSummary } from "@/lib/trips/schema";
-
-const OCCASION_LABEL = new Map<string, string>(OCCASIONS.map((o) => [o.value, o.label]));
 
 function Swatch({ item }: { item: TripItemSummary }) {
   return (
@@ -24,6 +23,9 @@ function Swatch({ item }: { item: TripItemSummary }) {
 export function OutfitOptionsCard({ options }: { options: OutfitOptions }) {
   const w = options.weather;
   const { units } = useUnits();
+  const t = useTranslations("stylist");
+  const tx = useTaxonomy();
+  const formatTripDate = useTripDate();
   const Icon =
     w.tempC == null ? null : (w.precipProb ?? 0) > 40 ? CloudRain : w.tempC < 8 ? Snowflake : w.tempC >= 23 ? Sun : CloudSun;
   const builtAround = options.built_around
@@ -31,11 +33,11 @@ export function OutfitOptionsCard({ options }: { options: OutfitOptions }) {
     .filter((it): it is TripItemSummary => !!it);
 
   return (
-    <section className="overflow-hidden rounded-xl border bg-card" aria-label="Outfit options">
+    <section className="overflow-hidden rounded-xl border bg-card" aria-label={t("options.ariaLabel")}>
       <header className="border-b px-5 pb-4 pt-5">
         <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
           <h3 className="font-serif text-2xl leading-tight">
-            {OCCASION_LABEL.get(options.occasion) ?? options.occasion}
+            {tx("occasion", options.occasion)}
           </h3>
           {(w.date || w.location_name) && (
             <p className="text-sm text-muted-foreground">
@@ -51,12 +53,12 @@ export function OutfitOptionsCard({ options }: { options: OutfitOptions }) {
               <span className="inline-flex items-center gap-1.5">
                 <Icon className="size-4 text-primary" aria-hidden />
                 {formatTemp(w.tempC, units)}
-                {w.precipProb != null && <>, {w.precipProb}% rain</>}
+                {w.precipProb != null && <>, {t("weather.rain", { precip: w.precipProb })}</>}
               </span>
             )}
             {builtAround.length > 0 && (
               <span className="inline-flex flex-wrap items-center gap-x-2 gap-y-1">
-                Built around
+                {t("options.builtAround")}
                 {builtAround.map((it) => (
                   <Link
                     key={it.id}
@@ -75,9 +77,9 @@ export function OutfitOptionsCard({ options }: { options: OutfitOptions }) {
 
       {options.outfits.length === 0 ? (
         <p className="px-5 py-4 text-sm text-muted-foreground">
-          Nothing in your table matches this yet.{" "}
+          {t("options.nothingMatches")}{" "}
           <Link href="/shop" className="text-primary underline-offset-4 hover:underline">
-            See what would
+            {t("cards.seeWhatWould")}
           </Link>
         </p>
       ) : (
@@ -91,13 +93,13 @@ export function OutfitOptionsCard({ options }: { options: OutfitOptions }) {
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="font-serif text-xl text-primary">№{i + 1}</span>
                   <Badge variant="secondary">{o.overall_score.toFixed(1)} / 10</Badge>
-                  {o.boosted && <Badge className="bg-primary/15 text-primary">Boosted</Badge>}
+                  {o.boosted && <Badge className="bg-primary/15 text-primary">{t("options.boosted")}</Badge>}
                   {o.old_money_score != null && o.old_money_score >= 8 && (
-                    <Badge className="bg-primary/15 text-primary">Old money</Badge>
+                    <Badge className="bg-primary/15 text-primary">{t("cards.oldMoney")}</Badge>
                   )}
                   {o.fit === "relaxed" && (
                     <span className="rounded-full border border-dashed px-2 py-0.5 text-xs text-muted-foreground">
-                      loose fit
+                      {t("cards.looseFit")}
                     </span>
                   )}
                 </div>

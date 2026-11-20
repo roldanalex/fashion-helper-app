@@ -1,64 +1,50 @@
 import Link from "next/link";
+import { AetherLogo } from "@/components/shared/aether-logo";
 import { Camera, CloudSun, Shirt, Sparkles } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 import { GoogleSignIn } from "@/components/shared/google-sign-in";
 import { HeroVisual } from "@/components/three/HeroSection";
 import { TiltCard } from "@/components/shared/tilt-card";
+import { LanguagePicker } from "@/components/shared/language-picker";
 import { APP_CREDIT, APP_VERSION } from "@/lib/constants";
 
 const features = [
-  {
-    icon: Camera,
-    title: "Photograph your wardrobe",
-    body: "Snap each piece once. The AI reads the cut, color, pattern and material — pique, knit, wool — and files it perfectly.",
-  },
-  {
-    icon: Sparkles,
-    title: "Curated combinations",
-    body: "Every new item is scored against everything you own. Only combinations worth wearing make the table.",
-  },
-  {
-    icon: CloudSun,
-    title: "Dressed for the day",
-    body: "Tell it where you're going — work, dinner, the park. It checks the weather there and picks what suits the occasion, and the colours that flatter you.",
-  },
-  {
-    icon: Shirt,
-    title: "Grow with intention",
-    body: "See exactly which purchase unlocks the most new outfits before you buy it. No more orphan pieces.",
-  },
-];
+  { icon: Camera, key: "photograph" },
+  { icon: Sparkles, key: "curated" },
+  { icon: CloudSun, key: "dressed" },
+  { icon: Shirt, key: "grow" },
+] as const;
 
-export default function LandingPage() {
+export default async function LandingPage() {
+  const t = await getTranslations("landing");
   return (
     <main className="relative flex min-h-dvh flex-col">
       <HeroVisual />
 
       <header className="relative z-10 flex items-center justify-between px-6 pb-5 pt-[max(1.25rem,env(safe-area-inset-top))] md:px-12">
-        <span className="font-serif text-xl tracking-wide">
-          Aether <span className="text-primary">Wardrobe</span>
-        </span>
+        <AetherLogo className="h-10 md:h-12" />
         <div className="flex items-center gap-2 sm:gap-4">
           <Link
             href="/welcome"
             className="hidden min-h-11 items-center px-2 text-sm text-muted-foreground transition-colors hover:text-foreground sm:inline-flex"
           >
-            How it works
+            {t("howItWorks")}
           </Link>
-          <GoogleSignIn variant="outline" label="Sign in" />
+          <LanguagePicker className="h-9 w-auto text-sm" />
+          <GoogleSignIn variant="outline" label={t("signIn")} />
         </div>
       </header>
 
       <section className="relative z-10 flex flex-1 flex-col justify-center px-6 py-16 md:px-12">
         <div className="max-w-xl">
           <p className="mb-4 text-sm font-medium uppercase tracking-[0.25em] text-primary">
-            Your personal AI stylist
+            {t("eyebrow")}
           </p>
           <h1 className="text-balance text-5xl leading-[1.05] md:text-7xl">
-            Dress impeccably, every single day.
+            {t("headline")}
           </h1>
           <p className="mt-6 max-w-md text-pretty text-lg text-muted-foreground">
-            Aether Wardrobe studies your clothes, your plans and the weather —
-            then lays out the outfit. Quiet luxury, zero guesswork.
+            {t("lede")}
           </p>
           <div className="mt-10 flex flex-wrap items-center gap-4">
             <GoogleSignIn />
@@ -66,7 +52,7 @@ export default function LandingPage() {
               href="/welcome"
               className="inline-flex min-h-11 items-center text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
             >
-              See how it works
+              {t("seeHowItWorks")}
             </Link>
           </div>
         </div>
@@ -74,15 +60,15 @@ export default function LandingPage() {
 
       <section className="relative z-10 px-6 pb-20 md:px-12">
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {features.map(({ icon: Icon, title, body }) => (
+          {features.map(({ icon: Icon, key }) => (
             <TiltCard
-              key={title}
+              key={key}
               className="rounded-xl border bg-card/80 p-6 backdrop-blur transition-colors duration-200 hover:bg-accent/60"
             >
               <Icon className="size-5 text-primary" aria-hidden />
-              <h3 className="mt-4 font-serif text-xl">{title}</h3>
+              <h3 className="mt-4 font-serif text-xl">{t(`features.${key}.title`)}</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                {body}
+                {t(`features.${key}.body`)}
               </p>
             </TiltCard>
           ))}
@@ -90,7 +76,7 @@ export default function LandingPage() {
       </section>
 
       <footer className="relative z-10 border-t px-6 py-6 text-center text-xs text-muted-foreground md:px-12">
-        <p>Aether Wardrobe — woven with care.</p>
+        <p>{t("footer")}</p>
         <p className="mt-1">
           v{APP_VERSION} · {APP_CREDIT}
         </p>

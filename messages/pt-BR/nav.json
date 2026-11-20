@@ -1,0 +1,49 @@
+{
+  "today": "Hoje",
+  "stylist": "Estilista",
+  "wardrobe": "Guarda-roupa",
+  "outfits": "Looks",
+  "family": "Família",
+  "shop": "Loja",
+  "settings": "Configurações",
+  "admin": "Admin",
+  "more": "Mais",
+  "howItWorks": "Como funciona",
+  "welcome": "Boas-vindas",
+  "awaitingInvitation": "Aguardando convite",
+  "mainLabel": "Principal",
+  "moreDescription": "Loja, configurações e ajuda",
+  "people": {
+    "listLabel": "Pessoas",
+    "you": "(você)",
+    "dressing": "Vestindo",
+    "addPerson": "Adicionar pessoa",
+    "sheetTitle": "Quem vamos vestir?",
+    "sheetDescription": "Guarda-roupa, Looks, Hoje, Estilista e Loja seguem a sua escolha."
+  },
+  "generation": {
+    "woven": "{count, plural, one {# novo look entrou na sua tabela} other {# novos looks entraram na sua tabela}}",
+    "failed": "Alguns looks não puderam ser montados — abra o Guarda-roupa e toque em \"Montar looks\" para tentar de novo",
+    "buildingFor": "Montando looks para {names}…",
+    "and": " e ",
+    "styling": "O Aether está estilizando seu guarda-roupa — tecendo combinações de looks…"
+  },
+  "error": {
+    "title": "Um fio solto",
+    "body": "Esta página não carregou. Seu guarda-roupa e seus looks estão seguros. Tente de novo e, se continuar acontecendo, saia e entre novamente.",
+    "reference": "Referência: {digest}"
+  },
+  "notFound": {
+    "title": "Não está no guarda-roupa",
+    "body": "Esta página não existe, ou a peça que ela mostrava foi removida.",
+    "goToToday": "Ir para Hoje"
+  },
+  "setupNeeded": {
+    "title": "Falta uma atualização do banco de dados",
+    "body": "O Aether 1.5.0 guarda os guarda-roupas por pessoa. Quem administra o app precisa rodar a migração <code>0011_people.sql</code> no SQL Editor do Supabase. Nada foi perdido."
+  },
+  "pending": {
+    "title": "Aguardando seu convite",
+    "body": "Você entrou como <b>{email}</b>, mas esta conta ainda não recebeu acesso. O Aether Wardrobe é só para convidados — peça ao responsável que aprove seu e-mail e depois atualize esta página."
+  }
+}

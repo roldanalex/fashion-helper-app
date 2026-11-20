@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import Link from "next/link";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 import {
   Check,
   CloudRain,
@@ -12,6 +13,7 @@ import {
   RefreshCw,
   Snowflake,
   Sun,
+  Users,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -24,7 +26,8 @@ import { ReadinessBanner } from "@/components/wardrobe/readiness-banner";
 import { UnitSwitch } from "@/components/shared/unit-switch";
 import { useUnits } from "@/components/shared/units-provider";
 import { formatTemp } from "@/lib/units";
-import { OCCASIONS } from "@/lib/constants";
+import { useTaxonomy } from "@/i18n/taxonomy";
+import { occasionsFor } from "@/lib/constants";
 import { markWorn } from "@/app/(app)/today/actions";
 import type { WardrobeReadiness } from "@/lib/combinations/readiness";
 import type { DailyPlan, WeatherSnapshot } from "@/types/database";
@@ -40,6 +43,7 @@ interface RecommendationResponse {
 
 function WeatherChip({ weather }: { weather: WeatherSnapshot }) {
   const { units, setUnits } = useUnits();
+  const t = useTranslations("today");
   const Icon =
     weather.precipProb > 40
       ? CloudRain
@@ -53,8 +57,12 @@ function WeatherChip({ weather }: { weather: WeatherSnapshot }) {
       <span className="inline-flex items-center gap-2">
         <Icon className="size-4 text-primary" aria-hidden />
         <span>
-          {weather.locationName}: {formatTemp(weather.tempC, units)},{" "}
-          {weather.condition.toLowerCase()}, {weather.precipProb}% rain
+          {t("weather.summary", {
+            location: weather.locationName,
+            temp: formatTemp(weather.tempC, units),
+            condition: (weather.label ?? weather.condition).toLowerCase(),
+            precip: weather.precipProb,
+          })}
         </span>
       </span>
       <UnitSwitch value={units} onChange={setUnits} size="compact" />
@@ -63,13 +71,24 @@ function WeatherChip({ weather }: { weather: WeatherSnapshot }) {
 }
 
 export function TodayClient({
+  personId,
+  isMinor,
+  familySize,
   hasCombinations,
   readiness,
 }: {
+  /** The Active person. */
+  personId: string;
+  isMinor: boolean;
+  /** How many People this Account dresses; 2+ shows the Family look card. */
+  familySize: number;
   hasCombinations: boolean;
   readiness: WardrobeReadiness;
 }) {
-  const [occasion, setOccasion] = useState<string>("work");
+  const t = useTranslations("today");
+  const tx = useTaxonomy();
+  const occasions = occasionsFor(isMinor);
+  const [occasion, setOccasion] = useState<string>(isMinor ? "school" : "work");
   const [destination, setDestination] = useState("");
   const [destCoords, setDestCoords] = useState<{ lat: number; lon: number } | null>(
     null,
@@ -85,6 +104,7 @@ export function TodayClient({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          personId,
           occasion,
           destination,
           notes,
@@ -94,7 +114,7 @@ export function TodayClient({
         }),
       });
       const json: RecommendationResponse = await res.json();
-      if (!res.ok) throw new Error(json.error?.message ?? "Something went wrong");
+      if (!res.ok) throw new Error(json.error?.message ?? t("errors.generic"));
       return json;
     },
     onSuccess: (data) => {
@@ -112,13 +132,13 @@ export function TodayClient({
 
   async function wear(combinationId: string) {
     if (!result?.plan) return;
-    const res = await markWorn(result.plan.id, combinationId);
+    const res = await markWorn(result.plan.id, combinationId, personId);
     if (res?.error) {
       toast.error(res.error);
       return;
     }
     setWornId(combinationId);
-    toast.success("Noted — wear it well");
+    toast.success(t("worn.toast"));
   }
 
   if (!hasCombinations) {
@@ -126,14 +146,14 @@ export function TodayClient({
       <div className="space-y-6">
         <div className="flex flex-col items-center rounded-xl border border-dashed py-12 text-center">
           <CloudSun className="size-8 text-muted-foreground" aria-hidden />
-          <h2 className="mt-4 font-serif text-2xl">No outfits yet</h2>
+          <h2 className="mt-4 font-serif text-2xl">{t("empty.title")}</h2>
           <p className="mt-2 max-w-sm text-sm text-muted-foreground">
             {readiness.ready
-              ? "Your pieces are in — the stylist just needs to weave them into outfits."
-              : "The stylist builds outfits automatically once your wardrobe has the essentials below."}
+              ? t("empty.ready")
+              : t("empty.notReady")}
           </p>
           <Button asChild className="mt-6" variant="outline">
-            <Link href="/wardrobe">Go to wardrobe</Link>
+            <Link href="/wardrobe">{t("empty.goToWardrobe")}</Link>
           </Button>
         </div>
         <ReadinessBanner readiness={readiness} />
@@ -143,20 +163,32 @@ export function TodayClient({
 
   return (
     <div className="space-y-8">
+      {familySize > 1 && (
+        <Link
+          href="/family"
+          className="flex min-h-12 items-center gap-3 rounded-xl border border-primary/30 bg-primary/5 px-4 py-3 text-sm transition-colors hover:bg-primary/10"
+        >
+          <Users className="size-5 text-primary" aria-hidden />
+          <span className="flex-1">
+            <span className="font-medium text-foreground">{t("family.title")}</span>{" "}
+            <span className="text-muted-foreground">{t("family.body")}</span>
+          </span>
+        </Link>
+      )}
       <section className="rounded-xl border bg-card p-6">
         <ChipGroup
-          label="What does today hold?"
-          options={OCCASIONS.map((o) => ({ value: o.value, label: o.label }))}
+          label={t("form.occasionLabel")}
+          options={occasions.map((o) => ({ value: o.value, label: tx("occasion", o.value) }))}
           value={occasion}
           onChange={(v) => setOccasion(v as string)}
         />
 
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
           <div className="space-y-2">
-            <Label htmlFor="destination">Where? (optional)</Label>
+            <Label htmlFor="destination">{t("form.whereLabel")}</Label>
             <LocationAutocomplete
               id="destination"
-              placeholder="Home, or start typing a city"
+              placeholder={t("form.wherePlaceholder")}
               value={destination}
               onChange={(text) => {
                 setDestination(text);
@@ -169,12 +201,16 @@ export function TodayClient({
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="notes">Anything else? (optional)</Label>
+            <Label htmlFor="notes">{t("form.notesLabel")}</Label>
             <Textarea
               id="notes"
               className="min-h-9 pointer-coarse:min-h-11"
               rows={1}
-              placeholder="e.g. client meeting, then lunch with the kids"
+              placeholder={
+                isMinor
+                  ? t("form.notesPlaceholderMinor")
+                  : t("form.notesPlaceholder")
+              }
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
             />
@@ -192,10 +228,10 @@ export function TodayClient({
           {mutation.isPending ? (
             <>
               <Loader2 className="size-4 animate-spin" aria-hidden />
-              Checking the weather…
+              {t("form.submitting")}
             </>
           ) : (
-            "Style my day"
+            t("form.submit")
           )}
         </Button>
         </div>
@@ -221,18 +257,18 @@ export function TodayClient({
 
       <p className="sr-only" aria-live="polite">
         {mutation.isPending
-          ? "Checking the weather and choosing outfits."
+          ? t("live.pending")
           : result
             ? result.outfits.length
-              ? `${result.outfits.length} outfits ready.`
-              : "No outfit in your table fits this day."
+              ? t("live.ready", { count: result.outfits.length })
+              : t("live.none")
             : ""}
       </p>
 
       {result && (
         <section className="scroll-mt-4 space-y-4" aria-labelledby="picks-heading" aria-busy={mutation.isPending}>
           <h2 id="picks-heading" ref={resultsHeadingRef} tabIndex={-1} className="text-2xl outline-none">
-            Today&apos;s picks
+            {t("results.heading")}
           </h2>
           <div className="flex flex-wrap items-center justify-between gap-3">
             {result.weather && <WeatherChip weather={result.weather} />}
@@ -243,19 +279,20 @@ export function TodayClient({
               onClick={() => mutation.mutate(true)}
               disabled={mutation.isPending}
             >
-              <RefreshCw className="size-4" aria-hidden /> Fresh suggestions
+              <RefreshCw className="size-4" aria-hidden /> {t("results.fresh")}
             </Button>
           </div>
 
           {result.outfits.length === 0 ? (
             <div className="rounded-xl border border-dashed p-10 text-center">
               <p className="text-sm text-muted-foreground">
-                Nothing in your table quite fits this day and weather. A few
-                new pieces would open things up —
-                <Link href="/shop" className="ml-1 text-primary underline-offset-4 hover:underline">
-                  see what to buy next
-                </Link>
-                .
+                {t.rich("results.none", {
+                  link: (chunks) => (
+                    <Link href="/shop" className="ml-1 text-primary underline-offset-4 hover:underline">
+                      {chunks}
+                    </Link>
+                  ),
+                })}
               </p>
             </div>
           ) : (
@@ -267,7 +304,7 @@ export function TodayClient({
                   action={
                     wornId === outfit.combination.id ? (
                       <span className="inline-flex items-center gap-1.5 text-sm text-primary">
-                        <Check className="size-4" aria-hidden /> Wearing it
+                        <Check className="size-4" aria-hidden /> {t("worn.wearing")}
                       </span>
                     ) : (
                       <Button
@@ -276,7 +313,7 @@ export function TodayClient({
                         onClick={() => wear(outfit.combination.id)}
                         disabled={!!wornId}
                       >
-                        I&apos;ll wear this
+                        {t("worn.wearThis")}
                       </Button>
                     )
                   }

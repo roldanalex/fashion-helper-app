@@ -1,0 +1,68 @@
+{
+  "meta": {
+    "title": "Outfits"
+  },
+  "page": {
+    "title": "Outfits",
+    "titleFor": "{name}'s outfits",
+    "subtitle": "{count, plural, one {# combination} other {# combinations}} worth wearing",
+    "noMatchTitle": "No outfits match these filters",
+    "noMatchBody": "Remove a filter or lower the score to see more of your table.",
+    "emptyTitle": "No combinations yet",
+    "emptyBody": "Confirm at least a top, a bottom and a pair of shoes in your wardrobe, and outfits build themselves.",
+    "goToWardrobe": "Go to wardrobe",
+    "showing": "Showing {shown} of {total}",
+    "showMore": "Show more outfits"
+  },
+  "card": {
+    "unhidden": "Outfit back in your table",
+    "hidden": "Outfit hidden",
+    "hiddenDescription": "It will not be recommended. Show hidden outfits to find it again.",
+    "undo": "Undo",
+    "boosted": "Boosted",
+    "hiddenBadge": "Hidden",
+    "resting": "Resting",
+    "removeBoost": "Remove boost",
+    "boost": "Boost combination",
+    "unhide": "Unhide combination",
+    "hide": "Hide combination"
+  },
+  "filters": {
+    "slot": {
+      "top": "top",
+      "bottom": "bottom",
+      "shoes": "pair of shoes",
+      "outerwear": "outerwear",
+      "watch": "watch",
+      "accessory": "accessory"
+    },
+    "filterBy": "Filter by {label}",
+    "any": "Any {label}",
+    "scoreMin": "Score {min}+",
+    "includingHidden": "Including hidden",
+    "buildAround": "Build around a piece",
+    "occasionSeasonScore": "Occasion, season and score",
+    "filterByOccasion": "Filter by occasion",
+    "occasion": "Occasion",
+    "anyOccasion": "Any occasion",
+    "filterBySeason": "Filter by season",
+    "season": "Season",
+    "anySeason": "Any season",
+    "minimumScore": "Minimum score",
+    "score": "Score",
+    "showHidden": "Show hidden outfits",
+    "filters": "Filters",
+    "filtersCount": "Filters ({count})",
+    "sheetTitle": "Filter outfits",
+    "sheetDescription": "Results update as you choose.",
+    "clearAll": "Clear all",
+    "showOutfits": "Show outfits",
+    "activeFilters": "Active filters",
+    "removeFilter": ", remove filter"
+  },
+  "errors": {
+    "notSignedIn": "Not signed in",
+    "couldNotUpdate": "Could not update. Please try again.",
+    "generationFailed": "Outfit generation failed. You can retry from the item page."
+  }
+}

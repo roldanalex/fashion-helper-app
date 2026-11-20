@@ -1,0 +1,90 @@
+{
+  "meta": {
+    "title": "Stylist"
+  },
+  "header": {
+    "titleFor": "Stylist for {name}",
+    "subtitle": "Pack for a trip in one conversation, or ask what goes with what."
+  },
+  "errors": {
+    "unavailable": "The stylist is unavailable. Try again.",
+    "unavailableShortly": "The stylist is unavailable right now. Try again shortly.",
+    "messageRequired": "A message is required"
+  },
+  "starters": {
+    "lisbon": "Pack for three days in Lisbon: work Thursday and Friday, dinner on Friday, sightseeing Saturday.",
+    "chicago": "A five-day conference trip to Chicago next month, carry-on only. Can I do it with one pair of shoes?",
+    "blazer": "What goes with my navy blazer for dinner on Friday? I'd like to wear the brown loafers."
+  },
+  "empty": {
+    "title": "The stylist needs your outfits first",
+    "ready": "Your pieces are in. Once the outfit table is built, come back and plan a trip.",
+    "notReady": "Trips are packed from your outfit table, which builds itself once you have confirmed the essentials below.",
+    "goToWardrobe": "Go to wardrobe"
+  },
+  "intro": {
+    "lead": "Tell me where you are going, for how long, and what the days hold. I will lay out one outfit per day from your own table and keep the suitcase small.",
+    "hint": "Edit the city and dates to match your trip. Every outfit comes from your Outfits table.",
+    "minorPrivacy": "For {name}'s privacy the stylist knows them only as “{alias}”. Please don't type their name, age or school in your messages."
+  },
+  "chat": {
+    "replied": "The stylist replied.",
+    "repliedWithCard": "The stylist replied with a plan card.",
+    "cleared": "Conversation cleared",
+    "undo": "Undo",
+    "startOver": "Start over",
+    "thinking": "Thinking it through…",
+    "noAnswer": "The stylist did not answer.",
+    "tryAgain": "Try again"
+  },
+  "composer": {
+    "label": "Message the stylist",
+    "placeholder": "Where to, and what are the days like?",
+    "stop": "Stop",
+    "send": "Send"
+  },
+  "tools": {
+    "layingOut": "Laying out the trip…",
+    "layingOutTo": "Laying out {destination}…",
+    "tripNotOk": "Couldn't lay this trip out yet",
+    "tripError": "The planner could not lay this trip out.",
+    "findingOutfits": "Looking through your outfits…",
+    "outfitsNotOk": "Couldn't pull outfits for that yet",
+    "outfitsError": "The outfit lookup failed."
+  },
+  "weather": {
+    "noForecast": "no forecast",
+    "rain": "{precip}% rain",
+    "estimate": "estimate"
+  },
+  "cards": {
+    "looseFit": "loose fit",
+    "seeWhatWould": "See what would",
+    "oldMoney": "Old money"
+  },
+  "trip": {
+    "ariaLabel": "Trip plan for {location}",
+    "dateRange": "{start} to {end}",
+    "packingHeading": "Packing for {location}, {start} to {end}",
+    "packingLine": "{name} (worn {count}×)",
+    "copied": "Packing list copied",
+    "copyFailed": "Couldn't copy. Select the list and copy it by hand.",
+    "stats": {
+      "summary": "<b>{pieces, plural, one {# piece} other {# pieces}}</b> for {filled} of {total} outfits",
+      "distinct": "({count} distinct)",
+      "shoes": "{count, plural, one {# pair} other {# pairs}} of shoes",
+      "outerwear": "{count} outerwear",
+      "watches": "{count, plural, one {# watch} other {# watches}}"
+    },
+    "nothingSuits": "Nothing in your table suits this.",
+    "whatToPack": "What to pack",
+    "copyList": "Copy list",
+    "wornIn": "worn in {count, plural, one {# outfit} other {# outfits}}"
+  },
+  "options": {
+    "ariaLabel": "Outfit options",
+    "builtAround": "Built around",
+    "nothingMatches": "Nothing in your table matches this yet.",
+    "boosted": "Boosted"
+  }
+}

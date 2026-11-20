@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
@@ -20,12 +21,13 @@ function GoogleIcon() {
 export function GoogleSignIn({
   size = "lg",
   variant = "default",
-  label = "Continue with Google",
+  label,
 }: {
   size?: "sm" | "lg";
   variant?: "default" | "outline";
   label?: string;
 }) {
+  const t = useTranslations("common");
   const [loading, setLoading] = useState(false);
 
   async function signIn() {
@@ -38,7 +40,7 @@ export function GoogleSignIn({
       },
     });
     if (error) {
-      toast.error("Could not start Google sign-in. Please try again.");
+      toast.error(t("googleSignInFailed"));
       setLoading(false);
     }
   }
@@ -56,7 +58,7 @@ export function GoogleSignIn({
       ) : (
         <GoogleIcon />
       )}
-      {label}
+      {label ?? t("continueWithGoogle")}
     </Button>
   );
 }

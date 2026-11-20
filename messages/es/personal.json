@@ -1,0 +1,75 @@
+{
+  "deselectHint": "Opcional. Toca de nuevo una opción elegida para quitarla.",
+  "gender": "Género",
+  "ageRange": "Rango de edad",
+  "heightOptional": "Estatura (opcional)",
+  "feet": "Pies",
+  "inches": "Pulgadas",
+  "heightCm": "Estatura en cm (opcional)",
+  "weightLb": "Peso en lb (opcional)",
+  "weightKg": "Peso en kg (opcional)",
+  "bodyShape": "Tipo de cuerpo",
+  "bodyShapeHint": "Ayuda al estilista a equilibrar proporciones. El peso nunca se envía a la IA.",
+  "fit": "¿Cómo te gusta que te quede la ropa?",
+  "skinTone": "Tono de piel",
+  "undertone": "Subtono",
+  "undertoneHelp": "Cálido: las venas se ven más verdes y el dorado te favorece. Frío: las venas se ven más azules y el plateado te favorece. Neutro: ambos, o no estás seguro.",
+  "hairColor": "Color de cabello",
+  "eyeColor": "Color de ojos",
+  "styleNotes": "¿Algo más que deba saber el estilista? (opcional)",
+  "styleNotesPlaceholder": "p. ej., prefiero cubrirme los brazos; nada de jeans skinny; suelo tener calor.",
+  "seasonEmpty": "Agrega tu subtono, el color de tu cabello o de tus ojos, y el estilista sabrá qué colores te favorecen cerca del rostro.",
+  "yourSeason": "Tu estación de color: <b>{season}</b>",
+  "nearTheFace": "Cerca del rostro, {summary}.",
+  "seasonColours": "Colores de {season}",
+  "season": {
+    "spring": {
+      "summary": "cálidos, claros y luminosos: marfil, camel, azul marino cálido, coral, verdes cálidos y marrones dorados"
+    },
+    "summer": {
+      "summary": "fríos, suaves y luminosos: blanco suave, gris paloma, azul empolvado y azul pizarra, rosa, lavanda y azul marino suave"
+    },
+    "autumn": {
+      "summary": "cálidos, intensos y apagados: crema, camel, oliva, óxido, chocolate, verde bosque y azul marino cálido"
+    },
+    "winter": {
+      "summary": "fríos, nítidos y de alto contraste: blanco puro, negro, gris carbón, azul marino intenso, burdeos, esmeralda y tonos helados"
+    }
+  },
+  "colors": {
+    "black": "negro",
+    "burgundy": "burdeos",
+    "camel": "camel",
+    "charcoal": "gris carbón",
+    "chocolate": "chocolate",
+    "coral": "coral",
+    "cream": "crema",
+    "crisp_white": "blanco puro",
+    "dove_grey": "gris paloma",
+    "dusty_rose": "rosa palo",
+    "emerald": "esmeralda",
+    "forest_green": "verde bosque",
+    "fuchsia": "fucsia",
+    "golden_brown": "marrón dorado",
+    "icy_blue": "azul hielo",
+    "ivory": "marfil",
+    "lavender": "lavanda",
+    "light_warm_grey": "gris cálido claro",
+    "mustard": "mostaza",
+    "olive": "oliva",
+    "optic_white": "blanco óptico",
+    "orange": "naranja",
+    "powder_blue": "azul empolvado",
+    "royal_blue": "azul rey",
+    "rust": "óxido",
+    "sage": "verde salvia",
+    "silver_grey": "gris plata",
+    "slate_blue": "azul pizarra",
+    "soft_navy": "azul marino suave",
+    "soft_white": "blanco suave",
+    "true_navy": "azul marino intenso",
+    "turquoise": "turquesa",
+    "warm_green": "verde cálido",
+    "warm_navy": "azul marino cálido"
+  }
+}

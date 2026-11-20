@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { Camera, ImagePlus, Loader2, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import {
   Sheet,
@@ -18,10 +19,20 @@ import {
 } from "@/components/ui/sheet";
 import { ChipGroup } from "@/components/onboarding/chip-group";
 import { CATEGORIES } from "@/lib/constants";
+import { useTranslations } from "next-intl";
+import { useTaxonomy } from "@/i18n/taxonomy";
 import { compressWardrobePhoto } from "@/lib/image";
 import { createClient } from "@/lib/supabase/client";
+import { createPiece } from "@/app/(app)/wardrobe/actions";
 
-export function UploadSheet() {
+export function UploadSheet({
+  person,
+}: {
+  /** The Person the piece belongs to. */
+  person: { id: string; name: string; isMinor: boolean; isSelf: boolean };
+}) {
+  const t = useTranslations("wardrobe.upload");
+  const tx = useTaxonomy();
   const router = useRouter();
   const fileRef = useRef<HTMLInputElement>(null);
   const cameraRef = useRef<HTMLInputElement>(null);
@@ -31,6 +42,8 @@ export function UploadSheet() {
   const [category, setCategory] = useState<string>("top");
   const [description, setDescription] = useState("");
   const [busy, setBusy] = useState<string | null>(null);
+  // Children's pieces are tagged by hand by default: no photo needs to reach the AI.
+  const [manual, setManual] = useState(person.isMinor);
 
   function pickFile(f: File | null) {
     setFile(f);
@@ -40,12 +53,12 @@ export function UploadSheet() {
 
   async function submit() {
     if (!file) {
-      toast.error("Add a photo of the piece first");
+      toast.error(t("needPhoto"));
       return;
     }
     const supabase = createClient();
     try {
-      setBusy("Preparing photo…");
+      setBusy(t("preparing"));
       const compressed = await compressWardrobePhoto(file);
 
       const {
@@ -54,37 +67,37 @@ export function UploadSheet() {
       if (!user) throw new Error("Not signed in");
 
       const itemId = crypto.randomUUID();
-      const path = `${user.id}/${itemId}.webp`;
+      const path = `${user.id}/${person.id}/${itemId}.webp`;
 
-      setBusy("Uploading…");
+      setBusy(t("uploading"));
       const { error: uploadError } = await supabase.storage
         .from("wardrobe")
         .upload(path, compressed, { contentType: "image/webp" });
       if (uploadError) throw uploadError;
 
-      const { error: insertError } = await supabase
-        .from("clothing_items")
-        .insert({
-          id: itemId,
-          user_id: user.id,
-          category,
-          description: description.trim() || null,
-          image_url: path,
-        });
-      if (insertError) throw insertError;
-
-      setBusy("Reading the piece…");
-      const res = await fetch("/api/items/analyze", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ itemId }),
+      const created = await createPiece(person.id, {
+        id: itemId,
+        category,
+        description: description.trim() || null,
+        imagePath: path,
+        manual,
       });
-      if (!res.ok) {
-        toast.warning(
-          "Uploaded, but the stylist couldn't read it — you can re-analyze from the item page.",
-        );
+      if (created?.error) throw new Error(created.error);
+
+      if (manual) {
+        toast.success(t("photoSaved"));
       } else {
-        toast.success("Piece analyzed — review its tags");
+        setBusy(t("reading"));
+        const res = await fetch("/api/items/analyze", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ itemId, personId: person.id }),
+        });
+        if (!res.ok) {
+          toast.warning(t("analyzeFailed"));
+        } else {
+          toast.success(t("analyzed"));
+        }
       }
 
       setOpen(false);
@@ -94,7 +107,7 @@ export function UploadSheet() {
       router.refresh();
     } catch (err) {
       console.error(err);
-      toast.error("Upload failed. Please try again.");
+      toast.error(t("failed"));
     } finally {
       setBusy(null);
     }
@@ -104,14 +117,16 @@ export function UploadSheet() {
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <Button className="gap-2">
-          <Plus className="size-4" aria-hidden /> Add piece
+          <Plus className="size-4" aria-hidden /> {t("trigger")}
         </Button>
       </SheetTrigger>
       <SheetContent side="bottom" className="mx-auto max-w-lg rounded-t-xl">
         <SheetHeader>
-          <SheetTitle>Add a piece</SheetTitle>
+          <SheetTitle>{person.isSelf ? t("title") : t("titleFor", { name: person.name })}</SheetTitle>
           <SheetDescription>
-            One clear photo on a flat surface or hanger works best.
+            {person.isMinor
+              ? t("descriptionMinor")
+              : t("description")}
           </SheetDescription>
         </SheetHeader>
 
@@ -137,13 +152,13 @@ export function UploadSheet() {
           <button
             type="button"
             onClick={() => fileRef.current?.click()}
-            aria-label={preview ? "Change photo" : "Choose a photo"}
+            aria-label={preview ? t("changePhoto") : t("choosePhoto")}
             className="relative mx-auto flex aspect-square w-full max-w-48 cursor-pointer sm:max-w-60 items-center justify-center overflow-hidden rounded-lg border border-dashed text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground"
           >
             {preview ? (
               <Image
                 src={preview}
-                alt="Selected clothing item"
+                alt={t("previewAlt")}
                 fill
                 unoptimized
                 className="object-cover"
@@ -151,7 +166,7 @@ export function UploadSheet() {
             ) : (
               <span className="flex flex-col items-center gap-2 text-sm">
                 <ImagePlus className="size-6" aria-hidden />
-                Tap to add photo
+                {t("tapToAdd")}
               </span>
             )}
           </button>
@@ -163,7 +178,7 @@ export function UploadSheet() {
               className="flex-1 gap-2"
               onClick={() => cameraRef.current?.click()}
             >
-              <Camera className="size-4" aria-hidden /> Take photo
+              <Camera className="size-4" aria-hidden /> {t("takePhoto")}
             </Button>
             <Button
               type="button"
@@ -171,43 +186,59 @@ export function UploadSheet() {
               className="flex-1 gap-2"
               onClick={() => fileRef.current?.click()}
             >
-              <ImagePlus className="size-4" aria-hidden /> From gallery
+              <ImagePlus className="size-4" aria-hidden /> {t("fromGallery")}
             </Button>
           </div>
 
           <ChipGroup
-            label="What kind of piece is it?"
-            options={[...CATEGORIES]}
+            label={t("kindLabel")}
+            options={CATEGORIES.map((o) => ({ value: o, label: tx("category", o) }))}
             value={category}
             onChange={(v) => setCategory(v as string)}
           />
 
           <div className="space-y-2">
             <Label htmlFor="description">
-              Tell the stylist about it (optional)
+              {t("aboutLabel")}
             </Label>
             <Textarea
               id="description"
-              placeholder="e.g. White pique polo, slim fit, from Lacoste"
+              placeholder={t("aboutPlaceholder")}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
             <p className="text-xs text-muted-foreground">
-              Mentioning the material — pique, knit, merino — makes tagging far
-              more accurate.
+              {t("aboutHint")}
+              {person.isMinor && t("aboutHintMinor")}
             </p>
           </div>
         </div>
 
         {/* The upload action stays reachable at the bottom of the sheet on short phones. */}
         <div className="sticky bottom-0 border-t bg-popover px-4 pb-4 pt-3">
+          <div className="mb-3 flex items-start justify-between gap-4">
+            <div>
+              <Label htmlFor="manual-tags" className="text-sm">{t("manualLabel")}</Label>
+              <p id="manual-tags-help" className="text-xs text-muted-foreground">
+                {manual
+                  ? t("manualOn")
+                  : t("manualOff")}
+              </p>
+            </div>
+            <Switch
+              id="manual-tags"
+              checked={manual}
+              onCheckedChange={setManual}
+              aria-describedby="manual-tags-help"
+            />
+          </div>
           <Button onClick={submit} disabled={!!busy} className="w-full gap-2" size="lg">
             {busy ? (
               <>
                 <Loader2 className="size-4 animate-spin" aria-hidden /> {busy}
               </>
             ) : (
-              "Upload & analyze"
+              manual ? t("upload") : t("uploadAnalyze")
             )}
           </Button>
           <p className="sr-only" aria-live="polite">

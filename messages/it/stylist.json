@@ -1,0 +1,90 @@
+{
+  "meta": {
+    "title": "Stylist"
+  },
+  "header": {
+    "titleFor": "Stylist per {name}",
+    "subtitle": "Prepara la valigia per un viaggio in una sola conversazione, o chiedi cosa sta bene con cosa."
+  },
+  "errors": {
+    "unavailable": "Lo stylist non è disponibile. Riprova.",
+    "unavailableShortly": "Lo stylist non è disponibile al momento. Riprova tra poco.",
+    "messageRequired": "Serve un messaggio"
+  },
+  "starters": {
+    "lisbon": "Valigia per tre giorni a Lisbona: lavoro giovedì e venerdì, cena venerdì sera, giro turistico sabato.",
+    "chicago": "Un viaggio di cinque giorni per una conferenza a Chicago il mese prossimo, solo bagaglio a mano. Posso farcela con un solo paio di scarpe?",
+    "blazer": "Cosa abbino al mio blazer blu navy per la cena di venerdì? Vorrei mettere i mocassini marroni."
+  },
+  "empty": {
+    "title": "Lo stylist ha prima bisogno dei tuoi outfit",
+    "ready": "I tuoi capi ci sono. Quando la tabella degli outfit sarà pronta, torna qui e pianifica un viaggio.",
+    "notReady": "La valigia si prepara dalla tua tabella degli outfit, che si crea da sola appena hai confermato i capi essenziali qui sotto.",
+    "goToWardrobe": "Vai al guardaroba"
+  },
+  "intro": {
+    "lead": "Dimmi dove vai, per quanto tempo e cosa ti aspetta ogni giorno. Ti propongo un outfit al giorno dalla tua tabella e tengo la valigia leggera.",
+    "hint": "Modifica città e date in base al tuo viaggio. Ogni outfit viene dalla tua tabella Outfit.",
+    "minorPrivacy": "Per la privacy di {name}, lo stylist lo conosce solo come “{alias}”. Non scrivere il suo nome, l'età o la scuola nei messaggi."
+  },
+  "chat": {
+    "replied": "Lo stylist ha risposto.",
+    "repliedWithCard": "Lo stylist ha risposto con una scheda di piano.",
+    "cleared": "Conversazione cancellata",
+    "undo": "Annulla",
+    "startOver": "Ricomincia",
+    "thinking": "Ci penso…",
+    "noAnswer": "Lo stylist non ha risposto.",
+    "tryAgain": "Riprova"
+  },
+  "composer": {
+    "label": "Scrivi allo stylist",
+    "placeholder": "Dove vai, e come saranno le giornate?",
+    "stop": "Ferma",
+    "send": "Invia"
+  },
+  "tools": {
+    "layingOut": "Organizzo il viaggio…",
+    "layingOutTo": "Organizzo {destination}…",
+    "tripNotOk": "Non riesco ancora a organizzare questo viaggio",
+    "tripError": "Il planner non è riuscito a organizzare questo viaggio.",
+    "findingOutfits": "Cerco tra i tuoi outfit…",
+    "outfitsNotOk": "Non trovo ancora outfit per questo",
+    "outfitsError": "La ricerca degli outfit non è riuscita."
+  },
+  "weather": {
+    "noForecast": "nessuna previsione",
+    "rain": "pioggia {precip}%",
+    "estimate": "stima"
+  },
+  "cards": {
+    "looseFit": "abbinamento approssimativo",
+    "seeWhatWould": "Scopri cosa servirebbe",
+    "oldMoney": "Old money"
+  },
+  "trip": {
+    "ariaLabel": "Piano di viaggio per {location}",
+    "dateRange": "dal {start} al {end}",
+    "packingHeading": "Valigia per {location}, dal {start} al {end}",
+    "packingLine": "{name} (indossato {count}×)",
+    "copied": "Lista della valigia copiata",
+    "copyFailed": "Impossibile copiare. Seleziona la lista e copiala a mano.",
+    "stats": {
+      "summary": "<b>{pieces, plural, one {# capo} other {# capi}}</b> per {filled} outfit su {total}",
+      "distinct": "({count} diversi)",
+      "shoes": "{count, plural, one {# paio} other {# paia}} di scarpe",
+      "outerwear": "{count} capispalla",
+      "watches": "{count, plural, one {# orologio} other {# orologi}}"
+    },
+    "nothingSuits": "Nella tua tabella non c'è niente di adatto.",
+    "whatToPack": "Cosa mettere in valigia",
+    "copyList": "Copia la lista",
+    "wornIn": "indossato in {count, plural, one {# outfit} other {# outfit}}"
+  },
+  "options": {
+    "ariaLabel": "Opzioni di outfit",
+    "builtAround": "Costruito attorno a",
+    "nothingMatches": "Nella tua tabella non c'è ancora niente di adatto.",
+    "boosted": "In evidenza"
+  }
+}

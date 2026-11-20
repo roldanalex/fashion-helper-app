@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { LogOut } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
 
@@ -10,6 +11,7 @@ export function SignOutButton({
 }: {
   variant?: "outline" | "ghost";
 }) {
+  const t = useTranslations("common");
   const router = useRouter();
 
   async function signOut() {
@@ -21,7 +23,7 @@ export function SignOutButton({
 
   return (
     <Button variant={variant} onClick={signOut} className="gap-2 text-muted-foreground">
-      <LogOut className="size-4" aria-hidden /> Sign out
+      <LogOut className="size-4" aria-hidden /> {t("signOut")}
     </Button>
   );
 }

@@ -1,23 +1,26 @@
 "use server";
 
+import { validationMessage } from "@/i18n/validation-server";
 import { redirect } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { profileSchema, type ProfileInput } from "@/lib/schemas";
 import { createClient } from "@/lib/supabase/server";
 import { geocode } from "@/lib/weather";
-import { defaultUnitsForCountry, type Units } from "@/lib/units";
+import { defaultUnitsForCountry, type MeasureUnits, type Units } from "@/lib/units";
 import { deriveColorSeason } from "@/lib/personal/color-season";
 
-export async function saveProfile(input: ProfileInput) {
+export async function saveProfile(input: ProfileInput, measures?: MeasureUnits) {
+  const t = await getTranslations("onboarding");
   const parsed = profileSchema.safeParse(input);
   if (!parsed.success) {
-    return { error: parsed.error.issues[0]?.message ?? "Invalid profile" };
+    return { error: await validationMessage(parsed.error.issues[0]?.message, t("errors.invalidProfile")) };
   }
 
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return { error: "Not signed in" };
+  if (!user) return { error: t("errors.notSignedIn") };
 
   let home_lat: number | null = null;
   let home_lon: number | null = null;
@@ -47,11 +50,15 @@ export async function saveProfile(input: ProfileInput) {
       home_lat,
       home_lon,
       ...(units ? { units } : {}),
+      // The units the person typed their measurements in (0013 columns).
+      ...(measures && (measures.weight === "kg" || measures.weight === "lb") && (measures.height === "cm" || measures.height === "ftin")
+        ? { weight_unit: measures.weight, height_unit: measures.height }
+        : {}),
       onboarded_at: new Date().toISOString(),
     })
     .eq("id", user.id);
 
-  if (error) return { error: "Could not save your profile. Please try again." };
+  if (error) return { error: t("errors.couldNotSave") };
 
   redirect("/today");
 }
